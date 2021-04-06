@@ -512,7 +512,7 @@ export default {
     let data = {
 
       head: {
-        title: 'Visual Query Builder',
+        title: 'Visual SQL Tool',
       },
 
       dataSources: {
