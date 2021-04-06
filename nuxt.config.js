@@ -1,4 +1,6 @@
 export default {
+  target: 'static',
+	
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'my-app',
@@ -31,7 +33,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/google-adsense',
+    ['@nuxtjs/google-adsense', { id: 'ca-pub-7390527632812452' }],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -39,6 +41,4 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
-
-  'google-adsense': { id: 'ca-pub-7390527632812452' },
 }
