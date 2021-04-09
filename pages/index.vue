@@ -66,11 +66,11 @@
 
           <v-list dense style="overflow-y: auto">
 
-            <draggable tag="v-list-item-group">
+            <draggable>
 
               <v-hover v-for="(item, key) in modules" :key="key" v-slot="{ hover }">
               
-                <v-list-item>
+                <v-list-item @click="test('123')">
 
                   <v-list-item-icon>
                     <v-icon>mdi-view-module</v-icon>
@@ -83,7 +83,7 @@
                     </v-list-item-title>
                   </v-list-item-content>
                   
-                  <v-btn v-if="hover" small
+                  <v-btn v-if="hover" small @click.stop="test('234')"
                   style="position: relative; left: 6px; min-width: 28px; width: 28px">
                     <v-icon dense>mdi-trash-can-outline</v-icon>
                   </v-btn>
@@ -126,12 +126,12 @@
 
 
           <v-list dense style="overflow-y: auto">
-
-            <draggable tag="v-list-item-group">
+            
+            <draggable>
 
               <v-hover v-for="(item, key) in tables" :key="key" v-slot="{ hover }">
               
-                <v-list-item>
+                <v-list-item @click="test('123')">
 
                   <v-list-item-icon>
                     <v-icon>mdi-table</v-icon>
@@ -144,7 +144,7 @@
                     </v-list-item-title>
                   </v-list-item-content>
                   
-                  <v-btn v-if="hover" small
+                  <v-btn v-if="hover" small @click.stop="test('234')"
                   style="position: relative; left: 6px; min-width: 28px; width: 28px">
                     <v-icon dense>mdi-trash-can-outline</v-icon>
                   </v-btn>
@@ -258,9 +258,13 @@
 
 <script>
 export default {
+
+  
   head: {
     title: 'Visual SQL Tool',
   },
+
+
   data() {
     return {
       modules: {
@@ -276,7 +280,17 @@ export default {
       tabs: [0, 1],
       activeTab: null,
     }
-  }
+  },
+
+
+  methods: {
+    test(asd) {
+      alert(asd)
+    }
+  },
+
+
+
 }
 </script>
 
