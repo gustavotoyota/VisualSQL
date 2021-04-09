@@ -10,7 +10,7 @@ export default {
     title: 'visual-sql-tool',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
@@ -20,12 +20,19 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    // lib css
+    'codemirror/lib/codemirror.css',
+    // merge css
+    'codemirror/addon/merge/merge.css',
+    // theme css
+    'codemirror/theme/base16-dark.css',
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-	'~/plugins/draggable.js',
-	'~/plugins/monaco.js',
+    '~/plugins/draggable.js',
+    '~/plugins/monaco.js',
+    { src: '~/plugins/codemirror.js', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -62,6 +69,7 @@ export default {
     }
   },
 
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   },
@@ -70,7 +78,6 @@ export default {
   pwa: {
     meta: {
       name: 'Visual SQL Tool',
-      nativeUI: true,
     },
   },
 
