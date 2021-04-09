@@ -256,14 +256,23 @@
     <v-navigation-drawer app width="300" mobile-breakpoint="1000" clipped right>
 
       <v-toolbar dense>
-        <v-toolbar-title>Properties</v-toolbar-title>
+        <v-toolbar-title>
+          <v-icon>mdi-chart-box</v-icon>
+          <span style="position: relative; top: 2px">Properties</span>
+        </v-toolbar-title>
       </v-toolbar>
       
       <div class="pa-5">
 
-        <v-text-field dense label="Name"></v-text-field>
+
+        <v-text-field dense label="Name">
+        </v-text-field>
         
-        <v-textarea dense rows="2" label="Description"></v-textarea>
+
+        <v-textarea dense rows="2" label="Description">
+        </v-textarea>
+
+
 
         <v-radio-group>
           <template v-slot:label>
@@ -277,7 +286,28 @@
           <v-radio label="Cross join"></v-radio>
         </v-radio-group>
 
-        
+
+
+        <div class="body-2 grey--text text--lighten-1">Code:</div>
+        <div class="mb-1"></div>
+        <MonacoEditor
+          class="editor" v-model="code" language="sql"
+          :options="{
+            theme: 'vs-dark',
+            automaticLayout: true,
+            lineNumbers: 'off',
+            minimap: { enabled: false },
+            padding: { top: 5, bottom: 5 },
+            glyphMargin: false,
+            folding: false,
+            lineDecorationsWidth: 4,
+            lineNumbersMinChars: 0,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+            quickSuggestions: false,
+          }"
+          style="height: 150px; border-radius: 5px; overflow: hidden"/>
+
 
       </div>
 
@@ -316,6 +346,7 @@ export default {
       },
       tabs: [0, 1],
       activeTab: null,
+      code: 'max(age) as max_age',
     }
   },
 
