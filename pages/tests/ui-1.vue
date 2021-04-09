@@ -4,9 +4,9 @@
 
     <v-app-bar app clipped-left clipped-right dense>
 
-      <v-toolbar-title>
+      <v-app-bar-title>
         Visual SQL Tool
-      </v-toolbar-title>
+      </v-app-bar-title>
 
       <v-divider vertical inset class="ml-4 mr-2"></v-divider>
 
@@ -57,7 +57,8 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn depressed class="mt-1" style="position: relative; left: 8px; min-width: 32px" width="32" height="32">
+            <v-btn depressed rounded class="mt-1" width="32" height="32"
+            style="position: relative; left: 8px; min-width: 32px">
               <v-icon dense>mdi-plus-thick</v-icon>
             </v-btn>
           </v-toolbar>
@@ -83,7 +84,7 @@
                     </v-list-item-title>
                   </v-list-item-content>
                   
-                  <v-btn v-if="hover" small @click.stop="test('234')"
+                  <v-btn small rounded v-if="hover" @click.stop="test('234')"
                   style="position: relative; left: 6px; min-width: 28px; width: 28px">
                     <v-icon dense>mdi-trash-can-outline</v-icon>
                   </v-btn>
@@ -111,12 +112,12 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn depressed class="ml-2 mt-1" width="32" height="32"
+            <v-btn depressed rounded class="ml-2 mt-1" width="32" height="32"
             style="position: relative; left: 8px; min-width: 32px">
               <v-icon dense>mdi-plus-thick</v-icon>
             </v-btn>
 
-            <v-btn depressed class="ml-2 mt-1" width="32" height="32"
+            <v-btn depressed rounded class="ml-2 mt-1" width="32" height="32"
             style="position: relative; left: 8px; min-width: 32px">
               <v-icon dense>mdi-cog</v-icon>
             </v-btn>
@@ -144,7 +145,7 @@
                     </v-list-item-title>
                   </v-list-item-content>
                   
-                  <v-btn v-if="hover" small @click.stop="test('234')"
+                  <v-btn small rounded v-if="hover" @click.stop="test('234')"
                   style="position: relative; left: 6px; min-width: 28px; width: 28px">
                     <v-icon dense>mdi-trash-can-outline</v-icon>
                   </v-btn>
@@ -171,17 +172,30 @@
 
       <div class="d-flex flex-column fill-height">
 
+
+
         <v-tabs v-model="activeTab" show-arrows style="flex: 0 0 auto" ref="tabs">
           
           <draggable delay="250" delay-on-touch-only="true"
           class="v-slide-group__content v-tabs-bar__content"
           @update="$refs.tabs.callSlider()">
 
-            <v-tab v-for="key in tabs" :key="key" class="text-none">{{ modules[key].name }}</v-tab>
+            <v-tab v-for="key in tabs" :key="key" class="text-none">
+
+              {{ modules[key].name }}
+
+              <v-btn plain small rounded
+              style="position: relative; left: 6px; min-width: 28px; width: 28px">
+                <v-icon dense>mdi-close</v-icon>
+              </v-btn>
+
+            </v-tab>
           
           </draggable>
 
         </v-tabs>
+
+
 
         <v-tabs-items v-model="activeTab" style="flex: 1 1 auto">
 
@@ -217,12 +231,21 @@
                 <v-icon dense>mdi-content-duplicate</v-icon>
               </v-btn>
 
+              <v-divider vertical inset class="mx-2"></v-divider>
+
+              <v-btn depressed small>
+                Generate SQL
+              </v-btn>
+
             </v-toolbar>
             
             {{ modules[key].name }}
           </v-tab-item>
 
         </v-tabs-items>
+
+
+
 
       </div>
 
@@ -237,13 +260,25 @@
       </v-toolbar>
       
       <div class="pa-5">
-        <div>
-          <v-text-field dense label="Name"></v-text-field>
-        </div>
+
+        <v-text-field dense label="Name"></v-text-field>
         
-        <div>
-          <v-textarea dense rows="3" label="Description"></v-textarea>
-        </div>
+        <v-textarea dense rows="2" label="Description"></v-textarea>
+
+        <v-radio-group>
+          <template v-slot:label>
+            <div>Join type:</div>
+          </template>
+          
+          <v-radio label="Inner join"></v-radio>
+          <v-radio label="Left join"></v-radio>
+          <v-radio label="Right join"></v-radio>
+          <v-radio label="Full join"></v-radio>
+          <v-radio label="Cross join"></v-radio>
+        </v-radio-group>
+
+        
+
       </div>
 
     </v-navigation-drawer>
