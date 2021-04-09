@@ -66,7 +66,7 @@
 
           <v-list dense style="overflow-y: auto">
 
-            <draggable>
+            <draggable delay="100" delay-on-touch-only="true">
 
               <v-hover v-for="(item, key) in modules" :key="key" v-slot="{ hover }">
               
@@ -127,7 +127,7 @@
 
           <v-list dense style="overflow-y: auto">
             
-            <draggable>
+            <draggable delay="100" delay-on-touch-only="true">
 
               <v-hover v-for="(item, key) in tables" :key="key" v-slot="{ hover }">
               
@@ -173,7 +173,9 @@
 
         <v-tabs v-model="activeTab" show-arrows style="flex: 0 0 auto" ref="tabs">
           
-          <draggable v-model="tabs" class="v-slide-group__content v-tabs-bar__content" @update="$refs.tabs.callSlider()">
+          <draggable v-model="tabs" delay="100" delay-on-touch-only="true"
+          class="v-slide-group__content v-tabs-bar__content"
+          @update="$refs.tabs.callSlider()">
 
             <v-tab v-for="key in tabs" :key="key" class="text-none">{{ modules[key].name }}</v-tab>
           
