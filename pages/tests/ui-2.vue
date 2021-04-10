@@ -103,8 +103,7 @@
         <v-list dense style="flex: 1; overflow-y: scroll">
           
 
-          <draggable delay="250" delay-on-touch-only="true"
-          touch-start-threshold="4" animation="200">
+          <draggable delay="250" touch-start-threshold="4" animation="200">
 
 
             <!-- Module item -->
@@ -184,8 +183,7 @@
 
         <v-list dense style="overflow-y: scroll; flex: 1">
           
-          <draggable delay="250" delay-on-touch-only="true"
-          touch-start-threshold="4" animation="200">
+          <draggable delay="250" touch-start-threshold="4" animation="200">
 
             
 
@@ -246,8 +244,8 @@
       <v-tabs show-arrows style="flex: none"
       v-model="tabIdx" :key="'t' + rerenderTabs">
 
-        <draggable v-model="tabs" @end="rerenderTabs++" animation="200"
-        delay="250" delay-on-touch-only="true" touch-start-threshold="4"
+        <draggable v-model="tabs" @end="rerenderTabs++"
+        delay="250" touch-start-threshold="4" animation="200"
         class="v-slide-group__content v-tabs-bar__content">
 
           <v-tab v-for="tab in tabs" :key="tab.id"
