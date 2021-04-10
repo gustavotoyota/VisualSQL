@@ -336,13 +336,8 @@
 
 <script>
 export default {
-
   
-  head: {
-    title: 'Visual SQL Tool',
-  },
-
-
+  
   data() {
     return {
       loading: true,

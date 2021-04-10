@@ -6,8 +6,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    titleTemplate: '%s - visual-sql-tool',
-    title: 'visual-sql-tool',
+    title: 'Visual SQL Tool',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
@@ -33,6 +32,7 @@ export default {
     '~/plugins/draggable.js',
     '~/plugins/monaco.js',
     { src: '~/plugins/codemirror.js', ssr: false },
+    '~/plugins/directives.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
