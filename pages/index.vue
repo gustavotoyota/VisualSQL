@@ -1,6 +1,9 @@
 <template>
+  <v-app dark v-if="loading">
 
-  <v-app dark>
+  </v-app>
+
+  <v-app dark v-else>
 
     <v-app-bar app clipped-left clipped-right dense>
 
@@ -342,6 +345,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       modules: {
         0: { name: 'module_1' },
         1: { name: 'module_2' },
@@ -359,6 +363,13 @@ export default {
   },
 
 
+  mounted() {
+    window.addEventListener('load', () => {
+      this.loading = false
+    })
+  },
+
+
   methods: {
     test(asd) {
       alert(asd)
@@ -371,6 +382,10 @@ export default {
 </script>
 
 <style>
+html {
+  overflow-y: auto
+}
+
 .v-window__container {
   height: 100%;
 }
