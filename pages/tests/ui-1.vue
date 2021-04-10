@@ -364,7 +364,9 @@ export default {
 
 
   mounted() {
-    this.loading = false
+    window.addEventListener('load', () => {
+      this.loading = false
+    })
   },
 
 
@@ -380,6 +382,10 @@ export default {
 </script>
 
 <style>
+html {
+  overflow-y: auto
+}
+
 .v-window__container {
   height: 100%;
 }
