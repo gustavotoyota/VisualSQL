@@ -1,8 +1,7 @@
 <template>
   <div>
     <client-only placeholder="Codemirror Loading...">
-      <codemirror
-        v-model="code"
+      <codemirror style="width: 200px"
         :options="{
           tabSize: 2,
           extraKeys: { 'Ctrl-Space' : 'autocomplete' },
