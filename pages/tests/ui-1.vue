@@ -1,6 +1,9 @@
 <template>
+  <v-app dark v-if="loading">
 
-  <v-app dark>
+  </v-app>
+
+  <v-app dark v-else>
 
     <v-app-bar app clipped-left clipped-right dense>
 
@@ -342,6 +345,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       modules: {
         0: { name: 'module_1' },
         1: { name: 'module_2' },
@@ -356,6 +360,11 @@ export default {
       activeTab: null,
       code: 'max(age) as max_age',
     }
+  },
+
+
+  mounted() {
+    this.loading = false
   },
 
 
