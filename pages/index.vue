@@ -199,9 +199,9 @@
 
         <v-tabs-items v-model="activeTab" style="flex: 1 1 auto">
 
-          <v-tab-item v-for="key in tabs" :key="key">
+          <v-tab-item v-for="key in tabs" :key="key" class="fill-height flex-column" style="display: flex">
             
-            <v-toolbar dense>
+            <v-toolbar dense style="flex: none">
 
               <v-btn depressed small style="min-width: 28px; width: 28px">
                 <v-icon dense>mdi-content-cut</v-icon>
@@ -239,7 +239,9 @@
 
             </v-toolbar>
             
-            {{ modules[key].name }}
+            <div style="flex: 1 1 auto">
+              {{ modules[key].name }}
+            </div>
           </v-tab-item>
 
         </v-tabs-items>
@@ -255,59 +257,65 @@
 
     <v-navigation-drawer app width="300" mobile-breakpoint="1000" clipped right>
 
-      <v-toolbar dense>
-        <v-toolbar-title>
-          <v-icon>mdi-chart-box</v-icon>
-          <span style="position: relative; top: 2px">Properties</span>
-        </v-toolbar-title>
-      </v-toolbar>
-      
-      <div class="pa-5">
+      <div class="d-flex flex-column fill-height">
 
-
-        <v-text-field dense label="Name">
-        </v-text-field>
+        <v-toolbar dense style="flex: none">
+          <v-toolbar-title>
+            <v-icon>mdi-chart-box</v-icon>
+            <span style="position: relative; top: 2px">Properties</span>
+          </v-toolbar-title>
+        </v-toolbar>
         
 
-        <v-textarea dense rows="2" label="Description">
-        </v-textarea>
+        <div class="px-5 py-5" style="flex: 1 1 auto; height: 0; overflow-y: auto">
 
-
-
-        <v-radio-group>
-          <template v-slot:label>
-            <div>Join type:</div>
-          </template>
+          <div class="mb-1 body-2 grey--text text--lighten-1">Name:</div>
+          <v-text-field dense solo hide-details class="body-2">
+          </v-text-field>
           
-          <v-radio label="Inner join"></v-radio>
-          <v-radio label="Left join"></v-radio>
-          <v-radio label="Right join"></v-radio>
-          <v-radio label="Full join"></v-radio>
-          <v-radio label="Cross join"></v-radio>
-        </v-radio-group>
+
+          <div class="mt-4 mb-1 body-2 grey--text text--lighten-1">Description:</div>
+          <v-textarea dense solo hide-details class="body-2" no-resize rows="2">
+          </v-textarea>
 
 
 
-        <div class="body-2 grey--text text--lighten-1">Code:</div>
-        <div class="mb-1"></div>
-        <MonacoEditor
-          class="editor" v-model="code" language="sql"
-          :options="{
-            theme: 'vs-dark',
-            automaticLayout: true,
-            lineNumbers: 'off',
-            minimap: { enabled: false },
-            padding: { top: 5, bottom: 5 },
-            glyphMargin: false,
-            folding: false,
-            lineDecorationsWidth: 4,
-            lineNumbersMinChars: 0,
-            scrollBeyondLastLine: false,
-            wordWrap: 'on',
-            quickSuggestions: false,
-          }"
-          style="height: 150px; border-radius: 5px; overflow: hidden"/>
+          <v-radio-group>
+            <template v-slot:label>
+              <div>Join type:</div>
+            </template>
+            
+            <v-radio label="Inner join"></v-radio>
+            <v-radio label="Left join"></v-radio>
+            <v-radio label="Right join"></v-radio>
+            <v-radio label="Full join"></v-radio>
+            <v-radio label="Cross join"></v-radio>
+          </v-radio-group>
 
+
+
+          <div class="mb-1 body-2 grey--text text--lighten-1">Code:</div>
+
+          <MonacoEditor
+            class="editor" v-model="code" language="sql"
+            :options="{
+              theme: 'vs-dark',
+              automaticLayout: true,
+              lineNumbers: 'off',
+              minimap: { enabled: false },
+              padding: { top: 2, bottom: 2 },
+              glyphMargin: false,
+              folding: false,
+              lineDecorationsWidth: 5,
+              lineNumbersMinChars: 0,
+              scrollBeyondLastLine: false,
+              wordWrap: 'on',
+              quickSuggestions: false,
+            }"
+            style="height: 150px; border-radius: 5px; overflow: hidden"/>
+
+
+        </div>
 
       </div>
 
@@ -363,5 +371,25 @@ export default {
 </script>
 
 <style>
+.v-window__container {
+  height: 100%;
+}
 
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #202020;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border: solid 2px #202020;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #606060;
+}
 </style>

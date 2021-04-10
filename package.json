@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
+    "monaco-editor": "^0.23.0",
     "nuxt": "^2.14.6",
     "vue-codemirror": "^4.0.6",
     "vue-monaco": "^1.2.2",

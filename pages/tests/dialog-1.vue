@@ -32,17 +32,17 @@
                 automaticLayout: true,
                 lineNumbers: 'off',
                 minimap: { enabled: false },
-                padding: { top: 5, bottom: 5 },
+                padding: { top: 2, bottom: 2 },
                 glyphMargin: false,
                 folding: false,
-                lineDecorationsWidth: 0,
+                lineDecorationsWidth: 5,
                 lineNumbersMinChars: 0,
                 scrollBeyondLastLine: false,
                 wordWrap: 'on',
                 quickSuggestions: false,
               }"
               style="height: 200px; border-radius: 5px; overflow: hidden"/>
-            <div class="caption">Note: SQL or just comma-separated</div>
+            <div class="caption">Note: SQL columns or comma-separated</div>
           </v-card-text>
 
           <v-divider></v-divider>
