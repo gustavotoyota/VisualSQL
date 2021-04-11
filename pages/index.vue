@@ -61,7 +61,8 @@
 
     <!-- Left sidebar -->
 
-    <v-navigation-drawer app width="300" permanent clipped>
+    <v-navigation-drawer app width="300"
+    permanent clipped touchless>
       
 
 
@@ -269,7 +270,7 @@
 
       <!-- Tab items -->
       
-      <v-tabs-items style="flex: 1"
+      <v-tabs-items style="flex: 1" touchless mandatory
       v-model="tabIdx" :key="'i' + rerenderTabs">
 
 
@@ -586,7 +587,8 @@
 
     <!-- Right sidebar -->
 
-    <v-navigation-drawer app width="300" permanent clipped right>
+    <v-navigation-drawer app width="300"
+    permanent clipped right touchless>
 
 
 
