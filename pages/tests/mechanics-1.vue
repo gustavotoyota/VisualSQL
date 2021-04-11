@@ -576,7 +576,7 @@
 
         </v-tab-item>
 
-        
+
 
       </v-tabs-items>
 
@@ -718,6 +718,15 @@ export default {
 html {
   overflow-y: auto;
 }
+
+
+
+/* Disable pull-to-refresh */
+
+body {
+  overscroll-behavior-y: contain;
+}
+
 
 
 
