@@ -277,290 +277,296 @@
 
         <!-- Tab item -->
 
-        <v-tab-item v-for="tab in tabs" :key="tab.id"
-        class="fill-height flex-column" style="display: flex">
+        <v-tab-item class="fill-height"
+        v-for="tab in tabs" :key="tab.id">
+
+          <div class="fill-height d-flex flex-column">
 
 
 
-          <!-- Tab toolbar -->
-          
-          <v-toolbar dense style="flex: none">
-
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-content-cut</v-icon>
-            </v-btn>
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-content-copy</v-icon>
-            </v-btn>
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-content-paste</v-icon>
-            </v-btn>
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-delete</v-icon>
-            </v-btn>
-
-            <v-divider vertical inset class="mx-2"></v-divider>
-
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-undo</v-icon>
-            </v-btn>
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-redo</v-icon>
-            </v-btn>
-
-            <v-divider vertical inset class="mx-2"></v-divider>
-
-            <v-btn depressed small style="min-width: 28px" width="0">
-              <v-icon dense>mdi-content-duplicate</v-icon>
-            </v-btn>
-
-            <v-divider vertical inset class="mx-2"></v-divider>
-
-            <v-btn depressed small>
-              Generate SQL
-            </v-btn>
-
-          </v-toolbar>
-          
-
-
-
-          <!-- Tab content -->
-
-          <div style="position: relative; flex: 1; height: 0">
-
-
+            <!-- Tab toolbar -->
             
-            <!-- World centralizer -->
+            <v-toolbar dense style="flex: none">
 
-            <div style="position: absolute; left: 50%; top: 50%">
-              
-              <v-btn x-large style="min-width: 52px" width="0">
-                <v-icon large>mdi-table</v-icon>
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-content-cut</v-icon>
+              </v-btn>
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-content-copy</v-icon>
+              </v-btn>
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-content-paste</v-icon>
+              </v-btn>
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-delete</v-icon>
               </v-btn>
 
-            </div>
+              <v-divider vertical inset class="mx-2"></v-divider>
+
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-undo</v-icon>
+              </v-btn>
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-redo</v-icon>
+              </v-btn>
+
+              <v-divider vertical inset class="mx-2"></v-divider>
+
+              <v-btn depressed small style="min-width: 28px" width="0">
+                <v-icon dense>mdi-content-duplicate</v-icon>
+              </v-btn>
+
+              <v-divider vertical inset class="mx-2"></v-divider>
+
+              <v-btn depressed small>
+                Generate SQL
+              </v-btn>
+
+            </v-toolbar>
+            
 
 
 
-            <!-- Node buttons -->
+            <!-- Tab content -->
 
-            <div style="position: absolute; left: 16px; top: 16px">
-
-
-              <div>
+            <div style="position: relative; flex: 1; height: 0">
 
 
-                <!-- Table node -->
-
-                <node-button tooltip="Table">
-                  <v-icon>mdi-table</v-icon>
-                </node-button>
-
-
-                <!-- Union all node -->
-
-                <node-button tooltip="Union all">
-                  <v-icon>mdi-vector-arrange-above</v-icon>
-                </node-button>
-
-
-
-              </div>
               
+              <!-- World centralizer -->
 
-              <div style="margin-top: 1px">
-
-
-                <!-- Module node -->
-
-                <node-button tooltip="Module">
-                  <v-icon>mdi-cube-outline</v-icon>
-                </node-button>
-
-
-                <!-- Union node -->
-
-                <node-button tooltip="Union">
-                  <v-icon>mdi-vector-combine</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 1px">
-
-
-                <!-- Node node -->
+              <div style="position: absolute; left: 50%; top: 50%">
                 
-                <node-button tooltip="Node">
-                  <v-icon>mdi-hexagon-outline</v-icon>
-                </node-button>
-
-
-                <!-- Except node -->
-                
-                <node-button tooltip="Except">
-                  <v-icon>mdi-vector-difference-ba</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 1px">
-
-
-                <!-- SQL node -->
-                
-                <node-button tooltip="SQL">
-                  <v-icon>mdi-code-tags</v-icon>
-                </node-button>
-
-                
-                <!-- Intersect node -->
-                
-                <node-button tooltip="Intersect">
-                  <v-icon>mdi-vector-intersection</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 12px">
-
-                
-                <!-- Inner join node -->
-                
-                <node-button tooltip="Inner join">
-                  <v-icon>mdi-set-center</v-icon>
-                </node-button>
-
-
-                <!-- Where node -->
-                
-                <node-button tooltip="Where">
-                  <v-icon>mdi-filter</v-icon>
-                </node-button>
-                
-
-              </div>
-
-              <div style="margin-top: 1px">
-                
-
-                <!-- Left join node -->
-                
-                <node-button tooltip="Left join">
-                  <v-icon>mdi-set-left-center</v-icon>
-                </node-button>
-
-                
-                <!-- Transform node -->
-                
-                <node-button tooltip="Transform">
-                  <v-icon>mdi-cached</v-icon>
-                </node-button>
-                
-
-              </div>
-
-              <div style="margin-top: 1px">
-
-                
-                <!-- Right join node -->
-                
-                <node-button tooltip="Right join">
-                  <v-icon>mdi-set-center-right</v-icon>
-                </node-button>
-
-                
-                <!-- Distinct node -->
-                
-                <node-button tooltip="Distinct">
-                  <v-icon>mdi-format-list-bulleted-type</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 1px">
-
-                
-                <!-- Full join node -->
-                
-                <node-button tooltip="Full join">
-                  <v-icon>mdi-set-left-right</v-icon>
-                </node-button>
-
-                
-                <!-- Order node -->
-                
-                <node-button tooltip="Order">
-                  <v-icon>mdi-sort-ascending</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 1px">
-
-                
-                <!-- Cross join node -->
-                
-                <node-button tooltip="Cross join">
-                  <v-icon>mdi-shuffle</v-icon>
-                </node-button>
-
-                
-                <!-- Reduce node -->
-                
-                <node-button tooltip="Reduce">
-                  <v-icon>mdi-arrow-expand-vertical</v-icon>
-                </node-button>
-
-
-              </div>
-
-              <div style="margin-top: 12px">
-
-                
-                <!-- Pivot node -->
-                
-                <node-button tooltip="Pivot">
-                  <span class="material-icons">pivot_table_chart</span>
-                </node-button>
-
-                
-                <!-- Output node -->
-                
-                <node-button tooltip="Output">
-                  <v-icon>mdi-logout-variant</v-icon>
-                </node-button>
-              </div>
-
-            </div>
-
-
-
-            <!-- Camera buttons -->
-
-            <div style="position: absolute; right: 16px; top: 16px">
-
-              <div>
-                <v-btn style="min-width: 36px" width="0">
-                  <span class="material-icons">zoom_in</span>
+                <v-btn x-large style="min-width: 52px" width="0">
+                  <v-icon large>mdi-table</v-icon>
                 </v-btn>
+
               </div>
-              <div style="margin-top: 1px">
-                <v-btn style="min-width: 36px" width="0">
-                  <span class="material-icons">zoom_out</span>
-                </v-btn>
+
+
+
+              <!-- Node buttons -->
+
+              <div style="position: absolute; left: 16px; top: 16px">
+
+
+                <div>
+
+
+                  <!-- Table node -->
+
+                  <node-button tooltip="Table">
+                    <v-icon>mdi-table</v-icon>
+                  </node-button>
+
+
+                  <!-- Union all node -->
+
+                  <node-button tooltip="Union all">
+                    <v-icon>mdi-vector-arrange-above</v-icon>
+                  </node-button>
+
+
+
+                </div>
+                
+
+                <div style="margin-top: 1px">
+
+
+                  <!-- Module node -->
+
+                  <node-button tooltip="Module">
+                    <v-icon>mdi-cube-outline</v-icon>
+                  </node-button>
+
+
+                  <!-- Union node -->
+
+                  <node-button tooltip="Union">
+                    <v-icon>mdi-vector-combine</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 1px">
+
+
+                  <!-- Node node -->
+                  
+                  <node-button tooltip="Node">
+                    <v-icon>mdi-hexagon-outline</v-icon>
+                  </node-button>
+
+
+                  <!-- Except node -->
+                  
+                  <node-button tooltip="Except">
+                    <v-icon>mdi-vector-difference-ba</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 1px">
+
+
+                  <!-- SQL node -->
+                  
+                  <node-button tooltip="SQL">
+                    <v-icon>mdi-code-tags</v-icon>
+                  </node-button>
+
+                  
+                  <!-- Intersect node -->
+                  
+                  <node-button tooltip="Intersect">
+                    <v-icon>mdi-vector-intersection</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 12px">
+
+                  
+                  <!-- Inner join node -->
+                  
+                  <node-button tooltip="Inner join">
+                    <v-icon>mdi-set-center</v-icon>
+                  </node-button>
+
+
+                  <!-- Where node -->
+                  
+                  <node-button tooltip="Where">
+                    <v-icon>mdi-filter</v-icon>
+                  </node-button>
+                  
+
+                </div>
+
+                <div style="margin-top: 1px">
+                  
+
+                  <!-- Left join node -->
+                  
+                  <node-button tooltip="Left join">
+                    <v-icon>mdi-set-left-center</v-icon>
+                  </node-button>
+
+                  
+                  <!-- Transform node -->
+                  
+                  <node-button tooltip="Transform">
+                    <v-icon>mdi-cached</v-icon>
+                  </node-button>
+                  
+
+                </div>
+
+                <div style="margin-top: 1px">
+
+                  
+                  <!-- Right join node -->
+                  
+                  <node-button tooltip="Right join">
+                    <v-icon>mdi-set-center-right</v-icon>
+                  </node-button>
+
+                  
+                  <!-- Distinct node -->
+                  
+                  <node-button tooltip="Distinct">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 1px">
+
+                  
+                  <!-- Full join node -->
+                  
+                  <node-button tooltip="Full join">
+                    <v-icon>mdi-set-left-right</v-icon>
+                  </node-button>
+
+                  
+                  <!-- Order node -->
+                  
+                  <node-button tooltip="Order">
+                    <v-icon>mdi-sort-ascending</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 1px">
+
+                  
+                  <!-- Cross join node -->
+                  
+                  <node-button tooltip="Cross join">
+                    <v-icon>mdi-shuffle</v-icon>
+                  </node-button>
+
+                  
+                  <!-- Reduce node -->
+                  
+                  <node-button tooltip="Reduce">
+                    <v-icon>mdi-arrow-expand-vertical</v-icon>
+                  </node-button>
+
+
+                </div>
+
+                <div style="margin-top: 12px">
+
+                  
+                  <!-- Pivot node -->
+                  
+                  <node-button tooltip="Pivot">
+                    <span class="material-icons">pivot_table_chart</span>
+                  </node-button>
+
+                  
+                  <!-- Output node -->
+                  
+                  <node-button tooltip="Output">
+                    <v-icon>mdi-logout-variant</v-icon>
+                  </node-button>
+                </div>
+
               </div>
-              <div style="margin-top: 1px">
-                <v-btn style="min-width: 36px" width="0">
-                  <v-icon>mdi-crop-free</v-icon>
-                </v-btn>
+
+
+
+              <!-- Camera buttons -->
+
+              <div style="position: absolute; right: 16px; top: 16px">
+
+                <div>
+                  <v-btn style="min-width: 36px" width="0">
+                    <span class="material-icons">zoom_in</span>
+                  </v-btn>
+                </div>
+                <div style="margin-top: 1px">
+                  <v-btn style="min-width: 36px" width="0">
+                    <span class="material-icons">zoom_out</span>
+                  </v-btn>
+                </div>
+                <div style="margin-top: 1px">
+                  <v-btn style="min-width: 36px" width="0">
+                    <v-icon>mdi-crop-free</v-icon>
+                  </v-btn>
+                </div>
+
               </div>
+
+
 
             </div>
 
@@ -568,11 +574,9 @@
 
           </div>
 
-
-
-
-
         </v-tab-item>
+
+        
 
       </v-tabs-items>
 
