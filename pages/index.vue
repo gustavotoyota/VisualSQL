@@ -712,7 +712,7 @@ export default {
 /* Hide scrollbar */
 
 html {
-  overflow-y: auto
+  overflow-y: auto;
 }
 
 
@@ -731,7 +731,7 @@ html {
 /* Tab height */
 
 .v-window__container {
-  height: 100%;
+  height: 100% !important;
 }
 
 
