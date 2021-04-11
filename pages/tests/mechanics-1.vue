@@ -723,8 +723,8 @@ html {
 
 /* Disable pull-to-refresh */
 
-body {
-  overscroll-behavior-y: contain;
+html {
+  overscroll-behavior-y: none;
 }
 
 
