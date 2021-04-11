@@ -625,11 +625,7 @@
 
 
 <script>
-import nodeButton from '../../components/node-button.vue'
 export default {
-  components: { nodeButton },
-  
-  
   data() {
     return {
 
