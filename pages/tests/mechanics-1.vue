@@ -332,16 +332,43 @@
             <div style="position: relative; flex: 1; height: 0">
 
 
-              
-              <!-- World centralizer -->
 
-              <div style="position: absolute; left: 50%; top: 50%">
-                
-                <v-btn x-large style="min-width: 52px" width="0">
-                  <v-icon large>mdi-table</v-icon>
-                </v-btn>
+              <!-- Viewport -->
+
+              <div @mousedown="onViewportMouseDown"
+              @mousemove="onViewportMouseMove"
+              @mouseup="onViewportMouseUp"
+              @wheel="onViewportMouseWheel"
+              style="width: 100%; height: 100%">
+              
+              
+
+                <!-- Centralizer -->
+
+                <div style="position: absolute; left: 50%; top: 50%">
+
+
+
+                  <!-- Viewbox -->
+
+                  <div style="width: 0; height: 0"
+                  :style="'transform: scale(' + tabs[tab.id].zoom +') ' +
+                  'translate(' + -tabs[tab.id].pos.x + 'px, ' + -tabs[tab.id].pos.y + 'px)'">
+
+                    <v-btn x-large style="min-width: 52px" width="0">
+                      <v-icon large>mdi-table</v-icon>
+                    </v-btn>
+
+                  </div>
+
+
+
+                </div>
+
+
 
               </div>
+
 
 
 
@@ -370,7 +397,6 @@
 
                 </div>
                 
-
                 <div style="margin-top: 1px">
 
 
@@ -669,20 +695,22 @@ export default {
           id: 0,
           module: 0,
 
-          camera: {
-            zoom: 1,
-            pos: { x: 0, y: 0 },
-          },
+          zoom: 1,
+          pos: { x: 0, y: 0 },
+
+          panning: false,
+          panPos: { x: 0, y: 0 },
         },
 
         {
           id: 1,
           module: 1,
 
-          camera: {
-            zoom: 1,
-            pos: { x: 0, y: 0 },
-          },
+          zoom: 1,
+          pos: { x: 0, y: 0 },
+          
+          panning: false,
+          panPos: { x: 0, y: 0 },
         },
       ],
       tabId: null,
@@ -708,11 +736,58 @@ export default {
           this.tabs.find((tab) => tab.id === this.tabId))
       },
       set: function (newValue) {
-        this.tabId = this.tabs[newValue].id;
+        this.tabId = this.tabs[newValue].id
       },
     },
 
+    tab: function () {
+      return this.tabs[this.tabId]
+    },
+
   },
+
+
+
+  methods: {
+
+
+    
+    onViewportMouseDown(event) {
+      this.tab.panning = true
+
+      this.tab.panPos.x = event.clientX
+      this.tab.panPos.y = event.clientY
+    },
+
+    
+    onViewportMouseMove(event) {
+      if (this.tab.panning && (event.buttons & 4) === 4) {
+        this.tab.pos.x -= (event.clientX - this.tab.panPos.x) / this.tab.zoom
+        this.tab.pos.y -= (event.clientY - this.tab.panPos.y) / this.tab.zoom
+        
+        this.tab.panPos.x = event.clientX
+        this.tab.panPos.y = event.clientY
+
+        console.log('Updated')
+      }
+    },
+
+    
+    onViewportMouseUp(event) {
+      this.tab.panning = false
+    },
+    
+
+    onViewportMouseWheel(event) {
+      if (event.deltaY > 0)
+        this.tab.zoom *= 1.2
+      else
+        this.tab.zoom /= 1.2
+    },
+
+
+  },
+
 
 
 }
