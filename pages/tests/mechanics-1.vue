@@ -665,8 +665,25 @@ export default {
       
 
       tabs: [
-        { id: 0, module: 0 },
-        { id: 1, module: 1 },
+        {
+          id: 0,
+          module: 0,
+
+          camera: {
+            zoom: 1,
+            pos: { x: 0, y: 0 },
+          },
+        },
+
+        {
+          id: 1,
+          module: 1,
+
+          camera: {
+            zoom: 1,
+            pos: { x: 0, y: 0 },
+          },
+        },
       ],
       tabId: null,
 
