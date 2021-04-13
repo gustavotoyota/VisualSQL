@@ -18,8 +18,7 @@
 <script>
 export default {
   props: {
-    icon: '',
-    tooltip: '',
+    tooltip: { type: String },
   }
 }
 </script>
