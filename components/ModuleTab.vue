@@ -115,7 +115,7 @@
 
           <div style="margin-top: 12px">
             <NodeButton type="pivot"></NodeButton>
-            <NodeButton type="reduce"></NodeButton>
+            <NodeButton type="output"></NodeButton>
           </div>
 
         </div>
