@@ -60,8 +60,6 @@ export default {
     
     modules: { type: Object },
 
-    tabs: { type: Array },
-
   },
 
 
@@ -69,6 +67,39 @@ export default {
     return {
 
       rerenderTabs: 0,
+
+
+
+      
+      tabs: [
+        {
+          id: 0,
+          moduleId: 0,
+
+          camera: {
+            pos: { x: 0, y: 0 },
+            zoom: 1,
+
+            panning: false,
+            panPos: { x: 0, y: 0 },
+          },
+        },
+
+        {
+          id: 1,
+          moduleId: 1,
+
+          camera: {
+            pos: { x: 0, y: 0 },
+            zoom: 1,
+            
+            panning: false,
+            panPos: { x: 0, y: 0 },
+          },
+        },
+      ],
+
+      tabId: null,
 
     }
   },

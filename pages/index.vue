@@ -35,7 +35,7 @@
     
     <!-- Main content -->
 
-    <MainContent :modules="modules" :tabs="tabs">
+    <MainContent :modules="modules">
     </MainContent>
 
 
@@ -126,38 +126,6 @@ export default {
         },
 
       },
-
-
-      
-      tabs: [
-        {
-          id: 0,
-          moduleId: 0,
-
-          camera: {
-            pos: { x: 0, y: 0 },
-            zoom: 1,
-
-            panning: false,
-            panPos: { x: 0, y: 0 },
-          },
-        },
-
-        {
-          id: 1,
-          moduleId: 1,
-
-          camera: {
-            pos: { x: 0, y: 0 },
-            zoom: 1,
-            
-            panning: false,
-            panPos: { x: 0, y: 0 },
-          },
-        },
-      ],
-
-      tabId: null,
 
 
     }
