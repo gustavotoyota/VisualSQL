@@ -17,7 +17,9 @@
       :style="{ transform: 'scale(' + tab.camera.zoom +') ' +
       'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)' }">
 
-        <ModuleNode v-for="node in module.nodes" :key="node.id" :node="node">
+        <ModuleNode @mousedown="onNodeMouseDown"
+        v-for="node in module.nodes" :key="node.id"
+        :node="node" :selected="selectedNodes[node.id]">
         </ModuleNode>
 
       </div>
@@ -42,6 +44,18 @@ export default {
 
 
 
+
+  data() {
+    return {
+
+      selectedNodes: {}
+
+    }
+  },
+
+
+
+
   mounted() {
     document.addEventListener('mousemove', this.onMouseMove)
     document.addEventListener('mouseup', this.onMouseUp)
@@ -53,6 +67,12 @@ export default {
 
 
     onMouseDown(event) {
+      if (!event.ctrlKey) {
+        this.activeNode = null
+
+        this.selectedNodes = []
+      }
+
       this.tab.camera.panning = true
 
       this.tab.camera.panPos.x = event.clientX
@@ -83,6 +103,14 @@ export default {
       else
         this.tab.camera.zoom = Math.max(
           Math.pow(1 / 1.2, 12), this.tab.camera.zoom / 1.2)
+    },
+
+
+
+    onNodeMouseDown(node, event) {
+      this.selectedNodes = []
+
+      this.$set(this.selectedNodes, node.id, true)
     },
 
 

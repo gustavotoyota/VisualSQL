@@ -60,42 +60,13 @@ export default {
     
     modules: { type: Object },
 
+    tabs: { type: Array },
+
   },
 
 
   data() {
     return {
-
-
-      tabs: [
-        {
-          id: 0,
-          moduleId: 0,
-
-          camera: {
-            pos: { x: 0, y: 0 },
-            zoom: 1,
-
-            panning: false,
-            panPos: { x: 0, y: 0 },
-          },
-        },
-
-        {
-          id: 1,
-          moduleId: 1,
-
-          camera: {
-            pos: { x: 0, y: 0 },
-            zoom: 1,
-            
-            panning: false,
-            panPos: { x: 0, y: 0 },
-          },
-        },
-      ],
-      tabId: null,
-
 
       rerenderTabs: 0,
 
@@ -114,10 +85,6 @@ export default {
       set: function (newValue) {
         this.tabId = this.tabs[newValue].id
       },
-    },
-
-    tab: function () {
-      return this.tabs[this.tabId]
     },
 
   },

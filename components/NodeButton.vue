@@ -5,20 +5,47 @@
 
       <v-btn style="min-width: 36px; margin-right: -3px"
       width="0" v-bind="attrs" v-on="on">
-        <slot></slot>
+        <NodeIcon :type="type"></NodeIcon>
       </v-btn>
 
     </template>
-    
-    <span>{{ tooltip }}</span>
+
+    <span>
+      <span v-if="type == 'table'">Table</span>
+      <span v-else-if="type == 'module'">Module</span>
+      <span v-else-if="type == 'node'">Node</span>
+      <span v-else-if="type == 'sql'">SQL</span>
+
+      <span v-else-if="type == 'union-all'">Union all</span>
+      <span v-else-if="type == 'union'">Union</span>
+      <span v-else-if="type == 'except'">Except</span>
+      <span v-else-if="type == 'intersect'">Intersect</span>
+      
+      <span v-else-if="type == 'inner-join'">Inner join</span>
+      <span v-else-if="type == 'left-join'">Left join</span>
+      <span v-else-if="type == 'right-join'">Right join</span>
+      <span v-else-if="type == 'full-join'">Full join</span>
+      <span v-else-if="type == 'cross-join'">Cross join</span>
+
+      <span v-else-if="type == 'filter'">Filter</span>
+      <span v-else-if="type == 'transform'">Transform</span>
+      <span v-else-if="type == 'distinct'">Distinct</span>
+      <span v-else-if="type == 'sort'">Sort</span>
+      <span v-else-if="type == 'reduce'">Reduce</span>
+
+      <span v-else-if="type == 'pivot'">Pivot</span>
+      <span v-else-if="type == 'output'">Output</span>
+    </span>
 
   </v-tooltip>
 </template>
 
 <script>
+
+
 export default {
   props: {
-    tooltip: { type: String },
+    type: { type: String },
   }
 }
 </script>

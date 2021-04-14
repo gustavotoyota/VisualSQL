@@ -33,12 +33,10 @@
 
 
     
-
     <!-- Main content -->
 
-    <MainContent :modules="modules">
+    <MainContent :modules="modules" :tabs="tabs">
     </MainContent>
-
 
 
 
@@ -88,7 +86,7 @@ export default {
             1: {
               id: 1,
               
-              type: 'filter',
+              type: 'transform',
 
               pos: { x: 200, y: 0 }
             },
@@ -128,6 +126,38 @@ export default {
         },
 
       },
+
+
+      
+      tabs: [
+        {
+          id: 0,
+          moduleId: 0,
+
+          camera: {
+            pos: { x: 0, y: 0 },
+            zoom: 1,
+
+            panning: false,
+            panPos: { x: 0, y: 0 },
+          },
+        },
+
+        {
+          id: 1,
+          moduleId: 1,
+
+          camera: {
+            pos: { x: 0, y: 0 },
+            zoom: 1,
+            
+            panning: false,
+            panPos: { x: 0, y: 0 },
+          },
+        },
+      ],
+
+      tabId: null,
 
 
     }
