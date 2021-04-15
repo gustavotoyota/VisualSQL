@@ -6,41 +6,41 @@ export const strict = false
 
 
 
-let initialState = {
+function getInitialState() {
   
+  return {
 
+    // Modules
 
-  // Modules
-
-  modules: [],
-  nextModuleId: 0,
-
-
-
-
-  // Tables
-
-  tables: [],
-  nextTableId: 0,
+    modules: [],
+    nextModuleId: 0,
 
 
 
 
-  // Tabs
+    // Tables
+
+    tables: [],
+    nextTableId: 0,
+
+
+
+
+    // Tabs
+    
+    tabs: [],
+    nextTabId: 0,
+
+    tabId: 0,
+    rerenderTabs: 0,
+
+  }
   
-  tabs: [],
-  nextTabId: 0,
-
-  tabId: 0,
-  rerenderTabs: 0,
-  
-  
-
 }
 
 
 
-export const state = () => Object.assign({}, initialState)
+export const state = () => Object.assign({}, getInitialState())
 
 
 
@@ -48,12 +48,14 @@ export const mutations = {
   updateField,
 
   
+
   resetProject(state) {
-    Object.assign(state, initialState)
+    this.replaceState(getInitialState())
 
     this.commit('createModule', 'module_1')
   },
   
+
 
   createModule(state, name) {
     let module = {
@@ -66,20 +68,29 @@ export const mutations = {
     }
 
     state.modules.push(module)
+    
+    
+
+    this.commit('createNode', {
+      moduleId: module.id,
+
+      node: { type: 'output' },
+
+      description: 'Output',
+    })
+
+
 
     this.commit('createTab', module.id)
   },
+  deleteModule(state, moduleId) {
+    let moduleTab = this.getters.getModuleTab(moduleId)
+    if (moduleTab != null)
+      this.commit('closeTab', moduleTab.id)
 
-
-  createTable(state, payload) {
-    state.tables.push({
-      id: state.nextTableId++,
-
-      name: payload.name,
-
-      columns: payload.columns,
-    })
+    state.modules.splice(this.getters.getModuleIdx(moduleId), 1)
   },
+
 
 
   createTab(state, moduleId) {
@@ -104,22 +115,42 @@ export const mutations = {
 
     state.tabId = moduleTab.id
   },
-
-
-  deleteModule(state, moduleId) {
-    let moduleTab = this.getters.getModuleTab(moduleId)
-    if (moduleTab != null)
-      this.commit('closeTab', moduleTab.id)
-
-    state.modules.splice(this.getters.getModuleIdx(moduleId), 1)
-
-    console.log(state)
-  },
-
-
   closeTab(state, tabId) {
     state.tabs.splice(this.getters.getTabIdx(tabId), 1)
   },
+
+
+
+  createTable(state, payload) {
+    state.tables.push({
+      id: state.nextTableId++,
+
+      name: payload.name,
+
+      columns: payload.columns,
+    })
+  },
+
+
+  createNode(state, payload) {
+    let module = state.modules[payload.moduleId]
+
+    let node = Object.assign({
+      id: module.nextModuleId++,
+
+      pos: { x: 0, y: 0 },
+
+      incomingLinks: [],
+      outgoingLinks: [],
+
+      name: '',
+      description: '',
+
+      props: {},
+    }, payload.node)
+
+    module.nodes[node.id] = node
+  }
 
 
 }

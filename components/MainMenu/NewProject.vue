@@ -1,0 +1,66 @@
+<template>
+  <v-dialog max-width="240" eager v-model="active">
+
+    <template v-slot:activator="{ on: dialog }">
+
+      <ToolbarButton tooltip="New project" v-on="{ ...dialog }">
+        <v-icon dense>mdi-file</v-icon>
+      </ToolbarButton>
+
+    </template>
+
+
+
+      
+    <v-card>
+
+      <v-card-title>
+        New project
+      </v-card-title>
+
+      <v-card-text>
+        <div>Current project will be closed.</div>
+        <div>Are you sure?</div>
+      </v-card-text>
+
+      <v-divider></v-divider>
+
+      <v-card-actions>
+
+        <v-spacer></v-spacer>
+
+        <v-btn color="primary" text @click="$store.commit('resetProject'); active = false">
+          Yes
+        </v-btn>
+
+        <v-btn color="primary" text @click="active = false">
+          No
+        </v-btn>
+
+      </v-card-actions>
+
+    </v-card>
+
+
+  </v-dialog>
+
+
+</template>
+
+<script>
+export default {
+
+  data() {
+
+    return {
+      active: false,
+    }
+
+  },
+
+}
+</script>
+
+<style>
+
+</style>

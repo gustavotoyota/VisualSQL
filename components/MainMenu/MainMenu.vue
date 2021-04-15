@@ -13,9 +13,8 @@
 
 
 
-    <ToolbarButton tooltip="New project">
-      <v-icon dense>mdi-file</v-icon>
-    </ToolbarButton>
+    <NewProject>
+    </NewProject>
     
     <ToolbarButton tooltip="Open project">
       <v-icon dense>mdi-folder-open</v-icon>

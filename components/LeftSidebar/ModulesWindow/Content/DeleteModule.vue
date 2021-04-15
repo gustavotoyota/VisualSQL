@@ -1,6 +1,5 @@
 <template>
-  <v-dialog max-width="250" eager
-  v-model="active">
+  <v-dialog max-width="250" v-model="active">
 
 
     <template v-slot:activator="{ on, attrs }">
@@ -13,7 +12,9 @@
 
     </template>
 
-    
+
+
+      
     <v-card>
 
       <v-card-title>
@@ -32,7 +33,8 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="primary" text @click="active = false; deleteModule()">
+        <v-btn color="primary" text @click="
+        $store.commit('deleteModule', module.id); active = false">
           Yes
         </v-btn>
 
@@ -69,21 +71,6 @@ export default {
       active: false,
     }
   },
-
-
-
-  computed: {
-    ...mapFields([
-      'modules',
-    ]),
-  },
-
-
-  methods: {
-    deleteModule() {
-      this.$store.commit('deleteModule', this.module.id)
-    }
-  }
 
 
 }
