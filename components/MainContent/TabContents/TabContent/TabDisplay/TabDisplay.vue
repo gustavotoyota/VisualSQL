@@ -2,17 +2,16 @@
   <div style="position: relative; flex: 1; height: 0">
 
 
-    <!-- SVG -->
+    <DisplaySVG>
+    </DisplaySVG>
 
 
-
-    <!-- Node -->
-
+    <DisplayNodes>
+    </DisplayNodes>
 
 
     <NodeButtons>
     </NodeButtons>
-
 
 
     <CameraButtons>

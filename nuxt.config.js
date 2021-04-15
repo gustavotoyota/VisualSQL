@@ -43,20 +43,22 @@ export default {
     '~/components/MainMenu',
 
     '~/components/LeftSidebar',
-
     '~/components/LeftSidebar/ModulesWindow',
     '~/components/LeftSidebar/ModulesWindow/Head',
     '~/components/LeftSidebar/ModulesWindow/Content',
-
     '~/components/LeftSidebar/DatabaseWindow',
     '~/components/LeftSidebar/DatabaseWindow/Head',
     '~/components/LeftSidebar/DatabaseWindow/Content',
 
     '~/components/MainContent',
     '~/components/MainContent/TabButtons',
+    '~/components/MainContent/TabContents',
     '~/components/MainContent/TabContents/TabContent',
     '~/components/MainContent/TabContents/TabContent/TabDisplay',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/NodeButtons',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons/NodeButtons',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplaySVG',
 
     '~/components/RightSidebar',
   ],
