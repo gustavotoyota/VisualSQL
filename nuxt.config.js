@@ -37,7 +37,29 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: true,
+  components: [
+    '~/components',
+
+    '~/components/MainMenu',
+
+    '~/components/LeftSidebar',
+
+    '~/components/LeftSidebar/ModulesWindow',
+    '~/components/LeftSidebar/ModulesWindow/Head',
+    '~/components/LeftSidebar/ModulesWindow/Content',
+
+    '~/components/LeftSidebar/DatabaseWindow',
+    '~/components/LeftSidebar/DatabaseWindow/Head',
+    '~/components/LeftSidebar/DatabaseWindow/Content',
+
+    '~/components/MainContent',
+    '~/components/MainContent/TabButtons',
+    '~/components/MainContent/TabContents/TabContent',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/NodeButtons',
+
+    '~/components/RightSidebar',
+  ],
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [

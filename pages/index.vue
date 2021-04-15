@@ -1,150 +1,38 @@
 <template>
+  <v-app dark>
 
 
-
-  <!-- Loading screen -->
-
-  <v-app dark v-if="loading">
-  </v-app>
-
-
-
-
-
-  <v-app dark v-else>
-
-
-
-
-    <!-- App bar -->
 
     <MainMenu>
     </MainMenu>
 
 
 
-
-
-    <!-- Left sidebar -->
-
-    <LeftSidebar :modules="modules" :tables="tables">
+    <LeftSidebar>
     </LeftSidebar>
 
 
 
-    
-    <!-- Main content -->
-
-    <MainContent :modules="modules">
+    <MainContent>
     </MainContent>
 
 
-
-
-    <!-- Right sidebar -->
 
     <RightSidebar>
     </RightSidebar>
 
 
 
-
   </v-app>
-
-
-
 </template>
-
 
 <script>
 export default {
-  data() {
-    return {
-
-
-      loading: false,
-
-
-
-      modules: {
-
-        0: {
-          id: 0,
-
-          name: 'module_1',
-
-          nodes: {
-            
-            0: {
-              id: 0,
-
-              type: 'table',
-
-              pos: { x: 0, y: 0 },
-            },
-
-            1: {
-              id: 1,
-              
-              type: 'transform',
-
-              pos: { x: 200, y: 0 }
-            },
-
-          },
-
-          nextNodeId: 2,
-
-        },
-
-        1: {
-          id: 1,
-
-          name: 'module_2',
-
-          nodes: {},
-
-          nextNodeId: 0,
-        },
-
-      },
-
-
-
-      tables: {
-
-        0: {
-          id: 0,
-
-          name: 'table_1'
-        },
-
-        1: {
-          id: 1,
-
-          name: 'table_2'
-        },
-
-      },
-
-
-    }
-  },
-
-
-
-
   mounted() {
-    window.addEventListener('load', () => {
-      this.loading = false
-    })
+    this.$store.commit('resetProject')
   },
-
-
-
 }
 </script>
-
 
 <style>
 * {

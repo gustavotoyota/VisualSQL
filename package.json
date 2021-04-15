@@ -17,7 +17,8 @@
     "nuxt": "^2.14.6",
     "vue-codemirror": "^4.0.6",
     "vue-monaco": "^1.2.2",
-    "vuedraggable": "^2.24.3"
+    "vuedraggable": "^2.24.3",
+    "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2"

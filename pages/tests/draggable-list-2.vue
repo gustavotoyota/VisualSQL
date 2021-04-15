@@ -2,9 +2,9 @@
   <div class="pa-5">
     <v-list dense>
 
-      <draggable v-model="items" tag="v-list-item-group">
+      <draggable v-model="modules" tag="v-list-item-group">
 
-        <v-list-item v-for="item in items" :key="item.id">
+        <v-list-item v-for="item in modules" :key="item.id">
           <v-list-item-icon>
             <v-icon>mdi-view-module</v-icon>
           </v-list-item-icon>
@@ -20,16 +20,28 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
+
+
 export default {
-  data() {
-    return {
-      items: [
-        { id: 0, name: 'HTML' },
-        { id: 1, name: 'CSS' },
-        { id: 2, name: 'JavaScript' },
-      ]
-    }
-  }
+
+
+  mounted() {
+    this.$store.commit('resetProject')
+    
+    this.$store.commit('createModule', 'kjhashdjsadd')
+    this.$store.commit('createModule', '123asfdas')
+  },
+
+
+
+  computed: {
+    ...mapFields([
+      'modules',
+    ]),
+  },
+
+
 }
 </script>
 

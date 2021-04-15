@@ -1,110 +1,174 @@
+import { getField, updateField } from 'vuex-map-fields'
+
+
+
 export const strict = false
 
 
 
-export const state = () => ({
+let initialState = {
   
 
-  modules: {
 
-    0: {
-      id: 0,
+  // Modules
 
-      name: 'module_1',
+  modules: [],
+  nextModuleId: 0,
 
-      nodes: {
-        
-        0: {
-          id: 0,
 
-          type: 'table',
 
-          pos: { x: 0, y: 0 },
-        },
 
-        1: {
-          id: 1,
-          
-          type: 'transform',
+  // Tables
 
-          pos: { x: 200, y: 0 }
-        },
+  tables: [],
+  nextTableId: 0,
 
-      },
 
-      nextNodeId: 2,
 
-    },
 
-    1: {
-      id: 1,
+  // Tabs
+  
+  tabs: [],
+  nextTabId: 0,
 
-      name: 'module_2',
+  tabId: 0,
+  rerenderTabs: 0,
+  
+  
+
+}
+
+
+
+export const state = () => Object.assign({}, initialState)
+
+
+
+export const mutations = {
+  updateField,
+
+  
+  resetProject(state) {
+    Object.assign(state, initialState)
+
+    this.commit('createModule', 'module_1')
+  },
+  
+
+  createModule(state, name) {
+    let module = {
+      id: state.nextModuleId++,
+
+      name: name,
 
       nodes: {},
-
       nextNodeId: 0,
-    },
+    }
 
+    state.modules.push(module)
+
+    this.commit('createTab', module.id)
   },
 
 
+  createTable(state, payload) {
+    state.tables.push({
+      id: state.nextTableId++,
 
-  tables: {
+      name: payload.name,
 
-    0: {
-      id: 0,
-
-      name: 'table_1'
-    },
-
-    1: {
-      id: 1,
-
-      name: 'table_2'
-    },
-
+      columns: payload.columns,
+    })
   },
 
 
-  
-  tabs: [
-    {
-      id: 0,
-      moduleId: 0,
+  createTab(state, moduleId) {
+    let moduleTab = this.getters.getModuleTab(moduleId)
 
-      camera: {
-        pos: { x: 0, y: 0 },
-        zoom: 1,
+    if (moduleTab == null) {
+      moduleTab = {
+        id: state.nextTabId++,
 
-        panning: false,
-        panPos: { x: 0, y: 0 },
-      },
-    },
+        moduleId: moduleId,
 
-    {
-      id: 1,
-      moduleId: 1,
+        camera: {
+          pos: { x: 0, y: 0 },
+          zoom: 1,
+        },
 
-      camera: {
-        pos: { x: 0, y: 0 },
-        zoom: 1,
-        
-        panning: false,
-        panPos: { x: 0, y: 0 },
-      },
-    },
-  ],
-  
-  
-})
+        selectedNodes: {},
+      }
+
+      state.tabs.push(moduleTab)
+    }
+
+    state.tabId = moduleTab.id
+  },
+
+
+  deleteModule(state, moduleId) {
+    let moduleTab = this.getters.getModuleTab(moduleId)
+    if (moduleTab != null)
+      this.commit('closeTab', moduleTab.id)
+
+    state.modules.splice(this.getters.getModuleIdx(moduleId), 1)
+
+    console.log(state)
+  },
+
+
+  closeTab(state, tabId) {
+    state.tabs.splice(this.getters.getTabIdx(tabId), 1)
+  },
+
+
+}
+
 
 
 export const getters = {
-  tab(state) {
-    return state.tabs[state.tabId]
+  getField,
+
+
+  
+
+  getModuleIdx: (state) => (moduleId) => {
+    return state.modules.findIndex(module => module.id === moduleId)
   },
-  module(state) {
-    return state.modules[state.tabs[state.tabId].moduleId]
+  getModule: (state, getters) => (moduleId) => {
+    return state.modules[getters.getModuleIdx(moduleId)]
+  },
+
+
+
+  getTableIdx: (state) => (tableId) => {
+    return state.tables.findIndex(table => table.id === tableId)
+  },
+  getTable: (state, getters) => (tableId) => {
+    return state.tables[getters.getTableIdx(tableId)]
+  },
+
+
+  
+  getTabIdx: (state) => (tabId) => {
+    return state.tabs.findIndex(tab => tab.id === tabId)
+  },
+  getTab: (state, getters) => (tabId) => {
+    return state.tabs[getters.getTabIdx(tabId)]
+  },
+
+
+
+  getModuleTabIdx: (state) => (moduleId) => {
+    return state.tabs.findIndex(tab => tab.moduleId === moduleId)
+  },
+  getModuleTab: (state, getters) => (moduleId) => {
+    return state.tabs[getters.getModuleTabIdx(moduleId)]
+  },
+
+
+
+  currentTab(state, getters) {
+    return getters.getTab(state.tabId)
   },
 }
