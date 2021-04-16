@@ -7,41 +7,37 @@ export const strict = false
 
 
 
-function getInitialState() {
+let initialState = {
+
+  // Modules
+
+  modules: [],
+  nextModuleId: 0,
+
+
+
+
+  // Tables
+
+  tables: [],
+  nextTableId: 0,
+
+
+
+
+  // Tabs
   
-  return {
+  tabs: [],
+  nextTabId: 0,
 
-    // Modules
+  tabId: 0,
+  rerenderTabs: 0,
 
-    modules: [],
-    nextModuleId: 0,
-
-
-
-
-    // Tables
-
-    tables: [],
-    nextTableId: 0,
-
-
-
-
-    // Tabs
-    
-    tabs: [],
-    nextTabId: 0,
-
-    tabId: 0,
-    rerenderTabs: 0,
-
-  }
-  
 }
 
 
 
-export const state = () => Object.create(getInitialState())
+export const state = () => { return { ...initialState } }
 
 
 
@@ -51,7 +47,7 @@ export const mutations = {
   
 
   resetProject(state) {
-    this.replaceState(getInitialState())
+    this.replaceState({ ...initialState })
 
     this.commit('createModule', 'module_1')
   },
@@ -79,37 +75,11 @@ export const mutations = {
       moduleId: module.id,
 
       node: {
-        type: 'table',
+        type: 'output',
 
         pos: { x: 0, y: 0 },
         
-        description: 'Table',
-      },
-    })
-    
-    
-
-    this.commit('createNode', {
-      moduleId: module.id,
-
-      node: {
-        type: 'output',
-
-        pos: { x: 200, y: 0 },
-        
         description: 'Output',
-      },
-    })
-
-
-
-    this.commit('createLink', {
-      moduleId: module.id,
-
-      link: {
-        from: 0,
-        to: 1,
-        socket: 0,
       },
     })
 
@@ -181,13 +151,11 @@ export const mutations = {
   createNode(state, payload) {
     let module = state.modules[payload.moduleId]
 
+
     let node = Object.assign({
       id: module.nextNodeId++,
 
       pos: { x: 0, y: 0 },
-
-      incomingLinks: [],
-      outgoingLinks: [],
 
       name: '',
       description: '',
@@ -195,22 +163,51 @@ export const mutations = {
       props: {},
     }, payload.node)
 
+
+    let nodeGroupData = _app.nodeGroups[_app.nodeTypes[node.type].group]
+
+    node.incomingLinks = new Array(nodeGroupData.numInputs)
+
+    if (nodeGroupData.hasOutput)
+      node.outgoingLinks = {}
+
+
     Vue.set(module.nodes, node.id, node)
   },
+
+
 
 
   createLink(state, payload) {
     let module = state.modules[payload.moduleId]
 
-    let link = Object.assign(payload.link, {
+    let link = Object.assign({
       id: module.nextLinkId++,
-    })
+    }, payload.link)
 
-    module.nodes[link.from].outgoingLinks.push(link.id)
+    if (module.nodes[link.to].incomingLinks[link.socket] != null) {
+      this.commit('deleteLink', {
+        moduleId: module.id,
+        linkId: module.nodes[link.to].incomingLinks[link.socket],
+      })
+    }
+
+    Vue.set(module.nodes[link.from].outgoingLinks, link.id, true)
     Vue.set(module.nodes[link.to].incomingLinks, link.socket, link.id)
 
     Vue.set(module.links, link.id, link)
   },
+
+  deleteLink(state, payload) {
+    let module = state.modules[payload.moduleId]
+
+    let link = module.links[payload.linkId]
+
+    Vue.delete(module.nodes[link.from].outgoingLinks, link.id)
+    Vue.set(module.nodes[link.to].incomingLinks, link.socket, null)
+
+    Vue.delete(module.links, link.id)
+  }
 
 
 }

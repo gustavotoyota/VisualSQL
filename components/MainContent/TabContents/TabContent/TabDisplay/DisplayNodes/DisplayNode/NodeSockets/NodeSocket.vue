@@ -3,7 +3,7 @@
     <div class="socket"
     :style="{ backgroundColor: hover ? 'white' : '#d0d0d0' }"
     @mousedown.stop="$emit('mousedown', $event)"
-    @mouseup.stop="$emit('mouseup', $event)">
+    @mouseup="$emit('mouseup', $event)">
     </div>
   </v-hover>
 </template>

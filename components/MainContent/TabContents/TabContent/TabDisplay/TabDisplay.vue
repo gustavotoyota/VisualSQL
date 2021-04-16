@@ -52,6 +52,7 @@ export default {
       let mousePos = _app.getMousePos(this.tab.id, event)
 
 
+
       // Node deselection
 
       if (event.button === 0 && !event.ctrlKey) {
@@ -60,18 +61,20 @@ export default {
       }
 
 
+
       // Selecting
 
       if (event.button === 0) {
-        this.tab.nodes.selectionStart = Object.create(mousePos)
-        this.tab.nodes.selectionEnd = Object.create(mousePos)
+        this.tab.nodes.selectionStart = { ...mousePos }
+        this.tab.nodes.selectionEnd = { ...mousePos }
       }
+
 
 
       // Panning
 
       if (event.button === 1)
-        this.tab.camera.panPos = Object.create(mousePos)
+        this.tab.camera.panPos = { ...mousePos }
     },
 
     
@@ -80,21 +83,11 @@ export default {
       let mousePos = _app.getMousePos(this.tab.id, event)
 
 
-      // Panning
-
-      if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
-        this.tab.camera.pos.x -= (mousePos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
-        this.tab.camera.pos.y -= (mousePos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
-        
-        this.tab.camera.panPos = Object.create(mousePos)
-      }
-
-
 
       // Selecting
 
       if ((event.buttons & 1) === 1 && this.tab.nodes.selectionStart != null)
-        this.tab.nodes.selectionEnd = Object.create(mousePos)
+        this.tab.nodes.selectionEnd = { ...mousePos }
 
 
 
@@ -108,7 +101,31 @@ export default {
           node.pos.y += (mousePos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
         }
 
-        this.tab.nodes.dragPos = Object.create(mousePos)
+        this.tab.nodes.dragPos = { ...mousePos }
+      }
+
+
+
+      // Panning
+
+      if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
+        this.tab.camera.pos.x -= (mousePos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
+        this.tab.camera.pos.y -= (mousePos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
+        
+        this.tab.camera.panPos = { ...mousePos }
+      }
+
+
+
+      // Linking
+
+      if ((event.buttons & 1) === 1 && this.tab.newLink != null) {
+        let worldPos = _app.screenToWorld(this.tab, mousePos)
+
+        if (typeof(this.tab.newLink.from) === 'number')
+          this.tab.newLink.to = { ...worldPos }
+        else
+          this.tab.newLink.from = { ...worldPos }
       }
     },
 
@@ -160,6 +177,13 @@ export default {
 
       if (event.button === 1)
         this.tab.camera.panPos = null
+
+        
+
+      // Linking
+      
+      if (event.button === 0)
+        this.tab.newLink = null
     },
     
 

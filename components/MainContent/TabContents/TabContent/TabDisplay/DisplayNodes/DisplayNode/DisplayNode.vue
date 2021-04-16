@@ -6,15 +6,17 @@
 
 
     <v-btn x-large style="min-width: 52px; transform: translate(-50%, -50%)" width="0"
-    :color="selected ? 'light-blue darken-4' : ''"
+    :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')"
     @mousedown="$emit('mousedown', node, $event)">
       <NodeIcon :type="node.type" large></NodeIcon>
     </v-btn>
 
 
 
-    <NodeSockets :node="node">
+
+    <NodeSockets :tab="tab" :node="node">
     </NodeSockets>
+
 
 
 
@@ -57,6 +59,10 @@ export default {
       set(value) { return this.$set(this.tab.nodes.selected, this.node.id, value) },
     },
 
+    active() {
+      return this.tab.nodes.active === this.node
+    },
+
   },
 
 
@@ -88,7 +94,7 @@ export default {
       }
 
 
-      this.tab.nodes.dragPos = Object.create(mousePos)
+      this.tab.nodes.dragPos = { ...mousePos }
     },
 
   },

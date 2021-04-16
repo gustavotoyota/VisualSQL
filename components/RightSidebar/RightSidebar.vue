@@ -21,6 +21,14 @@
     <div class="pa-5"
     style="flex: 1; height: 0; overflow-y: scroll">
 
+      <div v-if="currentTab != null && currentTab.nodes.active != null">
+
+
+        
+
+        
+      </div>
+
     </div>
 
 
@@ -31,6 +39,14 @@
 
 <script>
 export default {
+
+  computed: {
+
+    ..._vuex.mapGetters([
+      'currentTab',
+    ]),
+
+  },
 
 }
 </script>
