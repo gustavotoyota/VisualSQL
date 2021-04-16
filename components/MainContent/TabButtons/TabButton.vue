@@ -22,23 +22,6 @@ export default {
 
 
 
-  computed: {
-
-
-    ..._vuex.mapFields([
-      'tabs',
-    ]),
-
-
-    ..._vuex.mapGetters([
-      'getTabIdx',
-    ]),
-
-
-  },
-
-
-
   methods: {
     
 
