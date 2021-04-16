@@ -86,6 +86,7 @@ export default {
     },
     manifest: {
       name: 'Visual SQL Tool',
+      short_name: 'Visual SQL Tool',
       background_color: '#272727',
     },
   },
