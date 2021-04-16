@@ -40,31 +40,7 @@ export default {
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: [
-    '~/components',
-
-    '~/components/MainMenu',
-
-    '~/components/LeftSidebar',
-    '~/components/LeftSidebar/ModulesWindow',
-    '~/components/LeftSidebar/ModulesWindow/Head',
-    '~/components/LeftSidebar/ModulesWindow/Content',
-    '~/components/LeftSidebar/DatabaseWindow',
-    '~/components/LeftSidebar/DatabaseWindow/Head',
-    '~/components/LeftSidebar/DatabaseWindow/Content',
-
-    '~/components/MainContent',
-    '~/components/MainContent/TabButtons',
-    '~/components/MainContent/TabContents',
-    '~/components/MainContent/TabContents/TabContent',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons/NodeButtons',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes/DisplayNode',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes/DisplayNode/NodeSockets',
-    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplaySVG',
-
-    '~/components/RightSidebar',
+    { path: '~/components', pathPrefix: false },
   ],
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
