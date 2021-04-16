@@ -12,11 +12,6 @@
 </template>
 
 <script>
-import vuex from 'vuex'
-import { mapFields } from 'vuex-map-fields'
-
-
-
 export default {
 
 
@@ -30,12 +25,12 @@ export default {
   computed: {
 
 
-    ...mapFields([
+    ..._vuex.mapFields([
       'tabs',
     ]),
 
 
-    ...vuex.mapGetters([
+    ..._vuex.mapGetters([
       'getTabIdx',
     ]),
 

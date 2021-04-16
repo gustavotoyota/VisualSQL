@@ -52,10 +52,6 @@
 </template>
 
 <script>
-import vuex from 'vuex'
-import { mapFields } from 'vuex-map-fields'
-
-
 export default {
 
 
@@ -74,11 +70,11 @@ export default {
 
 
   computed: {
-    ...mapFields([
+    ..._vuex.mapFields([
       'tables',
     ]),
     
-    ...vuex.mapGetters([
+    ..._vuex.mapGetters([
       'getTable',
       'getTableIdx',
     ]),
@@ -87,8 +83,6 @@ export default {
 
   methods: {
     deleteTable() {
-      console.log(this.getTable(this.table.id))
-
       this.tables.splice(
         this.getTableIdx(this.table.id), 1)
     }

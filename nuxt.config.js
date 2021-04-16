@@ -32,8 +32,10 @@ export default {
   plugins: [
     '~/plugins/draggable.js',
     '~/plugins/monaco.js',
-    { src: '~/plugins/codemirror.js', ssr: false },
+    { src: '~/plugins/codemirror.js', mode: 'client' },
     '~/plugins/directives.js',
+    '~/plugins/vuex.js',
+    '~/plugins/app.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -58,6 +60,8 @@ export default {
     '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons',
     '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayButtons/NodeButtons',
     '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes/DisplayNode',
+    '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplayNodes/DisplayNode/NodeSockets',
     '~/components/MainContent/TabContents/TabContent/TabDisplay/DisplaySVG',
 
     '~/components/RightSidebar',

@@ -8,7 +8,7 @@
       </TabToolbar>
 
 
-      <TabDisplay>
+      <TabDisplay :tab="tab" :module="module">
       </TabDisplay>
 
 
@@ -19,6 +19,11 @@
 
 <script>
 export default {
+
+  props: {
+    tab: Object,
+    module: Object,
+  },
 
 }
 </script>

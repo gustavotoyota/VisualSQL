@@ -1,9 +1,43 @@
 <template>
-  
+  <div style="position: absolute; inset: 0; pointer-events: none">
+
+
+
+    <!-- Centralizer -->
+
+    <div style="position: absolute; left: 50%; top: 50%">
+
+
+
+      <!-- Viewbox -->
+
+      <div style="width: 0; height: 0"
+      :style="{ transform: 'scale(' + tab.camera.zoom +') ' +
+      'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)' }">
+
+        <DisplayNode
+        v-for="node in module.nodes" :key="node.id"
+        :node="node" :tab="tab">
+        </DisplayNode>
+
+      </div>
+
+
+
+    </div>
+
+    
+
+  </div>
 </template>
 
 <script>
 export default {
+
+  props: {
+    tab: Object,
+    module: Object,
+  },
 
 }
 </script>

@@ -17,17 +17,13 @@
 </template>
 
 <script>
-import vuex from 'vuex'
-import { mapFields } from 'vuex-map-fields'
-
-
 export default {
 
 
   computed: {
 
 
-    ...mapFields([
+    ..._vuex.mapFields([
       'modules',
 
       'tabs',
@@ -38,7 +34,7 @@ export default {
 
 
 
-    ...vuex.mapGetters([
+    ..._vuex.mapGetters([
       'getModule',
       'getTabIdx',
     ]),

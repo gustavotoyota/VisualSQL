@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { getField, updateField } from 'vuex-map-fields'
 
 
@@ -40,7 +41,7 @@ function getInitialState() {
 
 
 
-export const state = () => Object.assign({}, getInitialState())
+export const state = () => Object.create(getInitialState())
 
 
 
@@ -65,6 +66,9 @@ export const mutations = {
 
       nodes: {},
       nextNodeId: 0,
+
+      links: {},
+      nextLinkId: 0,
     }
 
     state.modules.push(module)
@@ -74,9 +78,39 @@ export const mutations = {
     this.commit('createNode', {
       moduleId: module.id,
 
-      node: { type: 'output' },
+      node: {
+        type: 'table',
 
-      description: 'Output',
+        pos: { x: 0, y: 0 },
+        
+        description: 'Table',
+      },
+    })
+    
+    
+
+    this.commit('createNode', {
+      moduleId: module.id,
+
+      node: {
+        type: 'output',
+
+        pos: { x: 200, y: 0 },
+        
+        description: 'Output',
+      },
+    })
+
+
+
+    this.commit('createLink', {
+      moduleId: module.id,
+
+      link: {
+        from: 0,
+        to: 1,
+        socket: 0,
+      },
     })
 
 
@@ -105,9 +139,21 @@ export const mutations = {
         camera: {
           pos: { x: 0, y: 0 },
           zoom: 1,
+
+          panPos: null,
         },
 
-        selectedNodes: {},
+        nodes: {
+          selected: {},
+          active: null,
+
+          dragPos: null,
+
+          selectionStart: null,
+          selectionEnd: null,
+        },
+
+        newLink: null,
       }
 
       state.tabs.push(moduleTab)
@@ -136,7 +182,7 @@ export const mutations = {
     let module = state.modules[payload.moduleId]
 
     let node = Object.assign({
-      id: module.nextModuleId++,
+      id: module.nextNodeId++,
 
       pos: { x: 0, y: 0 },
 
@@ -149,8 +195,22 @@ export const mutations = {
       props: {},
     }, payload.node)
 
-    module.nodes[node.id] = node
-  }
+    Vue.set(module.nodes, node.id, node)
+  },
+
+
+  createLink(state, payload) {
+    let module = state.modules[payload.moduleId]
+
+    let link = Object.assign(payload.link, {
+      id: module.nextLinkId++,
+    })
+
+    module.nodes[link.from].outgoingLinks.push(link.id)
+    Vue.set(module.nodes[link.to].incomingLinks, link.socket, link.id)
+
+    Vue.set(module.links, link.id, link)
+  },
 
 
 }

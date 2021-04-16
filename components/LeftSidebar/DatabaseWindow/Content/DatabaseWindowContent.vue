@@ -19,14 +19,11 @@
 </template>
 
 <script>
-import { mapFields } from 'vuex-map-fields'
-
-
 export default {
 
 
   computed: {
-    ...mapFields([
+    ..._vuex.mapFields([
       'tables',
     ]),
   },

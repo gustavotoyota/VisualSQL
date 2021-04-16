@@ -4,7 +4,7 @@
     <template v-slot:activator="{ on, attrs }">
 
       <v-btn style="min-width: 36px; margin-right: -3px"
-      width="0" v-bind="attrs" v-on="on">
+      width="0" v-bind="attrs" v-on="on" @click="createNode">
         <NodeIcon :type="type"></NodeIcon>
       </v-btn>
 
@@ -44,9 +44,32 @@
 
 
 export default {
+
   props: {
-    type: { type: String },
-  }
+    tab: Object,
+    type: String,
+  },
+
+
+  methods: {
+
+    createNode() {
+      this.$store.commit('createNode', {
+        moduleId: this.tab.moduleId,
+
+        node: {
+          type: this.type,
+
+          pos: {
+            x: this.tab.camera.pos.x,
+            y: this.tab.camera.pos.y,
+          },
+        },
+      })
+    },
+
+  },
+
 }
 </script>
 

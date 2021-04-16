@@ -3,53 +3,53 @@
   width: 0; height: 0; white-space: nowrap">
 
     <div>
-      <NodeButton type="table"></NodeButton>
-      <NodeButton type="union-all"></NodeButton>
+      <NodeButton :tab="tab" type="table"></NodeButton>
+      <NodeButton :tab="tab" type="union-all"></NodeButton>
     </div>
     
     <div style="margin-top: 1px">
-      <NodeButton type="module"></NodeButton>
-      <NodeButton type="union"></NodeButton>
+      <NodeButton :tab="tab" type="module"></NodeButton>
+      <NodeButton :tab="tab" type="union"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="node"></NodeButton>
-      <NodeButton type="except"></NodeButton>
+      <NodeButton :tab="tab" type="node"></NodeButton>
+      <NodeButton :tab="tab" type="except"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="sql"></NodeButton>
-      <NodeButton type="intersect"></NodeButton>
+      <NodeButton :tab="tab" type="sql"></NodeButton>
+      <NodeButton :tab="tab" type="intersect"></NodeButton>
     </div>
 
     <div style="margin-top: 12px">
-      <NodeButton type="inner-join"></NodeButton>
-      <NodeButton type="filter"></NodeButton>
+      <NodeButton :tab="tab" type="inner-join"></NodeButton>
+      <NodeButton :tab="tab" type="filter"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="left-join"></NodeButton>
-      <NodeButton type="transform"></NodeButton>
+      <NodeButton :tab="tab" type="left-join"></NodeButton>
+      <NodeButton :tab="tab" type="transform"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="right-join"></NodeButton>
-      <NodeButton type="distinct"></NodeButton>
+      <NodeButton :tab="tab" type="right-join"></NodeButton>
+      <NodeButton :tab="tab" type="distinct"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="full-join"></NodeButton>
-      <NodeButton type="sort"></NodeButton>
+      <NodeButton :tab="tab" type="full-join"></NodeButton>
+      <NodeButton :tab="tab" type="sort"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
-      <NodeButton type="cross-join"></NodeButton>
-      <NodeButton type="reduce"></NodeButton>
+      <NodeButton :tab="tab" type="cross-join"></NodeButton>
+      <NodeButton :tab="tab" type="reduce"></NodeButton>
     </div>
 
     <div style="margin-top: 12px">
-      <NodeButton type="pivot"></NodeButton>
-      <NodeButton type="output"></NodeButton>
+      <NodeButton :tab="tab" type="pivot"></NodeButton>
+      <NodeButton :tab="tab" type="output"></NodeButton>
     </div>
 
   </div>
@@ -57,6 +57,10 @@
 
 <script>
 export default {
+
+  props: {
+    tab: Object,
+  },
 
 }
 </script>

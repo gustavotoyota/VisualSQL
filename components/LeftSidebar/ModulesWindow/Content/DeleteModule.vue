@@ -54,9 +54,6 @@
 </template>
 
 <script>
-import { mapFields } from 'vuex-map-fields'
-
-
 export default {
 
 

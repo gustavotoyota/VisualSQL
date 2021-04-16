@@ -20,9 +20,6 @@
 </template>
 
 <script>
-import { mapFields } from 'vuex-map-fields'
-
-
 export default {
 
 
@@ -36,7 +33,7 @@ export default {
 
 
   computed: {
-    ...mapFields([
+    ..._vuex.mapFields([
       'modules',
     ]),
   },
