@@ -2,61 +2,53 @@ global._app = {}
 
 
 _app.socketOffset = { x: 34, y: 12 }
-
-
-_app.nodeGroups = {
-  'data': {
-    numInputs: 0,
-    hasOutput: true,
-  },
-  'set-operations': {
-    numInputs: 2,
-    hasOutput: true,
-  },
-  'joins': {
-    numInputs: 2,
-    hasOutput: true,
-  },
-  'processing': {
-    numInputs: 1,
-    hasOutput: true,
-  },
-  'pivot': {
-    numInputs: 1,
-    hasOutput: true,
-  },
-  'output': {
-    numInputs: 1,
-    hasOutput: false,
-  },
-}
   
 
 
 _app.nodeTypes = {
   'table': {
-    group: 'data',
+    category: 'data',
+    
+    numInputs: 0,
+    hasOutput: true,
+
+    description: 'Table',
 
     props: {
       tableName: '',
     },
   },
   'module': {
-    group: 'data',
+    category: 'data',
+    
+    numInputs: 0,
+    hasOutput: true,
+
+    description: 'Module',
 
     props: {
       moduleName: '',
     },
   },
   'node': {
-    group: 'data',
+    category: 'data',
+    
+    numInputs: 0,
+    hasOutput: true,
+
+    description: 'Node',
 
     props: {
       nodeName: '',
     },
   },
   'sql': {
-    group: 'data',
+    category: 'data',
+    
+    numInputs: 0,
+    hasOutput: true,
+
+    description: 'Sql',
 
     props: {
       sql: '',
@@ -65,57 +57,102 @@ _app.nodeTypes = {
   
   
   'union-all': {
-    group: 'set-operations',
+    category: 'set-operations',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Union all',
 
     props: {},
   },
   'union': {
-    group: 'set-operations',
+    category: 'set-operations',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Union',
 
     props: {},
   },
   'except': {
-    group: 'set-operations',
+    category: 'set-operations',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Except',
 
     props: {},
   },
   'intersect': {
-    group: 'set-operations',
+    category: 'set-operations',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Intersect',
 
     props: {},
   },
   
   
   'inner-join': {
-    group: 'joins',
+    category: 'joins',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Inner join',
 
     props: {
       condition: '',
     },
   },
   'left-join': {
-    group: 'joins',
+    category: 'joins',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Left join',
 
     props: {
       condition: '',
     },
   },
   'right-join': {
-    group: 'joins',
+    category: 'joins',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Right join',
 
     props: {
       condition: '',
     },
   },
   'full-join': {
-    group: 'joins',
+    category: 'joins',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Full join',
 
     props: {
       condition: '',
     },
   },
   'cross-join': {
-    group: 'joins',
+    category: 'joins',
+
+    numInputs: 2,
+    hasOutput: true,
+
+    description: 'Cross join',
 
     props: {
       condition: '',
@@ -124,14 +161,24 @@ _app.nodeTypes = {
   
   
   'filter': {
-    group: 'processing',
+    category: 'processing',
+    
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Filter',
 
     props: {
       condition: '',
     },
   },
   'transform': {
-    group: 'processing',
+    category: 'processing',
+    
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Transform',
 
     props: {
       group: {
@@ -143,21 +190,36 @@ _app.nodeTypes = {
     },
   },
   'distinct': {
-    group: 'processing',
+    category: 'processing',
+    
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Distinct',
 
     props: {
       columns: '',
     },
   },
   'sort': {
-    group: 'processing',
+    category: 'processing',
+    
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Sort',
 
     props: {
       columns: '',
     },
   },
   'reduce': {
-    group: 'processing',
+    category: 'processing',
+
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Reduce',
 
     props: {
       offset: '',
@@ -167,7 +229,12 @@ _app.nodeTypes = {
   
   
   'pivot': {
-    group: 'pivot',
+    category: 'pivot',
+
+    numInputs: 1,
+    hasOutput: true,
+
+    description: 'Pivot',
 
     props: {
       columns: '',
@@ -176,7 +243,12 @@ _app.nodeTypes = {
   
   
   'output': {
-    group: 'output',
+    category: 'output',
+
+    numInputs: 1,
+    hasOutput: false,
+
+    description: 'Output',
 
     props: {},
   },

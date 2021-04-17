@@ -2,9 +2,11 @@
   <v-navigation-drawer app width="300"
   permanent clipped touchless>
 
+
     
     <ModulesWindow>
     </ModulesWindow>
+
 
     
     <DatabaseWindow>
@@ -16,7 +18,6 @@
 
 <script>
 export default {
-
 }
 </script>
 

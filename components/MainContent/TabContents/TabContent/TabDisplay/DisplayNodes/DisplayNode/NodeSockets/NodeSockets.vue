@@ -2,6 +2,7 @@
   <div style="position: absolute; left: 0; top: 0">
 
 
+
     <!-- Input sockets -->
 
     <NodeSocket v-if="node.incomingLinks.length > 0"
@@ -20,11 +21,13 @@
     
 
 
+
     <!-- Output sockets -->
     
     <NodeSocket v-if="node.outgoingLinks != null" style="left: 34px"
     @mousedown="outputMouseDown" @mouseup="outputMouseUp">
     </NodeSocket>
+
 
 
   </div>

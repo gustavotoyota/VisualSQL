@@ -13,7 +13,7 @@
         </DisplayLink>
         
 
-        <DisplayLink is-new
+        <DisplayLink new-link
         v-if="tab.newLink != null
         && tab.newLink.from != null
         && tab.newLink.to != null"

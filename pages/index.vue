@@ -30,6 +30,14 @@
 export default {
   mounted() {
     this.$store.commit('resetProject')
+
+    document.addEventListener('keydown', (event) => {
+      if (document.activeElement !== document.body)
+        return
+        
+      if (event.code === 'Delete')
+        this.$store.commit('deleteSelectedNodes')
+    })
   },
 }
 </script>

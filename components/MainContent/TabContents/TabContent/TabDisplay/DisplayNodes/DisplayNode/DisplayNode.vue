@@ -1,13 +1,12 @@
 <template>
-  <div style="width: 0; height: 0; position: absolute; pointer-events: auto"
-  :style="{ left: `${node.pos.x}px`, top: `${node.pos.y}px` }"
-  @mousedown="onMouseDown">
+  <div style="width: 0; height: 0; position: absolute"
+  :style="{ left: `${node.pos.x}px`, top: `${node.pos.y}px` }">
 
 
 
-    <v-btn x-large style="min-width: 52px; transform: translate(-50%, -50%)" width="0"
-    :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')"
-    @mousedown="$emit('mousedown', node, $event)">
+    <v-btn x-large width="0" @mousedown="onMouseDown"
+    style="min-width: 52px; transform: translate(-50%, -50%); pointer-events: auto"
+    :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')">
       <NodeIcon :type="node.type" large></NodeIcon>
     </v-btn>
 
@@ -20,21 +19,18 @@
 
 
 
-    <div style="position: absolute; bottom: 32px; pointer-events: none">
-      <div class="body-2" style="position: relative; left: -50%;
-      text-align: center; max-width: 150px; width: max-content; word-wrap: break-word">
-        {{ node.name }}
-      </div>
+    <div class="body-2" style="position: absolute; bottom: 34px;
+    transform: translateX(-50%); text-align: center;
+    max-width: 150px; width: max-content; word-break: break-all">
+      {{ node.name }}
     </div>
 
 
 
-    <div style="position: absolute; top: 32px; pointer-events: none">
-      <div class="body-2" style="position: relative; left: -50%;
-      text-align: center; max-width: 150px; width: max-content">
-        {{ node.description }}
-      </div>
-    </div>
+    <div class="body-2" style="position: absolute; top: 34px;
+    transform: translateX(-50%); text-align: center;
+    max-width: 150px; width: max-content; word-break: break-word;
+    white-space: pre-wrap">{{ node.description }}</div>
     
 
 
@@ -54,9 +50,8 @@ export default {
 
   computed: {
 
-    selected: {
-      get() { return this.tab.nodes.selected[this.node.id] },
-      set(value) { return this.$set(this.tab.nodes.selected, this.node.id, value) },
+    selected() {
+      return this.node.id in this.tab.nodes.selected
     },
 
     active() {
@@ -80,16 +75,16 @@ export default {
 
       
       if (!event.ctrlKey && !this.selected)
-        this.tab.nodes.selected = []
+        this.tab.nodes.selected = {}
 
 
       if (event.ctrlKey && this.selected) {
-        this.selected = false
+        this.$delete(this.tab.nodes.selected, this.node.id)
 
         this.tab.nodes.active = null
       } else {
-        this.selected = true
-
+        this.$set(this.tab.nodes.selected, this.node.id, this.node)
+        
         this.tab.nodes.active = this.node
       }
 

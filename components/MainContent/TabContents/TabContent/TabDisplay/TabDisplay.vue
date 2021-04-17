@@ -94,9 +94,7 @@ export default {
       // Dragging
 
       if ((event.buttons & 1) === 1 && this.tab.nodes.dragPos != null) {
-        for (let nodeId in this.tab.nodes.selected) {
-          let node = this.module.nodes[nodeId]
-
+        for (let node of Object.values(this.tab.nodes.selected)) {
           node.pos.x += (mousePos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
           node.pos.y += (mousePos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
         }
@@ -155,15 +153,15 @@ export default {
         }
 
 
-        for (let nodeId in this.module.nodes) {
-          let node = this.module.nodes[nodeId]
-
+        for (let node of Object.values(this.module.nodes)) {
           if (node.pos.x < topLeft.x || node.pos.x > bottomRight.x
           || node.pos.y < topLeft.y || node.pos.y > bottomRight.y)
             continue
 
-          this.$set(this.tab.nodes.selected, node.id,
-            !this.tab.nodes.selected[node.id])
+          if (node.id in this.tab.nodes.selected)
+            this.$delete(this.tab.nodes.selected, node.id)
+          else
+            this.$set(this.tab.nodes.selected, node.id, node)
         }
 
 
@@ -196,6 +194,7 @@ export default {
         this.tab.camera.zoom = Math.max(
           Math.pow(1 / 1.2, 12), this.tab.camera.zoom / 1.2)
     },
+
 
 
   },

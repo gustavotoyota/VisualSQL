@@ -1,7 +1,7 @@
 <template>
-  <path :class="isNew ? 'newLink' : 'link'"
+  <path :class="newLink ? 'newLink' : 'link'"
   :d="getLinkCommand()"
-  :cursor="isNew ? '' : 'pointer'"
+  :cursor="newLink ? '' : 'pointer'"
   @mousedown.stop="$emit('mousedown')"/>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   props: {
     module: Object,
     link: Object,
-    isNew: Boolean,
+    newLink: Boolean,
   },
 
 
@@ -63,13 +63,13 @@ export default {
   fill: transparent;
 }
 .link:hover {
-  stroke: #a0a0a0;
+  stroke: #b0b0b0;
 }
 
 .newLink {
   pointer-events: visibleStroke;
 
-  stroke: #707070;
+  stroke: #b0b0b0;
   stroke-width: 3.5;
 
   fill: transparent;

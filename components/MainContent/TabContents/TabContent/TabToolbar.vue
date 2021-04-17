@@ -15,7 +15,7 @@
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Delete">
+    <ToolbarButton tooltip="Delete" @click="$store.commit('deleteSelectedNodes')">
       <v-icon dense>mdi-delete</v-icon>
     </ToolbarButton>
 
