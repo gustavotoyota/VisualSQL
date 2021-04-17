@@ -196,11 +196,11 @@ export default {
 
     onMouseWheel(event) {
       if (event.deltaY > 0)
-        this.tab.camera.zoom = Math.min(
-          Math.pow(1.2, 12), this.tab.camera.zoom * 1.2)
-      else
         this.tab.camera.zoom = Math.max(
           Math.pow(1 / 1.2, 12), this.tab.camera.zoom / 1.2)
+      else
+        this.tab.camera.zoom = Math.min(
+          Math.pow(1.2, 12), this.tab.camera.zoom * 1.2)
     },
 
 
