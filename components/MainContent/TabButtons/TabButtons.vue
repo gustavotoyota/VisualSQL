@@ -1,19 +1,44 @@
 <template>
-  <v-tabs show-arrows style="flex: none"
-  v-model="tabIdx" :key="'t' + rerenderTabs">
+  <div style="flex: none; display: flex; background-color: #1E1E1E">
 
-    <draggable v-model="tabs" @end="rerenderTabs++"
-    delay="250" touch-start-threshold="4" animation="200"
-    class="v-slide-group__content v-tabs-bar__content">
 
-      <TabButton
-      v-for="tab in tabs" :key="tab.id"
-      :tab="tab" :module="getModule(tab.moduleId)">
-      </TabButton>
 
-    </draggable>
+    <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
+    border-top-left-radius: 0; border-bottom-left-radius: 0" width="0"
+    @click="leftSidebar = !leftSidebar">
+      <v-icon v-if="leftSidebar" dense>mdi-chevron-double-left</v-icon>
+      <v-icon v-else dense>mdi-chevron-double-right</v-icon>
+    </v-btn>
 
-  </v-tabs>
+
+
+    <v-tabs show-arrows style="flex: 1"
+    v-model="tabIdx" :key="'t' + rerenderTabs">
+
+      <draggable v-model="tabs" @end="rerenderTabs++"
+      delay="250" touch-start-threshold="4" animation="200"
+      class="v-slide-group__content v-tabs-bar__content">
+
+        <TabButton
+        v-for="tab in tabs" :key="tab.id"
+        :tab="tab" :module="getModule(tab.moduleId)">
+        </TabButton>
+
+      </draggable>
+
+    </v-tabs>
+
+
+
+    <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
+    border-top-right-radius: 0; border-bottom-right-radius: 0" width="0"
+    @click="rightSidebar = !rightSidebar">
+      <v-icon v-if="rightSidebar" dense>mdi-chevron-double-right</v-icon>
+      <v-icon v-else dense>mdi-chevron-double-left</v-icon>
+    </v-btn>
+
+
+  </div>
 </template>
 
 <script>
@@ -26,11 +51,18 @@ export default {
     ..._vuex.mapFields([
       'modules',
 
-      'tabs',
 
+      'tabs',
       'tabId',
       'rerenderTabs',
     ]),
+
+
+
+    ..._vuex.mapFields({
+      'leftSidebar': 'sidebars.left',
+      'rightSidebar': 'sidebars.right',
+    }),
 
 
 

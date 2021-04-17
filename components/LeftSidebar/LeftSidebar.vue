@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app width="300"
-  permanent clipped touchless>
+  v-if="leftSidebar" permanent clipped touchless>
 
 
     
@@ -18,6 +18,15 @@
 
 <script>
 export default {
+
+  computed: {
+
+    ..._vuex.mapFields({
+      'leftSidebar': 'sidebars.left',
+    }),
+
+  },
+
 }
 </script>
 

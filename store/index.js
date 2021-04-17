@@ -9,6 +9,7 @@ export const strict = false
 
 let initialState = {
 
+
   // Modules
 
   modules: [],
@@ -32,6 +33,16 @@ let initialState = {
 
   tabId: 0,
   rerenderTabs: 0,
+
+
+
+  // Sidebars
+
+  sidebars: {
+    left: true,
+    right: true,
+  },
+
 
 }
 
@@ -240,6 +251,9 @@ export const mutations = {
 
   deleteSelectedNodes(state) {
     let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
 
     for (let nodeId in tab.nodes.selected) {
       this.commit('deleteNode', {

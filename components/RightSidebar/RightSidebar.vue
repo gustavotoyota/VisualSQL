@@ -1,6 +1,6 @@
 <template>
-  <v-navigation-drawer app width="300"
-  permanent clipped right touchless>
+  <v-navigation-drawer app width="300" right
+  v-if="rightSidebar" permanent clipped touchless>
 
 
 
@@ -77,6 +77,10 @@
 export default {
 
   computed: {
+    
+    ..._vuex.mapFields({
+      'rightSidebar': 'sidebars.right',
+    }),
 
     ..._vuex.mapGetters([
       'activeNode',
