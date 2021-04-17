@@ -1,13 +1,14 @@
 <template>
   <div>
 
+
     <NodeButtons :tab="tab">
     </NodeButtons>
 
 
-
     <CameraButtons :tab="tab" :module="module">
     </CameraButtons>
+    
     
   </div>
 </template>

@@ -6,7 +6,7 @@
     </div>
 
     <MonacoEditor
-      class="mt-1 editor" v-model="node.props.outputColumns" language="sql"
+      class="mt-1 editor" v-model="node.props.columns" language="sql"
       style="height: 150px; border-radius: 5px; overflow: hidden"
       :options="{
         theme: 'vs-dark',

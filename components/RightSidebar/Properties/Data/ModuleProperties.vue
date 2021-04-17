@@ -3,7 +3,7 @@
 
 
     <div class="mb-1 body-2 grey--text text--lighten-1">
-      Module name:
+      Referenced module:
     </div>
 
 
