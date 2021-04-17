@@ -44,6 +44,14 @@ export default {
   },
 
 
+
+  beforeDestroy() {
+    document.removeEventListener('mousemove', this.onMouseMove)
+    document.removeEventListener('mouseup', this.onMouseUp)
+  },
+
+
+
   
   methods: {
 
