@@ -261,29 +261,29 @@ _app.getTabRect = function (tabId) {
 }
 
 _app.getMousePos = function (tabId, event) {
-  let rect = _app.getTabRect(tabId)
+  let tabRect = _app.getTabRect(tabId)
   
   return {
-    x: event.clientX - rect.x,
-    y: event.clientY - rect.y
+    x: event.clientX - tabRect.x,
+    y: event.clientY - tabRect.y
   }
 }
 
 
 _app.worldToScreen = function (tab, worldPos) {
-  let rect = _app.getTabRect(tab.id)
+  let tabRect = _app.getTabRect(tab.id)
 
   return {
-    x: rect.width / 2 + (worldPos.x - tab.camera.pos.x) * tab.camera.zoom,
-    y: rect.height / 2 + (worldPos.y - tab.camera.pos.y) * tab.camera.zoom,
+    x: tabRect.width / 2 + (worldPos.x - tab.camera.pos.x) * tab.camera.zoom,
+    y: tabRect.height / 2 + (worldPos.y - tab.camera.pos.y) * tab.camera.zoom,
   }
 }
 _app.screenToWorld = function (tab, screenPos) {
-  let rect = _app.getTabRect(tab.id)
+  let tabRect = _app.getTabRect(tab.id)
 
   return {
-    x: tab.camera.pos.x + (screenPos.x - rect.width / 2) / tab.camera.zoom,
-    y: tab.camera.pos.y + (screenPos.y - rect.height / 2) / tab.camera.zoom,
+    x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
+    y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
   }
 }
 
