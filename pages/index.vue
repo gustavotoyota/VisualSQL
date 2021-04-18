@@ -28,8 +28,26 @@
 
 <script>
 export default {
+
+
+
+  computed: {
+
+    ..._vuex.mapFields([
+      'sidebars',
+    ]),
+
+  },
+
+
+
   mounted() {
     this.$store.commit('resetProject')
+
+
+    this.sidebars.left = innerWidth >= 900
+    this.sidebars.right = innerWidth >= 900
+
 
     document.addEventListener('keydown', (event) => {
       if (document.activeElement !== document.body)
@@ -39,6 +57,7 @@ export default {
         this.$store.commit('deleteSelectedNodes')
     })
   },
+
 }
 </script>
 
