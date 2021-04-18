@@ -260,7 +260,7 @@ _app.getTabRect = function (tabId) {
   return document.getElementById(`display-${tabId}`).getBoundingClientRect()
 }
 
-_app.getMousePos = function (tabId, event) {
+_app.getPointerPos = function (tabId, event) {
   let tabRect = _app.getTabRect(tabId)
   
   return {

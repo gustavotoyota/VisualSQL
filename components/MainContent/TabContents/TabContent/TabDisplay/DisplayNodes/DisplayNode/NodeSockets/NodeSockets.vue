@@ -8,15 +8,15 @@
     <NodeSocket v-if="node.incomingLinks.length > 0"
     :style="{ left: `${-$app.socketOffset.x}px`,
     top: node.incomingLinks.length == 1 ? '0px' : `${-$app.socketOffset.y}px` }"
-    @mousedown="inputMouseDown(0, $event)"
-    @mouseup="inputMouseUp(0, $event)">
+    @pointerdown="inputPointerDown(0, $event)"
+    @pointerup="inputPointerUp(0, $event)">
     </NodeSocket>
 
     <NodeSocket v-if="node.incomingLinks.length > 1"
     :style="{ left: `${-$app.socketOffset.x}px`,
     top: `${$app.socketOffset.y}px` }"
-    @mousedown="inputMouseDown(1, $event)"
-    @mouseup="inputMouseUp(1, $event)">
+    @pointerdown="inputPointerDown(1, $event)"
+    @pointerup="inputPointerUp(1, $event)">
     </NodeSocket>
     
 
@@ -25,7 +25,7 @@
     <!-- Output sockets -->
     
     <NodeSocket v-if="node.outgoingLinks != null" style="left: 34px"
-    @mousedown="outputMouseDown" @mouseup="outputMouseUp">
+    @pointerdown="outputPointerDown" @pointerup="outputPointerUp">
     </NodeSocket>
 
 
@@ -45,7 +45,9 @@ export default {
 
   methods: {
 
-    inputMouseDown(socket, event) {
+    inputPointerDown(socket, event) {
+      event.target.releasePointerCapture(event.pointerId)
+      
       if (event.button !== 0)
         return
 
@@ -55,7 +57,7 @@ export default {
         socket: socket,
       }
     },
-    inputMouseUp(socket, event) {
+    inputPointerUp(socket, event) {
       if (event.button !== 0)
         return
 
@@ -79,7 +81,9 @@ export default {
     },
 
 
-    outputMouseDown(event) {
+    outputPointerDown(event) {
+      event.target.releasePointerCapture(event.pointerId)
+
       if (event.button !== 0)
         return
 
@@ -89,7 +93,7 @@ export default {
         socket: null,
       }
     },
-    outputMouseUp(event) {
+    outputPointerUp(event) {
       if (event.button !== 0)
         return
 

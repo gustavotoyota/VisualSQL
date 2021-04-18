@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app dark style="touch-action: none">
 
 
 

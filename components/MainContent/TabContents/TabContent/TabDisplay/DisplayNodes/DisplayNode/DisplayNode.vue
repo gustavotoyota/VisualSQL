@@ -4,7 +4,7 @@
 
 
 
-    <v-btn x-large width="0" @mousedown="onMouseDown" @touchstart="onTouchStart"
+    <v-btn x-large width="0" @pointerdown="onPointerDown"
     style="min-width: 52px; transform: translate(-50%, -50%); pointer-events: auto"
     :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')">
       <NodeIcon :type="node.type" large></NodeIcon>
@@ -64,10 +64,7 @@ export default {
 
   methods: {
 
-    onMouseDown(event) {
-      let mousePos = _app.getMousePos(this.tab.id, event)
-
-
+    onPointerDown(event) {
       if (event.button === 0)
         event.stopPropagation()
       else
@@ -89,18 +86,9 @@ export default {
       }
 
 
-      this.tab.nodes.dragPos = { ...mousePos }
-    },
+      let pointerPos = _app.getPointerPos(this.tab.id, event)
 
-    onTouchStart(event) {
-      this.onMouseDown({
-        button: 0,
-
-        clientX: event.touches[0].clientX,
-        clientY: event.touches[0].clientY,
-
-        stopPropagation: event.stopPropagation.bind(event),
-      })
+      this.tab.nodes.dragPos = { ...pointerPos }
     },
 
   },

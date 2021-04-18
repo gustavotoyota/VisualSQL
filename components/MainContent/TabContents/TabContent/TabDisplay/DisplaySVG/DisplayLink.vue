@@ -2,8 +2,7 @@
   <path :class="newLink ? 'newLink' : 'link'"
   :d="getLinkCommand()"
   :cursor="newLink ? '' : 'pointer'"
-  @mousedown.stop="$emit('mousedown')"
-  @touchstart.stop="$emit('mousedown')"/>
+  @pointerdown.stop="$emit('pointerdown')"/>
 </template>
 
 <script>

@@ -9,7 +9,7 @@
         <DisplayLink
         v-for="link in module.links" :key="link.id"
         :module="module" :link="link"
-        @mousedown="deleteLink(link.id)">
+        @pointerdown="deleteLink(link.id)">
         </DisplayLink>
         
 

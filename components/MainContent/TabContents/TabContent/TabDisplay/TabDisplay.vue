@@ -1,8 +1,7 @@
 <template>
   <div :id="`display-${tab.id}`"
   style="position: relative; flex: 1; overflow: hidden"
-  @mousedown="onMouseDown" @wheel="onMouseWheel"
-  @touchstart="onTouchStart">
+  @pointerdown="onPointerDown" @wheel="onMouseWheel">
 
 
 
@@ -40,21 +39,15 @@ export default {
 
 
   mounted() {
-    document.addEventListener('mousemove', this.onMouseMove)
-    document.addEventListener('mouseup', this.onMouseUp)
-    
-    document.addEventListener('touchmove', this.onTouchMove)
-    document.addEventListener('touchend', this.onTouchEnd)
+    document.addEventListener('pointermove', this.onPointerMove)
+    document.addEventListener('pointerup', this.onPointerUp)
   },
 
 
 
   beforeDestroy() {
-    document.removeEventListener('mousemove', this.onMouseMove)
-    document.removeEventListener('mouseup', this.onMouseUp)
-    
-    document.removeEventListener('touchmove', this.onTouchMove)
-    document.removeEventListener('touchend', this.onTouchEnd)
+    document.removeEventListener('pointermove', this.onPointerMove)
+    document.removeEventListener('pointerup', this.onPointerUp)
   },
 
 
@@ -63,8 +56,8 @@ export default {
   methods: {
 
 
-    onMouseDown(event) {
-      let mousePos = _app.getMousePos(this.tab.id, event)
+    onPointerDown(event) {
+      let pointerPos = _app.getPointerPos(this.tab.id, event)
 
 
 
@@ -80,8 +73,8 @@ export default {
       // Selecting
 
       if (event.button === 0) {
-        this.tab.nodes.selectionStart = { ...mousePos }
-        this.tab.nodes.selectionEnd = { ...mousePos }
+        this.tab.nodes.selectionStart = { ...pointerPos }
+        this.tab.nodes.selectionEnd = { ...pointerPos }
       }
 
 
@@ -89,20 +82,20 @@ export default {
       // Panning
 
       if (event.button === 1)
-        this.tab.camera.panPos = { ...mousePos }
+        this.tab.camera.panPos = { ...pointerPos }
     },
 
     
     
-    onMouseMove(event) {
-      let mousePos = _app.getMousePos(this.tab.id, event)
+    onPointerMove(event) {
+      let pointerPos = _app.getPointerPos(this.tab.id, event)
 
 
 
       // Selecting
 
       if ((event.buttons & 1) === 1 && this.tab.nodes.selectionStart != null)
-        this.tab.nodes.selectionEnd = { ...mousePos }
+        this.tab.nodes.selectionEnd = { ...pointerPos }
 
 
 
@@ -110,11 +103,11 @@ export default {
 
       if ((event.buttons & 1) === 1 && this.tab.nodes.dragPos != null) {
         for (let node of Object.values(this.tab.nodes.selected)) {
-          node.pos.x += (mousePos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
-          node.pos.y += (mousePos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
+          node.pos.x += (pointerPos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
+          node.pos.y += (pointerPos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
         }
 
-        this.tab.nodes.dragPos = { ...mousePos }
+        this.tab.nodes.dragPos = { ...pointerPos }
       }
 
 
@@ -122,7 +115,7 @@ export default {
       // Linking
 
       if ((event.buttons & 1) === 1 && this.tab.newLink != null) {
-        let worldPos = _app.screenToWorld(this.tab, mousePos)
+        let worldPos = _app.screenToWorld(this.tab, pointerPos)
 
         if (typeof(this.tab.newLink.from) === 'number')
           this.tab.newLink.to = { ...worldPos }
@@ -135,16 +128,16 @@ export default {
       // Panning
 
       if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
-        this.tab.camera.pos.x -= (mousePos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
-        this.tab.camera.pos.y -= (mousePos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
+        this.tab.camera.pos.x -= (pointerPos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
+        this.tab.camera.pos.y -= (pointerPos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
         
-        this.tab.camera.panPos = { ...mousePos }
+        this.tab.camera.panPos = { ...pointerPos }
       }
     },
 
     
 
-    onMouseUp(event) {
+    onPointerUp(event) {
       // Dragging
 
       if (event.button === 0)
@@ -209,8 +202,8 @@ export default {
 
       // Calculate world position
 
-      let mousePos = _app.getMousePos(this.tab.id, event)
-      let worldPos = _app.screenToWorld(this.tab, mousePos)
+      let pointerPos = _app.getPointerPos(this.tab.id, event)
+      let worldPos = _app.screenToWorld(this.tab, pointerPos)
 
 
 
@@ -235,34 +228,6 @@ export default {
         x: worldPos.x + (this.tab.camera.pos.x - worldPos.x) / ratio,
         y: worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio,
       }
-    },
-
-
-
-    
-    onTouchStart(event) {
-      this.onMouseDown({
-        button: 0,
-
-        clientX: event.changedTouches[0].clientX,
-        clientY: event.changedTouches[0].clientY,
-      })
-    },
-    onTouchMove(event) {
-      this.onMouseMove({
-        buttons: 1,
-        
-        clientX: event.changedTouches[0].clientX,
-        clientY: event.changedTouches[0].clientY,
-      })
-    },
-    onTouchEnd(event) {
-      this.onMouseUp({
-        button: 0,
-        
-        clientX: event.changedTouches[0].clientX,
-        clientY: event.changedTouches[0].clientY,
-      })
     },
 
 

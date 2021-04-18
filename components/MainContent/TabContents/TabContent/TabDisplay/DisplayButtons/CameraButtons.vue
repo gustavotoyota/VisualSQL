@@ -5,7 +5,7 @@
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
           <v-btn style="min-width: 36px" width="0" v-on="{ ...tooltip }"
-          @mousedown.stop="" @touchstart.stop="" @click="tab.camera.zoom = 1">
+          @pointerdown.stop="" @click="tab.camera.zoom = 1">
             <v-icon>mdi-magnify-remove-outline</v-icon>
           </v-btn>
         </template>
@@ -17,7 +17,7 @@
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
           <v-btn style="min-width: 36px" width="0" v-on="{ ...tooltip }"
-          @mousedown.stop="" @touchstart.stop="" @click="fitScreen">
+          @pointerdown.stop="" @click="fitScreen">
             <v-icon>mdi-crop-free</v-icon>
           </v-btn>
         </template>

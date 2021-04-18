@@ -3,36 +3,14 @@
     <div class="socket"
     :style="{ backgroundColor: hover ? 'white' : '#d0d0d0' }"
 
-    @mousedown.stop="$emit('mousedown', $event)"
-    @mouseup="$emit('mouseup', $event)"
-
-    @touchstart.stop="$emit('mousedown', { button: 0 })"
-    @touchend="onTouchEnd">
+    @pointerdown.stop="$emit('pointerdown', $event)"
+    @pointerup="$emit('pointerup', $event)">
     </div>
   </v-hover>
 </template>
 
 <script>
 export default {
-
-  methods: {
-
-    onTouchEnd(event) {
-      let targetElem = document.elementFromPoint(
-        event.changedTouches[0].clientX,
-        event.changedTouches[0].clientY,
-      )
-
-      let mouseEvent = document.createEvent('MouseEvents')
-
-      mouseEvent.initMouseEvent('mouseup', false, false, document.defaultView,
-      0, 0, 0, 0, 0, false, false, false, false, 0, targetElem)
-
-      targetElem.dispatchEvent(mouseEvent)
-    },
-
-  },
-
 }
 </script>
 
