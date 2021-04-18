@@ -6,8 +6,10 @@
     <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
     border-top-left-radius: 0; border-bottom-left-radius: 0" width="0"
     @click="leftSidebar = !leftSidebar">
-      <v-icon v-if="leftSidebar" dense>mdi-chevron-double-left</v-icon>
-      <v-icon v-else dense>mdi-chevron-double-right</v-icon>
+      <span style="position: relative; left: -2px; top: 1px">
+        <v-icon v-if="leftSidebar" dense>mdi-chevron-double-left</v-icon>
+        <v-icon v-else dense>mdi-chevron-double-right</v-icon>
+      </span>
     </v-btn>
 
 
@@ -33,9 +35,12 @@
     <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
     border-top-right-radius: 0; border-bottom-right-radius: 0" width="0"
     @click="rightSidebar = !rightSidebar">
-      <v-icon v-if="rightSidebar" dense>mdi-chevron-double-right</v-icon>
-      <v-icon v-else dense>mdi-chevron-double-left</v-icon>
+      <span style="position: relative; left: 2px; top: 1px">
+        <v-icon v-if="rightSidebar" dense>mdi-chevron-double-right</v-icon>
+        <v-icon v-else dense>mdi-chevron-double-left</v-icon>
+      </span>
     </v-btn>
+    
 
 
   </div>
