@@ -124,6 +124,8 @@ export const mutations = {
           zoom: 1,
 
           panPos: null,
+
+          touches: {},
         },
 
         nodes: {

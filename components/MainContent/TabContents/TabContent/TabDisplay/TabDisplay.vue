@@ -1,7 +1,12 @@
 <template>
   <div :id="`display-${tab.id}`"
   style="position: relative; flex: 1; overflow: hidden"
-  @pointerdown="onPointerDown" @wheel="onMouseWheel">
+
+  @pointerdown="onPointerDown"
+  @pointermove="onPointerMove"
+  @pointerup="onPointerUp"
+
+  @wheel="onMouseWheel">
 
 
 
@@ -38,26 +43,22 @@ export default {
 
 
 
-  mounted() {
-    document.addEventListener('pointermove', this.onPointerMove)
-    document.addEventListener('pointerup', this.onPointerUp)
-  },
-
-
-
-  beforeDestroy() {
-    document.removeEventListener('pointermove', this.onPointerMove)
-    document.removeEventListener('pointerup', this.onPointerUp)
-  },
-
-
-
   
   methods: {
 
 
     onPointerDown(event) {
+      document.getElementById(`display-${this.tab.id}`).
+        setPointerCapture(event.pointerId)
+
+
+
+      // Compute pointer position
+      
       let pointerPos = _app.getPointerPos(this.tab.id, event)
+
+      this.$set(this.tab.camera.touches, event.pointerId, pointerPos)
+
 
 
 
@@ -83,12 +84,26 @@ export default {
 
       if (event.pointerType === 'touch' || event.button === 1)
         this.tab.camera.panPos = { ...pointerPos }
+
+
+
+      // Pinch zoom
+
+      if (Object.keys(this.tab.camera.touches).length >= 2)
+        this.tab.camera.panPos = null
     },
 
     
     
     onPointerMove(event) {
+      // Compute pointer position
+
       let pointerPos = _app.getPointerPos(this.tab.id, event)
+      
+      let oldPointerPos = this.tab.camera.touches[event.pointerId]
+      
+      this.$set(this.tab.camera.touches, event.pointerId, pointerPos)
+
 
 
 
@@ -96,6 +111,7 @@ export default {
 
       if (this.tab.nodes.selectionStart != null)
         this.tab.nodes.selectionEnd = { ...pointerPos }
+
 
 
 
@@ -133,11 +149,61 @@ export default {
         
         this.tab.camera.panPos = { ...pointerPos }
       }
+
+
+      
+      // Pinch zoom
+
+      if (Object.keys(this.tab.camera.touches).length === 2) {
+        // Get other pointer position
+
+        let otherPointerPos
+        for (let pointerId of Object.keys(this.tab.camera.touches))
+          if (pointerId !== event.pointerId)
+            otherPointerPos = this.tab.camera.touches[pointerId]
+
+
+
+
+        // Camera position update
+
+        let centerOffset = {
+          x: (pointerPos.x + otherPointerPos.x) / 2 - (oldPointerPos.x + otherPointerPos.x) / 2,
+          y: (pointerPos.y + otherPointerPos.y) / 2 - (oldPointerPos.y + otherPointerPos.y) / 2,
+        }
+
+        this.tab.camera.pos.x += centerOffset.x / this.tab.camera.zoom
+        this.tab.camera.pos.y += centerOffset.y / this.tab.camera.zoom
+
+
+
+        
+        // Camera zoom update
+
+        let oldDist = Math.sqrt(
+          Math.pow(oldPointerPos.x - otherPointerPos.x, 2) +
+          Math.pow(oldPointerPos.y - otherPointerPos.y, 2))
+
+        let newDist = Math.sqrt(
+          Math.pow(pointerPos.x - otherPointerPos.x, 2) +
+          Math.pow(pointerPos.y - otherPointerPos.y, 2))
+
+        let zoomRatio = newDist / oldDist
+        
+        this.tab.camera.zoom /= zoomRatio
+      }
     },
 
     
 
     onPointerUp(event) {
+      // Remove touch
+
+      if (event.pointerId in this.tab.camera.touches)
+        this.$delete(this.tab.camera.touches, event.pointerId)
+
+
+
       // Dragging
 
       if (event.button === 0)
