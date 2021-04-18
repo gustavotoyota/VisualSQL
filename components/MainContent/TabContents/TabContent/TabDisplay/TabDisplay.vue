@@ -255,8 +255,6 @@ export default {
         clientX: event.changedTouches[0].clientX,
         clientY: event.changedTouches[0].clientY,
       })
-
-      console.log(event)
     },
     onTouchEnd(event) {
       this.onMouseUp({

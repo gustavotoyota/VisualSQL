@@ -76,8 +76,6 @@ export default {
       }
 
       this.tab.newLink = null
-
-      console.log('asd')
     },
 
 
