@@ -8,15 +8,15 @@
     <NodeSocket v-if="node.incomingLinks.length > 0"
     :style="{ left: `${-$app.socketOffset.x}px`,
     top: node.incomingLinks.length == 1 ? '0px' : `${-$app.socketOffset.y}px` }"
-    @mousedown="inputMouseDown(0)"
-    @mouseup="inputMouseUp(0)">
+    @mousedown="inputMouseDown(0, $event)"
+    @mouseup="inputMouseUp(0, $event)">
     </NodeSocket>
 
     <NodeSocket v-if="node.incomingLinks.length > 1"
     :style="{ left: `${-$app.socketOffset.x}px`,
     top: `${$app.socketOffset.y}px` }"
-    @mousedown="inputMouseDown(1)"
-    @mouseup="inputMouseUp(1)">
+    @mousedown="inputMouseDown(1, $event)"
+    @mouseup="inputMouseUp(1, $event)">
     </NodeSocket>
     
 
@@ -45,14 +45,20 @@ export default {
 
   methods: {
 
-    inputMouseDown(socket) {
+    inputMouseDown(socket, event) {
+      if (event.button !== 0)
+        return
+
       this.tab.newLink = {
         from: null,
         to: this.node.id,
         socket: socket,
       }
     },
-    inputMouseUp(socket) {
+    inputMouseUp(socket, event) {
+      if (event.button !== 0)
+        return
+
       if (this.tab.newLink == null)
         return
 
@@ -70,17 +76,25 @@ export default {
       }
 
       this.tab.newLink = null
+
+      console.log('asd')
     },
 
 
-    outputMouseDown() {
+    outputMouseDown(event) {
+      if (event.button !== 0)
+        return
+
       this.tab.newLink = {
         from: this.node.id,
         to: null,
         socket: null,
       }
     },
-    outputMouseUp() {
+    outputMouseUp(event) {
+      if (event.button !== 0)
+        return
+
       if (this.tab.newLink == null)
         return
 

@@ -5,7 +5,7 @@
 
       <v-btn style="min-width: 36px; margin-right: -3px"
       width="0" v-bind="attrs" v-on="on"
-      @mousedown.stop="" @click="createNode">
+      @mousedown.stop="" @touchstart.stop="" @click="createNode">
         <NodeIcon :type="type"></NodeIcon>
       </v-btn>
 

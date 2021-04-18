@@ -1,7 +1,8 @@
 <template>
   <div :id="`display-${tab.id}`"
   style="position: relative; flex: 1; overflow: hidden"
-  @mousedown="onMouseDown" @wheel="onMouseWheel">
+  @mousedown="onMouseDown" @wheel="onMouseWheel"
+  @touchstart="onTouchStart">
 
 
 
@@ -41,6 +42,9 @@ export default {
   mounted() {
     document.addEventListener('mousemove', this.onMouseMove)
     document.addEventListener('mouseup', this.onMouseUp)
+    
+    document.addEventListener('touchmove', this.onTouchMove)
+    document.addEventListener('touchend', this.onTouchEnd)
   },
 
 
@@ -48,6 +52,9 @@ export default {
   beforeDestroy() {
     document.removeEventListener('mousemove', this.onMouseMove)
     document.removeEventListener('mouseup', this.onMouseUp)
+    
+    document.removeEventListener('touchmove', this.onTouchMove)
+    document.removeEventListener('touchend', this.onTouchEnd)
   },
 
 
@@ -112,17 +119,6 @@ export default {
 
 
 
-      // Panning
-
-      if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
-        this.tab.camera.pos.x -= (mousePos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
-        this.tab.camera.pos.y -= (mousePos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
-        
-        this.tab.camera.panPos = { ...mousePos }
-      }
-
-
-
       // Linking
 
       if ((event.buttons & 1) === 1 && this.tab.newLink != null) {
@@ -132,6 +128,17 @@ export default {
           this.tab.newLink.to = { ...worldPos }
         else
           this.tab.newLink.from = { ...worldPos }
+      }
+
+
+
+      // Panning
+
+      if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
+        this.tab.camera.pos.x -= (mousePos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
+        this.tab.camera.pos.y -= (mousePos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
+        
+        this.tab.camera.panPos = { ...mousePos }
       }
     },
 
@@ -177,19 +184,19 @@ export default {
         this.tab.nodes.selectionEnd = null
       }
 
-
-
-      // Panning
-
-      if (event.button === 1)
-        this.tab.camera.panPos = null
-
         
 
       // Linking
       
       if (event.button === 0)
         this.tab.newLink = null
+
+
+
+      // Panning
+
+      if (event.button === 1)
+        this.tab.camera.panPos = null
     },
     
 
@@ -229,6 +236,37 @@ export default {
         y: worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio,
       }
     },
+
+
+
+    
+    onTouchStart(event) {
+      this.onMouseDown({
+        button: 0,
+
+        clientX: event.changedTouches[0].clientX,
+        clientY: event.changedTouches[0].clientY,
+      })
+    },
+    onTouchMove(event) {
+      this.onMouseMove({
+        buttons: 1,
+        
+        clientX: event.changedTouches[0].clientX,
+        clientY: event.changedTouches[0].clientY,
+      })
+
+      console.log(event)
+    },
+    onTouchEnd(event) {
+      this.onMouseUp({
+        button: 0,
+        
+        clientX: event.changedTouches[0].clientX,
+        clientY: event.changedTouches[0].clientY,
+      })
+    },
+
 
 
 

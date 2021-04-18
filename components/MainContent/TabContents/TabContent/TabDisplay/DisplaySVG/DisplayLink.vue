@@ -2,7 +2,8 @@
   <path :class="newLink ? 'newLink' : 'link'"
   :d="getLinkCommand()"
   :cursor="newLink ? '' : 'pointer'"
-  @mousedown.stop="$emit('mousedown')"/>
+  @mousedown.stop="$emit('mousedown')"
+  @touchstart.stop="$emit('mousedown')"/>
 </template>
 
 <script>
@@ -67,7 +68,7 @@ export default {
 }
 
 .newLink {
-  pointer-events: visibleStroke;
+  pointer-events: none;
 
   stroke: #b0b0b0;
   stroke-width: 3.5;
