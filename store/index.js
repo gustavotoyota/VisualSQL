@@ -33,6 +33,7 @@ let initialState = {
 
   tabId: 0,
   rerenderTabs: 0,
+  
 
 
 
@@ -162,7 +163,7 @@ export const mutations = {
 
 
   createNode(state, payload) {
-    let module = state.modules[payload.moduleId]
+    let module = this.getters.getModule(payload.moduleId)
 
 
     let nodeTypeInfo = _app.nodeTypes[payload.node.type]
@@ -189,7 +190,7 @@ export const mutations = {
     Vue.set(module.nodes, node.id, node)
   },
   deleteNode(state, payload) {
-    let module = state.modules[payload.moduleId]
+    let module = this.getters.getModule(payload.moduleId)
 
     let node = module.nodes[payload.nodeId]
 
@@ -216,7 +217,7 @@ export const mutations = {
 
 
   createLink(state, payload) {
-    let module = state.modules[payload.moduleId]
+    let module = this.getters.getModule(payload.moduleId)
 
     let link = Object.assign({
       id: module.nextLinkId++,
@@ -236,7 +237,7 @@ export const mutations = {
   },
 
   deleteLink(state, payload) {
-    let module = state.modules[payload.moduleId]
+    let module = this.getters.getModule(payload.moduleId)
 
     let link = module.links[payload.linkId]
 
@@ -319,8 +320,8 @@ export const getters = {
 
     if (currentTab == null)
       return null
-
-    return state.modules[currentTab.moduleId]
+      
+    return this.getters.getModule(currentTab.moduleId)
   },
 
 
