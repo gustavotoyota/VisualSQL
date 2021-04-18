@@ -195,12 +195,39 @@ export default {
 
 
     onMouseWheel(event) {
-      if (event.deltaY > 0)
-        this.tab.camera.zoom = Math.max(
-          Math.pow(1 / 1.2, 12), this.tab.camera.zoom / 1.2)
-      else
-        this.tab.camera.zoom = Math.min(
-          Math.pow(1.2, 12), this.tab.camera.zoom * 1.2)
+      const MIN_ZOOM = Math.pow(1 / 1.2, 12)
+      const MAX_ZOOM = Math.pow(1.2, 12)
+
+
+
+      // Calculate world position
+
+      let mousePos = _app.getMousePos(this.tab.id, event)
+      let worldPos = _app.screenToWorld(this.tab, mousePos)
+
+
+
+
+      // Update camera zoom
+
+      let multiplier = event.deltaY > 0 ? (1 / 1.2) : 1.2
+
+      let oldZoom = this.tab.camera.zoom
+
+      this.tab.camera.zoom = Math.min(Math.max(
+        this.tab.camera.zoom * multiplier, MIN_ZOOM), MAX_ZOOM)
+
+
+
+
+      // Update camera position
+
+      let ratio = this.tab.camera.zoom / oldZoom
+
+      this.tab.camera.pos = {
+        x: worldPos.x + (this.tab.camera.pos.x - worldPos.x) / ratio,
+        y: worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio,
+      }
     },
 
 
