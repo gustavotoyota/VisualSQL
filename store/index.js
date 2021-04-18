@@ -321,7 +321,7 @@ export const getters = {
     if (currentTab == null)
       return null
       
-    return this.getters.getModule(currentTab.moduleId)
+    return getters.getModule(currentTab.moduleId)
   },
 
 
