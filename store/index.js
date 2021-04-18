@@ -49,7 +49,8 @@ let initialState = {
 
 
 
-export const state = () => { return { ...initialState } }
+export const state = () => (
+  JSON.parse(JSON.stringify(initialState)))
 
 
 
@@ -60,7 +61,8 @@ export const mutations = {
 
 
   resetProject(state) {
-    this.replaceState({ ...initialState })
+    this.replaceState(JSON.parse(
+      JSON.stringify(initialState)))
 
     this.commit('createModule', 'module_1')
   },
