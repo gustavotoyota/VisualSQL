@@ -1,5 +1,5 @@
 <template>
-  <v-list-item @click="() => {}">
+  <v-list-item @click="$emit('click')">
 
 
 
@@ -30,8 +30,8 @@
       
       <v-list dense width="150">
 
-        <RenameTable :table="table">
-        </RenameTable>
+        <EditTable :table="table">
+        </EditTable>
 
         <DeleteTable :table="table">
         </DeleteTable>
