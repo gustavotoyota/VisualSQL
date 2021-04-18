@@ -64,10 +64,17 @@ export default {
 
       let tabRect = _app.getTabRect(this.tab.id)
 
-      this.tab.camera.zoom = Math.min(1, Math.min(
-        (Math.min(150, tabRect.width / 4) - tabRect.width / 2) / (topLeft.x - this.tab.camera.pos.x),
-        (Math.min(75, tabRect.height / 4) - tabRect.height / 2) / (topLeft.y - this.tab.camera.pos.y)
-      ))
+      this.tab.camera.zoom = 1
+
+      if (topLeft.x !== this.tab.camera.pos.x)
+        this.tab.camera.zoom = Math.min(this.tab.camera.zoom,
+          (Math.min(150, tabRect.width / 4) - tabRect.width / 2) /
+          (topLeft.x - this.tab.camera.pos.x))
+
+      if (topLeft.y !== this.tab.camera.pos.y)
+        this.tab.camera.zoom = Math.min(this.tab.camera.zoom,
+          (Math.min(75, tabRect.height / 4) - tabRect.height / 2) /
+          (topLeft.y - this.tab.camera.pos.y))
     },
 
   },
