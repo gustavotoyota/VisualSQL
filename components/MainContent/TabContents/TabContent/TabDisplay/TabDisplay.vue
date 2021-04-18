@@ -72,7 +72,7 @@ export default {
 
       // Selecting
 
-      if (event.button === 0) {
+      if (event.pointerType === 'mouse' && event.button === 0) {
         this.tab.nodes.selectionStart = { ...pointerPos }
         this.tab.nodes.selectionEnd = { ...pointerPos }
       }
@@ -81,7 +81,7 @@ export default {
 
       // Panning
 
-      if (event.button === 1)
+      if (event.pointerType === 'touch' || event.button === 1)
         this.tab.camera.panPos = { ...pointerPos }
     },
 
@@ -94,14 +94,14 @@ export default {
 
       // Selecting
 
-      if ((event.buttons & 1) === 1 && this.tab.nodes.selectionStart != null)
+      if (this.tab.nodes.selectionStart != null)
         this.tab.nodes.selectionEnd = { ...pointerPos }
 
 
 
       // Dragging
 
-      if ((event.buttons & 1) === 1 && this.tab.nodes.dragPos != null) {
+      if (this.tab.nodes.dragPos != null) {
         for (let node of Object.values(this.tab.nodes.selected)) {
           node.pos.x += (pointerPos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
           node.pos.y += (pointerPos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
@@ -114,7 +114,7 @@ export default {
 
       // Linking
 
-      if ((event.buttons & 1) === 1 && this.tab.newLink != null) {
+      if (this.tab.newLink != null) {
         let worldPos = _app.screenToWorld(this.tab, pointerPos)
 
         if (typeof(this.tab.newLink.from) === 'number')
@@ -127,7 +127,7 @@ export default {
 
       // Panning
 
-      if ((event.buttons & 4) === 4 && this.tab.camera.panPos != null) {
+      if (this.tab.camera.panPos != null) {
         this.tab.camera.pos.x -= (pointerPos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
         this.tab.camera.pos.y -= (pointerPos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
         
@@ -188,7 +188,7 @@ export default {
 
       // Panning
 
-      if (event.button === 1)
+      if (event.pointerType === 'touch' || event.button === 1)
         this.tab.camera.panPos = null
     },
     
