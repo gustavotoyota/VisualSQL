@@ -2,11 +2,7 @@
   <div :id="`display-${tab.id}`"
   style="position: relative; flex: 1; overflow: hidden"
 
-  @pointerdown="onPointerDown"
-  @pointermove="onPointerMove"
-  @pointerup="onPointerUp"
-
-  @wheel="onMouseWheel">
+  @pointerdown="onPointerDown" @wheel="onMouseWheel">
 
 
 
@@ -39,6 +35,20 @@ export default {
   props: {
     tab: Object,
     module: Object,
+  },
+
+
+
+  mounted() {
+    document.addEventListener('pointermove', this.onPointerMove)
+    document.addEventListener('pointerup', this.onPointerUp)
+  },
+
+
+
+  beforeDestroy() {
+    document.removeEventListener('pointermove', this.onPointerMove)
+    document.removeEventListener('pointerup', this.onPointerUp)
   },
 
 

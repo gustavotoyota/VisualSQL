@@ -65,6 +65,9 @@ export default {
   methods: {
 
     onPointerDown(event) {
+      event.target.releasePointerCapture(event.pointerId)
+
+
       if (event.button === 0)
         event.stopPropagation()
       else
