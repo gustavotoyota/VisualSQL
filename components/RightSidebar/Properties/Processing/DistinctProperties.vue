@@ -7,7 +7,7 @@
 
     <MonacoEditor
       class="mt-1 editor" v-model="node.props.columns" language="sql"
-      style="height: 150px; border-radius: 5px; overflow: hidden"
+      style="height: 100px; border-radius: 5px; overflow: hidden"
       :options="{
         theme: 'vs-dark',
         tabSize: 2,
