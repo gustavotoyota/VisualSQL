@@ -58,11 +58,6 @@ export default {
 
 
     onPointerDown(event) {
-      document.getElementById(`display-${this.tab.id}`).
-        setPointerCapture(event.pointerId)
-
-
-
       // Compute pointer position
       
       let pointerPos = _app.getPointerPos(this.tab.id, event)
@@ -75,12 +70,32 @@ export default {
 
 
 
+      // Pinch zoom
+
+      if (Object.keys(this.tab.camera.touches).length >= 2) {
+        this.tab.camera.panPos = null
+
+        this.tab.state = 'pinching'
+      }
+
+
+
+
+      if (this.tab.state != null)
+        return
+
+
+
+
       // Node deselection
 
       if (event.button === 0 && !event.ctrlKey) {
         this.tab.nodes.active = null
         this.tab.nodes.selected = {}
+
+        this.tab.state = null
       }
+
 
 
 
@@ -89,21 +104,19 @@ export default {
       if (event.pointerType === 'mouse' && event.button === 0) {
         this.tab.nodes.selectionStart = { ...pointerPos }
         this.tab.nodes.selectionEnd = { ...pointerPos }
+
+        this.tab.state = 'selecting'
       }
 
 
 
       // Panning
 
-      if (event.pointerType === 'touch' || event.button === 1)
+      if (event.pointerType !== 'mouse' || event.button === 1) {
         this.tab.camera.panPos = { ...pointerPos }
 
-
-
-      // Pinch zoom
-
-      if (Object.keys(this.tab.camera.touches).length >= 2)
-        this.tab.camera.panPos = null
+        this.tab.state = 'panning'
+      }
     },
 
     
@@ -113,16 +126,92 @@ export default {
 
       let pointerPos = _app.getPointerPos(this.tab.id, event)
       
-      let oldPointerPos = this.tab.camera.touches[event.pointerId]
+      let oldPointerPos
+      if (event.pointerId in this.tab.camera.touches) {
+        oldPointerPos = this.tab.camera.touches[event.pointerId]
+        
+        this.$set(this.tab.camera.touches, event.pointerId, pointerPos)
+      }
+
+
+
       
-      this.$set(this.tab.camera.touches, event.pointerId, pointerPos)
+      // Pinch zoom
+
+      if (this.tab.state === 'pinching') {
+        // Get other pointer position
+
+        let otherPointerPos
+        for (let pointerId of Object.keys(this.tab.camera.touches))
+          if (pointerId != event.pointerId)
+            otherPointerPos = this.tab.camera.touches[pointerId]
+
+
+
+
+        // Compute ratio
+        
+        let oldDist = Math.sqrt(
+          Math.pow(oldPointerPos.x - otherPointerPos.x, 2) +
+          Math.pow(oldPointerPos.y - otherPointerPos.y, 2))
+
+        if (oldDist === 0)
+          return
+
+        let newDist = Math.sqrt(
+          Math.pow(pointerPos.x - otherPointerPos.x, 2) +
+          Math.pow(pointerPos.y - otherPointerPos.y, 2))
+
+        let ratio = newDist / oldDist
+
+
+
+
+        // Camera position update
+
+        let oldCenter = {
+          x: (oldPointerPos.x + otherPointerPos.x) / 2,
+          y: (oldPointerPos.y + otherPointerPos.y) / 2,
+        }
+
+        let newCenter = {
+          x: (pointerPos.x + otherPointerPos.x) / 2,
+          y: (pointerPos.y + otherPointerPos.y) / 2,
+        }
+
+        let centerOffset = {
+          x: newCenter.x - oldCenter.x,
+          y: newCenter.y - oldCenter.y,
+        }
+
+        let worldPos = _app.screenToWorld(this.tab, newCenter)
+
+        this.tab.camera.pos.x = -centerOffset.x / this.tab.camera.zoom +
+          worldPos.x + (this.tab.camera.pos.x - worldPos.x) / ratio
+        this.tab.camera.pos.y = -centerOffset.y / this.tab.camera.zoom +
+          worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio
+
+
+
+        
+        // Camera zoom update
+        
+        this.tab.camera.zoom = Math.min(Math.max(
+          this.tab.camera.zoom * ratio, _app.minZoom), _app.maxZoom)
+      }
+
+
+
+
+      if (!event.isPrimary)
+        return
 
 
 
 
       // Selecting
 
-      if (this.tab.nodes.selectionStart != null)
+      if (this.tab.state === 'selecting')
         this.tab.nodes.selectionEnd = { ...pointerPos }
 
 
@@ -130,7 +219,7 @@ export default {
 
       // Dragging
 
-      if (this.tab.nodes.dragPos != null) {
+      if (this.tab.state === 'dragging') {
         for (let node of Object.values(this.tab.nodes.selected)) {
           node.pos.x += (pointerPos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
           node.pos.y += (pointerPos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
@@ -143,7 +232,7 @@ export default {
 
       // Linking
 
-      if (this.tab.newLink != null) {
+      if (this.tab.state === 'linking') {
         let worldPos = _app.screenToWorld(this.tab, pointerPos)
 
         if (typeof(this.tab.newLink.from) === 'number')
@@ -156,60 +245,11 @@ export default {
 
       // Panning
 
-      if (this.tab.camera.panPos != null) {
+      if (this.tab.state === 'panning') {
         this.tab.camera.pos.x -= (pointerPos.x - this.tab.camera.panPos.x) / this.tab.camera.zoom
         this.tab.camera.pos.y -= (pointerPos.y - this.tab.camera.panPos.y) / this.tab.camera.zoom
         
         this.tab.camera.panPos = { ...pointerPos }
-      }
-
-
-      
-      // Pinch zoom
-
-      if (Object.keys(this.tab.camera.touches).length === 2) {
-        // Get other pointer position
-
-        let otherPointerPos
-        for (let pointerId of Object.keys(this.tab.camera.touches))
-          if (pointerId !== event.pointerId)
-            otherPointerPos = this.tab.camera.touches[pointerId]
-
-        if (otherPointerPos == null)
-          return
-
-
-
-
-        // Camera position update
-
-        let centerOffset = {
-          x: (pointerPos.x + otherPointerPos.x) / 2 - (oldPointerPos.x + otherPointerPos.x) / 2,
-          y: (pointerPos.y + otherPointerPos.y) / 2 - (oldPointerPos.y + otherPointerPos.y) / 2,
-        }
-
-        this.tab.camera.pos.x += centerOffset.x / this.tab.camera.zoom
-        this.tab.camera.pos.y += centerOffset.y / this.tab.camera.zoom
-
-
-
-        
-        // Camera zoom update
-
-        let oldDist = Math.sqrt(
-          Math.pow(oldPointerPos.x - otherPointerPos.x, 2) +
-          Math.pow(oldPointerPos.y - otherPointerPos.y, 2))
-
-        if (oldDist === 0)
-          return
-
-        let newDist = Math.sqrt(
-          Math.pow(pointerPos.x - otherPointerPos.x, 2) +
-          Math.pow(pointerPos.y - otherPointerPos.y, 2))
-
-        let zoomRatio = newDist / oldDist
-        
-        this.tab.camera.zoom /= zoomRatio
       }
     },
 
@@ -223,16 +263,35 @@ export default {
 
 
 
+
+      // Pinching
+
+      if (this.tab.state === 'pinching'
+      && (Object.keys(this.tab.camera.touches).length < 2))
+        this.tab.state = null
+        
+
+      
+
+      if (!event.isPrimary)
+        return
+
+
+
+
       // Dragging
 
-      if (event.button === 0)
+      if (this.tab.state === 'dragging' && event.button === 0) {
         this.tab.nodes.dragPos = null
+
+        this.tab.state = null
+      }
 
 
 
       // Selecting
 
-      if (event.button === 0 && this.tab.nodes.selectionStart != null) {
+      if (this.tab.state === 'selecting' && event.button === 0) {
         let worldStart = _app.screenToWorld(this.tab, this.tab.nodes.selectionStart)
         let worldEnd = _app.screenToWorld(this.tab, this.tab.nodes.selectionEnd)
 
@@ -260,31 +319,35 @@ export default {
 
         this.tab.nodes.selectionStart = null
         this.tab.nodes.selectionEnd = null
+
+        this.tab.state = null
       }
 
         
 
       // Linking
       
-      if (event.button === 0)
+      if (this.tab.state === 'linking' && event.button === 0) {
         this.tab.newLink = null
+
+        this.tab.state = null
+      }
 
 
 
       // Panning
 
-      if (event.pointerType === 'touch' || event.button === 1)
+      if (this.tab.state === 'panning'
+      && (event.pointerType !== 'mouse' || event.button === 1)) {
         this.tab.camera.panPos = null
+
+        this.tab.state = null
+      }
     },
     
 
 
     onMouseWheel(event) {
-      const MIN_ZOOM = Math.pow(1 / 1.2, 12)
-      const MAX_ZOOM = Math.pow(1.2, 12)
-
-
-
       // Calculate world position
 
       let pointerPos = _app.getPointerPos(this.tab.id, event)
@@ -300,7 +363,7 @@ export default {
       let oldZoom = this.tab.camera.zoom
 
       this.tab.camera.zoom = Math.min(Math.max(
-        this.tab.camera.zoom * multiplier, MIN_ZOOM), MAX_ZOOM)
+        this.tab.camera.zoom * multiplier, _app.minZoom), _app.maxZoom)
 
 
 
@@ -318,6 +381,18 @@ export default {
 
 
 
+  },
+
+
+
+  watch: {
+    'tab.state': {
+      handler: function (newValue, oldValue) {
+        console.log(newValue)
+      },
+
+      deep: true,
+    },
   },
 
   

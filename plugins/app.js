@@ -1,6 +1,12 @@
 global._app = {}
 
 
+
+_app.minZoom = Math.pow(1 / 1.2, 12)
+_app.maxZoom = Math.pow(1.2, 12)
+
+
+
 _app.socketOffset = { x: 34, y: 12 }
   
 

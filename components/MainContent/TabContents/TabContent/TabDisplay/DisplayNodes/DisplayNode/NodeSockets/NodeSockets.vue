@@ -51,6 +51,7 @@ export default {
       if (event.button !== 0)
         return
 
+      this.tab.state = 'linking'
       this.tab.newLink = {
         from: null,
         to: this.node.id,
@@ -87,6 +88,7 @@ export default {
       if (event.button !== 0)
         return
 
+      this.tab.state = 'linking'
       this.tab.newLink = {
         from: this.node.id,
         to: null,

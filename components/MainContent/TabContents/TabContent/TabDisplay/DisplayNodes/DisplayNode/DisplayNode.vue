@@ -68,14 +68,22 @@ export default {
       event.target.releasePointerCapture(event.pointerId)
 
 
+
+      if (!event.isPrimary)
+        return
+
+
+
       if (event.button === 0)
         event.stopPropagation()
       else
         return
 
+
       
       if (!event.ctrlKey && !this.selected)
         this.tab.nodes.selected = {}
+
 
 
       if (event.ctrlKey && this.selected) {
@@ -89,8 +97,10 @@ export default {
       }
 
 
+
       let pointerPos = _app.getPointerPos(this.tab.id, event)
 
+      this.tab.state = 'dragging'
       this.tab.nodes.dragPos = { ...pointerPos }
     },
 

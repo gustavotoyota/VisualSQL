@@ -119,6 +119,8 @@ export const mutations = {
 
         moduleId: moduleId,
 
+        state: null,
+
         camera: {
           pos: { x: 0, y: 0 },
           zoom: 1,
