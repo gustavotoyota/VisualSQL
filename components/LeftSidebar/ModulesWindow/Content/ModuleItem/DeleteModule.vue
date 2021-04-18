@@ -4,11 +4,15 @@
 
     <template v-slot:activator="{ on, attrs }">
 
-      <v-btn small rounded class="ml-1" width="0"
-      style="position: relative; left: 6px; min-width: 28px"
-      v-bind="attrs" v-on="on">
-        <v-icon dense>mdi-delete</v-icon>
-      </v-btn>
+      <v-list-item v-bind="attrs" v-on="on">
+
+        <v-list-item-icon style="margin-right: 10px">
+          <v-icon>mdi-delete</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-title>Delete</v-list-item-title>
+
+      </v-list-item>
 
     </template>
 
