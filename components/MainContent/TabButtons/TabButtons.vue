@@ -14,7 +14,7 @@
 
 
 
-    <v-tabs show-arrows style="flex: 1"
+    <v-tabs show-arrows style="flex: 1; width: 0"
     v-model="tabIdx" :key="'t' + rerenderTabs">
 
       <draggable v-model="tabs" @end="rerenderTabs++"
