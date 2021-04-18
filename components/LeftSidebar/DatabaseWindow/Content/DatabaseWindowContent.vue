@@ -1,5 +1,5 @@
 <template>
-  <v-list dense style="overflow-y: scroll; flex: 1">
+  <v-list dense style="flex: 1; overflow-y: auto">
     
 
     <draggable v-model="tables" delay="250"
