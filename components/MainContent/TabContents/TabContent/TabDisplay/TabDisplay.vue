@@ -67,6 +67,9 @@ export default {
       
       let pointerPos = _app.getPointerPos(this.tab.id, event)
 
+      if (event.isPrimary)
+        this.tab.camera.touches = {}
+
       this.$set(this.tab.camera.touches, event.pointerId, pointerPos)
 
 
@@ -172,6 +175,9 @@ export default {
           if (pointerId !== event.pointerId)
             otherPointerPos = this.tab.camera.touches[pointerId]
 
+        if (otherPointerPos == null)
+          return
+
 
 
 
@@ -193,6 +199,9 @@ export default {
         let oldDist = Math.sqrt(
           Math.pow(oldPointerPos.x - otherPointerPos.x, 2) +
           Math.pow(oldPointerPos.y - otherPointerPos.y, 2))
+
+        if (oldDist === 0)
+          return
 
         let newDist = Math.sqrt(
           Math.pow(pointerPos.x - otherPointerPos.x, 2) +
