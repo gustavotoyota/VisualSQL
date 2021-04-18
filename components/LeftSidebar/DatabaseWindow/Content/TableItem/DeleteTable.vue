@@ -1,19 +1,24 @@
 <template>
-  <v-dialog max-width="250" eager
-  v-model="active">
+  <v-dialog max-width="250" v-model="active">
 
 
     <template v-slot:activator="{ on, attrs }">
 
-      <v-btn small rounded class="ml-1" width="0"
-      style="position: relative; left: 6px; min-width: 28px"
-      v-bind="attrs" v-on="on">
-        <v-icon dense>mdi-trash-can-outline</v-icon>
-      </v-btn>
+      <v-list-item v-bind="attrs" v-on="on">
+
+        <v-list-item-icon style="margin-right: 10px">
+          <v-icon>mdi-delete</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-title>Delete</v-list-item-title>
+
+      </v-list-item>
 
     </template>
 
-    
+
+
+      
     <v-card>
 
       <v-card-title>
@@ -32,7 +37,8 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="primary" text @click="active = false; deleteTable()">
+        <v-btn color="primary" text @click="
+        $store.commit('deleteTable', table.id); active = false">
           Yes
         </v-btn>
 
@@ -66,27 +72,6 @@ export default {
       active: false,
     }
   },
-
-
-
-  computed: {
-    ..._vuex.mapFields([
-      'tables',
-    ]),
-    
-    ..._vuex.mapGetters([
-      'getTable',
-      'getTableIdx',
-    ]),
-  },
-
-
-  methods: {
-    deleteTable() {
-      this.tables.splice(
-        this.getTableIdx(this.table.id), 1)
-    }
-  }
 
 
 }

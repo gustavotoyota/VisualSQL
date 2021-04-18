@@ -158,6 +158,10 @@ export const mutations = {
       columns: payload.columns,
     })
   },
+  deleteTable(state, tableId) {
+    state.tables.splice(
+      this.getters.getTableIdx(tableId), 1)
+  },
 
 
 
