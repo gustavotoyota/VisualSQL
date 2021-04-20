@@ -54,12 +54,12 @@ export default {
 
 
     ..._vuex.mapFields([
-      'modules',
+      'project.modules',
 
 
-      'tabs',
-      'tabId',
-      'rerenderTabs',
+      'project.tabs',
+      'project.tabId',
+      'project.rerenderTabs',
     ]),
 
 

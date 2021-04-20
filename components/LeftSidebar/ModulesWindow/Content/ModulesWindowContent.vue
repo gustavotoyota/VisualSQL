@@ -24,7 +24,7 @@ export default {
 
   computed: {
     ..._vuex.mapFields([
-      'modules',
+      'project.modules',
     ]),
   },
 

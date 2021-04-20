@@ -10,29 +10,31 @@ export const strict = false
 let initialState = {
 
 
-  // Modules
+  project: {
+    // Modules
 
-  modules: [],
-  nextModuleId: 0,
-
-
-
-
-  // Tables
-
-  tables: [],
-  nextTableId: 0,
+    modules: [],
+    nextModuleId: 0,
 
 
 
 
-  // Tabs
-  
-  tabs: [],
-  nextTabId: 0,
+    // Tables
 
-  tabId: 0,
-  rerenderTabs: 0,
+    tables: [],
+    nextTableId: 0,
+
+
+
+
+    // Tabs
+    
+    tabs: [],
+    nextTabId: 0,
+
+    tabId: 0,
+    rerenderTabs: 0,
+  },
   
 
 
@@ -72,7 +74,7 @@ export const mutations = {
 
   createModule(state, name) {
     let module = {
-      id: state.nextModuleId++,
+      id: state.project.nextModuleId++,
 
       name: name,
 
@@ -83,7 +85,7 @@ export const mutations = {
       nextLinkId: 0,
     }
 
-    state.modules.push(module)
+    state.project.modules.push(module)
     
     
 
@@ -104,7 +106,7 @@ export const mutations = {
     if (moduleTab != null)
       this.commit('closeTab', moduleTab.id)
 
-    state.modules.splice(this.getters.getModuleIdx(moduleId), 1)
+    state.project.modules.splice(this.getters.getModuleIdx(moduleId), 1)
   },
 
 
@@ -115,7 +117,7 @@ export const mutations = {
 
     if (moduleTab == null) {
       moduleTab = {
-        id: state.nextTabId++,
+        id: state.project.nextTabId++,
 
         moduleId: moduleId,
 
@@ -147,21 +149,21 @@ export const mutations = {
         newLink: null,
       }
 
-      state.tabs.push(moduleTab)
+      state.project.tabs.push(moduleTab)
     }
 
-    state.tabId = moduleTab.id
+    state.project.tabId = moduleTab.id
   },
   closeTab(state, tabId) {
-    state.tabs.splice(this.getters.getTabIdx(tabId), 1)
+    state.project.tabs.splice(this.getters.getTabIdx(tabId), 1)
   },
 
 
 
 
   createTable(state, payload) {
-    state.tables.push({
-      id: state.nextTableId++,
+    state.project.tables.push({
+      id: state.project.nextTableId++,
 
       name: payload.name,
 
@@ -169,7 +171,7 @@ export const mutations = {
     })
   },
   deleteTable(state, tableId) {
-    state.tables.splice(
+    state.project.tables.splice(
       this.getters.getTableIdx(tableId), 1)
   },
 
@@ -291,43 +293,43 @@ export const getters = {
   
 
   getModuleIdx: (state) => (moduleId) => {
-    return state.modules.findIndex(module => module.id === moduleId)
+    return state.project.modules.findIndex(module => module.id === moduleId)
   },
   getModule: (state, getters) => (moduleId) => {
-    return state.modules[getters.getModuleIdx(moduleId)]
+    return state.project.modules[getters.getModuleIdx(moduleId)]
   },
 
 
 
   getTableIdx: (state) => (tableId) => {
-    return state.tables.findIndex(table => table.id === tableId)
+    return state.project.tables.findIndex(table => table.id === tableId)
   },
   getTable: (state, getters) => (tableId) => {
-    return state.tables[getters.getTableIdx(tableId)]
+    return state.project.tables[getters.getTableIdx(tableId)]
   },
 
 
   
   getTabIdx: (state) => (tabId) => {
-    return state.tabs.findIndex(tab => tab.id === tabId)
+    return state.project.tabs.findIndex(tab => tab.id === tabId)
   },
   getTab: (state, getters) => (tabId) => {
-    return state.tabs[getters.getTabIdx(tabId)]
+    return state.project.tabs[getters.getTabIdx(tabId)]
   },
 
 
 
   getModuleTabIdx: (state) => (moduleId) => {
-    return state.tabs.findIndex(tab => tab.moduleId === moduleId)
+    return state.project.tabs.findIndex(tab => tab.moduleId === moduleId)
   },
   getModuleTab: (state, getters) => (moduleId) => {
-    return state.tabs[getters.getModuleTabIdx(moduleId)]
+    return state.project.tabs[getters.getModuleTabIdx(moduleId)]
   },
 
 
 
   currentTab(state, getters) {
-    return getters.getTab(state.tabId)
+    return getters.getTab(state.project.tabId)
   },
   currentModule(state, getters) {
     let currentTab = getters.currentTab

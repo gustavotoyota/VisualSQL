@@ -29,7 +29,7 @@ export default {
 
 
     ..._vuex.mapFields([
-      'tables',
+      'project.tables',
     ]),
     
 
