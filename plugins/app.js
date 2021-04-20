@@ -262,12 +262,15 @@ _app.nodeTypes = {
 
 
 
-_app.getTabRect = function (tabId) {
-  return document.getElementById(`display-${tabId}`).getBoundingClientRect()
+_app.getDisplayElem = function (tabId) {
+  return document.getElementById(`display-${tabId}`)
+}
+_app.getDisplayRect = function (tabId) {
+  return _app.getDisplayElem(tabId).getBoundingClientRect()
 }
 
 _app.getPointerPos = function (tabId, event) {
-  let tabRect = _app.getTabRect(tabId)
+  let tabRect = _app.getDisplayRect(tabId)
   
   return {
     x: event.clientX - tabRect.x,
@@ -277,7 +280,7 @@ _app.getPointerPos = function (tabId, event) {
 
 
 _app.worldToScreen = function (tab, worldPos) {
-  let tabRect = _app.getTabRect(tab.id)
+  let tabRect = _app.getDisplayRect(tab.id)
 
   return {
     x: tabRect.width / 2 + (worldPos.x - tab.camera.pos.x) * tab.camera.zoom,
@@ -285,7 +288,7 @@ _app.worldToScreen = function (tab, worldPos) {
   }
 }
 _app.screenToWorld = function (tab, screenPos) {
-  let tabRect = _app.getTabRect(tab.id)
+  let tabRect = _app.getDisplayRect(tab.id)
 
   return {
     x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,

@@ -119,15 +119,17 @@ export const mutations = {
 
         moduleId: moduleId,
 
-        state: null,
-
         camera: {
           pos: { x: 0, y: 0 },
           zoom: 1,
 
           panPos: null,
 
-          touches: {},
+          pinch: {
+            pointers: {},
+            center: null,
+            distance: null,
+          },
         },
 
         nodes: {
@@ -136,8 +138,10 @@ export const mutations = {
 
           dragPos: null,
 
-          selectionStart: null,
-          selectionEnd: null,
+          selection: {
+            start: null,
+            end: null,
+          },
         },
 
         newLink: null,

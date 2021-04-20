@@ -65,22 +65,13 @@ export default {
   methods: {
 
     onPointerDown(event) {
-      event.target.releasePointerCapture(event.pointerId)
-
-
-
-      if (!event.isPrimary)
-        return
-
-
-
       if (event.button === 0)
         event.stopPropagation()
       else
         return
 
 
-      
+
       if (!event.ctrlKey && !this.selected)
         this.tab.nodes.selected = {}
 
