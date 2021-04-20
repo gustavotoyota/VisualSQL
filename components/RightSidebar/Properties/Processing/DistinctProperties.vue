@@ -2,7 +2,7 @@
   <div v-if="node.type === 'distinct'" class="mt-4">
 
     <div class="mb-1 body-2 grey--text text--lighten-1">
-      Columns:
+      Columns with distinct rows:
     </div>
 
     <MonacoEditor

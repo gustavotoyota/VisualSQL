@@ -12,7 +12,7 @@
       <div v-if="node.props.group">
         <div class="mt-4">
           <div class="mb-1 body-2 grey--text text--lighten-1">
-            Group by:
+            Columns to group by:
           </div>
 
           <MonacoEditor
@@ -39,7 +39,7 @@
 
         <div class="mt-4" v-if="node.props.group">
           <div class="mb-1 body-2 grey--text text--lighten-1">
-            Having:
+            Grouped rows filter condition:
           </div>
 
           <MonacoEditor
