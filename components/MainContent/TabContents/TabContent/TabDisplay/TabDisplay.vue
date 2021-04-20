@@ -62,8 +62,6 @@ export default {
 
 
     onCapturePointerDown(event) {
-      // Compute pointer position
-      
       let pointerPos = _app.getPointerPos(this.tab.id, event)
 
       this.$set(this.tab.camera.pinch.pointers, event.pointerId, pointerPos)
