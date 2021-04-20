@@ -125,7 +125,11 @@ export const mutations = {
 
           panPos: null,
 
-          pinchPointers: {},
+          pinch: {
+            pointers: {},
+            center: null,
+            distance: null,
+          },
         },
 
         nodes: {
