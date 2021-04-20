@@ -18,8 +18,7 @@
 
     <!-- Properties content -->
 
-    <div class="pa-5"
-    style="flex: 1; height: 0; overflow-y: auto">
+    <div style="flex: 1; height: 0; overflow-y: auto">
 
       <Properties>
       </Properties>

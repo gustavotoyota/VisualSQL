@@ -1,31 +1,50 @@
 <template>
-  <div v-if="activeNode != null">
+  <div v-if="activeNode == null">
+
+    <div class="mx-5 mt-4">
+      No currently active node
+    </div>
+
+  </div>
 
 
-    <div>
-      <div class="mb-1 body-2 grey--text text--lighten-1">
+  <div v-else class="mb-6">
+
+    <div class="mx-5 mt-4 font-weight-medium">
+      {{ $app.nodeTypes[activeNode.type].description }} node
+    </div>
+
+
+
+    <v-divider class="mt-3">
+    </v-divider>
+
+
+
+    <div class="mx-5 mt-5">
+      <div class="body-2 grey--text text--lighten-1">
         Node name:
       </div>
 
       <v-text-field dense solo hide-details
-      class="body-2" v-model="activeNode.name">
+      class="mt-1 body-2" v-model="activeNode.name">
       </v-text-field>
     </div>
     
 
-    <div class="mt-4">
-      <div class="mb-1 body-2 grey--text text--lighten-1">
+    <div class="mx-5 mt-5">
+      <div class="body-2 grey--text text--lighten-1">
         Node description:
       </div>
 
-      <v-textarea dense solo hide-details class="body-2"
+      <v-textarea dense solo hide-details class="mt-1 body-2"
       no-resize rows="2" v-model="activeNode.description">
       </v-textarea>
     </div>
 
 
 
-    <v-divider class="mt-5">
+    <v-divider class="mt-6" v-if="activeNode.type !== 'output'">
     </v-divider>
 
 

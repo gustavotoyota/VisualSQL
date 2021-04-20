@@ -2,16 +2,17 @@
   <div v-if="node.type === 'transform'">
 
     
-    <div class="mt-4">
+    <div class="mx-5 mt-5">
       <v-switch hide-details label="Group rows"
       v-model="node.props.group">
       </v-switch>
     </div>
 
+
     <v-expand-transition>
       <div v-if="node.props.group">
-        <div class="mt-4">
-          <div class="mb-1 body-2 grey--text text--lighten-1">
+        <div class="mx-5 mt-5">
+          <div class="body-2 grey--text text--lighten-1">
             Columns to group by:
           </div>
 
@@ -37,8 +38,8 @@
         
 
 
-        <div class="mt-4" v-if="node.props.group">
-          <div class="mb-1 body-2 grey--text text--lighten-1">
+        <div class="mx-5 mt-5" v-if="node.props.group">
+          <div class="body-2 grey--text text--lighten-1">
             Grouped rows filter condition:
           </div>
 
@@ -67,13 +68,13 @@
 
 
 
-    <v-divider class="mt-5"></v-divider>
+    <v-divider class="mt-6"></v-divider>
 
 
 
 
-    <div class="mt-4">
-      <div class="mb-1 body-2 grey--text text--lighten-1">
+    <div class="mx-5 my-5">
+      <div class="body-2 grey--text text--lighten-1">
         Output columns:
       </div>
 

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="240" eager v-model="active">
+  <v-dialog max-width="270" eager v-model="active">
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -19,7 +19,7 @@
       </v-card-title>
 
       <v-card-text>
-        <div>Current project will be closed.</div>
+        <div>The current project will be closed.</div>
         <div>Are you sure?</div>
       </v-card-text>
 

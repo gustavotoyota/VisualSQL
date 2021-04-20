@@ -1,7 +1,8 @@
 <template>
-  <div v-if="node.type === 'reduce'" class="mt-4">
+  <div v-if="node.type === 'reduce'">
 
-    <div class="mt-4">
+
+    <div class="mx-5 mt-5">
       <div class="mb-1 body-2 grey--text text--lighten-1">
         Offset:
       </div>
@@ -12,7 +13,7 @@
     </div>
 
 
-    <div class="mt-4">
+    <div class="mx-5 mt-5">
       <div class="mb-1 body-2 grey--text text--lighten-1">
         Limit:
       </div>
@@ -21,6 +22,7 @@
       class="body-2" v-model="node.props.limit">
       </v-text-field>
     </div>
+
 
   </div>
 </template>
