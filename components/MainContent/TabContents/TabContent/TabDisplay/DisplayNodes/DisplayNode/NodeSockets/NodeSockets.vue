@@ -46,75 +46,14 @@ export default {
   methods: {
 
     inputPointerDown(socket, event) {
-      event.target.releasePointerCapture(event.pointerId)
-      
-      if (event.button !== 0)
-        return
-
-      this.tab.state = 'linking'
-      this.tab.newLink = {
-        from: null,
-        to: this.node.id,
-        socket: socket,
-      }
     },
     inputPointerUp(socket, event) {
-      if (event.button !== 0)
-        return
-
-      if (this.tab.newLink == null)
-        return
-
-      if (typeof(this.tab.newLink.from) === 'number'
-      && this.tab.newLink.from !== this.node.id) {
-
-        this.tab.newLink.to = this.node.id
-        this.tab.newLink.socket = socket
-
-        this.$store.commit('createLink', {
-          moduleId: this.tab.moduleId,
-          link: this.tab.newLink,
-        })
-
-      }
-
-      this.tab.newLink = null
     },
 
 
     outputPointerDown(event) {
-      event.target.releasePointerCapture(event.pointerId)
-
-      if (event.button !== 0)
-        return
-
-      this.tab.state = 'linking'
-      this.tab.newLink = {
-        from: this.node.id,
-        to: null,
-        socket: null,
-      }
     },
     outputPointerUp(event) {
-      if (event.button !== 0)
-        return
-
-      if (this.tab.newLink == null)
-        return
-
-      if (typeof(this.tab.newLink.to) === 'number'
-      && this.tab.newLink.to !== this.node.id) {
-
-        this.tab.newLink.from = this.node.id
-
-        this.$store.commit('createLink', {
-          moduleId: this.tab.moduleId,
-          link: this.tab.newLink,
-        })
-
-      }
-
-      this.tab.newLink = null
     },
     
   },

@@ -65,43 +65,6 @@ export default {
   methods: {
 
     onPointerDown(event) {
-      event.target.releasePointerCapture(event.pointerId)
-
-
-
-      if (!event.isPrimary)
-        return
-
-
-
-      if (event.button === 0)
-        event.stopPropagation()
-      else
-        return
-
-
-      
-      if (!event.ctrlKey && !this.selected)
-        this.tab.nodes.selected = {}
-
-
-
-      if (event.ctrlKey && this.selected) {
-        this.$delete(this.tab.nodes.selected, this.node.id)
-
-        this.tab.nodes.active = null
-      } else {
-        this.$set(this.tab.nodes.selected, this.node.id, this.node)
-        
-        this.tab.nodes.active = this.node
-      }
-
-
-
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
-
-      this.tab.state = 'dragging'
-      this.tab.nodes.dragPos = { ...pointerPos }
     },
 
   },
