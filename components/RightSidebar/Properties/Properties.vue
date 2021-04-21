@@ -27,7 +27,7 @@
       </div>
 
       <v-text-field dense solo hide-details
-      class="mt-1 body-2" v-model="activeNode.name">
+      class="mt-1 body-2" v-model="activeNode.props.name">
       </v-text-field>
     </div>
     
@@ -38,7 +38,7 @@
       </div>
 
       <v-textarea dense solo hide-details class="mt-1 body-2"
-      no-resize rows="2" v-model="activeNode.description">
+      no-resize rows="2" v-model="activeNode.props.description">
       </v-textarea>
     </div>
 

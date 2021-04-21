@@ -41,8 +41,8 @@ export default {
 
       for (let module of this.modules)
         for (let node of Object.values(module.nodes))
-          if (node.name !== '')
-            nodeNames.push(module.name + '.' + node.name)
+          if (node.props.name !== '')
+            nodeNames.push(module.name + '.' + node.props.name)
 
       return nodeNames
     },

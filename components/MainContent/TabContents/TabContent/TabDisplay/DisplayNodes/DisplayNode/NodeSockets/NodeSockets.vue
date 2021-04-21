@@ -24,7 +24,7 @@
 
     <!-- Output sockets -->
     
-    <NodeSocket v-if="node.outgoingLinks != null" style="left: 34px"
+    <NodeSocket v-if="$app.nodeTypes[node.type].hasOutput" style="left: 34px"
     @pointerdown="outputPointerDown" @pointerup="outputPointerUp">
     </NodeSocket>
 

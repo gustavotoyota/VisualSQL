@@ -8,7 +8,7 @@
       </div>
 
       <MonacoEditor
-        class="mt-1 editor" v-model="node.props.sql" language="sql"
+        class="mt-1 editor" v-model="node.props.condition" language="sql"
         style="height: 100px; border-radius: 5px; overflow: hidden"
         :options="{
           theme: 'vs-dark',
