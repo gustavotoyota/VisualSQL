@@ -1,16 +1,20 @@
 <template>
-  <div v-if="$app.nodeTypes[node.type].category === 'set-operations'" class="mt-4">
+  <div v-if="$app.nodeTypes[node.type].category === 'set-operations'">
 
-    <v-radio-group v-model="node.type">
-      <template v-slot:label>
-        <div>Set operation:</div>
-      </template>
-      
-      <v-radio label="Union all" value="union-all"></v-radio>
-      <v-radio label="Union" value="union"></v-radio>
-      <v-radio label="Except" value="except"></v-radio>
-      <v-radio label="Intersect" value="intersect"></v-radio>
-    </v-radio-group>
+
+    <div class="mx-5">
+      <v-radio-group v-model="node.type">
+        <template v-slot:label>
+          <div>Set operation:</div>
+        </template>
+        
+        <v-radio label="Union all" value="union-all"></v-radio>
+        <v-radio label="Union" value="union"></v-radio>
+        <v-radio label="Except" value="except"></v-radio>
+        <v-radio label="Intersect" value="intersect"></v-radio>
+      </v-radio-group>
+    </div>
+
 
   </div>
 </template>

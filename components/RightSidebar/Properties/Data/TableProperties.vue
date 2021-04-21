@@ -1,15 +1,16 @@
 <template>
-  <div v-if="node.type === 'table'" class="mt-4">
+  <div v-if="node.type === 'table'">
 
 
-    <div class="mb-1 body-2 grey--text text--lighten-1">
-      Referenced table:
+    <div class="mx-5 mt-5">
+      <div class="body-2 grey--text text--lighten-1">
+        Referenced table:
+      </div>
+
+      <v-combobox class="mt-1" dense solo hide-details
+      :items="tableNames" v-model="node.props.tableName">
+      </v-combobox>
     </div>
-
-
-    <v-combobox dense solo :items="tableNames"
-    v-model="node.props.tableName">
-    </v-combobox>
 
 
   </div>

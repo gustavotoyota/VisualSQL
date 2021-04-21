@@ -1,15 +1,17 @@
 <template>
-  <div v-if="node.type === 'node'" class="mt-4">
+  <div v-if="node.type === 'node'">
 
 
-    <div class="mb-1 body-2 grey--text text--lighten-1">
-      Referenced node:
+    <div class="mx-5 mt-5">
+      <div class="body-2 grey--text text--lighten-1">
+        Referenced node:
+      </div>
+
+
+      <v-autocomplete class="mt-1" dense solo
+      :items="nodeNames" v-model="node.props.nodeName">
+      </v-autocomplete>
     </div>
-
-
-    <v-autocomplete dense solo :items="nodeNames"
-    v-model="node.props.nodeName">
-    </v-autocomplete>
 
 
   </div>
@@ -28,8 +30,8 @@ export default {
   computed: {
 
 
-    ..._vuex.mapGetters([
-      'currentModule',
+    ..._vuex.mapFields([
+      'project.modules',
     ]),
     
 
@@ -37,9 +39,10 @@ export default {
     nodeNames() {
       let nodeNames = []
 
-      for (let node of Object.values(this.currentModule.nodes))
-        if (node.name !== '')
-          nodeNames.push(node.name)
+      for (let module of this.modules)
+        for (let node of Object.values(module.nodes))
+          if (node.name !== '')
+            nodeNames.push(module.name + '.' + node.name)
 
       return nodeNames
     },
