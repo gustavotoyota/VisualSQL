@@ -55,6 +55,15 @@ export default {
         
       if (event.code === 'Delete')
         this.$store.commit('deleteSelectedNodes')
+
+      else if (event.code === 'KeyX' && event.ctrlKey)
+        this.$store.commit('cutSelectedNodes')
+
+      else if (event.code === 'KeyC' && event.ctrlKey)
+        this.$store.commit('copySelectedNodes')
+
+      else if (event.code === 'KeyV' && event.ctrlKey)
+        this.$store.commit('pasteNodes')
     })
   },
 

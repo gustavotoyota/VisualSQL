@@ -22,7 +22,7 @@
     <div class="body-2" style="position: absolute; bottom: 34px;
     transform: translateX(-50%); text-align: center;
     max-width: 150px; width: max-content; word-break: break-all">
-      {{ node.name }}
+      {{ node.props.name }}
     </div>
 
 
@@ -30,7 +30,7 @@
     <div class="body-2" style="position: absolute; top: 34px;
     transform: translateX(-50%); text-align: center;
     max-width: 150px; width: max-content; word-break: break-word;
-    white-space: pre-wrap">{{ node.description }}</div>
+    white-space: pre-wrap">{{ node.props.description }}</div>
     
 
 

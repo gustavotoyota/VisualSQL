@@ -2,6 +2,12 @@ global._app = {}
 
 
 
+_app.deepCopy = (obj) => {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+
+
 _app.minZoom = Math.pow(1 / 1.2, 12)
 _app.maxZoom = Math.pow(1.2, 12)
 
@@ -192,7 +198,8 @@ _app.nodeTypes = {
         columns: '',
         condition: '',
       },
-      condition: '',
+      
+      columns: '',
     },
   },
   'distinct': {

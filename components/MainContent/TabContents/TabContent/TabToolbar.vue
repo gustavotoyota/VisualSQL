@@ -3,15 +3,15 @@
 
 
 
-    <ToolbarButton tooltip="Cut">
+    <ToolbarButton tooltip="Cut" @click="$store.commit('cutSelectedNodes')">
       <v-icon dense>mdi-content-cut</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Copy">
+    <ToolbarButton tooltip="Copy" @click="$store.commit('copySelectedNodes')">
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Paste">
+    <ToolbarButton tooltip="Paste" @click="$store.commit('pasteNodes')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 

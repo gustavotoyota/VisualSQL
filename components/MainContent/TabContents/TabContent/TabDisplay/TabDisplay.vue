@@ -45,6 +45,8 @@ export default {
   mounted() {
     document.addEventListener('pointermove', this.onPointerMove)
     document.addEventListener('pointerup', this.onPointerUp)
+
+    this.$store.commit('fitScreen')
   },
 
 
