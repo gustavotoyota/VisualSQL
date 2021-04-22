@@ -25,22 +25,12 @@
 
 
 
-    <ToolbarButton tooltip="Undo">
+    <ToolbarButton tooltip="Undo" @click="$store.commit('undo')">
       <v-icon dense>mdi-undo</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Redo">
+    <ToolbarButton tooltip="Redo" @click="$store.commit('redo')">
       <v-icon dense>mdi-redo</v-icon>
-    </ToolbarButton>
-
-
-
-    <v-divider vertical inset class="mx-2"></v-divider>
-
-
-
-    <ToolbarButton tooltip="Duplicate">
-      <v-icon dense>mdi-content-duplicate</v-icon>
     </ToolbarButton>
     
 

@@ -117,6 +117,23 @@ export const mutations = {
 
 
 
+  createTable(state, payload) {
+    state.project.tables.push({
+      id: state.project.nextTableId++,
+
+      name: payload.name,
+
+      columns: payload.columns,
+    })
+  },
+  deleteTable(state, tableId) {
+    state.project.tables.splice(
+      this.getters.getTableIdx(tableId), 1)
+  },
+
+
+
+
   createTab(state, moduleId) {
     let moduleTab = this.getters.getModuleTab(moduleId)
 
@@ -130,7 +147,10 @@ export const mutations = {
           pos: { x: 0, y: 0 },
           zoom: 1,
 
+          
           panPos: null,
+          panStart: null,
+          panTimeout: null,
 
           pinch: {
             pointers: {},
@@ -144,6 +164,7 @@ export const mutations = {
           active: null,
 
           dragPos: null,
+          dragged: false,
 
           selection: {
             start: null,
@@ -152,6 +173,9 @@ export const mutations = {
         },
 
         newLink: null,
+
+        states: [],
+        currentStateIdx: -1,
       }
 
       state.project.tabs.push(moduleTab)
@@ -161,23 +185,6 @@ export const mutations = {
   },
   closeTab(state, tabId) {
     state.project.tabs.splice(this.getters.getTabIdx(tabId), 1)
-  },
-
-
-
-
-  createTable(state, payload) {
-    state.project.tables.push({
-      id: state.project.nextTableId++,
-
-      name: payload.name,
-
-      columns: payload.columns,
-    })
-  },
-  deleteTable(state, tableId) {
-    state.project.tables.splice(
-      this.getters.getTableIdx(tableId), 1)
   },
 
 
@@ -214,6 +221,11 @@ export const mutations = {
 
 
     Vue.set(module.nodes, node.id, node)
+
+
+
+    if (!payload.dontSaveState)
+      this.commit('saveState')
   },
   deleteNode(state, payload) {
     let module = this.getters.getModule(payload.moduleId)
@@ -221,22 +233,30 @@ export const mutations = {
     let node = module.nodes[payload.nodeId]
 
     for (let link of node.incomingLinks) {
-      if (link != null) {
-        this.commit('deleteLink', {
-          moduleId: module.id,
-          linkId: link.id,
-        })
-      }
+      if (link == null)
+        continue
+
+      this.commit('deleteLink', {
+        moduleId: module.id,
+        linkId: link.id,
+
+        dontSaveState: true,
+      })
     }
 
-    for (let linkId in node.outgoingLinks) {
+    for (let linkId of Object.keys(node.outgoingLinks)) {
       this.commit('deleteLink', {
         moduleId: module.id,
         linkId: linkId,
+
+        dontSaveState: true,
       })
     }
 
     Vue.delete(module.nodes, node.id)
+
+    if (!payload.dontSaveState)
+      this.commit('saveState')
   },
 
 
@@ -260,6 +280,11 @@ export const mutations = {
     Vue.set(module.nodes[link.to].incomingLinks, link.socket, link)
 
     Vue.set(module.links, link.id, link)
+
+
+
+    if (!payload.dontSaveState)
+      this.commit('saveState')
   },
 
   deleteLink(state, payload) {
@@ -271,6 +296,11 @@ export const mutations = {
     Vue.set(module.nodes[link.to].incomingLinks, link.socket, null)
 
     Vue.delete(module.links, link.id)
+
+
+    
+    if (!payload.dontSaveState)
+      this.commit('saveState')
   },
 
 
@@ -282,12 +312,18 @@ export const mutations = {
     if (tab == null)
       return
 
-    for (let nodeId in tab.nodes.selected) {
+    for (let nodeId of Object.keys(tab.nodes.selected)) {
       this.commit('deleteNode', {
         moduleId: tab.moduleId,
         nodeId: nodeId,
+
+        dontSaveState: true,
       })
     }
+
+
+    
+    this.commit('saveState')
   },
 
 
@@ -417,7 +453,9 @@ export const mutations = {
           },
 
           props: _app.deepCopy(node.props),
-        }
+        },
+
+        dontSaveState: true,
       })
     }
 
@@ -433,7 +471,9 @@ export const mutations = {
           from: firstNodeId + link.from,
           to: firstNodeId + link.to,
           socket: link.socket,
-        }
+        },
+
+        dontSaveState: true,
       })
 
       module.nodes[firstNodeId + link.from].outgoingLinks[linkId] = module.links[linkId]
@@ -447,6 +487,10 @@ export const mutations = {
       Vue.set(tab.nodes.selected, nodeId, module.nodes[nodeId])
 
     tab.nodes.active = module.nodes[firstNodeId]
+
+
+    
+    this.commit('saveState')
   },
 
 
@@ -499,6 +543,80 @@ export const mutations = {
       tab.camera.zoom = Math.min(tab.camera.zoom,
         (Math.min(75, displayRect.height / 4) - displayRect.height / 2) /
         (topLeft.y - tab.camera.pos.y))
+ 
+    tab.camera.zoom = Math.max(tab.camera.zoom, _app.minZoom)
+  },
+
+
+
+
+  saveState(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+
+
+
+    
+    tab.states.splice(++tab.currentStateIdx)
+    tab.states.push(JSON.stringify(module))
+  }, 
+  undo(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+
+
+
+
+    if (tab.currentStateIdx === 0)
+      return
+
+    Object.assign(module, JSON.parse(tab.states[--tab.currentStateIdx]))
+
+    tab.nodes.selected = {}
+  },
+  redo(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+
+
+
+
+    if (tab.currentStateIdx === tab.states.length - 1)
+      return
+    
+    Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
+
+    tab.nodes.selected = {}
+  },
+
+
+
+
+  selectAllNodes(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+      
+
+
+    tab.nodes.selected = {}
+    for (let node of Object.values(module.nodes))
+      tab.nodes.selected[node.id] = node
   },
 
 
