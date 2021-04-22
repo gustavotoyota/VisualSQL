@@ -16,8 +16,10 @@
 
 
 
+
     <v-divider class="mt-3">
     </v-divider>
+
 
 
 
@@ -44,8 +46,10 @@
 
 
 
+
     <v-divider class="mt-6" v-if="activeNode.type !== 'output'">
     </v-divider>
+
 
 
 
@@ -70,6 +74,9 @@
 </template>
 
 <script>
+let ignoreWatch = false
+let firstChange = false
+
 export default {
   
   computed: {
@@ -78,7 +85,35 @@ export default {
       'activeNode',
     ]),
     
-  }
+  },
+
+  watch: {
+
+    activeNode: function () {
+      ignoreWatch = true
+    },
+
+    'activeNode.props': {
+      handler: function () {
+        if (ignoreWatch) {
+          ignoreWatch = false
+          firstChange = true
+          return
+        }
+
+        if (firstChange) {
+          firstChange = false
+          this.$store.commit('saveState')
+          return
+        }
+
+        this.$store.commit('replaceState')
+      },
+
+      deep: true,
+    },
+
+  },
 
 }
 </script>

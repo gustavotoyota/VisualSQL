@@ -335,7 +335,9 @@ export const mutations = {
   copySelectedNodes(state) {
     let tab = this.getters.currentTab
 
-    if (tab == null) {
+    let selectedNodes = Object.values(tab.nodes.selected)
+
+    if (tab == null || selectedNodes.length === 0) {
       state.clipboard = null
       return
     }
@@ -346,8 +348,6 @@ export const mutations = {
     // Calculate center position
 
     let centerPos = { x: 0, y: 0 }
-
-    let selectedNodes = Object.values(tab.nodes.selected)
 
     for (let node of selectedNodes) {
       centerPos.x += node.pos.x
@@ -559,11 +559,37 @@ export const mutations = {
     let module = this.getters.getModule(tab.moduleId)
 
 
+    
 
+    let moduleState = _app.deepCopy(module)
+
+    delete moduleState.name
     
     tab.states.splice(++tab.currentStateIdx)
-    tab.states.push(JSON.stringify(module))
-  }, 
+    tab.states.push(JSON.stringify(moduleState))
+  },
+  replaceState(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+
+
+    
+
+    let moduleState = _app.deepCopy(module)
+
+    delete moduleState.name
+    
+    tab.states.splice(tab.currentStateIdx)
+    Vue.set(tab.states, tab.currentStateIdx, JSON.stringify(moduleState))
+  },
+
+
+
+
   undo(state) {
     let tab = this.getters.currentTab
 

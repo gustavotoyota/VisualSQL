@@ -30,16 +30,6 @@
 
 
 
-    <ToolbarButton tooltip="Settings">
-      <v-icon dense>mdi-cog</v-icon>
-    </ToolbarButton>
-
-
-
-    <v-divider vertical inset class="mx-2"></v-divider>
-
-
-
     <ToolbarButton tooltip="Help">
       <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>

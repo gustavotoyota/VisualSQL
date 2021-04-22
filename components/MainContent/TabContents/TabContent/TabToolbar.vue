@@ -3,19 +3,23 @@
 
 
 
-    <ToolbarButton tooltip="Cut" @click="$store.commit('cutSelectedNodes')">
+    <ToolbarButton tooltip="Cut" :disabled="emptySelection"
+    @click="$store.commit('cutSelectedNodes')">
       <v-icon dense>mdi-content-cut</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Copy" @click="$store.commit('copySelectedNodes')">
+    <ToolbarButton tooltip="Copy" :disabled="emptySelection"
+    @click="$store.commit('copySelectedNodes')">
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Paste" @click="$store.commit('pasteNodes')">
+    <ToolbarButton tooltip="Paste" :disabled="clipboard == null"
+    @click="$store.commit('pasteNodes')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Delete" @click="$store.commit('deleteSelectedNodes')">
+    <ToolbarButton tooltip="Delete" :disabled="emptySelection"
+    @click="$store.commit('deleteSelectedNodes')">
       <v-icon dense>mdi-delete</v-icon>
     </ToolbarButton>
 
@@ -25,11 +29,13 @@
 
 
 
-    <ToolbarButton tooltip="Undo" @click="$store.commit('undo')">
+    <ToolbarButton tooltip="Undo" :disabled="tab.currentStateIdx === 0"
+    @click="$store.commit('undo')">
       <v-icon dense>mdi-undo</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Redo" @click="$store.commit('redo')">
+    <ToolbarButton tooltip="Redo" :disabled="tab.currentStateIdx === tab.states.length - 1"
+    @click="$store.commit('redo')">
       <v-icon dense>mdi-redo</v-icon>
     </ToolbarButton>
     
@@ -39,7 +45,7 @@
 
 
 
-    <v-btn depressed small>
+    <v-btn depressed small text :disabled="emptySelection">
       Generate SQL
     </v-btn>
 
@@ -48,6 +54,24 @@
 
 <script>
 export default {
+
+  props: {
+    tab: Object,
+  },
+
+  
+
+  computed: {
+
+    ..._vuex.mapFields([
+      'clipboard',
+    ]),
+
+    emptySelection() {
+      return Object.keys(this.tab.nodes.selected).length === 0
+    },
+
+  },
 
 }
 </script>
