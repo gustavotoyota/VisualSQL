@@ -8,7 +8,7 @@ _app.deepCopy = (obj) => {
 
 
 
-_app.minZoom = Math.pow(1 / 1.2, 12)
+_app.minZoom = Math.pow(1 / 1.2, 16)
 _app.maxZoom = Math.pow(1.2, 12)
 
 

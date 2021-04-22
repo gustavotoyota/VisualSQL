@@ -49,23 +49,63 @@ export default {
     this.sidebars.right = innerWidth >= 900
 
 
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener('keydown', this.onKeyDown)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.onKeyDown)
+  },
+
+
+
+  methods: {
+
+    onKeyDown(event) {
       if (document.activeElement !== document.body)
         return
+
         
-      if (event.code === 'Delete')
+
+      if (event.code === 'KeyA' && event.ctrlKey) {
+        this.$store.commit('selectAllNodes')
+        return
+      }
+
+        
+
+      if (event.code === 'Delete') {
         this.$store.commit('deleteSelectedNodes')
+        return
+      }
 
-      else if (event.code === 'KeyX' && event.ctrlKey)
+
+
+      if (event.code === 'KeyX' && event.ctrlKey) {
         this.$store.commit('cutSelectedNodes')
-
-      else if (event.code === 'KeyC' && event.ctrlKey)
+        return
+      }
+      if (event.code === 'KeyC' && event.ctrlKey) {
         this.$store.commit('copySelectedNodes')
-
-      else if (event.code === 'KeyV' && event.ctrlKey)
+        return
+      }
+      if (event.code === 'KeyV' && event.ctrlKey) {
         this.$store.commit('pasteNodes')
-    })
+        return
+      }
+
+
+
+      if (event.code === 'KeyZ' && event.ctrlKey) {
+        this.$store.commit('undo')
+        return
+      }
+      if (event.code === 'KeyY' && event.ctrlKey) {
+        this.$store.commit('redo')
+        return
+      }
+    },
+
   },
+
 
 }
 </script>

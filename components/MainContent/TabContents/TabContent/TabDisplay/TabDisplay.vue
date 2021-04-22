@@ -47,6 +47,8 @@ export default {
     document.addEventListener('pointerup', this.onPointerUp)
 
     this.$store.commit('fitScreen')
+
+    this.$store.commit('saveState')
   },
 
 
@@ -72,6 +74,14 @@ export default {
 
 
     onPointerDown(event) {
+      if (!event.isPrimary) {
+        this.tab.camera.panTimeout = null
+        return
+      }
+
+
+
+
       let pointerPos = _app.getPointerPos(this.tab.id, event)
 
 
@@ -79,8 +89,24 @@ export default {
       
       // Panning
 
-      if (event.pointerType !== 'mouse' || event.button === 1)
+      if (event.pointerType !== 'mouse' || event.button === 1) {
         this.tab.camera.panPos = { ...pointerPos }
+
+        if (event.pointerType !== 'mouse') {
+          this.tab.camera.panStart = { ...pointerPos }
+
+          this.tab.camera.panTimeout = setTimeout(() => {
+            if (this.tab.camera.panTimeout == null)
+              return
+
+            this.tab.camera.panPos = null
+            this.tab.camera.panTimeout = null
+
+            this.tab.nodes.selection.start = { ...pointerPos }
+            this.tab.nodes.selection.end = { ...pointerPos }
+          }, 300)
+        }
+      }
 
 
 
@@ -192,6 +218,15 @@ export default {
         
         this.tab.camera.panPos = { ...pointerPos }
 
+        if (event.pointerType !== 'mouse' && this.tab.camera.panTimeout != null) {
+          let dist = Math.sqrt(
+            Math.pow(pointerPos.x - this.tab.camera.panStart.x, 2) +
+            Math.pow(pointerPos.y - this.tab.camera.panStart.y, 2))
+
+          if (dist > 5)
+            this.tab.camera.panTimeout = null
+        }
+
         return
       }
 
@@ -218,6 +253,7 @@ export default {
         }
 
         this.tab.nodes.dragPos = { ...pointerPos }
+        this.tab.nodes.dragged = true
 
         return
       }
@@ -242,6 +278,11 @@ export default {
     
 
     onPointerUp(event) {
+      let pointerPos = _app.getPointerPos(this.tab.id, event)
+
+
+      
+
       // Remove pinch pointer
 
       if (event.pointerId in this.tab.camera.pinch.pointers) {
@@ -258,8 +299,12 @@ export default {
 
       // Panning
 
-      if (event.pointerType !== 'mouse' || event.button === 1)
+      if (this.tab.camera.panPos != null &&
+      (event.pointerType !== 'mouse' || event.button === 1)) {
         this.tab.camera.panPos = null
+        this.tab.camera.panStart = null
+        this.tab.camera.panTimeout = null
+      }
 
 
 
@@ -301,15 +346,19 @@ export default {
 
       // Dragging
 
-      if (event.button === 0)
+      if (this.tab.nodes.dragPos != null && event.button === 0) {
         this.tab.nodes.dragPos = null
+        
+        if (this.tab.nodes.dragged)
+          this.$store.commit('saveState')
+      }
 
         
 
 
       // Linking
       
-      if (event.button === 0)
+      if (this.tab.newLink != null && event.button === 0)
         this.tab.newLink = null
     },
     
