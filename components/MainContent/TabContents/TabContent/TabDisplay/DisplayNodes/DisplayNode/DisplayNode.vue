@@ -51,11 +51,11 @@ export default {
   computed: {
 
     selected() {
-      return this.node.id in this.tab.nodes.selected
+      return this.tab.nodes.selected.hasOwnProperty(this.node.id)
     },
 
     active() {
-      return this.tab.nodes.active === this.node
+      return this.tab.nodes.activeId === this.node.id
     },
 
   },
@@ -80,11 +80,11 @@ export default {
       if (event.ctrlKey && this.selected) {
         this.$delete(this.tab.nodes.selected, this.node.id)
 
-        this.tab.nodes.active = null
+        this.tab.nodes.activeId = null
       } else {
-        this.$set(this.tab.nodes.selected, this.node.id, this.node)
+        this.$set(this.tab.nodes.selected, this.node.id, true)
         
-        this.tab.nodes.active = this.node
+        this.tab.nodes.activeId = this.node.id
       }
 
 

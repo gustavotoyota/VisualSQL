@@ -161,7 +161,7 @@ export const mutations = {
 
         nodes: {
           selected: {},
-          active: null,
+          activeId: null,
 
           dragPos: null,
           dragged: false,
@@ -232,13 +232,13 @@ export const mutations = {
 
     let node = module.nodes[payload.nodeId]
 
-    for (let link of node.incomingLinks) {
-      if (link == null)
+    for (let linkId of node.incomingLinks) {
+      if (linkId == null)
         continue
 
       this.commit('deleteLink', {
         moduleId: module.id,
-        linkId: link.id,
+        linkId: linkId,
 
         dontSaveState: true,
       })
@@ -272,12 +272,12 @@ export const mutations = {
     if (module.nodes[link.to].incomingLinks[link.socket] != null) {
       this.commit('deleteLink', {
         moduleId: module.id,
-        linkId: module.nodes[link.to].incomingLinks[link.socket].id,
+        linkId: module.nodes[link.to].incomingLinks[link.socket],
       })
     }
 
-    Vue.set(module.nodes[link.from].outgoingLinks, link.id, link)
-    Vue.set(module.nodes[link.to].incomingLinks, link.socket, link)
+    Vue.set(module.nodes[link.from].outgoingLinks, link.id, true)
+    Vue.set(module.nodes[link.to].incomingLinks, link.socket, link.id)
 
     Vue.set(module.links, link.id, link)
 
@@ -341,9 +341,14 @@ export const mutations = {
     if (tab == null)
       return
 
+    let module = this.getters.getModule(tab.moduleId)
+    
 
 
-    let selectedNodes = Object.values(tab.nodes.selected)
+
+    let selectedNodes = []
+    for (let nodeId of Object.keys(tab.nodes.selected))
+      selectedNodes.push(module.nodes[nodeId])
 
     if (selectedNodes.length === 0)
       return
@@ -395,18 +400,20 @@ export const mutations = {
     let linkMap = {}
 
     for (let node of selectedNodes) {
-      for (let link of node.incomingLinks.concat(
-      Object.values(node.outgoingLinks))) {
-        if (link == null)
+      for (let linkId of node.incomingLinks.concat(
+      Object.keys(node.outgoingLinks))) {
+        if (linkId == null)
           continue
 
-        if (link.id in linkMap)
+        if (linkMap.hasOwnProperty(linkId))
           continue
 
-        if (!(link.from in tab.nodes.selected))
+        let link = module.links[linkId]
+
+        if (!tab.nodes.selected.hasOwnProperty(link.from))
           continue
 
-        if (!(link.to in tab.nodes.selected))
+        if (!tab.nodes.selected.hasOwnProperty(link.to))
           continue
         
         linkMap[link.id] = links.length
@@ -482,17 +489,17 @@ export const mutations = {
         dontSaveState: true,
       })
 
-      module.nodes[firstNodeId + link.from].outgoingLinks[linkId] = module.links[linkId]
-      module.nodes[firstNodeId + link.to].incomingLinks[link.socket] = module.links[linkId]
+      Vue.set(module.nodes[firstNodeId + link.from].outgoingLinks, linkId, true)
+      Vue.set(module.nodes[firstNodeId + link.to].incomingLinks, link.socket, linkId)
     }
 
 
 
     tab.nodes.selected = {}
     for (let nodeId = firstNodeId; nodeId < module.nextNodeId; ++nodeId)
-      Vue.set(tab.nodes.selected, nodeId, module.nodes[nodeId])
+      Vue.set(tab.nodes.selected, nodeId, true)
 
-    tab.nodes.active = module.nodes[firstNodeId]
+    tab.nodes.activeId = firstNodeId
 
 
     
@@ -648,7 +655,7 @@ export const mutations = {
 
     tab.nodes.selected = {}
     for (let node of Object.values(module.nodes))
-      tab.nodes.selected[node.id] = node
+      Vue.set(tab.nodes.selected, node.id, true)
   },
 
 
@@ -720,6 +727,8 @@ export const getters = {
     if (currentTab == null)
       return null
 
-    return currentTab.nodes.active
+    let currentModule = getters.getModule(currentTab.moduleId)
+
+    return currentModule.nodes[currentTab.nodes.activeId]
   },
 }
