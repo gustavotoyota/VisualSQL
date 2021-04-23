@@ -42,13 +42,17 @@ export default {
 
 
 
+  created() {
+    this.$store.commit('saveState')
+  },
+
+
+
   mounted() {
     document.addEventListener('pointermove', this.onPointerMove)
     document.addEventListener('pointerup', this.onPointerUp)
 
     this.$store.commit('fitScreen')
-
-    this.$store.commit('saveState')
   },
 
 

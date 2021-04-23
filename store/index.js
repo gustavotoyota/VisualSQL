@@ -312,6 +312,9 @@ export const mutations = {
     if (tab == null)
       return
 
+      
+      
+
     for (let nodeId of Object.keys(tab.nodes.selected)) {
       this.commit('deleteNode', {
         moduleId: tab.moduleId,
@@ -335,12 +338,15 @@ export const mutations = {
   copySelectedNodes(state) {
     let tab = this.getters.currentTab
 
+    if (tab == null)
+      return
+
+
+
     let selectedNodes = Object.values(tab.nodes.selected)
 
-    if (tab == null || selectedNodes.length === 0) {
-      state.clipboard = null
+    if (selectedNodes.length === 0)
       return
-    }
 
 
 

@@ -41,14 +41,17 @@ export default {
 
 
 
-  mounted() {
+  created() {
     this.$store.commit('resetProject')
+  },
 
 
+
+  mounted() {
     this.sidebars.left = innerWidth >= 900
     this.sidebars.right = innerWidth >= 900
 
-
+    
     document.addEventListener('keydown', this.onKeyDown)
   },
   beforeDestroy() {
