@@ -1,19 +1,4 @@
 global._app = {}
-
-
-
-_app.deepCopy = (obj) => {
-  return JSON.parse(JSON.stringify(obj))
-}
-
-
-
-_app.minZoom = Math.pow(1 / 1.2, 16)
-_app.maxZoom = Math.pow(1.2, 12)
-
-
-
-_app.socketOffset = { x: 34, y: 12 }
   
 
 
@@ -269,6 +254,21 @@ _app.nodeTypes = {
 
 
 
+_app.minZoom = Math.pow(1 / 1.2, 16)
+_app.maxZoom = Math.pow(1.2, 12)
+
+
+
+_app.socketOffset = { x: 34, y: 12 }
+
+
+
+_app.deepCopy = (obj) => {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+
+
 _app.getDisplayElem = function (tabId) {
   return document.getElementById(`display-${tabId}`)
 }
@@ -302,6 +302,7 @@ _app.screenToWorld = function (tab, screenPos) {
     y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
   }
 }
+
 
 
 
