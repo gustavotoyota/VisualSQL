@@ -74,7 +74,7 @@
 </template>
 
 <script>
-let ignoreWatch = false
+let lastActiveNode = null
 let firstChange = false
 
 export default {
@@ -88,18 +88,17 @@ export default {
   },
 
   watch: {
-
-    activeNode: function () {
-      ignoreWatch = true
-    },
-
+    
     'activeNode.props': {
       handler: function () {
-        if (ignoreWatch) {
-          ignoreWatch = false
+        if (this.activeNode !== lastActiveNode) {
           firstChange = true
+          lastActiveNode = this.activeNode
           return
         }
+
+        if (this.activeNode == null)
+          return
 
         if (firstChange) {
           firstChange = false

@@ -617,9 +617,10 @@ export const mutations = {
     if (tab.currentStateIdx === 0)
       return
 
-    Object.assign(module, JSON.parse(tab.states[--tab.currentStateIdx]))
-
     tab.nodes.selected = {}
+    tab.nodes.activeId = null
+
+    Object.assign(module, JSON.parse(tab.states[--tab.currentStateIdx]))
   },
   redo(state) {
     let tab = this.getters.currentTab
@@ -634,10 +635,11 @@ export const mutations = {
 
     if (tab.currentStateIdx === tab.states.length - 1)
       return
-    
-    Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
 
     tab.nodes.selected = {}
+    tab.nodes.activeId = null
+    
+    Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
   },
 
 
