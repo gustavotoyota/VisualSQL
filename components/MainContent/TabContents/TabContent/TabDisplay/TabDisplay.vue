@@ -118,7 +118,7 @@ export default {
       // Node deselection
 
       if (event.button === 0 && !event.ctrlKey) {
-        this.tab.nodes.active = null
+        this.tab.nodes.activeId = null
         this.tab.nodes.selected = {}
       }
 
@@ -140,7 +140,7 @@ export default {
 
       let pointerPos = _app.getPointerPos(this.tab.id, event)
       
-      if (event.pointerId in this.tab.camera.pinch.pointers)
+      if (this.tab.camera.pinch.pointers.hasOwnProperty(event.pointerId))
         this.$set(this.tab.camera.pinch.pointers, event.pointerId, pointerPos)
 
 
@@ -251,7 +251,9 @@ export default {
       // Dragging
 
       if (this.tab.nodes.dragPos != null) {
-        for (let node of Object.values(this.tab.nodes.selected)) {
+        for (let nodeId of Object.keys(this.tab.nodes.selected)) {
+          let node = this.module.nodes[nodeId]
+
           node.pos.x += (pointerPos.x - this.tab.nodes.dragPos.x) / this.tab.camera.zoom
           node.pos.y += (pointerPos.y - this.tab.nodes.dragPos.y) / this.tab.camera.zoom
         }
@@ -289,7 +291,7 @@ export default {
 
       // Remove pinch pointer
 
-      if (event.pointerId in this.tab.camera.pinch.pointers) {
+      if (this.tab.camera.pinch.pointers.hasOwnProperty(event.pointerId)) {
         this.$delete(this.tab.camera.pinch.pointers, event.pointerId)
 
         if (Object.keys(this.tab.camera.pinch.pointers).length === 1) {
@@ -334,10 +336,10 @@ export default {
           || node.pos.y < topLeft.y || node.pos.y > bottomRight.y)
             continue
 
-          if (node.id in this.tab.nodes.selected)
+          if (this.tab.nodes.selected.hasOwnProperty(node.id))
             this.$delete(this.tab.nodes.selected, node.id)
           else
-            this.$set(this.tab.nodes.selected, node.id, node)
+            this.$set(this.tab.nodes.selected, node.id, true)
         }
 
 
