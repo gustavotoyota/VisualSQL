@@ -14,8 +14,8 @@
 
 
 
-    <DisplayNodes :tab="tab" :module="module">
-    </DisplayNodes>
+    <DisplayView :tab="tab" :module="module">
+    </DisplayView>
 
 
     
@@ -106,8 +106,8 @@ export default {
             this.tab.camera.panPos = null
             this.tab.camera.panTimeout = null
 
-            this.tab.nodes.selection.start = { ...pointerPos }
-            this.tab.nodes.selection.end = { ...pointerPos }
+            this.tab.selection.start = { ...pointerPos }
+            this.tab.selection.end = { ...pointerPos }
           }, 300)
         }
       }
@@ -117,10 +117,8 @@ export default {
       
       // Node deselection
 
-      if (event.button === 0 && !event.ctrlKey) {
-        this.tab.nodes.activeId = null
-        this.tab.nodes.selected = {}
-      }
+      if (event.button === 0 && !event.ctrlKey)
+        this.$store.commit('clearSelection')
 
 
 
@@ -128,8 +126,8 @@ export default {
       // Selecting
 
       if (event.pointerType === 'mouse' && event.button === 0) {
-        this.tab.nodes.selection.start = { ...pointerPos }
-        this.tab.nodes.selection.end = { ...pointerPos }
+        this.tab.selection.start = { ...pointerPos }
+        this.tab.selection.end = { ...pointerPos }
       }
     },
 
@@ -239,8 +237,8 @@ export default {
 
       // Selecting
 
-      if (this.tab.nodes.selection.start != null) {
-        this.tab.nodes.selection.end = { ...pointerPos }
+      if (this.tab.selection.start != null) {
+        this.tab.selection.end = { ...pointerPos }
 
         return
       }
@@ -269,13 +267,13 @@ export default {
 
       // Linking
 
-      if (this.tab.newLink != null) {
+      if (this.tab.links.new != null) {
         let worldPos = _app.screenToWorld(this.tab, pointerPos)
 
-        if (typeof(this.tab.newLink.from) === 'number')
-          this.tab.newLink.to = { ...worldPos }
+        if (typeof(this.tab.links.new.from) === 'number')
+          this.tab.links.new.to = { ...worldPos }
         else
-          this.tab.newLink.from = { ...worldPos }
+          this.tab.links.new.from = { ...worldPos }
 
         return
       }
@@ -317,9 +315,9 @@ export default {
 
       // Selecting
 
-      if (event.button === 0 && this.tab, this.tab.nodes.selection.start != null) {
-        let worldStart = _app.screenToWorld(this.tab, this.tab.nodes.selection.start)
-        let worldEnd = _app.screenToWorld(this.tab, this.tab.nodes.selection.end)
+      if (event.button === 0 && this.tab, this.tab.selection.start != null) {
+        let worldStart = _app.screenToWorld(this.tab, this.tab.selection.start)
+        let worldEnd = _app.screenToWorld(this.tab, this.tab.selection.end)
 
         let topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),
@@ -343,8 +341,25 @@ export default {
         }
 
 
-        this.tab.nodes.selection.start = null
-        this.tab.nodes.selection.end = null
+        for (let link of Object.values(this.module.links)) {
+          let linkPos = {
+            x: (this.module.nodes[link.from].pos.x + this.module.nodes[link.to].pos.x) / 2,
+            y: (this.module.nodes[link.from].pos.y + this.module.nodes[link.to].pos.y) / 2,
+          }
+
+          if (linkPos.x < topLeft.x || linkPos.x > bottomRight.x
+          || linkPos.y < topLeft.y || linkPos.y > bottomRight.y)
+            continue
+
+          if (this.tab.links.selected.hasOwnProperty(link.id))
+            this.$delete(this.tab.links.selected, link.id)
+          else
+            this.$set(this.tab.links.selected, link.id, true)
+        }
+
+
+        this.tab.selection.start = null
+        this.tab.selection.end = null
       }
 
 
@@ -364,8 +379,8 @@ export default {
 
       // Linking
       
-      if (this.tab.newLink != null && event.button === 0)
-        this.tab.newLink = null
+      if (this.tab.links.new != null && event.button === 0)
+        this.tab.links.new = null
     },
     
 

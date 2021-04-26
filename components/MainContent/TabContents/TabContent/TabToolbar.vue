@@ -19,7 +19,7 @@
     </ToolbarButton>
 
     <ToolbarButton tooltip="Delete" :disabled="emptySelection"
-    @click="$store.commit('deleteSelectedNodes')">
+    @click="$store.commit('deleteSelection')">
       <v-icon dense>mdi-delete</v-icon>
     </ToolbarButton>
 

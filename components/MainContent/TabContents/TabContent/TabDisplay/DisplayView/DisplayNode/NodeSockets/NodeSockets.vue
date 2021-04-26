@@ -51,7 +51,7 @@ export default {
       if (event.button !== 0)
         return
 
-      this.tab.newLink = {
+      this.tab.links.new = {
         from: null,
         to: this.node.id,
         socket: socket,
@@ -61,23 +61,23 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.tab.newLink == null)
+      if (this.tab.links.new == null)
         return
 
-      if (typeof(this.tab.newLink.from) === 'number'
-      && this.tab.newLink.from !== this.node.id) {
+      if (typeof(this.tab.links.new.from) === 'number'
+      && this.tab.links.new.from !== this.node.id) {
 
-        this.tab.newLink.to = this.node.id
-        this.tab.newLink.socket = socket
+        this.tab.links.new.to = this.node.id
+        this.tab.links.new.socket = socket
 
         this.$store.commit('createLink', {
           moduleId: this.tab.moduleId,
-          link: this.tab.newLink,
+          link: this.tab.links.new,
         })
 
       }
 
-      this.tab.newLink = null
+      this.tab.links.new = null
     },
 
 
@@ -87,7 +87,7 @@ export default {
       if (event.button !== 0)
         return
 
-      this.tab.newLink = {
+      this.tab.links.new = {
         from: this.node.id,
         to: null,
         socket: null,
@@ -97,22 +97,22 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.tab.newLink == null)
+      if (this.tab.links.new == null)
         return
 
-      if (typeof(this.tab.newLink.to) === 'number'
-      && this.tab.newLink.to !== this.node.id) {
+      if (typeof(this.tab.links.new.to) === 'number'
+      && this.tab.links.new.to !== this.node.id) {
 
-        this.tab.newLink.from = this.node.id
+        this.tab.links.new.from = this.node.id
 
         this.$store.commit('createLink', {
           moduleId: this.tab.moduleId,
-          link: this.tab.newLink,
+          link: this.tab.links.new,
         })
 
       }
 
-      this.tab.newLink = null
+      this.tab.links.new = null
     },
     
   },

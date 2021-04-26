@@ -2,16 +2,32 @@
   <path :class="newLink ? 'newLink' : 'link'"
   :d="getLinkCommand()"
   :cursor="newLink ? '' : 'pointer'"
-  @pointerdown.stop="$emit('pointerdown')"/>
+  :style="active ? 'stroke: rgb(3, 155, 229)' : (selected ? 'stroke: rgb(1, 87, 155)' : '')"
+  @pointerdown="$emit('pointerdown', $event)"/>
 </template>
 
 <script>
 export default {
 
   props: {
+    tab: Object,
     module: Object,
+    
     link: Object,
     newLink: Boolean,
+  },
+
+
+  computed: {
+
+    selected() {
+      return this.tab.links.selected.hasOwnProperty(this.link.id)
+    },
+
+    active() {
+      return this.tab.links.activeId === this.link.id
+    },
+
   },
 
 

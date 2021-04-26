@@ -76,7 +76,7 @@ export default {
         
 
       if (event.code === 'Delete') {
-        this.$store.commit('deleteSelectedNodes')
+        this.$store.commit('deleteSelection')
         return
       }
 
