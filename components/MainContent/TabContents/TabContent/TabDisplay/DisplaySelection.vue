@@ -1,10 +1,10 @@
 <template>
-  <div v-if="tab.nodes.selection.start != null"
+  <div v-if="tab.selection.start != null"
   :style="{
-    left: `${Math.min(tab.nodes.selection.start.x, tab.nodes.selection.end.x)}px`,
-    top: `${Math.min(tab.nodes.selection.start.y, tab.nodes.selection.end.y)}px`,
-    width: `${Math.abs(tab.nodes.selection.end.x - tab.nodes.selection.start.x)}px`,
-    height: `${Math.abs(tab.nodes.selection.end.y - tab.nodes.selection.start.y)}px`,
+    left: `${Math.min(tab.selection.start.x, tab.selection.end.x)}px`,
+    top: `${Math.min(tab.selection.start.y, tab.selection.end.y)}px`,
+    width: `${Math.abs(tab.selection.end.x - tab.selection.start.x)}px`,
+    height: `${Math.abs(tab.selection.end.y - tab.selection.start.y)}px`,
   }" class="selection">
   </div>
 </template>

@@ -165,14 +165,19 @@ export const mutations = {
 
           dragPos: null,
           dragged: false,
-
-          selection: {
-            start: null,
-            end: null,
-          },
         },
 
-        newLink: null,
+        links: {
+          new: null,
+
+          selected: {},
+          activeId: null,
+        },
+
+        selection: {
+          start: null,
+          end: null,
+        },
 
         states: [],
         currentStateIdx: -1,
@@ -306,7 +311,23 @@ export const mutations = {
 
 
 
-  deleteSelectedNodes(state) {
+  clearSelection(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    tab.nodes.selected = {}
+    tab.nodes.activeId = null
+    
+    tab.links.selected = {}
+    tab.links.activeId = null
+  },
+
+
+
+
+  deleteSelection(state) {
     let tab = this.getters.currentTab
 
     if (tab == null)
@@ -314,6 +335,14 @@ export const mutations = {
 
       
       
+    for (let linkId of Object.keys(tab.links.selected)) {
+      this.commit('deleteLink', {
+        moduleId: tab.moduleId,
+        linkId: linkId,
+
+        dontSaveState: true,
+      })
+    }
 
     for (let nodeId of Object.keys(tab.nodes.selected)) {
       this.commit('deleteNode', {
@@ -325,7 +354,8 @@ export const mutations = {
     }
 
 
-    
+
+    this.commit('clearSelection')
     this.commit('saveState')
   },
 
@@ -333,7 +363,7 @@ export const mutations = {
 
   cutSelectedNodes(state) {
     this.commit('copySelectedNodes')
-    this.commit('deleteSelectedNodes')
+    this.commit('deleteSelection')
   },
   copySelectedNodes(state) {
     let tab = this.getters.currentTab

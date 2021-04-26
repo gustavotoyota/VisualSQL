@@ -73,8 +73,9 @@ export default {
 
 
       if (!event.ctrlKey && !this.selected)
-        this.tab.nodes.selected = {}
-
+        this.$store.commit('clearSelection')
+      else
+        this.tab.links.activeId = null
 
 
       if (event.ctrlKey && this.selected) {

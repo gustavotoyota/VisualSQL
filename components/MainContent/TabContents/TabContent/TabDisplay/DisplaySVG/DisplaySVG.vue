@@ -6,18 +6,18 @@
       'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)'">
 
         
-        <DisplayLink
+        <DisplayLink :tab="tab"
         v-for="link in module.links" :key="link.id"
         :module="module" :link="link"
-        @pointerdown="deleteLink(link.id)">
+        @pointerdown="selectLink(link, $event)">
         </DisplayLink>
         
 
-        <DisplayLink new-link
-        v-if="tab.newLink != null
-        && tab.newLink.from != null
-        && tab.newLink.to != null"
-        :module="module" :link="tab.newLink"/>
+        <DisplayLink new-link :tab="tab"
+        v-if="tab.links.new != null
+        && tab.links.new.from != null
+        && tab.links.new.to != null"
+        :module="module" :link="tab.links.new"/>
         
 
       </g>
@@ -36,11 +36,35 @@ export default {
 
   methods: {
 
-    deleteLink(linkId) {
-      this.$store.commit('deleteLink', {
-        moduleId: this.module.id,
-        linkId: linkId,
-      })
+    isLinkSelected(link) {
+      return this.tab.links.selected.hasOwnProperty(link.id)
+    },
+
+
+    selectLink(link, event) {
+      if (event.button === 0)
+        event.stopPropagation()
+      else
+        return
+
+
+
+      if (!event.ctrlKey && !this.isLinkSelected(link))
+        this.$store.commit('clearSelection')
+      else
+        this.tab.nodes.activeId = null
+
+
+        
+      if (event.ctrlKey && this.isLinkSelected(link)) {
+        this.$delete(this.tab.links.selected, link.id)
+        
+        this.tab.links.activeId = null
+      } else {
+        this.$set(this.tab.links.selected, link.id, true)
+        
+        this.tab.links.activeId = link.id
+      }
     },
 
   },
