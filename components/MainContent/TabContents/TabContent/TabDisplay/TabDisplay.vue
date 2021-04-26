@@ -14,8 +14,8 @@
 
 
 
-    <DisplayNodes :tab="tab" :module="module">
-    </DisplayNodes>
+    <DisplayView :tab="tab" :module="module">
+    </DisplayView>
 
 
     

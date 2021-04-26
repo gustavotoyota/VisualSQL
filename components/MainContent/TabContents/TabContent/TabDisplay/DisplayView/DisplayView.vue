@@ -15,10 +15,18 @@
       :style="{ transform: 'scale(' + tab.camera.zoom +') ' +
       'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)' }">
 
+
         <DisplayNode
-        v-for="node in module.nodes" :key="node.id"
+        v-for="node in module.nodes" :key="`node_${node.id}`"
         :node="node" :tab="tab">
         </DisplayNode>
+
+
+        <DisplayAlias
+        v-for="link in module.links" :key="`link_${link.id}`"
+        :module="module" :link="link">
+        </DisplayAlias>
+
 
       </div>
 

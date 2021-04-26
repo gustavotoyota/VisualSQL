@@ -272,6 +272,10 @@ export const mutations = {
 
     let link = Object.assign({
       id: module.nextLinkId++,
+
+      props: {
+        alias: '',
+      },
     }, payload.link)
 
     if (module.nodes[link.to].incomingLinks[link.socket] != null) {
@@ -762,5 +766,15 @@ export const getters = {
     let currentModule = getters.getModule(currentTab.moduleId)
 
     return currentModule.nodes[currentTab.nodes.activeId]
+  },
+  activeLink(state, getters) {
+    let currentTab = getters.currentTab
+
+    if (currentTab == null)
+      return null
+
+    let currentModule = getters.getModule(currentTab.moduleId)
+
+    return currentModule.links[currentTab.links.activeId]
   },
 }
