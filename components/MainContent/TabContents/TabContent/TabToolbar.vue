@@ -3,12 +3,12 @@
 
 
 
-    <ToolbarButton tooltip="Cut" :disabled="emptySelection"
+    <ToolbarButton tooltip="Cut" :disabled="emptyNodeSelection"
     @click="$store.commit('cutSelectedNodes')">
       <v-icon dense>mdi-content-cut</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Copy" :disabled="emptySelection"
+    <ToolbarButton tooltip="Copy" :disabled="emptyNodeSelection"
     @click="$store.commit('copySelectedNodes')">
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
@@ -45,7 +45,7 @@
 
 
 
-    <v-btn depressed small text :disabled="emptySelection">
+    <v-btn depressed small text :disabled="emptyNodeSelection">
       Generate SQL
     </v-btn>
 
@@ -67,8 +67,13 @@ export default {
       'clipboard',
     ]),
 
-    emptySelection() {
+    emptyNodeSelection() {
       return Object.keys(this.tab.nodes.selected).length === 0
+    },
+
+    emptySelection() {
+      return this.emptyNodeSelection &&
+        Object.keys(this.tab.links.selected).length === 0
     },
 
   },
