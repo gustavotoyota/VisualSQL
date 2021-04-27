@@ -1,5 +1,5 @@
 import treeGeneration from './sql-generation/tree-generation.js'
-
+import sqlGeneration from './sql-generation/sql-generation.js'
 
 
 global._app = {}
@@ -7,6 +7,7 @@ global._app = {}
 
 
 _app.treeGeneration = treeGeneration
+_app.sqlGeneration = sqlGeneration
   
 
 
@@ -293,6 +294,18 @@ _app.screenToWorld = function (tab, screenPos) {
     x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
     y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
   }
+}
+
+
+
+
+_app.indent = function (text, indentation) {
+  const parts = text.split('\n')
+
+  for (let i = 0; i < parts.length; ++i)
+    parts[i] = indentation + parts[i]
+
+  return parts.join('\n')
 }
 
 

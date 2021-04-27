@@ -1,42 +1,38 @@
 export default {
-  processNodes(store, module, root, options) {
-    let mainObj = {}
+  generateTree(store, module, root, options) {
+    let treeObj = {}
 
-    mainObj.options = options
+    treeObj.options = options
 
-    mainObj.store = store
+    treeObj.store = store
 
-    mainObj.error = false
-    mainObj.node = null
-    mainObj.message = ''
+    treeObj.error = null
+    treeObj.node = null
 
-    mainObj.commons = []
+    treeObj.commons = []
 
-    mainObj.rootObj = processNode(module, root, mainObj)
+    treeObj.rootObj = processNode(module, root, treeObj)
 
-    console.log(mainObj)
-
-    return mainObj
+    return treeObj
   }
 }
 
 
-function processNode(module, node, mainObj) {
+function processNode(module, node, treeObj) {
   let depObjs = []
 
   for (let linkId of node.incomingLinks) {
     let link = module.links[linkId]
     if (link == null) {
-      mainObj.error = true
-      mainObj.node = node
-      mainObj.message = 'Query incomplete: node input missing.'
+      treeObj.error = 'Query incomplete: node input missing.'
+      treeObj.node = node
       return
     }
 
     let dep = module.nodes[link.from]
-    let depObj = processNode(module, dep, mainObj)
+    let depObj = processNode(module, dep, treeObj)
 
-    if (mainObj.error)
+    if (treeObj.error)
       return
 
     depObjs.push(depObj)
@@ -47,7 +43,7 @@ function processNode(module, node, mainObj) {
 
   // Node type processing
 
-  let nodeObj = nodeTypeProcessing[node.type](node, depObjs, mainObj)
+  let nodeObj = nodeTypeProcessing[node.type](node, depObjs, treeObj)
 
 
   
@@ -61,12 +57,12 @@ function processNode(module, node, mainObj) {
   // Create common
 
   let commonName = module.name + '.' + node.props.name
-  let commonIdx = mainObj.commons.findIndex(common => common.name === commonName)
+  let commonIdx = treeObj.commons.findIndex(common => common.name === commonName)
 
   if (commonIdx < 0) {
-    commonIdx = mainObj.commons.length
+    commonIdx = treeObj.commons.length
 
-    mainObj.commons.push({
+    treeObj.commons.push({
       name: commonName,
 
       module: module,
@@ -109,11 +105,10 @@ let nodeTypeProcessing = {}
 
 // Data sources
 
-nodeTypeProcessing['table'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['table'] = (node, depObjs, treeObj) => {
   if (node.props.tableName === '') {
-    mainObj.error = true
-    mainObj.node = node
-    mainObj.message = 'Query incomplete: referenced table not found.'
+    treeObj.error = 'Query incomplete: referenced table not found.'
+    treeObj.node = node
     return
   }
 
@@ -131,26 +126,43 @@ nodeTypeProcessing['table'] = (node, depObjs, mainObj) => {
     ],
   }
 }
-nodeTypeProcessing['node'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['node'] = (node, depObjs, treeObj) => {
   // Get reference node object
 
   let parts = node.props.nodeName.split('.', 2)
 
-  let refModule = mainObj.store.state.project.modules.find(module => module.name === parts[0])
+  let refModule = treeObj.store.state.project.modules.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)
     refNode = Object.values(refModule.nodes).find(node => node.props.name === parts[1])
 
-  let refNodeObj = processNode(refModule, refNode, mainObj)
+  if (refNode == null) {
+    treeObj.error = 'Query incomplete: referenced node not found.'
+    treeObj.node = node
+    return
+  }
 
-  return refNodeObj
+  processNode(refModule, refNode, treeObj)
+
+  return {
+    objectType: 'select',
+
+    clauseLevel: sqlClauseLevels['from'],
+
+    from: [
+      {
+        sourceType: 'common',
+
+        commonName: node.props.nodeName,
+      },
+    ],
+  }
 }
-nodeTypeProcessing['sql'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['sql'] = (node, depObjs, treeObj) => {
   if (node.props.sql.trim() === '') {
-    mainObj.error = true
-    mainObj.node = node
-    mainObj.message = 'Query incomplete: SQL is empty.'
+    treeObj.error = 'Query incomplete: SQL is empty.'
+    treeObj.node = node
     return
   }
 
@@ -175,17 +187,43 @@ nodeTypeProcessing['sql'] = (node, depObjs, mainObj) => {
 
 // Set operations
 
-function setOperationProcessing(node, depObjs, mainObj) {
-  return {
-    objectType: 'set-operation',
+function setOperationProcessing(node, depObjs, treeObj) {
+  // First object
 
+  let nodeObj
+
+  if (depObjs[0].objectType === 'set-operations') {
+    nodeObj = _app.notSoShallowCopy(depObjs[0])
+  } else {
+    nodeObj = {
+      objectType: 'set-operations',
+
+      sources: [
+        { obj: depObjs[0] },
+      ],
+    }
+  }
+
+
+
+  // Second object
+
+  if (depObjs[1].objectType === 'set-operations'
+  && depObjs[1].sources.length === 1)
+    nodeObj.sources.push({ ...depObjs[1].sources[0] })
+  else
+    nodeObj.sources.push({ obj: depObjs[1] })
+
+  Object.assign(nodeObj.sources[nodeObj.sources.length - 1], {
     operationType: node.type,
 
-    objA: depObjs[0],
-    objB: depObjs[1],
-
     allowDuplicates: node.props.allowDuplicates,
-  }
+  })
+  
+
+
+
+  return nodeObj
 }
 
 nodeTypeProcessing['union'] = setOperationProcessing
@@ -197,7 +235,7 @@ nodeTypeProcessing['intersection'] = setOperationProcessing
 
 // Joins
 
-function joinProcessing(node, depObjs, mainObj) {
+function joinProcessing(node, depObjs, treeObj) {
   // First object
 
   let nodeObj = initNodeObj(depObjs[0], 'from')
@@ -208,23 +246,15 @@ function joinProcessing(node, depObjs, mainObj) {
 
   if (depObjs[1].objectType === 'select'
   && depObjs[1].clauseLevel <= sqlClauseLevels['from']
-  && depObjs[1].from.length === 1) {
-    nodeObj.from.push({
-      ...depObjs[1].from[0],
+  && depObjs[1].from.length === 1)
+    nodeObj.from.push({ ...depObjs[1].from[0] })
+  else
+    nodeObj.from.push({ sourceType: 'object', obj: depObjs[1] })
 
-      joinType: node.type,
-      joinCondition: node.props.condition,
-    })
-  } else {
-    nodeObj.from.push({
-      sourceType: 'object',
-
-      obj: depObjs[1],
-
-      joinType: node.type,
-      joinCondition: node.props.condition,
-    })
-  }
+  Object.assign(nodeObj.from[nodeObj.from.length - 1], {
+    joinType: node.type,
+    joinCondition: node.props.condition,
+  })
 
 
 
@@ -240,7 +270,7 @@ nodeTypeProcessing['cross-join'] = joinProcessing
 
 
 
-nodeTypeProcessing['filter'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['filter'] = (node, depObjs, treeObj) => {
   let nodeObj = initNodeObj(depObjs[0], 'where')
 
   nodeObj.clauseLevel = sqlClauseLevels['where']
@@ -252,7 +282,7 @@ nodeTypeProcessing['filter'] = (node, depObjs, mainObj) => {
 
   return nodeObj 
 }
-nodeTypeProcessing['transform'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['transform'] = (node, depObjs, treeObj) => {
   let nodeObj = initNodeObj(depObjs[0], 'where')
 
   nodeObj.clauseLevel = sqlClauseLevels['transform']
@@ -263,11 +293,11 @@ nodeTypeProcessing['transform'] = (node, depObjs, mainObj) => {
     condition: node.props.group.condition,
   } : null
 
-  nodeObj.select = node.props.outputColumns
+  nodeObj.select = node.props.columns
 
   return nodeObj
 }
-nodeTypeProcessing['distinct'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['distinct'] = (node, depObjs, treeObj) => {
   let nodeObj = initNodeObj(depObjs[0], 'transform')
 
   nodeObj.clauseLevel = sqlClauseLevels['distinct']
@@ -276,7 +306,7 @@ nodeTypeProcessing['distinct'] = (node, depObjs, mainObj) => {
 
   return nodeObj
 }
-nodeTypeProcessing['sort'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['sort'] = (node, depObjs, treeObj) => {
   let nodeObj = initNodeObj(depObjs[0], 'distinct')
 
   nodeObj.clauseLevel = sqlClauseLevels['sort']
@@ -285,7 +315,7 @@ nodeTypeProcessing['sort'] = (node, depObjs, mainObj) => {
 
   return nodeObj
 }
-nodeTypeProcessing['reduce'] = (node, depObjs, mainObj) => {
+nodeTypeProcessing['reduce'] = (node, depObjs, treeObj) => {
   let nodeObj = initNodeObj(depObjs[0], 'sort')
 
   nodeObj.clauseLevel = sqlClauseLevels['reduce']
@@ -310,9 +340,9 @@ function initNodeObj(obj, maxClause) {
   let nodeObj
 
   if (obj.objectType === 'select'
-  && obj.clauseLevel <= sqlClauseLevels[maxClause])
+  && obj.clauseLevel <= sqlClauseLevels[maxClause]) {
     nodeObj = _app.notSoShallowCopy(obj)
-  else
+  } else {
     nodeObj = {
       objectType: 'select',
   
@@ -326,6 +356,7 @@ function initNodeObj(obj, maxClause) {
         },
       ],
     }
+  }
 
   return nodeObj
 }

@@ -46,7 +46,7 @@
 
 
     <v-btn depressed small text :disabled="emptyNodeSelection"
-    @click="$app.treeGeneration.processNodes($store, module, $store.getters.activeNode)">
+    @click="generateSQL">
       Generate SQL
     </v-btn>
 
@@ -79,6 +79,29 @@ export default {
     },
 
   },
+
+
+
+  methods: {
+
+    generateSQL() {
+      let treeObj = _app.treeGeneration.generateTree(
+        this.$store, this.module, this.$store.getters.activeNode)
+
+      console.log(treeObj)
+
+      if (treeObj.error != null)
+        return
+
+
+
+      let sqlObj = _app.sqlGeneration.mySQL.generateSQL(treeObj)
+
+      console.log(sqlObj.sql)
+    },
+
+  },
+
 
 }
 </script>
