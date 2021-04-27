@@ -19,8 +19,8 @@
 
       <span v-else-if="type == 'union-all'">Union all</span>
       <span v-else-if="type == 'union'">Union</span>
-      <span v-else-if="type == 'except'">Except</span>
-      <span v-else-if="type == 'intersect'">Intersect</span>
+      <span v-else-if="type == 'difference'">Difference</span>
+      <span v-else-if="type == 'intersection'">Intersection</span>
       
       <span v-else-if="type == 'inner-join'">Inner join</span>
       <span v-else-if="type == 'left-join'">Left join</span>

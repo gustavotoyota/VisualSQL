@@ -6,8 +6,8 @@
 
   <v-icon v-else-if="type == 'union-all'" :large="large">mdi-vector-arrange-above</v-icon>
   <v-icon v-else-if="type == 'union'" :large="large">mdi-vector-combine</v-icon>
-  <v-icon v-else-if="type == 'except'" :large="large">mdi-vector-difference-ba</v-icon>
-  <v-icon v-else-if="type == 'intersect'" :large="large">mdi-vector-intersection</v-icon>
+  <v-icon v-else-if="type == 'difference'" :large="large">mdi-vector-difference-ba</v-icon>
+  <v-icon v-else-if="type == 'intersection'" :large="large">mdi-vector-intersection</v-icon>
   
   <v-icon v-else-if="type == 'inner-join'" :large="large">mdi-set-center</v-icon>
   <v-icon v-else-if="type == 'left-join'" :large="large">mdi-set-left-center</v-icon>
