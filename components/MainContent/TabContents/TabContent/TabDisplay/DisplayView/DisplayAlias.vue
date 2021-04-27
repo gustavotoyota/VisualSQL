@@ -1,6 +1,5 @@
 <template>
   <div class="caption" style="position: absolute;
-  background-color: rgb(30, 30, 30); border-radius: 8px; padding: 0 5px;
   transform: translate(-50%, -50%); text-align: center;
   max-width: 150px; width: max-content; word-break: break-word"
   :style="{
