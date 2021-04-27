@@ -330,12 +330,33 @@ export const mutations = {
     if (tab == null)
       return
 
+
+      
     tab.nodes.selected = {}
     tab.nodes.activeId = null
     
     tab.links.selected = {}
     tab.links.activeId = null
   },
+  selectAll(state) {
+    let tab = this.getters.currentTab
+
+    if (tab == null)
+      return
+
+    let module = this.getters.getModule(tab.moduleId)
+      
+
+
+    tab.nodes.selected = {}
+    for (let node of Object.values(module.nodes))
+      Vue.set(tab.nodes.selected, node.id, true)
+      
+    tab.links.selected = {}
+    for (let link of Object.values(module.links))
+      Vue.set(tab.links.selected, link.id, true)
+  },
+
 
 
 
@@ -694,25 +715,6 @@ export const mutations = {
     
     Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
   },
-
-
-
-
-  selectAllNodes(state) {
-    let tab = this.getters.currentTab
-
-    if (tab == null)
-      return
-
-    let module = this.getters.getModule(tab.moduleId)
-      
-
-
-    tab.nodes.selected = {}
-    for (let node of Object.values(module.nodes))
-      Vue.set(tab.nodes.selected, node.id, true)
-  },
-
 
 
 

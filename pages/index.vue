@@ -69,7 +69,7 @@ export default {
         
 
       if (event.code === 'KeyA' && event.ctrlKey) {
-        this.$store.commit('selectAllNodes')
+        this.$store.commit('selectAll')
         return
       }
 
