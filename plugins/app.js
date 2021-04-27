@@ -1,4 +1,12 @@
+import treeGeneration from './sql-generation/tree-generation.js'
+
+
+
 global._app = {}
+
+
+
+_app.treeGeneration = treeGeneration
   
 
 
@@ -232,6 +240,23 @@ _app.socketOffset = { x: 34, y: 12 }
 
 _app.deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj))
+}
+_app.shallowCopy = (obj) => {
+  if (Array.isArray(obj))
+    return obj.slice()
+
+  if (obj != null && obj.constructor == Object)
+    return Object.assign({}, obj)
+
+  return obj
+}
+_app.notSoShallowCopy = (obj) => {
+  let result = Array.isArray(obj) ? [] : {}
+
+  for (const [key, value] of Object.entries(obj))
+    result[key] = _app.shallowCopy(value)
+
+  return result
 }
 
 

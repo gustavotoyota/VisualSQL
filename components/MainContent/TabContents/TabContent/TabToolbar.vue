@@ -45,7 +45,8 @@
 
 
 
-    <v-btn depressed small text :disabled="emptyNodeSelection">
+    <v-btn depressed small text :disabled="emptyNodeSelection"
+    @click="$app.treeGeneration.processNodes($store, module, $store.getters.activeNode)">
       Generate SQL
     </v-btn>
 
@@ -57,6 +58,7 @@ export default {
 
   props: {
     tab: Object,
+    module: Object,
   },
 
   
