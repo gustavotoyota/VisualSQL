@@ -448,6 +448,8 @@ export const mutations = {
           from: nodeMap[link.from],
           to: nodeMap[link.to],
           socket: link.socket,
+
+          props: _app.deepCopy(link.props),
         })
       }
     }
@@ -510,6 +512,8 @@ export const mutations = {
           from: firstNodeId + link.from,
           to: firstNodeId + link.to,
           socket: link.socket,
+
+          props: _app.deepCopy(link.props),
         },
 
         dontSaveState: true,
