@@ -15,18 +15,6 @@ _app.nodeTypes = {
       tableName: '',
     },
   },
-  'module': {
-    category: 'data',
-    
-    numInputs: 0,
-    hasOutput: true,
-
-    description: 'Module',
-
-    props: {
-      moduleName: '',
-    },
-  },
   'node': {
     category: 'data',
     
@@ -53,16 +41,6 @@ _app.nodeTypes = {
   },
   
   
-  'union-all': {
-    category: 'set-operations',
-
-    numInputs: 2,
-    hasOutput: true,
-
-    description: 'Union all',
-
-    props: {},
-  },
   'union': {
     category: 'set-operations',
 
@@ -71,27 +49,33 @@ _app.nodeTypes = {
 
     description: 'Union',
 
-    props: {},
+    props: {
+      allowDuplicates: false,
+    },
   },
-  'except': {
+  'difference': {
     category: 'set-operations',
 
     numInputs: 2,
     hasOutput: true,
 
-    description: 'Except',
+    description: 'Difference',
 
-    props: {},
+    props: {
+      allowDuplicates: false,
+    },
   },
-  'intersect': {
+  'intersection': {
     category: 'set-operations',
 
     numInputs: 2,
     hasOutput: true,
 
-    description: 'Intersect',
+    description: 'Intersection',
 
-    props: {},
+    props: {
+      allowDuplicates: false,
+    },
   },
   
   
@@ -232,32 +216,6 @@ _app.nodeTypes = {
         withTies: false,
       },
     },
-  },
-  
-  
-  'pivot': {
-    category: 'pivot',
-
-    numInputs: 1,
-    hasOutput: true,
-
-    description: 'Pivot',
-
-    props: {
-      columns: '',
-    },
-  },
-  
-  
-  'output': {
-    category: 'output',
-
-    numInputs: 1,
-    hasOutput: false,
-
-    description: 'Output',
-
-    props: {},
   },
 }
 

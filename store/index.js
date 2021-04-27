@@ -91,16 +91,6 @@ export const mutations = {
     }
 
     state.project.modules.push(module)
-    
-    
-
-    this.commit('createNode', {
-      moduleId: module.id,
-
-      node: {
-        type: 'output',
-      },
-    })
 
 
 

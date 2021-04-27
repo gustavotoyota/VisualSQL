@@ -4,22 +4,17 @@
 
     <div>
       <NodeButton :tab="tab" type="table"></NodeButton>
-      <NodeButton :tab="tab" type="union-all"></NodeButton>
+      <NodeButton :tab="tab" type="union"></NodeButton>
     </div>
     
     <div style="margin-top: 1px">
-      <NodeButton :tab="tab" type="module"></NodeButton>
-      <NodeButton :tab="tab" type="union"></NodeButton>
-    </div>
-
-    <div style="margin-top: 1px">
       <NodeButton :tab="tab" type="node"></NodeButton>
-      <NodeButton :tab="tab" type="except"></NodeButton>
+      <NodeButton :tab="tab" type="difference"></NodeButton>
     </div>
 
     <div style="margin-top: 1px">
       <NodeButton :tab="tab" type="sql"></NodeButton>
-      <NodeButton :tab="tab" type="intersect"></NodeButton>
+      <NodeButton :tab="tab" type="intersection"></NodeButton>
     </div>
 
     <div style="margin-top: 12px">
@@ -45,11 +40,6 @@
     <div style="margin-top: 1px">
       <NodeButton :tab="tab" type="cross-join"></NodeButton>
       <NodeButton :tab="tab" type="reduce"></NodeButton>
-    </div>
-
-    <div style="margin-top: 12px">
-      <NodeButton :tab="tab" type="pivot"></NodeButton>
-      <NodeButton :tab="tab" type="output"></NodeButton>
     </div>
 
   </div>
