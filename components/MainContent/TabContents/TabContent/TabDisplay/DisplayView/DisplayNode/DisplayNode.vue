@@ -21,7 +21,7 @@
 
     <div class="body-2" style="position: absolute; bottom: 34px;
     transform: translateX(-50%); text-align: center;
-    max-width: 150px; width: max-content; word-break: break-all">
+    max-width: 150px; width: max-content; word-break: break-word">
       {{ node.props.name }}
     </div>
 
