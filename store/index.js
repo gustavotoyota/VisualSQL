@@ -282,6 +282,8 @@ export const mutations = {
       this.commit('deleteLink', {
         moduleId: module.id,
         linkId: module.nodes[link.to].incomingLinks[link.socket],
+
+        dontSaveState: true,
       })
     }
 
