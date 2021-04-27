@@ -220,8 +220,17 @@ _app.nodeTypes = {
     description: 'Reduce',
 
     props: {
-      offset: '',
-      limit: '',
+      offset: {
+        active: false,
+        value: null,
+      },
+
+      limit: {
+        active: false,
+        value: null,
+        percent: false,
+        withTies: false,
+      },
     },
   },
   
