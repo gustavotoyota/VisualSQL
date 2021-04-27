@@ -672,8 +672,7 @@ export const mutations = {
     if (tab.currentStateIdx === 0)
       return
 
-    tab.nodes.selected = {}
-    tab.nodes.activeId = null
+    this.commit('clearSelection')
 
     Object.assign(module, JSON.parse(tab.states[--tab.currentStateIdx]))
   },
@@ -691,8 +690,7 @@ export const mutations = {
     if (tab.currentStateIdx === tab.states.length - 1)
       return
 
-    tab.nodes.selected = {}
-    tab.nodes.activeId = null
+    this.commit('clearSelection')
     
     Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
   },
