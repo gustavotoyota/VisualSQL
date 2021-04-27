@@ -258,6 +258,8 @@ export const mutations = {
 
 
   createLink(state, payload) {
+    // Create link
+
     let module = this.getters.getModule(payload.moduleId)
 
     let link = Object.assign({
@@ -268,19 +270,34 @@ export const mutations = {
       },
     }, payload.link)
 
-    if (module.nodes[link.to].incomingLinks[link.socket] != null) {
+
+
+
+    // Delete existing link
+
+    let existingLinkId = module.nodes[link.to].incomingLinks[link.socket]
+
+    if (existingLinkId != null) {
+      link.props = _app.deepCopy(module.links[existingLinkId].props)
+
       this.commit('deleteLink', {
         moduleId: module.id,
-        linkId: module.nodes[link.to].incomingLinks[link.socket],
+        linkId: existingLinkId,
 
         dontSaveState: true,
       })
     }
 
+
+    
+
+    // Setup link references
+
     Vue.set(module.nodes[link.from].outgoingLinks, link.id, true)
     Vue.set(module.nodes[link.to].incomingLinks, link.socket, link.id)
 
     Vue.set(module.links, link.id, link)
+
 
 
 
