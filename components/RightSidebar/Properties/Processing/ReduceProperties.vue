@@ -3,24 +3,45 @@
 
 
     <div class="mx-5 mt-5">
-      <div class="mb-1 body-2 grey--text text--lighten-1">
-        Offset:
-      </div>
+      <v-switch label="Offset:" hide-details
+      v-model="node.props.offset.active">
+      </v-switch>
 
-      <v-text-field dense solo hide-details type="number"
-      class="body-2" v-model="node.props.offset">
+      <v-text-field dense solo hide-details
+      class="mt-2 body-2"
+      :disabled="!node.props.offset.active"
+      v-model="node.props.offset.value">
       </v-text-field>
     </div>
 
 
-    <div class="mx-5 mt-5">
-      <div class="mb-1 body-2 grey--text text--lighten-1">
-        Limit:
-      </div>
+    <v-divider class="mt-6"></v-divider>
 
-      <v-text-field dense solo hide-details type="number"
-      class="body-2" v-model="node.props.limit">
+
+    <div class="mx-5 mt-4">
+      <v-switch label="Limit:" hide-details
+      v-model="node.props.limit.active">
+      </v-switch>
+
+      <v-text-field dense solo hide-details
+      class="mt-2 body-2"
+      :disabled="!node.props.limit.active"
+      v-model="node.props.limit.value">
       </v-text-field>
+      
+      <div style="display: flex">
+        <v-checkbox label="Percentage" hide-details
+        :disabled="!node.props.limit.active"
+        v-model="node.props.limit.percent">
+        </v-checkbox>
+
+        <v-spacer></v-spacer>
+
+        <v-checkbox label="Include ties" hide-details
+        :disabled="!node.props.limit.active"
+        v-model="node.props.limit.withTies">
+        </v-checkbox>
+      </div>
     </div>
 
 
