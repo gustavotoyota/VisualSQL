@@ -495,6 +495,7 @@ export const mutations = {
     
 
     let firstNodeId = module.nextNodeId
+    let firstLinkId = module.nextLinkId
 
 
 
@@ -542,11 +543,18 @@ export const mutations = {
 
 
 
+
+
     tab.nodes.selected = {}
     for (let nodeId = firstNodeId; nodeId < module.nextNodeId; ++nodeId)
       Vue.set(tab.nodes.selected, nodeId, true)
 
+    tab.links.selected = {}
+    for (let linkId = firstLinkId; linkId < module.nextLinkId; ++linkId)
+      Vue.set(tab.links.selected, linkId, true)
+
     tab.nodes.activeId = firstNodeId
+    tab.links.activeId = null
 
 
     
