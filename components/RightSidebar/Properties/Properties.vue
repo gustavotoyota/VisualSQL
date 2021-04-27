@@ -106,7 +106,7 @@
 </template>
 
 <script>
-let lastActiveNode = null
+let lastActiveObject = null
 let firstChange = false
 
 export default {
@@ -117,20 +117,24 @@ export default {
       'activeNode',
       'activeLink',
     ]),
+
+    activeObject() {
+      return this.activeNode ?? this.activeLink
+    },
     
   },
 
   watch: {
     
-    'activeNode.props': {
+    'activeObject.props': {
       handler: function () {
-        if (this.activeNode !== lastActiveNode) {
+        if (this.activeObject !== lastActiveObject) {
           firstChange = true
-          lastActiveNode = this.activeNode
+          lastActiveObject = this.activeObject
           return
         }
 
-        if (this.activeNode == null)
+        if (this.activeObject == null)
           return
 
         if (firstChange) {
