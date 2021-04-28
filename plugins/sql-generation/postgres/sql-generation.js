@@ -122,8 +122,14 @@ objectProcessing['sql'] = (obj, sqlObj, indentLevel) => {
 
 function processSources(obj, sqlObj, indentLevel) {
   printText(sqlObj, indentLevel, '')
+  
   processSource(obj.from[0], sqlObj, indentLevel)
+
+  if ((obj.from[0].alias ?? '') !== '')
+    printText(sqlObj, 0, ` AS ${obj.from[0].alias}`)
+
   printLine(sqlObj, 0, '')
+  
   
   for (let i = 1; i < obj.from.length; ++i) {
     printText(sqlObj, indentLevel, '')
@@ -137,6 +143,9 @@ function processSources(obj, sqlObj, indentLevel) {
     }
 
     processSource(obj.from[i], sqlObj, indentLevel)
+    
+    if (obj.from[i].alias !== '')
+      printText(sqlObj, 0, ` AS ${obj.from[i].alias}`)
 
     printLine(sqlObj, 0, ' ON')
     printText(sqlObj, indentLevel + 1, obj.from[i].joinCondition)

@@ -49,7 +49,7 @@ export default {
 
   mounted() {
     this.sidebars.left = innerWidth >= 900
-    this.sidebars.right = innerWidth >= 900
+    this.sidebars.right = innerWidth >= 600
 
     
     document.addEventListener('keydown', this.onKeyDown)
