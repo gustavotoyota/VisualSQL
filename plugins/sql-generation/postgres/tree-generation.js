@@ -1,20 +1,18 @@
-export default {
-  generateTree(store, module, root, options) {
-    let treeObj = {}
+export default function generateTree(store, module, root, options) {
+  let treeObj = {}
 
-    treeObj.options = options
+  treeObj.options = options
 
-    treeObj.store = store
+  treeObj.store = store
 
-    treeObj.error = null
-    treeObj.node = null
+  treeObj.error = null
+  treeObj.node = null
 
-    treeObj.commons = []
+  treeObj.commons = []
 
-    treeObj.rootObj = processNode(module, root, treeObj)
+  treeObj.rootObj = processNode(module, root, treeObj)
 
-    return treeObj
-  }
+  return treeObj
 }
 
 
@@ -52,18 +50,25 @@ function processNode(module, node, treeObj) {
     return nodeObj
 
 
-
     
-  // Create common
 
-  let commonName = module.name + '.' + node.props.name
-  let commonIdx = treeObj.commons.findIndex(common => common.name === commonName)
+  // Find common
+
+  let commonFullName = module.name + '.' + node.props.name
+  let commonIdx = treeObj.commons.findIndex(
+    common => common.fullName === commonFullName)
+
+
+
+
+  // Common not found: Create common
 
   if (commonIdx < 0) {
     commonIdx = treeObj.commons.length
 
     treeObj.commons.push({
-      name: commonName,
+      name: node.props.name,
+      fullName: commonFullName,
 
       module: module,
       node: node,
@@ -72,14 +77,25 @@ function processNode(module, node, treeObj) {
     })
   }
 
+
+
+
+  // Resolve conflicts
+
+  let conflicts = treeObj.commons.filter(
+    common => common.node.props.name === node.props.name)
+
+  if (conflicts.length > 1)
+    for (let conflict of conflicts)
+      conflict.name = conflict.fullName.replace('.', '_')
+
+
+
+
   return {
     objectType: 'common',
 
     commonIdx: commonIdx,
-    commonName: commonName,
-
-    moduleName: module.name,
-    nodeName: node.props.name,
   }
 }
 
@@ -143,7 +159,7 @@ nodeTypeProcessing['node'] = (node, depObjs, treeObj) => {
     return
   }
 
-  processNode(refModule, refNode, treeObj)
+  let refNodeObj = processNode(refModule, refNode, treeObj)
 
   return {
     objectType: 'select',
@@ -153,8 +169,8 @@ nodeTypeProcessing['node'] = (node, depObjs, treeObj) => {
     from: [
       {
         sourceType: 'common',
-
-        commonName: node.props.nodeName,
+        
+        commonIdx: refNodeObj.commonIdx,
       },
     ],
   }
@@ -320,7 +336,7 @@ nodeTypeProcessing['reduce'] = (node, depObjs, treeObj) => {
 
   nodeObj.clauseLevel = sqlClauseLevels['reduce']
 
-  nodeObj.reduce = node.props.offset.active && node.props.limit.active ? {
+  nodeObj.reduce = node.props.offset.active || node.props.limit.active ? {
     offset: node.props.offset.active ? node.props.offset.value : null,
 
     limit: node.props.limit.active ? {

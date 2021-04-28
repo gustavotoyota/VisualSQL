@@ -85,7 +85,7 @@ export default {
   methods: {
 
     generateSQL() {
-      let treeObj = _app.treeGeneration.generateTree(
+      let treeObj = _app.sqlGeneration.postgres.generateTree(
         this.$store, this.module, this.$store.getters.activeNode)
 
       console.log(treeObj)
@@ -95,7 +95,7 @@ export default {
 
 
 
-      let sqlObj = _app.sqlGeneration.mySQL.generateSQL(treeObj)
+      let sqlObj = _app.sqlGeneration.postgres.generateSQL(treeObj)
 
       console.log(sqlObj.sql)
     },

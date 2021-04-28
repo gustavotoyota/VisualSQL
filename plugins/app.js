@@ -1,13 +1,14 @@
-import treeGeneration from './sql-generation/tree-generation.js'
-import sqlGeneration from './sql-generation/sql-generation.js'
+import postgres from './sql-generation/postgres/postgres.js'
+
 
 
 global._app = {}
 
 
 
-_app.treeGeneration = treeGeneration
-_app.sqlGeneration = sqlGeneration
+_app.sqlGeneration = {
+  postgres: postgres,
+}
   
 
 

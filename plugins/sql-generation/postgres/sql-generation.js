@@ -1,16 +1,34 @@
-export default {
-  generateSQL(treeObj, options) {
-    let sqlObj = {}
+export default function generateSQL(treeObj, options) {
+  let sqlObj = {}
 
-    sqlObj.treeObj = treeObj
-    sqlObj.options = options ?? {}
-    
-    sqlObj.sql = ''
-    sqlObj.indentation = '  '
+  sqlObj.treeObj = treeObj
+  sqlObj.options = options ?? {}
+  
+  sqlObj.sql = ''
+  sqlObj.indentation = '  '
+  
+  processCommons(sqlObj)
 
-    processObject(treeObj.rootObj, sqlObj, 0)
+  processObject(treeObj.rootObj, sqlObj, 0)
 
-    return sqlObj
+  return sqlObj
+}
+
+
+
+
+function processCommons(sqlObj) {
+  if (sqlObj.treeObj.commons.length === 0)
+    return
+
+  printLine(sqlObj, 0, 'WITH')
+
+  for (let i = 0; i < sqlObj.treeObj.commons.length; ++i) {
+    let common = sqlObj.treeObj.commons[i]
+
+    printLine(sqlObj, 1, common.name + ' AS (')
+    processObject(common.obj, sqlObj, 2)
+    printLine(sqlObj, 1, ')')
   }
 }
 
@@ -70,7 +88,7 @@ objectProcessing['common'] = (obj, sqlObj, indentLevel) => {
   printLine(sqlObj, indentLevel, 'SELECT')
   printLine(sqlObj, indentLevel + 1, '*')
   printLine(sqlObj, indentLevel, 'FROM')
-  printLine(sqlObj, indentLevel + 1, obj.commonName)
+  printLine(sqlObj, indentLevel + 1, sqlObj.treeObj.commons[obj.commonIdx].name)
 }
 objectProcessing['set-operations'] = (obj, sqlObj, indentLevel) => {
   printLine(sqlObj, indentLevel, '(')
@@ -136,11 +154,11 @@ sourceProcessing['table'] = (source, sqlObj, indentLevel) => {
   printText(sqlObj, 0, source.tableName)
 }
 sourceProcessing['common'] = (source, sqlObj, indentLevel) => {
-  printText(sqlObj, 0, source.commonName)
+  printText(sqlObj, 0, sqlObj.treeObj.commons[source.commonIdx].name)
 }
 sourceProcessing['object'] = (source, sqlObj, indentLevel) => {
   if (source.obj.objectType === 'common') {
-    printText(sqlObj, 0, source.obj.commonName)
+    printText(sqlObj, 0, sqlObj.treeObj.commons[source.obj.commonIdx].name)
   } else {
     printLine(sqlObj, 0, '(')
   
