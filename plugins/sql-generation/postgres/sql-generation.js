@@ -147,8 +147,10 @@ function processSources(obj, sqlObj, indentLevel) {
     if (obj.from[i].alias !== '')
       printText(sqlObj, 0, ` AS ${obj.from[i].alias}`)
 
-    printLine(sqlObj, 0, ' ON')
-    printText(sqlObj, indentLevel + 1, obj.from[i].joinCondition)
+    if (obj.from[i].joinType !== 'cross-join') {
+      printLine(sqlObj, 0, ' ON')
+      printText(sqlObj, indentLevel + 1, obj.from[i].joinCondition)
+    }
 
     printLine(sqlObj, 0, '')
   }
