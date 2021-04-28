@@ -184,17 +184,9 @@ nodeTypeProcessing['sql'] = (node, deps, treeObj) => {
 
 
   return {
-    objectType: 'select',
+    objectType: 'sql',
 
-    clauseLevel: sqlClauseLevels['from'],
-
-    from: [
-      {
-        sourceType: 'sql',
-
-        sql: node.props.sql,
-      },
-    ],
+    sql: node.props.sql,
   }
 }
 
