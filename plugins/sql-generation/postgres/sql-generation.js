@@ -38,7 +38,16 @@ function processCommons(sqlObj) {
 const objectProcessing = {}
 
 objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
-  printLine(sqlObj, indentLevel, 'SELECT')
+  printText(sqlObj, indentLevel, 'SELECT')
+
+  if (obj.distinct != null) {
+    if (obj.distinct === '')
+      printText(sqlObj, 0, ' DISTINCT')
+    else
+      printText(sqlObj, 0, ` DISTINCT ON (${obj.distinct})`)
+  }
+
+  printLine(sqlObj, 0, '')
 
   printLines(sqlObj, indentLevel + 1, obj.select ?? '*')
 
