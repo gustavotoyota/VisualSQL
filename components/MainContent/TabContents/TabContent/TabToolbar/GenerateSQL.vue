@@ -2,13 +2,12 @@
   <div>
 
     <v-btn depressed small text
-    :disabled="disabled"
-    @click="generateSQL">
+    :disabled="disabled" @click="generateSQL">
       Generate SQL
     </v-btn>
 
 
-    <v-dialog max-width="700" v-model="dialog">
+    <v-dialog max-width="750" v-model="dialog">
 
       <v-card>
 
@@ -25,7 +24,7 @@
                 Database:
               </div>
 
-              <v-select class="mt-1" dense solo hide-details
+              <v-select class="mt-1" dense outlined hide-details background-color="#101010"
               :menu-props="{ top: false, offsetY: true }"
               :items="$app.databases" item-text="text" item-value="value"
               v-model="project.sql.database">
@@ -64,7 +63,7 @@
 
           </div>
 
-          <div class="pl-6 pt-6 pb-1" style="flex: 1; display: flex">
+          <div class="pl-5 pt-6 pb-1" style="flex: 1; display: flex">
 
             <MonacoEditor
               class="editor" v-model="sql" language="sql"
