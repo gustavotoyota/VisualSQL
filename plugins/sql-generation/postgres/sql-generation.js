@@ -93,12 +93,6 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
     }
   }
 }
-objectProcessing['common'] = (obj, sqlObj, indentLevel) => {
-  printLine(sqlObj, indentLevel, 'SELECT')
-  printLine(sqlObj, indentLevel + 1, '*')
-  printLine(sqlObj, indentLevel, 'FROM')
-  printLine(sqlObj, indentLevel + 1, sqlObj.treeObj.commons[obj.commonIdx].name)
-}
 objectProcessing['set-operations'] = (obj, sqlObj, indentLevel) => {
   printLine(sqlObj, indentLevel, '(')
   processObject(obj.sources[0].obj, sqlObj, indentLevel + 1)

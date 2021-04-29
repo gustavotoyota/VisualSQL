@@ -33,7 +33,10 @@ function processNode(module, node, treeObj) {
     if (treeObj.error)
       return
 
-    deps.push({ obj: depObj, link: link })
+    deps.push({
+      obj: depObj,
+      link: link,
+    })
   }
 
 
@@ -92,11 +95,11 @@ function processNode(module, node, treeObj) {
 
 
 
-  return {
-    objectType: 'common',
-
+  return createSelect({
+    sourceType: 'common',
+    
     commonIdx: commonIdx,
-  }
+  })
 }
 
 
@@ -128,19 +131,11 @@ nodeTypeProcessing['table'] = (node, deps, treeObj) => {
     return
   }
 
-  return {
-    objectType: 'select',
+  return createSelect({
+    sourceType: 'table',
 
-    clauseLevel: sqlClauseLevels['from'],
-
-    from: [
-      {
-        sourceType: 'table',
-
-        tableName: node.props.tableName,
-      },
-    ],
-  }
+    tableName: node.props.tableName,
+  })
 }
 nodeTypeProcessing['node'] = (node, deps, treeObj) => {
   // Get reference node object
@@ -161,19 +156,7 @@ nodeTypeProcessing['node'] = (node, deps, treeObj) => {
 
   let refNodeObj = processNode(refModule, refNode, treeObj)
 
-  return {
-    objectType: 'select',
-
-    clauseLevel: sqlClauseLevels['from'],
-
-    from: [
-      {
-        sourceType: 'common',
-        
-        commonIdx: refNodeObj.commonIdx,
-      },
-    ],
-  }
+  return refNodeObj
 }
 nodeTypeProcessing['sql'] = (node, deps, treeObj) => {
   if (node.props.sql.trim() === '') {
@@ -348,24 +331,31 @@ function initNodeObj(dep, maxClause, newClause) {
     if (dep.link.props.alias !== '')
       nodeObj.from[0].alias = dep.link.props.alias
   } else {
-    nodeObj = {
-      objectType: 'select',
-  
-      clauseLevel: sqlClauseLevels['from'],
-  
-      from: [
-        {
-          sourceType: 'object',
+    nodeObj = createSelect({
+      sourceType: 'object',
 
-          alias: dep.link.props.alias,
-  
-          obj: dep.obj,
-        },
-      ],
-    }
+      alias: dep.link.props.alias,
+
+      obj: dep.obj,
+    })
   }
 
   nodeObj.clauseLevel = sqlClauseLevels[newClause]
 
   return nodeObj
+}
+
+
+
+
+function createSelect(source) {
+  return {
+    objectType: 'select',
+
+    clauseLevel: sqlClauseLevels['from'],
+
+    from: [
+      source,
+    ],
+  }
 }
