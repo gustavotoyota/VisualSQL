@@ -136,7 +136,7 @@ nodeTypeProcessing['table'] = (node, deps, treeObj) => {
   return createSelect({
     sourceType: 'table',
 
-    tableName: node.props.tableName,
+    tableName: processField(node.props.tableName),
   })
 }
 nodeTypeProcessing['node'] = (node, deps, treeObj) => {
@@ -171,7 +171,7 @@ nodeTypeProcessing['sql'] = (node, deps, treeObj) => {
   return {
     objectType: 'sql',
 
-    sql: node.props.sql,
+    sql: processField(node.props.sql),
   }
 }
 
@@ -248,7 +248,7 @@ function joinProcessing(node, deps, treeObj) {
     alias: deps[1].link.props.alias,
 
     joinType: node.type,
-    joinCondition: node.props.condition.trim(),
+    joinCondition: processField(node.props.condition),
   })
 
 
@@ -271,7 +271,7 @@ nodeTypeProcessing['filter'] = (node, deps, treeObj) => {
   if (nodeObj.where == null)
     nodeObj.where = []
 
-  nodeObj.where.push(node.props.condition.trim())
+  nodeObj.where.push(processField(node.props.condition))
 
   return nodeObj 
 }
@@ -279,7 +279,7 @@ nodeTypeProcessing['transform'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'where', 'transform')
 
   nodeObj.group = node.props.group.active ? {
-    columns: node.props.group.columns.trim(),
+    columns: processField(node.props.group.columns),
 
     condition: node.props.group.condition.trim(),
   } : null
@@ -300,7 +300,7 @@ nodeTypeProcessing['distinct'] = (node, deps, treeObj) => {
 nodeTypeProcessing['sort'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'distinct', 'sort')
 
-  nodeObj.sort = node.props.columns.trim()
+  nodeObj.sort = processField(node.props.columns)
 
   return nodeObj
 }
@@ -369,8 +369,11 @@ function createSelect(source) {
 
 
 
-function processCondition(condition) {
-  const trimmed = condition.trim()
+function processField(field) {
+  const trimmed = field.trim()
+  
+  if (trimmed === '')
+    return '<missing>'
 
-  return trimmed === '' ? 'true' : trimmed
+  return trimmed
 }

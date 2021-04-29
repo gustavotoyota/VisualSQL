@@ -98,7 +98,7 @@
 
         <v-btn color="blue darken-1" text
         @click="active = false">
-          Ok
+          Close
         </v-btn>
 
       </v-card-actions>
