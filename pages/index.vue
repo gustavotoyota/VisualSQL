@@ -171,6 +171,14 @@ html {
 
 
 
+/* List padding */
+
+.v-list {
+  padding: 0 !important
+}
+
+
+
 
 /* Scrollbars */
 

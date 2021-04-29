@@ -45,6 +45,7 @@
             
             <MonacoEditor
               class="mt-1 editor" v-model="columns" language="sql"
+              style="height: 200px; border-radius: 5px; overflow: hidden"
               :options="{
                 theme: 'vs-dark',
                 tabSize: 2,
@@ -59,8 +60,7 @@
                 scrollBeyondLastLine: false,
                 wordWrap: 'on',
                 quickSuggestions: false,
-              }"
-              style="height: 200px; border-radius: 5px; overflow: hidden"/>
+              }"/>
               
             <div class="caption">Note: Columns can be SQL or comma-separated</div>
           </div>

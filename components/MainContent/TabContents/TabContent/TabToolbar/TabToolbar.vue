@@ -45,10 +45,9 @@
 
 
 
-    <v-btn depressed small text :disabled="emptyNodeSelection"
-    @click="generateSQL">
-      Generate SQL
-    </v-btn>
+    <GenerateSQL :module="module" :disabled="emptyNodeSelection">
+    </GenerateSQL>
+
 
   </v-toolbar>
 </template>
@@ -61,7 +60,6 @@ export default {
     module: Object,
   },
 
-  
 
   computed: {
 
@@ -76,28 +74,6 @@ export default {
     emptySelection() {
       return this.emptyNodeSelection &&
         Object.keys(this.tab.links.selected).length === 0
-    },
-
-  },
-
-
-
-  methods: {
-
-    generateSQL() {
-      let treeObj = _app.sqlGeneration.postgres.generateTree(
-        this.$store, this.module, this.$store.getters.activeNode)
-
-      console.log(treeObj)
-
-      if (treeObj.error != null)
-        return
-
-
-
-      let sqlObj = _app.sqlGeneration.postgres.generateSQL(treeObj)
-
-      console.log(sqlObj.sql)
     },
 
   },

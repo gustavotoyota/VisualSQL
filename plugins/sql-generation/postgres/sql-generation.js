@@ -5,7 +5,11 @@ export default function generateSQL(treeObj, options) {
   sqlObj.options = options ?? {}
   
   sqlObj.sql = ''
-  sqlObj.indentation = '  '
+
+  if (options.indentWithSpaces)
+    sqlObj.indentation = ' '.repeat(options.indentSize)
+  else
+    sqlObj.indentation = '\t'
   
   processCommons(sqlObj)
 
@@ -27,7 +31,9 @@ function processCommons(sqlObj) {
     let common = sqlObj.treeObj.commons[i]
 
     printLine(sqlObj, common.name + ' AS (', 1)
+
     processObject(common.obj, sqlObj, 2)
+
     printLine(sqlObj, ')', 1)
   }
 }
@@ -38,6 +44,8 @@ function processCommons(sqlObj) {
 const objectProcessing = {}
 
 objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
+  // SELECT
+
   printText(sqlObj, 'SELECT', indentLevel)
 
   if (obj.distinct != null) {
@@ -51,8 +59,18 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
 
   printLines(sqlObj, obj.select, indentLevel + 1)
 
+
+
+
+  // FROM
+
   printLine(sqlObj, 'FROM', indentLevel)
   processSources(obj, sqlObj, indentLevel + 1)
+
+
+
+
+  // GROUP BY
 
   if (obj.group != null) {
     printLine(sqlObj, 'GROUP BY', indentLevel)
@@ -63,6 +81,11 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
       printLines(sqlObj, obj.group.condition, indentLevel + 1)
     }
   }
+
+
+
+
+  // WHERE
 
   if (obj.where != null) {
     printLine(sqlObj, 'WHERE', indentLevel)
@@ -76,10 +99,20 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
     }
   }
 
+
+
+
+  // ORDER BY
+
   if (obj.sort != null) {
     printLine(sqlObj, 'ORDER BY', indentLevel)
     printLines(sqlObj, obj.sort, indentLevel + 1)
   }
+
+
+
+
+  // LIMIT
 
   if (obj.reduce != null) {
     if (obj.reduce.limit != null) {
@@ -202,6 +235,10 @@ function printText(sqlObj, text, indentLevel) {
 function printLine(sqlObj, text, indentLevel) {
   printText(sqlObj, (text ?? '') + '\n', indentLevel)
 }
+
+
+
+
 function printLines(sqlObj, text, indentLevel) {
   sqlObj.sql += _app.indent(text,
     sqlObj.indentation.repeat(indentLevel ?? 0)) + '\n'

@@ -9,6 +9,16 @@ global._app = {}
 _app.sqlGeneration = {
   postgres: postgres,
 }
+
+
+_app.databases = [
+  { text: 'Oracle', value: 'oracle' },
+  { text: 'MySQL', value: 'my-sql' },
+  { text: 'MS SQL Server', value: 'ms-sql-server' },
+  { text: 'PostgreSQL', value: 'postgres' },
+  { text: 'SQLite', value: 'sqlite' },
+  { text: 'MS Access', value: 'ms-access' },
+]
   
 
 
