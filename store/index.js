@@ -67,6 +67,16 @@ let initialState = {
     right: true,
   },
 
+  
+
+
+  // Snackbar
+
+  snackbar: {
+    active: false,
+    text: '',
+  },
+
 
 }
 
