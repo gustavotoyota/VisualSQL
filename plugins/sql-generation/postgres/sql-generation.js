@@ -92,7 +92,10 @@ function processCommons(sqlObj) {
     sqlObj.decrementIndent()
     
 
-    sqlObj.printLine(')')
+    sqlObj.print(')')
+    if (i < sqlObj.treeObj.commons.length - 1)
+      sqlObj.print(',')
+    sqlObj.printLine()
   }
 
   sqlObj.decrementIndent()
