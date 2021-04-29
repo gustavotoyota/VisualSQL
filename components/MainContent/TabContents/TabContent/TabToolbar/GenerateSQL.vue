@@ -153,6 +153,8 @@ export default {
 
     editorDidMount(editor) {
       monacoEditor = editor
+
+      this.updateEditor()
     },
 
 
@@ -181,7 +183,21 @@ export default {
 
 
       this.dialog = true
+
+      if (monacoEditor == null)
+        return
+
+      this.updateEditor()
     },
+
+
+
+    updateEditor() {
+      monacoEditor.getModel().updateOptions({
+        tabSize: this.project.sql.indentSize
+      })
+    },
+
 
   },
 
@@ -189,23 +205,12 @@ export default {
 
   watch: {
 
-    dialog(value) {
-      if (!value)
-        return
-
-      if (monacoEditor == null)
-        return
-
-      monacoEditor.getModel().updateOptions({
-        tabSize: this.project.sql.indentSize
-      })
-    },
-
     'project.sql': {
       handler(value) {
         if (!this.dialog)
           return
 
+        this.updateEditor()
         this.generateSQL()
       },
 
