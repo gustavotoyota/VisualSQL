@@ -81,6 +81,7 @@
                 lineNumbersMinChars: 0,
                 scrollBeyondLastLine: false,
                 quickSuggestions: false,
+                readOnly: true,
               }"
 
               @editorDidMount="editorDidMount"/>
