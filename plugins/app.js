@@ -1,4 +1,24 @@
+import postgres from './sql-generation/postgres/postgres.js'
+
+
+
 global._app = {}
+
+
+
+_app.sqlGeneration = {
+  postgres: postgres,
+}
+
+
+_app.databases = [
+  { text: 'Oracle', value: 'oracle' },
+  { text: 'MySQL', value: 'my-sql' },
+  { text: 'MS SQL Server', value: 'ms-sql-server' },
+  { text: 'PostgreSQL', value: 'postgres' },
+  { text: 'SQLite', value: 'sqlite' },
+  { text: 'MS Access', value: 'ms-access' },
+]
   
 
 
@@ -206,12 +226,12 @@ _app.nodeTypes = {
     props: {
       offset: {
         active: false,
-        value: null,
+        value: '',
       },
 
       limit: {
         active: false,
-        value: null,
+        value: '',
         percent: false,
         withTies: false,
       },
@@ -232,6 +252,23 @@ _app.socketOffset = { x: 34, y: 12 }
 
 _app.deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj))
+}
+_app.shallowCopy = (obj) => {
+  if (Array.isArray(obj))
+    return obj.slice()
+
+  if (obj != null && obj.constructor == Object)
+    return Object.assign({}, obj)
+
+  return obj
+}
+_app.notSoShallowCopy = (obj) => {
+  let result = Array.isArray(obj) ? [] : {}
+
+  for (const [key, value] of Object.entries(obj))
+    result[key] = _app.shallowCopy(value)
+
+  return result
 }
 
 
@@ -268,6 +305,18 @@ _app.screenToWorld = function (tab, screenPos) {
     x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
     y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
   }
+}
+
+
+
+
+_app.indent = function (text, indentation) {
+  const parts = text.split('\n')
+
+  for (let i = 0; i < parts.length; ++i)
+    parts[i] = indentation + parts[i]
+
+  return parts.join('\n')
 }
 
 

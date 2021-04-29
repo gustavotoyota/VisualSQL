@@ -45,9 +45,9 @@
 
 
 
-    <v-btn depressed small text :disabled="emptyNodeSelection">
-      Generate SQL
-    </v-btn>
+    <GenerateSQL :module="module" :disabled="emptyNodeSelection">
+    </GenerateSQL>
+
 
   </v-toolbar>
 </template>
@@ -57,9 +57,9 @@ export default {
 
   props: {
     tab: Object,
+    module: Object,
   },
 
-  
 
   computed: {
 
@@ -77,6 +77,7 @@ export default {
     },
 
   },
+
 
 }
 </script>

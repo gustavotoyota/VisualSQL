@@ -34,6 +34,20 @@ let initialState = {
 
     tabId: 0,
     rerenderTabs: 0,
+
+
+
+
+    // SQL
+
+    sql: {
+      database: 'postgres',
+
+      uppercaseKeywords: true,
+
+      indentWithSpaces: true,
+      indentSize: 2,
+    },
   },
 
 
@@ -51,6 +65,16 @@ let initialState = {
   sidebars: {
     left: true,
     right: true,
+  },
+
+  
+
+
+  // Snackbar
+
+  snackbar: {
+    active: false,
+    text: '',
   },
 
 

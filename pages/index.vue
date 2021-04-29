@@ -23,6 +23,11 @@
 
 
 
+    <Snackbar>
+    </Snackbar>
+
+
+
   </v-app>
 </template>
 
@@ -49,7 +54,7 @@ export default {
 
   mounted() {
     this.sidebars.left = innerWidth >= 900
-    this.sidebars.right = innerWidth >= 900
+    this.sidebars.right = innerWidth >= 600
 
     
     document.addEventListener('keydown', this.onKeyDown)
@@ -167,6 +172,14 @@ html {
 
   display: flex;
   flex-direction: column;
+}
+
+
+
+/* List padding */
+
+.v-menu__content .v-list {
+  padding: 0 !important
 }
 
 
