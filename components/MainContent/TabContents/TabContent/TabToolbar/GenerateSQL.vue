@@ -69,10 +69,9 @@
 
           <MonacoEditor
             class="editor" v-model="sql" language="sql"
-            style="flex: 1; border-radius: 5px; overflow: hidden"
+            style="flex: 1; width: 0; border-radius: 5px; overflow: hidden"
             :options="{
               theme: 'vs-dark',
-              tabSize: 2,
               automaticLayout: true,
               lineNumbers: 'off',
               minimap: { enabled: false },
@@ -83,7 +82,9 @@
               lineNumbersMinChars: 0,
               scrollBeyondLastLine: false,
               quickSuggestions: false,
-            }"/>
+            }"
+
+            @editorDidMount="editorDidMount"/>
 
         </div>
 
@@ -108,6 +109,9 @@
 </template>
 
 <script>
+let monacoEditor = null
+
+
 export default {
 
 
@@ -142,12 +146,25 @@ export default {
 
   methods: {
 
+    editorDidMount(editor) {
+      monacoEditor = editor
+    },
+
+
+
     generateSQL() {
+      if (monacoEditor != null)
+        monacoEditor.getModel().updateOptions({ tabSize: this.project.sql.indentSize })
+
+
+
+
       let treeObj = _app.sqlGeneration[this.project.sql.database].generateTree(
         this.$store, this.module, this.$store.getters.activeNode)
       
       if (treeObj.error != null)
         return
+
 
 
 
