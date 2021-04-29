@@ -125,11 +125,13 @@ let nodeTypeProcessing = {}
 // Data sources
 
 nodeTypeProcessing['table'] = (node, deps, treeObj) => {
+  /*
   if (node.props.tableName === '') {
     treeObj.error = 'Query incomplete: referenced table not found.'
     treeObj.node = node
     return
   }
+  */
 
   return createSelect({
     sourceType: 'table',
@@ -246,7 +248,7 @@ function joinProcessing(node, deps, treeObj) {
     alias: deps[1].link.props.alias,
 
     joinType: node.type,
-    joinCondition: node.props.condition,
+    joinCondition: node.props.condition.trim(),
   })
 
 
@@ -269,7 +271,7 @@ nodeTypeProcessing['filter'] = (node, deps, treeObj) => {
   if (nodeObj.where == null)
     nodeObj.where = []
 
-  nodeObj.where.push(node.props.condition)
+  nodeObj.where.push(node.props.condition.trim())
 
   return nodeObj 
 }
@@ -277,26 +279,28 @@ nodeTypeProcessing['transform'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'where', 'transform')
 
   nodeObj.group = node.props.group.active ? {
-    columns: node.props.group.columns,
+    columns: node.props.group.columns.trim(),
 
-    condition: node.props.group.condition,
+    condition: node.props.group.condition.trim(),
   } : null
 
-  nodeObj.select = node.props.columns
+  nodeObj.select = node.props.columns.trim()
+  if (nodeObj.select === '')
+    nodeObj.select = '*'
 
   return nodeObj
 }
 nodeTypeProcessing['distinct'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'transform', 'distinct')
 
-  nodeObj.distinct = node.props.columns
+  nodeObj.distinct = node.props.columns.trim()
 
   return nodeObj
 }
 nodeTypeProcessing['sort'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'distinct', 'sort')
 
-  nodeObj.sort = node.props.columns
+  nodeObj.sort = node.props.columns.trim()
 
   return nodeObj
 }
@@ -357,5 +361,16 @@ function createSelect(source) {
     from: [
       source,
     ],
+
+    select: '*',
   }
+}
+
+
+
+
+function processCondition(condition) {
+  const trimmed = condition.trim()
+
+  return trimmed === '' ? 'true' : trimmed
 }

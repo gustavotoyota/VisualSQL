@@ -49,7 +49,7 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
 
   printLine(sqlObj)
 
-  printLines(sqlObj, obj.select ?? '*', indentLevel + 1)
+  printLines(sqlObj, obj.select, indentLevel + 1)
 
   printLine(sqlObj, 'FROM', indentLevel)
   processSources(obj, sqlObj, indentLevel + 1)
