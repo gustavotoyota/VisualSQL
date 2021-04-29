@@ -178,7 +178,7 @@ html {
 
 /* List padding */
 
-.v-list {
+.v-menu__content .v-list {
   padding: 0 !important
 }
 
