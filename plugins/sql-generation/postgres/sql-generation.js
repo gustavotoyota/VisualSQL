@@ -21,14 +21,14 @@ function processCommons(sqlObj) {
   if (sqlObj.treeObj.commons.length === 0)
     return
 
-  printLine(sqlObj, 0, 'WITH')
+  printLine(sqlObj, 'WITH')
 
   for (let i = 0; i < sqlObj.treeObj.commons.length; ++i) {
     let common = sqlObj.treeObj.commons[i]
 
-    printLine(sqlObj, 1, common.name + ' AS (')
+    printLine(sqlObj, common.name + ' AS (', 1)
     processObject(common.obj, sqlObj, 2)
-    printLine(sqlObj, 1, ')')
+    printLine(sqlObj, ')', 1)
   }
 }
 
@@ -38,85 +38,85 @@ function processCommons(sqlObj) {
 const objectProcessing = {}
 
 objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
-  printText(sqlObj, indentLevel, 'SELECT')
+  printText(sqlObj, 'SELECT', indentLevel)
 
   if (obj.distinct != null) {
     if (obj.distinct === '')
-      printText(sqlObj, 0, ' DISTINCT')
+      printText(sqlObj, ' DISTINCT')
     else
-      printText(sqlObj, 0, ` DISTINCT ON (${obj.distinct})`)
+      printText(sqlObj, ` DISTINCT ON (${obj.distinct})`)
   }
 
-  printLine(sqlObj, 0, '')
+  printLine(sqlObj)
 
-  printLines(sqlObj, indentLevel + 1, obj.select ?? '*')
+  printLines(sqlObj, obj.select ?? '*', indentLevel + 1)
 
-  printLine(sqlObj, indentLevel, 'FROM')
+  printLine(sqlObj, 'FROM', indentLevel)
   processSources(obj, sqlObj, indentLevel + 1)
 
   if (obj.group != null) {
-    printLine(sqlObj, indentLevel, 'GROUP BY')
-    printLines(sqlObj, indentLevel + 1, obj.group.columns)
+    printLine(sqlObj, 'GROUP BY', indentLevel)
+    printLines(sqlObj, obj.group.columns, indentLevel + 1)
 
     if (obj.group.condition !== '') {
-      printLine(sqlObj, indentLevel, 'HAVING')
-      printLines(sqlObj, indentLevel + 1, obj.group.condition)
+      printLine(sqlObj, 'HAVING', indentLevel)
+      printLines(sqlObj, obj.group.condition, indentLevel + 1)
     }
   }
 
   if (obj.where != null) {
-    printLine(sqlObj, indentLevel, 'WHERE')
+    printLine(sqlObj, 'WHERE', indentLevel)
 
     if (obj.where.length === 1)
-      printLines(sqlObj, indentLevel + 1, obj.where[0])
+      printLines(sqlObj, obj.where[0], indentLevel + 1)
     else {
-      printLines(sqlObj, indentLevel + 1, '(' + obj.where[0] + ')')
+      printLines(sqlObj, '(' + obj.where[0] + ')', indentLevel + 1)
       for (let i = 1; i < obj.where.length; ++i)
-        printLines(sqlObj, indentLevel + 1, `AND (${obj.where[i]})`)
+        printLines(sqlObj, `AND (${obj.where[i]})`, indentLevel + 1)
     }
   }
 
   if (obj.sort != null) {
-    printLine(sqlObj, indentLevel, 'ORDER BY')
-    printLines(sqlObj, indentLevel + 1, obj.sort)
+    printLine(sqlObj, 'ORDER BY', indentLevel)
+    printLines(sqlObj, obj.sort, indentLevel + 1)
   }
 
   if (obj.reduce != null) {
     if (obj.reduce.limit != null) {
-      printLine(sqlObj, indentLevel, 'LIMIT')
-      printLines(sqlObj, indentLevel + 1, obj.reduce.limit.value.toString())
+      printLine(sqlObj, 'LIMIT', indentLevel)
+      printLines(sqlObj, obj.reduce.limit.value.toString(), indentLevel + 1)
     }
 
     if (obj.reduce.offset != null) {
-      printLine(sqlObj, indentLevel, 'OFFSET')
-      printLines(sqlObj, indentLevel + 1, obj.reduce.offset.toString())
+      printLine(sqlObj, 'OFFSET', indentLevel)
+      printLines(sqlObj, obj.reduce.offset.toString(), indentLevel + 1)
     }
   }
 }
 objectProcessing['set-operations'] = (obj, sqlObj, indentLevel) => {
-  printLine(sqlObj, indentLevel, '(')
+  printLine(sqlObj, '(', indentLevel)
   processObject(obj.sources[0].obj, sqlObj, indentLevel + 1)
-  printLine(sqlObj, indentLevel, ')')
+  printLine(sqlObj, ')', indentLevel)
 
   for (let i = 1; i < obj.sources.length; ++i) {
     switch (obj.sources[i].operationType) {
       case 'union':
         if (obj.sources[i].allowDuplicates)
-          printLine(sqlObj, indentLevel, 'UNION ALL')
+          printLine(sqlObj, 'UNION ALL', indentLevel)
         else
-        printLine(sqlObj, indentLevel, 'UNION')
+        printLine(sqlObj, 'UNION', indentLevel)
         break
-      case 'difference': printLine(sqlObj, indentLevel, 'MINUS'); break
-      case 'intersection': printLine(sqlObj, indentLevel, 'INTERSECT'); break
+      case 'difference': printLine(sqlObj, 'MINUS', indentLevel); break
+      case 'intersection': printLine(sqlObj, 'INTERSECT', indentLevel); break
     }
 
-    printLine(sqlObj, indentLevel, '(')
+    printLine(sqlObj, '(', indentLevel)
     processObject(obj.sources[i].obj, sqlObj, indentLevel + 1)
-    printLine(sqlObj, indentLevel, ')')
+    printLine(sqlObj, ')', indentLevel)
   }
 }
 objectProcessing['sql'] = (obj, sqlObj, indentLevel) => {
-  printLines(sqlObj, indentLevel, obj.sql)
+  printLines(sqlObj, obj.sql, indentLevel)
 }
 
 
@@ -124,38 +124,38 @@ objectProcessing['sql'] = (obj, sqlObj, indentLevel) => {
 
 
 function processSources(obj, sqlObj, indentLevel) {
-  printText(sqlObj, indentLevel, '')
+  printText(sqlObj, '', indentLevel)
   
   processSource(obj.from[0], sqlObj, indentLevel)
 
   if ((obj.from[0].alias ?? '') !== '')
-    printText(sqlObj, 0, ` AS ${obj.from[0].alias}`)
+    printText(sqlObj, ` AS ${obj.from[0].alias}`)
 
-  printLine(sqlObj, 0, '')
+  printLine(sqlObj)
   
   
   for (let i = 1; i < obj.from.length; ++i) {
-    printText(sqlObj, indentLevel, '')
+    printText(sqlObj, '', indentLevel)
 
     switch (obj.from[i].joinType) {
-      case 'inner-join': printText(sqlObj, 0, 'INNER JOIN '); break
-      case 'left-join': printText(sqlObj, 0, 'LEFT JOIN '); break
-      case 'right-join': printText(sqlObj, 0, 'RIGHT JOIN '); break
-      case 'full-join': printText(sqlObj, 0, 'FULL JOIN '); break
-      case 'cross-join': printText(sqlObj, 0, 'CROSS JOIN '); break
+      case 'inner-join': printText(sqlObj, 'INNER JOIN '); break
+      case 'left-join': printText(sqlObj, 'LEFT JOIN '); break
+      case 'right-join': printText(sqlObj, 'RIGHT JOIN '); break
+      case 'full-join': printText(sqlObj, 'FULL JOIN '); break
+      case 'cross-join': printText(sqlObj, 'CROSS JOIN '); break
     }
 
     processSource(obj.from[i], sqlObj, indentLevel)
     
     if (obj.from[i].alias !== '')
-      printText(sqlObj, 0, ` AS ${obj.from[i].alias}`)
+      printText(sqlObj, ` AS ${obj.from[i].alias}`)
 
     if (obj.from[i].joinType !== 'cross-join') {
-      printLine(sqlObj, 0, ' ON')
-      printText(sqlObj, indentLevel + 1, obj.from[i].joinCondition)
+      printLine(sqlObj, ' ON')
+      printText(sqlObj, obj.from[i].joinCondition, indentLevel + 1)
     }
 
-    printLine(sqlObj, 0, '')
+    printLine(sqlObj)
   }
 }
 
@@ -165,20 +165,20 @@ function processSources(obj, sqlObj, indentLevel) {
 const sourceProcessing = {}
 
 sourceProcessing['table'] = (source, sqlObj, indentLevel) => {
-  printText(sqlObj, 0, source.tableName)
+  printText(sqlObj, source.tableName)
 }
 sourceProcessing['common'] = (source, sqlObj, indentLevel) => {
-  printText(sqlObj, 0, sqlObj.treeObj.commons[source.commonIdx].name)
+  printText(sqlObj, sqlObj.treeObj.commons[source.commonIdx].name)
 }
 sourceProcessing['object'] = (source, sqlObj, indentLevel) => {
   if (source.obj.objectType === 'common') {
-    printText(sqlObj, 0, sqlObj.treeObj.commons[source.obj.commonIdx].name)
+    printText(sqlObj, sqlObj.treeObj.commons[source.obj.commonIdx].name)
   } else {
-    printLine(sqlObj, 0, '(')
+    printLine(sqlObj, '(')
   
     processObject(source.obj, sqlObj, indentLevel + 1)
   
-    printText(sqlObj, indentLevel, ')')
+    printText(sqlObj, ')', indentLevel)
   }
 }
 
@@ -196,12 +196,13 @@ function processSource(source, sqlObj, indentLevel) {
 
 
 
-function printText(sqlObj, indentLevel, text) {
-  sqlObj.sql += sqlObj.indentation.repeat(indentLevel) + text
+function printText(sqlObj, text, indentLevel) {
+  sqlObj.sql += sqlObj.indentation.repeat(indentLevel ?? 0) + text
 }
-function printLine(sqlObj, indentLevel, text) {
-  printText(sqlObj, indentLevel, text + '\n')
+function printLine(sqlObj, text, indentLevel) {
+  printText(sqlObj, (text ?? '') + '\n', indentLevel)
 }
-function printLines(sqlObj, indentLevel, text) {
-  printLine(sqlObj, 0, _app.indent(text, sqlObj.indentation.repeat(indentLevel)))
+function printLines(sqlObj, text, indentLevel) {
+  sqlObj.sql += _app.indent(text,
+    sqlObj.indentation.repeat(indentLevel ?? 0)) + '\n'
 }
