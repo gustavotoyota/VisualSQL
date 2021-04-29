@@ -226,12 +226,12 @@ _app.nodeTypes = {
     props: {
       offset: {
         active: false,
-        value: null,
+        value: '',
       },
 
       limit: {
         active: false,
-        value: null,
+        value: '',
         percent: false,
         withTies: false,
       },

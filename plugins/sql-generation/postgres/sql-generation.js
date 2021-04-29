@@ -116,13 +116,21 @@ objectProcessing['select'] = (obj, sqlObj, indentLevel) => {
 
   if (obj.reduce != null) {
     if (obj.reduce.limit != null) {
-      printLine(sqlObj, 'LIMIT', indentLevel)
-      printLines(sqlObj, obj.reduce.limit.value.toString(), indentLevel + 1)
+      printLine(sqlObj, 'FETCH', indentLevel)
+
+      printText(sqlObj, 'FIRST ', indentLevel + 1)
+      printText(sqlObj, obj.reduce.limit.value)
+      printText(sqlObj, ' ROWS')
+
+      if (obj.reduce.limit.withTies)
+        printLine(sqlObj, ' WITH TIES')
+      else
+        printLine(sqlObj, ' ONLY')
     }
 
     if (obj.reduce.offset != null) {
       printLine(sqlObj, 'OFFSET', indentLevel)
-      printLines(sqlObj, obj.reduce.offset.toString(), indentLevel + 1)
+      printLine(sqlObj, obj.reduce.offset.value, indentLevel + 1)
     }
   }
 }

@@ -308,10 +308,12 @@ nodeTypeProcessing['reduce'] = (node, deps, treeObj) => {
   let nodeObj = initNodeObj(deps[0], 'sort', 'reduce')
 
   nodeObj.reduce = node.props.offset.active || node.props.limit.active ? {
-    offset: node.props.offset.active ? node.props.offset.value : null,
+    offset: node.props.offset.active ? {
+      value: processField(node.props.offset.value),
+    } : null,
 
     limit: node.props.limit.active ? {
-      value: node.props.limit.value,
+      value: processField(node.props.limit.value),
       percent: node.props.limit.percent,
       withTies: node.props.limit.withTies,
     } : null,
