@@ -56,7 +56,7 @@
     <TransformProperties :node="activeNode"></TransformProperties>
     <DistinctProperties :node="activeNode"></DistinctProperties>
     <SortProperties :node="activeNode"></SortProperties>
-    <ReduceProperties :node="activeNode"></ReduceProperties>
+    <LimitProperties :node="activeNode"></LimitProperties>
     
     <PivotProperties :node="activeNode"></PivotProperties>
     

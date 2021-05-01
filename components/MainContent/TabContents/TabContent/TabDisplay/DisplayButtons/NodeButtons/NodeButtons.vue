@@ -39,7 +39,7 @@
 
     <div style="margin-top: 1px">
       <NodeButton :tab="tab" type="cross-join"></NodeButton>
-      <NodeButton :tab="tab" type="reduce"></NodeButton>
+      <NodeButton :tab="tab" type="limit"></NodeButton>
     </div>
 
   </div>

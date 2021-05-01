@@ -36,7 +36,7 @@
       <span v-else-if="type == 'transform'">Transform</span>
       <span v-else-if="type == 'distinct'">Distinct</span>
       <span v-else-if="type == 'sort'">Sort</span>
-      <span v-else-if="type == 'reduce'">Reduce</span>
+      <span v-else-if="type == 'limit'">Limit</span>
 
       <span v-else-if="type == 'pivot'">Pivot</span>
       <span v-else-if="type == 'output'">Output</span>

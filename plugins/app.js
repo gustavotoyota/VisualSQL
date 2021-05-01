@@ -1,4 +1,4 @@
-import postgres from './sql-generation/postgres/postgres.js'
+import sql from './sql/sql.js'
 
 
 
@@ -6,18 +6,15 @@ global._app = {}
 
 
 
-_app.sqlGeneration = {
-  postgres: postgres,
-}
+_app.sql = sql
+
 
 
 _app.databases = [
   { text: 'Oracle', value: 'oracle' },
-  { text: 'MySQL', value: 'my-sql' },
+  { text: 'MySQL', value: 'mysql' },
   { text: 'MS SQL Server', value: 'ms-sql-server' },
   { text: 'PostgreSQL', value: 'postgres' },
-  { text: 'SQLite', value: 'sqlite' },
-  { text: 'MS Access', value: 'ms-access' },
 ]
   
 
@@ -215,25 +212,19 @@ _app.nodeTypes = {
       columns: '',
     },
   },
-  'reduce': {
+  'limit': {
     category: 'processing',
 
     numInputs: 1,
     hasOutput: true,
 
-    description: 'Reduce',
+    description: 'Limit',
 
     props: {
-      offset: {
-        active: false,
-        value: '',
-      },
+      offset: '',
 
       limit: {
-        active: false,
         value: '',
-        percent: false,
-        withTies: false,
       },
     },
   },
@@ -305,18 +296,6 @@ _app.screenToWorld = function (tab, screenPos) {
     x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
     y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
   }
-}
-
-
-
-
-_app.indent = function (text, indentation) {
-  const parts = text.split('\n')
-
-  for (let i = 0; i < parts.length; ++i)
-    parts[i] = indentation + parts[i]
-
-  return parts.join('\n')
 }
 
 

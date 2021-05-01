@@ -31,11 +31,25 @@ export default function generateSQL(treeObj, options) {
     --sqlObj.indentLevel
   }
 
-  sqlObj.print = (text, isField) => {
-    if (sqlObj.indentNext)
-      sqlObj.sql += sqlObj.indentation.repeat(sqlObj.indentLevel)
+
+
+
+  sqlObj.indent = () => {
+    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
+
+    if (!sqlObj.indentNext)
+      return
 
     sqlObj.indentNext = false
+    
+    sqlObj.sql += indentation
+  }
+
+
+
+
+  sqlObj.print = (text, isField) => {
+    sqlObj.indent()
 
     if (!isField) {
       if (sqlObj.options.uppercaseKeywords)
@@ -52,9 +66,21 @@ export default function generateSQL(treeObj, options) {
     sqlObj.indentNext = true
   }
   
-  sqlObj.printLines = (text) => {
-    sqlObj.sql += _app.indent(text,
-      sqlObj.indentation.repeat(sqlObj.indentLevel)) + '\n'
+
+
+
+  sqlObj.printLines = (text, initialIndent) => {
+    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
+
+    if (initialIndent)
+      sqlObj.indent()
+
+    const parts = text.split('\n')
+  
+    for (let i = 1; i < parts.length; ++i)
+      parts[i] = indentation + parts[i]
+  
+    sqlObj.sql += parts.join('\n') + '\n'
 
     sqlObj.indentNext = true
   }
@@ -124,7 +150,7 @@ objectProcessing['select'] = (obj, sqlObj) => {
   sqlObj.printLine()
 
   sqlObj.incrementIndent()
-  sqlObj.printLines(obj.select)
+  sqlObj.printLines(obj.select, true)
   sqlObj.decrementIndent()
 
 
@@ -149,9 +175,9 @@ objectProcessing['select'] = (obj, sqlObj) => {
     sqlObj.incrementIndent()
 
     if (obj.where.length === 1)
-      sqlObj.printLines(obj.where[0])
+      sqlObj.printLines(obj.where[0], true)
     else {
-      sqlObj.printLines(`(${obj.where[0]})`)
+      sqlObj.printLines(`(${obj.where[0]})`, true)
       for (let i = 1; i < obj.where.length; ++i) {
         sqlObj.print('AND (')
         sqlObj.printLines(`${obj.where[i]})`)
@@ -170,14 +196,14 @@ objectProcessing['select'] = (obj, sqlObj) => {
     sqlObj.printLine('GROUP BY')
 
     sqlObj.incrementIndent()
-    sqlObj.printLines(obj.group.columns)
+    sqlObj.printLines(obj.group.columns, true)
     sqlObj.decrementIndent()
 
     if (obj.group.condition !== '') {
       sqlObj.printLine('HAVING')
 
       sqlObj.incrementIndent()
-      sqlObj.printLines(obj.group.condition)
+      sqlObj.printLines(obj.group.condition, true)
       sqlObj.decrementIndent()
     }
   }
@@ -191,7 +217,7 @@ objectProcessing['select'] = (obj, sqlObj) => {
     sqlObj.printLine('ORDER BY')
 
     sqlObj.incrementIndent()
-    sqlObj.printLines(obj.sort)
+    sqlObj.printLines(obj.sort, true)
     sqlObj.decrementIndent()
   }
 
@@ -200,31 +226,20 @@ objectProcessing['select'] = (obj, sqlObj) => {
 
   // LIMIT
 
-  if (obj.reduce != null) {
-    if (obj.reduce.offset != null) {
-      sqlObj.printLine('OFFSET')
-      
-      sqlObj.incrementIndent()
-      sqlObj.printLine(obj.reduce.offset.value, true)
-      sqlObj.decrementIndent()
-    }
+  if (obj.limit && obj.limit.value) {
+    sqlObj.printLine('LIMIT')
 
-    if (obj.reduce.limit != null) {
-      sqlObj.printLine('FETCH')
+    sqlObj.incrementIndent()
+    sqlObj.printLine(obj.limit.value, true)
+    sqlObj.decrementIndent()
+  }
 
-      sqlObj.incrementIndent()
-
-      sqlObj.print('FIRST ')
-      sqlObj.print(obj.reduce.limit.value, true)
-      sqlObj.print(' ROWS')
-
-      if (obj.reduce.limit.withTies)
-        sqlObj.printLine(' WITH TIES')
-      else
-        sqlObj.printLine(' ONLY')
-        
-      sqlObj.decrementIndent()
-    }
+  if (obj.offset) {
+    sqlObj.printLine('OFFSET')
+    
+    sqlObj.incrementIndent()
+    sqlObj.printLine(obj.offset, true)
+    sqlObj.decrementIndent()
   }
 }
 objectProcessing['set-operations'] = (obj, sqlObj) => {
@@ -242,7 +257,7 @@ objectProcessing['set-operations'] = (obj, sqlObj) => {
         else
         sqlObj.printLine('UNION')
         break
-      case 'difference': sqlObj.printLine('EXCEPT'); break
+      case 'difference': sqlObj.printLine('MINUS'); break
       case 'intersection': sqlObj.printLine('INTERSECT'); break
     }
 
@@ -254,7 +269,7 @@ objectProcessing['set-operations'] = (obj, sqlObj) => {
   }
 }
 objectProcessing['sql'] = (obj, sqlObj) => {
-  sqlObj.printLines(obj.sql)
+  sqlObj.printLines(obj.sql, true)
 }
 
 
@@ -264,7 +279,7 @@ objectProcessing['sql'] = (obj, sqlObj) => {
 function processSources(obj, sqlObj) {
   processSource(obj.from[0], sqlObj)
 
-  if ((obj.from[0].alias ?? '') !== '') {
+  if (obj.from[0].alias) {
     sqlObj.print(' AS ')
     sqlObj.print(obj.from[0].alias, true)
   }

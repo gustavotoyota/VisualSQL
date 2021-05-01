@@ -160,7 +160,7 @@ export default {
 
 
     generateSQL() {
-      let treeObj = _app.sqlGeneration[this.project.sql.database].generateTree(
+      let treeObj = _app.sql[this.project.sql.database].generateTree(
         this.$store, this.module, this.$store.getters.activeNode)
       
       if (treeObj.error != null) {
@@ -174,8 +174,7 @@ export default {
 
       let sqlOptions = _app.deepCopy(this.project.sql)
 
-      let sqlObj = _app.sqlGeneration[this.project.sql.database].
-        generateSQL(treeObj, sqlOptions)
+      let sqlObj = _app.sql[this.project.sql.database].generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 
