@@ -234,7 +234,7 @@ export const mutations = {
 
 
 
-    Object.assign(node.props, nodeTypeInfo.props)
+    Object.assign(node.props, _app.deepCopy(nodeTypeInfo.props))
     Object.assign(node, payload.node)
 
 
