@@ -66,6 +66,18 @@ let nodeProcessing = {}
 nodeProcessing['table'] = (node, inputsColumns, trackingObj) => {
 }
 nodeProcessing['node'] = (node, inputsColumns, trackingObj) => {
+  let parts = node.props.nodeName.split('.', 2)
+
+  let refModule = trackingObj.store.state.project.modules.find(module => module.name === parts[0])
+
+  let refNode
+  if (refModule != null)
+    refNode = Object.values(refModule.nodes).find(node => node.props.name === parts[1])
+
+  if (refNode == null)
+    return []
+
+  return processNode(refModule, refNode, trackingObj)
 }
 nodeProcessing['sql'] = (node, inputsColumns, trackingObj) => {
 }
