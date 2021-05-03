@@ -64,6 +64,7 @@ let nodeProcessing = {}
 
 
 nodeProcessing['table'] = (node, inputsColumns, trackingObj) => {
+  return node.props.columns.split(',').forEach(value => value.trim())
 }
 nodeProcessing['node'] = (node, inputsColumns, trackingObj) => {
   let parts = node.props.nodeName.split('.', 2)
@@ -80,12 +81,14 @@ nodeProcessing['node'] = (node, inputsColumns, trackingObj) => {
   return processNode(refModule, refNode, trackingObj)
 }
 nodeProcessing['sql'] = (node, inputsColumns, trackingObj) => {
+  return node.props.columns.split(',').forEach(value => value.trim())
 }
 
 
 
 
 function joinProcessing(node, inputsColumns, trackingObj) {
+  return inputsColumns[0].concat(inputsColumns[1])
 }
 
 nodeProcessing['inner-join'] = joinProcessing
@@ -98,4 +101,5 @@ nodeProcessing['cross-join'] = joinProcessing
 
 
 nodeProcessing['transform'] = (node, inputsColumns, trackingObj) => {
+  return node.props.columns.split(',').forEach(value => value.trim())
 }
