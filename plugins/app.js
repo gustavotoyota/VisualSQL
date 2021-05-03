@@ -1,8 +1,13 @@
 import sql from './sql/sql.js'
+import columnTracking from './column-tracking.js'
 
 
 
 global._app = {}
+
+
+
+_app.columnTracking = columnTracking
 
 
 

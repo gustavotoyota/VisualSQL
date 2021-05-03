@@ -139,10 +139,11 @@ export default {
     
     ..._vuex.mapFields([
       'project',
+      'snackbar',
     ]),
     
-    ..._vuex.mapFields([
-      'snackbar',
+    ..._vuex.mapGetters([
+      'activeNode',
     ]),
 
   },
@@ -160,17 +161,30 @@ export default {
 
 
     generateSQL() {
+      // Column tracking
+
+      let columnsObj = _app.columnTracking.init(this.$store)
+      
+      columnsObj.processNode(this.module, this.activeNode)
+
+
+
+
+      // Tree generation
+
       let treeObj = _app.sql[this.project.sql.database].generateTree(
-        this.$store, this.module, this.$store.getters.activeNode)
+        this.$store, this.module, this.activeNode, { columnsObj: columnsObj })
       
       if (treeObj.error != null) {
         this.snackbar.text = treeObj.error
         this.snackbar.active = true
         return
       }
+      
 
 
 
+      // SQL generation
 
       let sqlOptions = _app.deepCopy(this.project.sql)
 
@@ -180,6 +194,8 @@ export default {
 
 
 
+
+      // Show dialog
 
       this.dialog = true
 
