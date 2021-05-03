@@ -84,7 +84,6 @@ _app.nodeTypes = {
     description: 'Difference',
 
     props: {
-      allowDuplicates: false,
     },
   },
   'intersection': {
@@ -96,7 +95,6 @@ _app.nodeTypes = {
     description: 'Intersection',
 
     props: {
-      allowDuplicates: false,
     },
   },
   
@@ -158,7 +156,6 @@ _app.nodeTypes = {
     description: 'Cross join',
 
     props: {
-      condition: '',
     },
   },
   
