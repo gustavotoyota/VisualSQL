@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="320" v-model="active">
+  <v-dialog max-width="360" v-model="active">
 
 
     <template v-slot:activator="{ on, attrs }">
@@ -51,10 +51,10 @@
                 lineDecorationsWidth: 3,
                 lineNumbersMinChars: 0,
                 scrollBeyondLastLine: false,
-                wordWrap: 'on',
                 quickSuggestions: false,
+                renderLineHighlight: 'none',
               }"
-              style="height: 200px; border-radius: 5px; overflow: hidden"/>
+              style="height: 220px; border-radius: 5px; overflow: hidden"/>
               
             <div class="caption">Note: Columns can be SQL or comma-separated</div>
           </div>

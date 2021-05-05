@@ -24,7 +24,8 @@
                 Database:
               </div>
 
-              <v-select class="mt-1" dense outlined hide-details background-color="#101010"
+              <v-select class="mt-1" dense outlined
+              hide-details background-color="#101010"
               :menu-props="{ top: false, offsetY: true }"
               :items="$app.databases" item-text="text" item-value="value"
               v-model="project.sql.database">

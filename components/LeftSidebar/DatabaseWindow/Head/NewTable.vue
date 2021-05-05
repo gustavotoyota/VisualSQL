@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="320" v-model="active">
+  <v-dialog max-width="360" v-model="active">
 
 
     <template v-slot:activator="{ on: dialog }">
@@ -45,7 +45,7 @@
             
             <MonacoEditor
               class="mt-1 editor" v-model="columns" language="sql"
-              style="height: 200px; border-radius: 5px; overflow: hidden"
+              style="height: 220px; border-radius: 5px; overflow: hidden"
               :options="{
                 theme: 'vs-dark',
                 tabSize: 2,

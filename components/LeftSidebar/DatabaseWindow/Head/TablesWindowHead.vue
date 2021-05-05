@@ -4,8 +4,8 @@
 
 
     <v-toolbar-title>
-      <v-icon>mdi-database</v-icon>
-      <span style="position: relative; top: 1px">Database</span>
+      <v-icon>mdi-table</v-icon>
+      <span style="position: relative; top: 1px">Tables</span>
     </v-toolbar-title>
 
 

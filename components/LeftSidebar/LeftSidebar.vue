@@ -9,8 +9,8 @@
 
 
     
-    <DatabaseWindow>
-    </DatabaseWindow>
+    <TablesWindow>
+    </TablesWindow>
 
 
   </v-navigation-drawer>
