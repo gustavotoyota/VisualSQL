@@ -35,7 +35,7 @@ function processNode(module, node, treeObj) {
 
     inputs.push({
       obj: inputObj,
-
+      
       link: link,
     })
   }
@@ -154,13 +154,6 @@ nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
   return refNodeObj
 }
 nodeTypeProcessing['sql'] = (node, inputs, treeObj) => {
-  if (node.props.sql.trim() === '') {
-    treeObj.error = 'Query incomplete: SQL is empty.'
-    treeObj.node = node
-    return
-  }
-
-
   return {
     objectType: 'sql',
 
@@ -252,41 +245,8 @@ function joinProcessing(node, inputs, treeObj) {
 nodeTypeProcessing['inner-join'] = joinProcessing
 nodeTypeProcessing['left-join'] = joinProcessing
 nodeTypeProcessing['right-join'] = joinProcessing
+nodeTypeProcessing['full-join'] = joinProcessing
 nodeTypeProcessing['cross-join'] = joinProcessing
-
-
-
-
-
-
-// Full join
-
-nodeTypeProcessing['full-join'] = (node, inputs, treeObj) => {
-  let inputA = createFakeInput(
-    nodeTypeProcessing['left-join'](
-      { type: 'left-join', props: { condition: node.props.condition } },
-      inputs, treeObj))
-
-
-
-  let inputB = createFakeInput(
-    nodeTypeProcessing['right-join'](
-      { type: 'right-join', props: { condition: node.props.condition } },
-      inputs, treeObj))
-
-  inputB = createFakeInput(
-    nodeTypeProcessing['filter'](
-      { props: { condition: '<id column from right table> IS NULL' } },
-      [inputB], treeObj))
-
-
-
-  return nodeTypeProcessing['union'](
-    { type: 'union', props: { allowDuplicates: true } },
-    [inputA, inputB], treeObj)
-}
-
-
 
 
 
@@ -385,17 +345,6 @@ function createSelect(source) {
     ],
 
     select: '*',
-  }
-}
-
-
-
-
-function createFakeInput(obj, linkAlias) {
-  return {
-    obj: obj,
-
-    link: { props: { alias: linkAlias ?? '' } },
   }
 }
 

@@ -154,13 +154,6 @@ nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
   return refNodeObj
 }
 nodeTypeProcessing['sql'] = (node, inputs, treeObj) => {
-  if (node.props.sql.trim() === '') {
-    treeObj.error = 'Query incomplete: SQL is empty.'
-    treeObj.node = node
-    return
-  }
-
-
   return {
     objectType: 'sql',
 

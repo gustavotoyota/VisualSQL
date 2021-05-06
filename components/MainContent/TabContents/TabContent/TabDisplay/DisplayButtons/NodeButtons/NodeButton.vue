@@ -1,11 +1,13 @@
 <template>
   <v-tooltip top>
 
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ on }">
 
       <v-btn style="min-width: 36px; margin-right: -3px"
 
       width="0" v-bind="attrs" v-on="on"
+
+      :disabled="database.infos.excludedNodeTypes.includes(type)"
 
       @pointerdown.stop="onPointerDown"
       
@@ -65,6 +67,10 @@ export default {
       'pointerPos',
       'nodeCreation',
     ]),
+
+    database() {
+      return _app.sql[this.$store.state.project.sql.database]
+    },
 
   },
 

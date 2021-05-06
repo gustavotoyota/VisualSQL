@@ -226,19 +226,26 @@ objectProcessing['select'] = (obj, sqlObj) => {
 
   // LIMIT
 
-  if (obj.limit && obj.limit.value) {
-    sqlObj.printLine('LIMIT')
-
-    sqlObj.incrementIndent()
-    sqlObj.printLine(obj.limit.value, true)
-    sqlObj.decrementIndent()
-  }
-
   if (obj.offset) {
     sqlObj.printLine('OFFSET')
     
     sqlObj.incrementIndent()
-    sqlObj.printLine(obj.offset, true)
+
+    sqlObj.print(obj.offset, true)
+    sqlObj.printLine(' ROWS')
+
+    sqlObj.decrementIndent()
+  }
+
+  if (obj.limit && obj.limit.value) {
+    sqlObj.printLine('FETCH')
+
+    sqlObj.incrementIndent()
+
+    sqlObj.print('FIRST ')
+    sqlObj.print(obj.limit.value, true)
+    sqlObj.print(' ROWS ONLY')
+      
     sqlObj.decrementIndent()
   }
 }
@@ -255,9 +262,9 @@ objectProcessing['set-operations'] = (obj, sqlObj) => {
         if (obj.sources[i].allowDuplicates)
           sqlObj.printLine('UNION ALL')
         else
-        sqlObj.printLine('UNION')
+          sqlObj.printLine('UNION')
         break
-      case 'difference': sqlObj.printLine('MINUS'); break
+      case 'difference': sqlObj.printLine('EXCEPT'); break
       case 'intersection': sqlObj.printLine('INTERSECT'); break
     }
 

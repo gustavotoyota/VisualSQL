@@ -60,9 +60,9 @@ _app.socketOffset = { x: 34, y: 12 }
 
 
 _app.databases = [
-  { text: 'Oracle', value: 'oracle' },
+  //{ text: 'Oracle', value: 'oracle' },
   { text: 'MySQL', value: 'mysql' },
-  { text: 'MS SQL Server', value: 'ms-sql-server' },
+  //{ text: 'MS SQL Server', value: 'ms-sql-server' },
   { text: 'PostgreSQL', value: 'postgres' },
 ]
 

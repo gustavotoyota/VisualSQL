@@ -9,7 +9,7 @@
 
   label="SQL code:"
   v-model="node.props.sql"
-  height="170"/>
+  :height="170"/>
 
 
 </template>
