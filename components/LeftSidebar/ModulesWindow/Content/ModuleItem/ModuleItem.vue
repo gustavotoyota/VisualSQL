@@ -29,11 +29,31 @@
       
       <v-list dense width="150">
 
-        <RenameModule :module="module">
-        </RenameModule>
 
-        <DeleteModule :module="module">
-        </DeleteModule>
+        <!-- Rename module -->
+
+        <ModuleDialog title="Rename module"
+        v-slot="{ on }" :name="module.name"
+        @submit="Object.assign(module, $event)">
+
+          <v-list-item v-on="on">
+
+            <v-list-item-icon style="margin-right: 10px">
+                <v-icon>mdi-square-edit-outline</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Rename</v-list-item-title>
+
+          </v-list-item>
+
+        </ModuleDialog>
+
+
+
+        <!-- Delete module -->
+
+        <DeleteModule :module="module"/>
+
         
       </v-list>
 
