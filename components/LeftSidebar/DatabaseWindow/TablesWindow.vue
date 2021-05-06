@@ -4,12 +4,10 @@
 
 
 
-    <TablesWindowHead>
-    </TablesWindowHead>
+    <TablesWindowHead/>
 
 
-    <TablesWindowContent>
-    </TablesWindowContent>
+    <TablesWindowContent/>
 
 
 

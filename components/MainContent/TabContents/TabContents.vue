@@ -5,8 +5,7 @@
 
     <TabContent
     v-for="tab in tabs" :key="tab.id"
-    :tab="tab" :module="getModule(tab.moduleId)">
-    </TabContent>
+    :tab="tab" :module="getModule(tab.moduleId)"/>
 
 
   </v-tabs-items>

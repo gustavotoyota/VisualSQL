@@ -38,7 +38,7 @@
 
 
 
-    <v-divider class="mt-6"></v-divider>
+    <v-divider class="mt-6"/>
 
 
 

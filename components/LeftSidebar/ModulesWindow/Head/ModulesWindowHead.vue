@@ -17,6 +17,7 @@
 
 
 
+
     <ModuleDialog title="New module" v-slot="{ on: dialog }"
     @submit="$store.commit('createModule', $event.name)">
 

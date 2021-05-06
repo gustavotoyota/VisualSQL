@@ -8,8 +8,7 @@
 
       <ModuleItem
       v-for="module in modules" :key="module.id"
-      :module="module">
-      </ModuleItem>
+      :module="module"/>
 
 
     </draggable>

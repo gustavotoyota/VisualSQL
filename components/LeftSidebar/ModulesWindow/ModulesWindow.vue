@@ -4,12 +4,10 @@
 
 
 
-    <ModulesWindowHead>
-    </ModulesWindowHead>
+    <ModulesWindowHead/>
 
 
-    <ModulesWindowContent>
-    </ModulesWindowContent>
+    <ModulesWindowContent/>
 
 
 

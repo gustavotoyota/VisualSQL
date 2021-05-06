@@ -13,7 +13,7 @@
 
         <v-card-title>Generate SQL</v-card-title>
         
-        <v-divider></v-divider>
+        <v-divider/>
         
         <v-card-text style="height: 420px; display: flex">
 
@@ -75,7 +75,7 @@
 
         </v-card-text>
         
-        <v-divider></v-divider>
+        <v-divider/>
         
         <v-card-actions>
           

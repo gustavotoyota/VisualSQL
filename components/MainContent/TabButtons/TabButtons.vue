@@ -23,8 +23,7 @@
 
         <TabButton
         v-for="tab in tabs" :key="tab.id"
-        :tab="tab" :module="getModule(tab.moduleId)">
-        </TabButton>
+        :tab="tab" :module="getModule(tab.moduleId)"/>
 
       </draggable>
 

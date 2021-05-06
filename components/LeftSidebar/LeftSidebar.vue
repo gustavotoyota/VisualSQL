@@ -3,14 +3,13 @@
   v-if="leftSidebar" permanent clipped touchless>
 
 
-    
-    <ModulesWindow>
-    </ModulesWindow>
+
+    <ModulesWindow/>
 
 
     
-    <TablesWindow>
-    </TablesWindow>
+    <TablesWindow/>
+
 
 
   </v-navigation-drawer>

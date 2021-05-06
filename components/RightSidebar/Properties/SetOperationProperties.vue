@@ -16,7 +16,7 @@
 
 
     <div v-if="node.type === 'union'">
-      <v-divider class="mt-6"></v-divider>
+      <v-divider class="mt-6"/>
 
 
       <div class="mx-5 mt-5">

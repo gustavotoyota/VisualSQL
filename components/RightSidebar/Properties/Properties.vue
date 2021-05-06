@@ -8,8 +8,7 @@
 
 
 
-    <v-divider class="mt-3">
-    </v-divider>
+    <v-divider class="mt-3"/>
 
 
 
@@ -38,8 +37,7 @@
 
 
 
-    <v-divider class="mt-6" v-if="activeNode.type !== 'output'">
-    </v-divider>
+    <v-divider class="mt-6"/>
 
 
 
@@ -71,8 +69,7 @@
 
 
 
-    <v-divider class="mt-3">
-    </v-divider>
+    <v-divider class="mt-3"/>
 
 
 

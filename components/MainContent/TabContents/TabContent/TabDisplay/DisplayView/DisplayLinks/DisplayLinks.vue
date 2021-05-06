@@ -9,8 +9,7 @@
         <DisplayLink :tab="tab"
         v-for="link in module.links" :key="link.id"
         :module="module" :link="link"
-        @pointerdown="selectLink(link, $event)">
-        </DisplayLink>
+        @pointerdown="selectLink(link, $event)"/>
         
 
         <DisplayLink new-link :tab="tab"

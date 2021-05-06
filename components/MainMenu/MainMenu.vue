@@ -9,7 +9,7 @@
 
 
 
-    <v-divider vertical inset class="ml-4 mr-2"></v-divider>
+    <v-divider vertical inset class="ml-4 mr-2"/>
 
 
 
@@ -26,7 +26,7 @@
 
 
 
-    <v-divider vertical inset class="mx-2"></v-divider>
+    <v-divider vertical inset class="mx-2"/>
 
 
 
@@ -36,7 +36,7 @@
 
 
 
-    <v-divider vertical inset class="mx-2"></v-divider>
+    <v-divider vertical inset class="mx-2"/>
 
 
 

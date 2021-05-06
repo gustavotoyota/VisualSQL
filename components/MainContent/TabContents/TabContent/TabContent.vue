@@ -4,12 +4,10 @@
     <div class="fill-height d-flex flex-column">
 
 
-      <TabToolbar :tab="tab" :module="module">
-      </TabToolbar>
+      <TabToolbar :tab="tab" :module="module"/>
 
 
-      <TabDisplay :tab="tab" :module="module">
-      </TabDisplay>
+      <TabDisplay :tab="tab" :module="module"/>
 
 
     </div>
