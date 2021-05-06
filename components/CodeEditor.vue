@@ -42,7 +42,7 @@ export default {
     
     inputValue: {
       get() { return this.value },
-      set(event) { this.$emit('input', event) },
+      set(value) { this.$emit('input', value) },
     },
     
   },

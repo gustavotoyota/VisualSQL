@@ -11,25 +11,27 @@
 
     <v-expand-transition>
       <div v-if="node.props.group.active">
-        <div class="mx-5 mt-5">
-          <div class="body-2 grey--text text--lighten-1">
-            Columns to group by:
-          </div>
 
-          <CodeEditor class="mt-1" style="height: 100px"
-          v-model="node.props.group.columns"/>
-        </div>
+
+        <PropCodeEditor
+
+        class="mx-5 mt-5"
+
+        label="Columns to group by:"
+        v-model="node.props.group.columns"/>
         
 
 
-        <div class="mx-5 mt-5" v-if="node.props.group.active">
-          <div class="body-2 grey--text text--lighten-1">
-            Filter condition for grouped rows:
-          </div>
 
-          <CodeEditor class="mt-1" style="height: 100px"
-          v-model="node.props.group.condition"/>
-        </div>
+        <PropCodeEditor
+
+        class="mx-5 mt-5"
+
+        label="Filter condition for grouped rows:"
+        v-model="node.props.group.condition"/>
+
+
+
       </div>
     </v-expand-transition>
 
@@ -41,14 +43,12 @@
 
 
 
-    <div class="mx-5 my-5">
-      <div class="body-2 grey--text text--lighten-1">
-        Output columns:
-      </div>
+    <PropCodeEditor
 
-      <CodeEditor class="mt-1" style="height: 100px"
-      v-model="node.props.columns"/>
-    </div>
+    class="mx-5 mt-5"
+
+    label="Output columns:"
+    v-model="node.props.columns"/>
 
 
 

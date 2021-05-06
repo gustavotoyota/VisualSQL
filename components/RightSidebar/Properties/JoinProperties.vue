@@ -3,6 +3,8 @@
 
 
     <div class="mx-5">
+
+
       <v-radio-group v-model="node.type">
         <template v-slot:label>
           <div>Join type:</div>
@@ -17,17 +19,14 @@
 
 
 
-      <div v-if="node.type !== 'cross-join'">
-
-        <div class="body-2 grey--text text--lighten-1">
-          Join condition:
-        </div>
-
-        <CodeEditor class="mt-1" style="height: 100px"
-        v-model="node.props.condition"/>
-
-      </div>
+      <PropCodeEditor
       
+      v-if="node.type !== 'cross-join'"
+
+      label="Join condition:"
+      v-model="node.props.condition"/>
+
+
     </div>
     
 

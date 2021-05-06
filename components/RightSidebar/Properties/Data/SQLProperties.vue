@@ -1,18 +1,17 @@
 <template>
-  <div v-if="node.type === 'sql'">
 
 
-    <div class="mx-5 mt-5">
-      <div class="body-2 grey--text text--lighten-1">
-        SQL code:
-      </div>
+  <PropCodeEditor
+  
+  v-if="node.type === 'sql'"
 
-      <CodeEditor class="mt-1 editor" style="height: 150px"
-      v-model="node.props.sql"/>
-    </div>
-    
+  class="mx-5 mt-5"
 
-  </div>
+  label="SQL code:"
+  v-model="node.props.sql"
+  height="170"/>
+
+
 </template>
 
 <script>

@@ -1,18 +1,16 @@
 <template>
-  <div v-if="node.type === 'filter'">
 
 
-    <div class="mx-5 mt-5">
-      <div class="body-2 grey--text text--lighten-1">
-        Filter condition:
-      </div>
+  <PropCodeEditor
 
-      <CodeEditor class="mt-1" style="height: 100px"
-      v-model="node.props.condition"/>
-    </div>
-    
+  v-if="node.type === 'filter'"
 
-  </div>
+  class="mx-5 mt-5"
+
+  label="Filter condition:"
+  v-model="node.props.condition"/>
+  
+  
 </template>
 
 <script>
