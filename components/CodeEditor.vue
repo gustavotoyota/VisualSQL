@@ -1,5 +1,5 @@
 <template>
-  <MonacoEditor language="sql" v-model="inputValue"
+  <MonacoEditor language="sql" v-model="inputValue" class="editor"
 
   style="border-radius: 5px; overflow: hidden; border: 1px solid #303030"
 
@@ -51,12 +51,12 @@ export default {
 }
 </script>
 
-<style>
-  .monaco-editor-background {
-    background-color: #101010 !important;
-  }
+<style scoped>
+.editor /deep/ .monaco-editor-background {
+  background-color: #101010 !important;
+}
 
-  .margin {
-    background-color: #101010 !important;
-  }
+.editor /deep/ .margin {
+  background-color: #101010 !important;
+}
 </style>
