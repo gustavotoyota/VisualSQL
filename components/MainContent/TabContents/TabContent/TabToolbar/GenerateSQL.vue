@@ -66,25 +66,10 @@
 
           <div class="pl-5 pt-6 pb-1" style="flex: 1; display: flex">
 
-            <MonacoEditor
-              class="editor" v-model="sql" language="sql"
-              style="flex: 1; width: 0; border-radius: 5px; overflow: hidden"
-              :options="{
-                theme: 'vs-dark',
-                automaticLayout: true,
-                lineNumbers: 'off',
-                minimap: { enabled: false },
-                padding: { top: 2, bottom: 2 },
-                glyphMargin: false,
-                folding: false,
-                lineDecorationsWidth: 3,
-                lineNumbersMinChars: 0,
-                scrollBeyondLastLine: false,
-                quickSuggestions: false,
-                readOnly: true,
-              }"
-
-              @editorDidMount="editorDidMount"/>
+            <CodeEditor v-model="sql"
+            style="flex: 1; width: 0"
+            :options="{ readOnly: true }"
+            @editorDidMount="editorDidMount"/>
 
           </div>
 

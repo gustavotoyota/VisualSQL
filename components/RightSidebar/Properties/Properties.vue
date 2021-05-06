@@ -44,21 +44,18 @@
 
 
 
-    <TableProperties :node="activeNode"></TableProperties>
-    <ModuleProperties :node="activeNode"></ModuleProperties>
-    <NodeProperties :node="activeNode"></NodeProperties>
-    <SQLProperties :node="activeNode"></SQLProperties>
+    <TableProperties :node="activeNode"/>
+    <NodeProperties :node="activeNode"/>
+    <SQLProperties :node="activeNode"/>
     
-    <SetOperationProperties :node="activeNode"></SetOperationProperties>
-    <JoinProperties :node="activeNode"></JoinProperties>
+    <SetOperationProperties :node="activeNode"/>
+    <JoinProperties :node="activeNode"/>
 
-    <FilterProperties :node="activeNode"></FilterProperties>
-    <TransformProperties :node="activeNode"></TransformProperties>
-    <DistinctProperties :node="activeNode"></DistinctProperties>
-    <SortProperties :node="activeNode"></SortProperties>
-    <LimitProperties :node="activeNode"></LimitProperties>
-    
-    <PivotProperties :node="activeNode"></PivotProperties>
+    <FilterProperties :node="activeNode"/>
+    <TransformProperties :node="activeNode"/>
+    <DistinctProperties :node="activeNode"/>
+    <SortProperties :node="activeNode"/>
+    <LimitProperties :node="activeNode"/>
     
     
   </div>

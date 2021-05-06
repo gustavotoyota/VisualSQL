@@ -18,30 +18,17 @@
 
 
       <div v-if="node.type !== 'cross-join'">
+
         <div class="body-2 grey--text text--lighten-1">
           Join condition:
         </div>
 
-        <MonacoEditor
-          class="mt-1 editor" v-model="node.props.condition" language="sql"
-          style="height: 100px; border-radius: 5px; overflow: hidden"
-          :options="{
-            theme: 'vs-dark',
-            tabSize: 2,
-            automaticLayout: true,
-            lineNumbers: 'off',
-            minimap: { enabled: false },
-            padding: { top: 2, bottom: 2 },
-            glyphMargin: false,
-            folding: false,
-            lineDecorationsWidth: 3,
-            lineNumbersMinChars: 0,
-            scrollBeyondLastLine: false,
-            wordWrap: 'on',
-            quickSuggestions: false,
-          }"/>
-        </div>
+        <CodeEditor class="mt-1" style="height: 100px"
+        v-model="node.props.condition"/>
+
       </div>
+      
+    </div>
     
 
   </div>

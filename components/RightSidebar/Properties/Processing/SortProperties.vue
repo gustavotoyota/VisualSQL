@@ -7,24 +7,8 @@
         Columns to sort by:
       </div>
 
-      <MonacoEditor
-        class="mt-1 editor" v-model="node.props.columns" language="sql"
-        style="height: 100px; border-radius: 5px; overflow: hidden"
-        :options="{
-          theme: 'vs-dark',
-          tabSize: 2,
-          automaticLayout: true,
-          lineNumbers: 'off',
-          minimap: { enabled: false },
-          padding: { top: 2, bottom: 2 },
-          glyphMargin: false,
-          folding: false,
-          lineDecorationsWidth: 3,
-          lineNumbersMinChars: 0,
-          scrollBeyondLastLine: false,
-          wordWrap: 'on',
-          quickSuggestions: false,
-        }"/>
+      <CodeEditor class="mt-1" style="height: 100px"
+      v-model="node.props.columns"/>
     </div>
     
 
