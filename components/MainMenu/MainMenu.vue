@@ -36,6 +36,21 @@
 
 
 
+    <v-divider vertical inset class="mx-2"></v-divider>
+
+
+
+    <v-select dense outlined height="30" class="ml-1"
+    style="font-size: 14px; flex: none; width: 160px"
+    hide-details background-color="#101010"
+    :menu-props="{ top: false, offsetY: true }"
+
+    :items="$app.databases" item-text="text" item-value="value"
+
+    v-model="$store.state.project.sql.database"/>
+
+
+
   </v-app-bar>
 </template>
 
@@ -45,6 +60,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.v-select /deep/ .v-input__control .v-input__slot {
+  min-height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
 </style>
