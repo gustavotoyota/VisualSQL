@@ -104,6 +104,8 @@ export default {
 
   props: {
     module: Object,
+    tab: Object,
+
     disabled: Boolean,
   },
 
@@ -164,6 +166,11 @@ export default {
       if (treeObj.error != null) {
         this.snackbar.text = treeObj.error
         this.snackbar.active = true
+
+        this.$store.commit('clearSelection')
+        this.tab.nodes.selected[treeObj.node.id] = true
+        this.tab.nodes.activeId = treeObj.node.id
+
         return
       }
       

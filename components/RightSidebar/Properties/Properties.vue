@@ -2,7 +2,7 @@
   <div v-if="activeNode != null" class="mb-6">
 
     <div class="mx-5 mt-4 font-weight-medium">
-      {{ $app.nodeTypes[activeNode.type].description }} node
+      {{ $app.nodeTypes[activeNode.type].title }} node
     </div>
 
 

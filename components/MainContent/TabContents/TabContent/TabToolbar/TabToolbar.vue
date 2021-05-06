@@ -45,7 +45,8 @@
 
 
 
-    <GenerateSQL :module="module" :disabled="emptyNodeSelection">
+    <GenerateSQL :module="module" :tab="tab"
+    :disabled="emptyNodeSelection">
     </GenerateSQL>
 
 

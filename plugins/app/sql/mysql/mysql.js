@@ -9,7 +9,7 @@ export default {
   
   
   infos: {
-    excludedNodeTypes: [
+    disabledNodeTypes: [
       'difference',
       'intersection',
       'full-join',

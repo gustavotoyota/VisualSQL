@@ -9,6 +9,6 @@ export default {
   
   
   infos: {
-    excludedNodeTypes: [],
+    disabledNodeTypes: [],
   },
 }

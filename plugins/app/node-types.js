@@ -9,7 +9,7 @@ nodeTypes['table'] = {
   numInputs: 0,
   hasOutput: true,
 
-  description: 'Table',
+  title: 'Table',
 
   props: {
     tableName: '',
@@ -21,7 +21,7 @@ nodeTypes['node'] = {
   numInputs: 0,
   hasOutput: true,
 
-  description: 'Node',
+  title: 'Node',
 
   props: {
     nodeName: '',
@@ -33,7 +33,7 @@ nodeTypes['sql'] = {
   numInputs: 0,
   hasOutput: true,
 
-  description: 'Sql',
+  title: 'Sql',
 
   props: {
     sql: '',
@@ -49,7 +49,7 @@ nodeTypes['union'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Union',
+  title: 'Union',
 
   props: {
     allowDuplicates: false,
@@ -61,7 +61,7 @@ nodeTypes['difference'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Difference',
+  title: 'Difference',
 
   props: {
   },
@@ -72,7 +72,7 @@ nodeTypes['intersection'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Intersection',
+  title: 'Intersection',
 
   props: {
   },
@@ -87,7 +87,7 @@ nodeTypes['inner-join'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Inner join',
+  title: 'Inner join',
 
   props: {
     condition: '',
@@ -99,7 +99,7 @@ nodeTypes['left-join'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Left join',
+  title: 'Left join',
 
   props: {
     condition: '',
@@ -111,7 +111,7 @@ nodeTypes['right-join'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Right join',
+  title: 'Right join',
 
   props: {
     condition: '',
@@ -123,7 +123,7 @@ nodeTypes['full-join'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Full join',
+  title: 'Full join',
 
   props: {
     condition: '',
@@ -135,7 +135,7 @@ nodeTypes['cross-join'] = {
   numInputs: 2,
   hasOutput: true,
 
-  description: 'Cross join',
+  title: 'Cross join',
 
   props: {
   },
@@ -150,7 +150,7 @@ nodeTypes['filter'] = {
   numInputs: 1,
   hasOutput: true,
 
-  description: 'Filter',
+  title: 'Filter',
 
   props: {
     condition: '',
@@ -162,7 +162,7 @@ nodeTypes['transform'] = {
   numInputs: 1,
   hasOutput: true,
 
-  description: 'Transform',
+  title: 'Transform',
 
   props: {
     group: {
@@ -180,7 +180,7 @@ nodeTypes['distinct'] = {
   numInputs: 1,
   hasOutput: true,
 
-  description: 'Distinct',
+  title: 'Distinct',
 
   props: {
     columns: '',
@@ -192,7 +192,7 @@ nodeTypes['sort'] = {
   numInputs: 1,
   hasOutput: true,
 
-  description: 'Sort',
+  title: 'Sort',
 
   props: {
     columns: '',
@@ -204,7 +204,7 @@ nodeTypes['limit'] = {
   numInputs: 1,
   hasOutput: true,
 
-  description: 'Limit',
+  title: 'Limit',
 
   props: {
     offset: '',

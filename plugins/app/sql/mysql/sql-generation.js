@@ -226,26 +226,19 @@ objectProcessing['select'] = (obj, sqlObj) => {
 
   // LIMIT
 
+  if (obj.limit && obj.limit.value) {
+    sqlObj.printLine('LIMIT')
+
+    sqlObj.incrementIndent()
+    sqlObj.printLine(obj.limit.value, true)
+    sqlObj.decrementIndent()
+  }
+
   if (obj.offset) {
     sqlObj.printLine('OFFSET')
     
     sqlObj.incrementIndent()
-
-    sqlObj.print(obj.offset, true)
-    sqlObj.printLine(' ROWS')
-
-    sqlObj.decrementIndent()
-  }
-
-  if (obj.limit && obj.limit.value) {
-    sqlObj.printLine('FETCH')
-
-    sqlObj.incrementIndent()
-
-    sqlObj.print('FIRST ')
-    sqlObj.print(obj.limit.value, true)
-    sqlObj.print(' ROWS ONLY')
-      
+    sqlObj.printLine(obj.offset, true)
     sqlObj.decrementIndent()
   }
 }

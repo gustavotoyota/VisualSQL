@@ -244,7 +244,7 @@ objectProcessing['select'] = (obj, sqlObj) => {
 
     sqlObj.print('FIRST ')
     sqlObj.print(obj.limit.value, true)
-    sqlObj.print(' ROWS ONLY')
+    sqlObj.printLine(' ROWS ONLY')
       
     sqlObj.decrementIndent()
   }
