@@ -35,7 +35,7 @@ export default {
     { src: '~/plugins/codemirror.js', mode: 'client' },
     '~/plugins/directives.js',
     '~/plugins/vuex.js',
-    '~/plugins/app.js',
+    '~/plugins/app/app.js',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
