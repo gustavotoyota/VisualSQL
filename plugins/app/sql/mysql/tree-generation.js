@@ -200,19 +200,27 @@ function setOperationProcessing(node, inputs, treeObj) {
 
 
 
+
   // Second object
 
-  if (inputs[1].obj.objectType === 'set-operations'
-  && inputs[1].obj.sources.length === 1)
-    nodeObj.sources.push({ ...inputs[1].obj.sources[0] })
-  else
-    nodeObj.sources.push({ obj: inputs[1].obj })
+  let operationObj = {
+    obj: inputs[1].obj,
 
-  Object.assign(nodeObj.sources[nodeObj.sources.length - 1], {
     operationType: node.type,
 
     allowDuplicates: node.props.allowDuplicates,
-  })
+  }
+
+  if (operationObj.obj.objectType === 'set-operations')
+    operationObj.obj = createSelect({
+      sourceType: 'object',
+
+      alias: inputs[1].link.props.alias,
+
+      obj: inputs[1].obj,
+    })
+
+  nodeObj.sources.push(operationObj)
   
 
 
@@ -238,19 +246,22 @@ function joinProcessing(node, inputs, treeObj) {
 
   // Second object
 
+  let joinObj
+
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
   && inputs[1].obj.from.length === 1)
-    nodeObj.from.push({ ...inputs[1].obj.from[0] })
+    joinObj = { ...inputs[1].obj.from[0] }
   else
-    nodeObj.from.push({ sourceType: 'object', obj: inputs[1].obj })
+    joinObj = { sourceType: 'object', obj: inputs[1].obj }
 
-  Object.assign(nodeObj.from[nodeObj.from.length - 1], {
-    alias: inputs[1].link.props.alias,
+  joinObj.alias = inputs[1].link.props.alias
+  
+  joinObj.joinType = node.type
+  if (node.type !== 'cross-join')
+    joinObj.joinCondition = processField(node.props.condition)
 
-    joinType: node.type,
-    joinCondition: processField(node.props.condition),
-  })
+  nodeObj.from.push(joinObj)
 
 
 
@@ -294,7 +305,7 @@ nodeTypeProcessing['transform'] = (node, inputs, treeObj) => {
 nodeTypeProcessing['distinct'] = (node, inputs, treeObj) => {
   let nodeObj = initNodeObj(inputs[0], 'transform', 'distinct')
 
-  nodeObj.distinct = node.props.columns.trim()
+  nodeObj.distinct = true
 
   return nodeObj
 }
