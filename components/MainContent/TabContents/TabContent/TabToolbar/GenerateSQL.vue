@@ -27,7 +27,7 @@
               <v-select class="mt-1" dense outlined
               hide-details background-color="#101010"
               :menu-props="{ top: false, offsetY: true }"
-              :items="$app.databases" item-text="text" item-value="value"
+              :items="$app.databaseItems" item-text="text" item-value="value"
               v-model="project.sql.database">
               </v-select>
             </div>
@@ -160,7 +160,7 @@ export default {
 
       // Tree generation
 
-      let treeObj = _app.sql[this.project.sql.database].generateTree(
+      let treeObj = _app.databases[this.project.sql.database].generateTree(
         this.$store, this.module, this.activeNode, { columnsObj: columnsObj })
       
       if (treeObj.error != null) {
@@ -181,7 +181,7 @@ export default {
 
       let sqlOptions = _app.deepCopy(this.project.sql)
 
-      let sqlObj = _app.sql[this.project.sql.database].generateSQL(treeObj, sqlOptions)
+      let sqlObj = _app.databases[this.project.sql.database].generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 

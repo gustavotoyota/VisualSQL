@@ -69,7 +69,7 @@ export default {
     ]),
 
     database() {
-      return _app.sql[this.$store.state.project.sql.database]
+      return _app.databases[this.$store.state.project.sql.database]
     },
 
   },
