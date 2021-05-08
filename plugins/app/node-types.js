@@ -183,7 +183,6 @@ nodeTypes['distinct'] = {
   title: 'Distinct',
 
   props: {
-    columns: '',
   },
 }
 nodeTypes['sort'] = {
