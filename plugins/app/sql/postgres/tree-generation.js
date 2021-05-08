@@ -17,6 +17,21 @@ export default function generateTree(store, module, root, options) {
 
 
 function processNode(module, node, treeObj) {
+  // Check node type
+
+  const database = _app.sql[treeObj.store.state.project.sql.database]
+
+  if (database.infos.disabledNodeTypes.includes(node.type)) {
+    treeObj.error = `Invalid query: database doesn\'t have the ${_app.nodeTypes[node.type].title} node.`
+    treeObj.node = node
+    return
+  }
+
+
+
+
+  // Process inputs
+
   let inputs = []
 
   for (let linkId of node.incomingLinks) {
@@ -185,15 +200,12 @@ function setOperationProcessing(node, inputs, treeObj) {
 
 
 
+
   // Second object
 
-  if (inputs[1].obj.objectType === 'set-operations'
-  && inputs[1].obj.sources.length === 1)
-    nodeObj.sources.push({ ...inputs[1].obj.sources[0] })
-  else
-    nodeObj.sources.push({ obj: inputs[1].obj })
+  nodeObj.sources.push({
+    obj: inputs[1].obj,
 
-  Object.assign(nodeObj.sources[nodeObj.sources.length - 1], {
     operationType: node.type,
 
     allowDuplicates: node.props.allowDuplicates,
@@ -223,19 +235,22 @@ function joinProcessing(node, inputs, treeObj) {
 
   // Second object
 
+  let joinObj
+
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
   && inputs[1].obj.from.length === 1)
-    nodeObj.from.push({ ...inputs[1].obj.from[0] })
+    joinObj = { ...inputs[1].obj.from[0] }
   else
-    nodeObj.from.push({ sourceType: 'object', obj: inputs[1].obj })
+    joinObj = { sourceType: 'object', obj: inputs[1].obj }
 
-  Object.assign(nodeObj.from[nodeObj.from.length - 1], {
-    alias: inputs[1].link.props.alias,
+  joinObj.alias = inputs[1].link.props.alias
+  
+  joinObj.joinType = node.type
+  if (node.type !== 'cross-join')
+    joinObj.joinCondition = processField(node.props.condition)
 
-    joinType: node.type,
-    joinCondition: processField(node.props.condition),
-  })
+  nodeObj.from.push(joinObj)
 
 
 
@@ -279,7 +294,7 @@ nodeTypeProcessing['transform'] = (node, inputs, treeObj) => {
 nodeTypeProcessing['distinct'] = (node, inputs, treeObj) => {
   let nodeObj = initNodeObj(inputs[0], 'transform', 'distinct')
 
-  nodeObj.distinct = node.props.columns.trim()
+  nodeObj.distinct = true
 
   return nodeObj
 }

@@ -24,12 +24,8 @@ export default function generateSQL(treeObj, options) {
 
   // Print functions
 
-  sqlObj.incrementIndent = () => {
-    ++sqlObj.indentLevel
-  }
-  sqlObj.decrementIndent = () => {
-    --sqlObj.indentLevel
-  }
+  sqlObj.incrementIndent = () => { ++sqlObj.indentLevel }
+  sqlObj.decrementIndent = () => { --sqlObj.indentLevel }
 
 
 
@@ -88,9 +84,9 @@ export default function generateSQL(treeObj, options) {
 
 
   
-  processCommons(sqlObj)
+  printCommons(sqlObj)
 
-  processObject(treeObj.rootObj, sqlObj, 0)
+  printObj(treeObj.rootObj, sqlObj, 0)
 
   return sqlObj
 }
@@ -98,7 +94,7 @@ export default function generateSQL(treeObj, options) {
 
 
 
-function processCommons(sqlObj) {
+function printCommons(sqlObj) {
   if (sqlObj.treeObj.commons.length === 0)
     return
 
@@ -114,7 +110,7 @@ function processCommons(sqlObj) {
 
     
     sqlObj.incrementIndent()
-    processObject(common.obj, sqlObj)
+    printObj(common.obj, sqlObj)
     sqlObj.decrementIndent()
     
 
@@ -130,50 +126,118 @@ function processCommons(sqlObj) {
 
 
 
-const objectProcessing = {}
 
-objectProcessing['select'] = (obj, sqlObj) => {
-  // SELECT
+// Object printing
 
-  sqlObj.print('SELECT')
+const objectPrinting = {}
 
-  if (obj.distinct != null) {
-    if (obj.distinct === '')
-      sqlObj.print(' DISTINCT')
-    else {
-      sqlObj.print(' DISTINCT ON (')
-      sqlObj.print(obj.distinct, true)
-      sqlObj.print(')')
-    }
+objectPrinting['set-operations'] = (obj, sqlObj) => {
+  function printSource(sourceObj) {
+    sqlObj.printLine('(')
+    sqlObj.incrementIndent()
+    printObj(sourceObj.obj, sqlObj)
+    sqlObj.decrementIndent()
+    sqlObj.printLine(')')
   }
 
-  sqlObj.printLine()
 
-  sqlObj.incrementIndent()
-  sqlObj.printLines(obj.select, true)
-  sqlObj.decrementIndent()
+
+  printSource(obj.sources[0])
 
 
 
-
-  // FROM
-
-  sqlObj.printLine('FROM')
-
-  sqlObj.incrementIndent()
-  processSources(obj, sqlObj)
-  sqlObj.decrementIndent()
+  for (let i = 1; i < obj.sources.length; ++i) {
+    let sourceObj = obj.sources[i]
 
 
+    
+    switch (sourceObj.operationType) {
+      case 'union':
+        sqlObj.print('UNION')
+        if (sourceObj.allowDuplicates)
+          sqlObj.print(' ALL')
+        break
+      case 'difference': sqlObj.print('EXCEPT'); break
+      case 'intersection': sqlObj.print('INTERSECT'); break
+    }
+    
+    sqlObj.printLine()
 
 
-  // WHERE
 
-  if (obj.where != null) {
-    sqlObj.printLine('WHERE')
-
+    printSource(sourceObj)
+  }
+}
+objectPrinting['sql'] = (obj, sqlObj) => {
+  sqlObj.printLines(obj.sql, true)
+}
+objectPrinting['select'] = (obj, sqlObj) => {
+  function printSelectClause(obj, sqlObj) {
+    sqlObj.print('SELECT')
+    if (obj.distinct)
+      sqlObj.print(' DISTINCT')
+  
+    sqlObj.printLine()
+  
     sqlObj.incrementIndent()
+    sqlObj.printLines(obj.select, true)
+    sqlObj.decrementIndent()
+  }
+  function printFromClause(obj, sqlObj) {
+    function printSource(sourceObj) {
+      printSourceObj(sourceObj, sqlObj)
+      
+      if (sourceObj.alias || sourceObj.sourceType === 'object') {
+        sqlObj.print(' AS ')
+        sqlObj.print(sourceObj.alias || '<missing>', true)
+      }
+    }
 
+
+
+    sqlObj.printLine('FROM')
+  
+    sqlObj.incrementIndent()
+  
+    printSource(obj.from[0])
+  
+    sqlObj.printLine()
+    
+    
+    for (let i = 1; i < obj.from.length; ++i) {
+      let sourceObj = obj.from[i]
+  
+      switch (sourceObj.joinType) {
+        case 'inner-join': sqlObj.print('INNER JOIN '); break
+        case 'left-join': sqlObj.print('LEFT JOIN '); break
+        case 'right-join': sqlObj.print('RIGHT JOIN '); break
+        case 'full-join': sqlObj.print('FULL JOIN '); break
+        case 'cross-join': sqlObj.print('CROSS JOIN '); break
+      }
+  
+      printSource(sourceObj)
+  
+      if (sourceObj.joinType !== 'cross-join') {
+        sqlObj.printLine(' ON')
+  
+        sqlObj.incrementIndent()
+        sqlObj.print(sourceObj.joinCondition, true)
+        sqlObj.decrementIndent()
+      }
+  
+      sqlObj.printLine()
+    }
+  
+    sqlObj.decrementIndent()
+  }
+  function printWhereClause(obj, sqlObj) {
+    if (!obj.where)
+      return
+  
+    sqlObj.printLine('WHERE')
+  
+    sqlObj.incrementIndent()
+  
     if (obj.where.length === 1)
       sqlObj.printLines(obj.where[0], true)
     else {
@@ -183,161 +247,94 @@ objectProcessing['select'] = (obj, sqlObj) => {
         sqlObj.printLines(`${obj.where[i]})`)
       }
     }
-
+  
     sqlObj.decrementIndent()
   }
-
-
-
-
-  // GROUP BY
-
-  if (obj.group != null) {
+  function printGroupByClause(obj, sqlObj) {
+    if (!obj.group)
+      return
+  
     sqlObj.printLine('GROUP BY')
-
+  
     sqlObj.incrementIndent()
     sqlObj.printLines(obj.group.columns, true)
     sqlObj.decrementIndent()
-
+  
     if (obj.group.condition !== '') {
       sqlObj.printLine('HAVING')
-
+  
       sqlObj.incrementIndent()
       sqlObj.printLines(obj.group.condition, true)
       sqlObj.decrementIndent()
     }
   }
-
-
-
-
-  // ORDER BY
-
-  if (obj.sort != null) {
+  function printOrderByClause(obj, sqlObj) {
+    if (!obj.sort)
+      return
+  
     sqlObj.printLine('ORDER BY')
-
+  
     sqlObj.incrementIndent()
     sqlObj.printLines(obj.sort, true)
     sqlObj.decrementIndent()
   }
-
-
-
-
-  // LIMIT
-
-  if (obj.offset) {
-    sqlObj.printLine('OFFSET')
-    
-    sqlObj.incrementIndent()
-
-    sqlObj.print(obj.offset, true)
-    sqlObj.printLine(' ROWS')
-
-    sqlObj.decrementIndent()
-  }
-
-  if (obj.limit && obj.limit.value) {
-    sqlObj.printLine('FETCH')
-
-    sqlObj.incrementIndent()
-
-    sqlObj.print('FIRST ')
-    sqlObj.print(obj.limit.value, true)
-    sqlObj.printLine(' ROWS ONLY')
+  function printLimitClause(obj, sqlObj) {
+    if (obj.offset) {
+      sqlObj.printLine('OFFSET')
       
-    sqlObj.decrementIndent()
-  }
-}
-objectProcessing['set-operations'] = (obj, sqlObj) => {
-  sqlObj.printLine('(')
-  sqlObj.incrementIndent()
-  processObject(obj.sources[0].obj, sqlObj)
-  sqlObj.decrementIndent()
-  sqlObj.printLine(')')
-
-  for (let i = 1; i < obj.sources.length; ++i) {
-    switch (obj.sources[i].operationType) {
-      case 'union':
-        if (obj.sources[i].allowDuplicates)
-          sqlObj.printLine('UNION ALL')
-        else
-          sqlObj.printLine('UNION')
-        break
-      case 'difference': sqlObj.printLine('EXCEPT'); break
-      case 'intersection': sqlObj.printLine('INTERSECT'); break
-    }
-
-    sqlObj.printLine('(')
-    sqlObj.incrementIndent()
-    processObject(obj.sources[i].obj, sqlObj)
-    sqlObj.decrementIndent()
-    sqlObj.printLine(')')
-  }
-}
-objectProcessing['sql'] = (obj, sqlObj) => {
-  sqlObj.printLines(obj.sql, true)
-}
-
-
-
-
-
-function processSources(obj, sqlObj) {
-  processSource(obj.from[0], sqlObj)
-
-  if (obj.from[0].alias) {
-    sqlObj.print(' AS ')
-    sqlObj.print(obj.from[0].alias, true)
-  }
-
-  sqlObj.printLine()
-  
-  
-  for (let i = 1; i < obj.from.length; ++i) {
-    switch (obj.from[i].joinType) {
-      case 'inner-join': sqlObj.print('INNER JOIN '); break
-      case 'left-join': sqlObj.print('LEFT JOIN '); break
-      case 'right-join': sqlObj.print('RIGHT JOIN '); break
-      case 'full-join': sqlObj.print('FULL JOIN '); break
-      case 'cross-join': sqlObj.print('CROSS JOIN '); break
-    }
-
-    processSource(obj.from[i], sqlObj)
-    
-    if (obj.from[i].alias !== '') {
-      sqlObj.print(' AS ')
-      sqlObj.print(obj.from[i].alias, true)
-    }
-
-    if (obj.from[i].joinType !== 'cross-join') {
-      sqlObj.printLine(' ON')
-
       sqlObj.incrementIndent()
-      sqlObj.print(obj.from[i].joinCondition, true)
+  
+      sqlObj.print(obj.offset, true)
+      sqlObj.printLine(' ROWS')
+  
       sqlObj.decrementIndent()
     }
-
-    sqlObj.printLine()
+  
+    if (obj.limit && obj.limit.value) {
+      sqlObj.printLine('FETCH')
+  
+      sqlObj.incrementIndent()
+  
+      sqlObj.print('FIRST ')
+      sqlObj.print(obj.limit.value, true)
+      sqlObj.printLine(' ROWS ONLY')
+        
+      sqlObj.decrementIndent()
+    }
   }
+
+
+
+
+  // Select clauses
+  
+  printSelectClause(obj, sqlObj)
+  printFromClause(obj, sqlObj)
+  printWhereClause(obj, sqlObj)
+  printGroupByClause(obj, sqlObj)
+  printOrderByClause(obj, sqlObj)
+  printLimitClause(obj, sqlObj)
 }
 
 
 
 
-const sourceProcessing = {}
 
-sourceProcessing['table'] = (source, sqlObj) => {
-  sqlObj.print(source.tableName, true)
+// Source printing
+
+const sourcePrinting = {}
+
+sourcePrinting['table'] = (sourceObj, sqlObj) => {
+  sqlObj.print(sourceObj.tableName, true)
 }
-sourceProcessing['common'] = (source, sqlObj) => {
-  sqlObj.print(sqlObj.treeObj.commons[source.commonIdx].name, true)
+sourcePrinting['common'] = (sourceObj, sqlObj) => {
+  sqlObj.print(sqlObj.treeObj.commons[sourceObj.commonIdx].name, true)
 }
-sourceProcessing['object'] = (source, sqlObj) => {
+sourcePrinting['object'] = (sourceObj, sqlObj) => {
   sqlObj.printLine('(')
 
   sqlObj.incrementIndent()
-  processObject(source.obj, sqlObj)
+  printObj(sourceObj.obj, sqlObj)
   sqlObj.decrementIndent()
 
   sqlObj.print(')')
@@ -347,9 +344,9 @@ sourceProcessing['object'] = (source, sqlObj) => {
 
 
 
-function processObject(obj, sqlObj) {
-  objectProcessing[obj.objectType](obj, sqlObj)
+function printObj(obj, sqlObj) {
+  objectPrinting[obj.objectType](obj, sqlObj)
 }
-function processSource(source, sqlObj) {
-  sourceProcessing[source.sourceType](source, sqlObj)
+function printSourceObj(sourceObj, sqlObj) {
+  sourcePrinting[sourceObj.sourceType](sourceObj, sqlObj)
 }
