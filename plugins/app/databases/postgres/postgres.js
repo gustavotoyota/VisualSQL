@@ -10,5 +10,7 @@ export default {
   
   infos: {
     disabledNodeTypes: [],
+
+    distinctOn: true,
   },
 }

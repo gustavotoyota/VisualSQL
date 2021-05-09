@@ -2,16 +2,14 @@
 
   <div>
 
-    <!--
     <PropCodeEditor
     
-    v-if="node.type === 'distinct'"
+    v-if="node.type === 'distinct' && $app.databases[database].infos.distinctOn"
 
     class="mx-5 mt-5"
 
     label="Columns with distinct rows:"
     v-model="node.props.columns"/>
-    -->
 
   </div>
 
@@ -22,6 +20,15 @@ export default {
 
   props: {
     node: Object,
+  },
+
+
+  computed: {
+
+    ..._vuex.mapFields([
+      'project.sql.database',
+    ]),
+
   },
 
 }
