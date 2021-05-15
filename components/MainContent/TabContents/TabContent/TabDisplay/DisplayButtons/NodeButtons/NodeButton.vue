@@ -5,9 +5,9 @@
 
       <v-btn style="min-width: 36px; margin-right: -3px"
 
-      width="0" v-bind="attrs" v-on="on"
+      width="0" v-on="on"
 
-      :disabled="database.infos.excludedNodeTypes.includes(type)"
+      :disabled="database.infos.disabledNodeTypes.includes(type)"
 
       @pointerdown.stop="onPointerDown"
       
