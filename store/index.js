@@ -73,6 +73,7 @@ let initialState = {
     nodeType: null,
     dragStart: null,
     active: false,
+    create: false,
   },
   
 

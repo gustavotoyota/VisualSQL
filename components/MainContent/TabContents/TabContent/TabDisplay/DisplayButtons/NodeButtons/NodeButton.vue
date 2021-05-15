@@ -62,6 +62,7 @@ export default {
   computed: {
 
     ..._vuex.mapFields([
+      'pointerPos',
       'nodeCreation',
     ]),
 
@@ -73,6 +74,9 @@ export default {
 
 
     onClick() {
+      if (this.nodeCreation.create)
+        return
+
       this.$store.commit('createNode', {
         moduleId: this.tab.moduleId,
 
@@ -91,7 +95,9 @@ export default {
 
     onPointerDown() {
       this.nodeCreation.nodeType = this.type
+      this.nodeCreation.dragStart = _app.shallowCopy(this.pointerPos)
       this.nodeCreation.active = true
+      this.nodeCreation.create = false
     },
 
 

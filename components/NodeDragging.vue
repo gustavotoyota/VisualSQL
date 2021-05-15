@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if="nodeCreation.active"
+  <div v-if="nodeCreation.active && nodeCreation.create"
   style="position: absolute; width: 100vw; height: 100vh;
   pointer-events: none; overflow: hidden">
     <v-btn style="position: absolute; z-index: 999;

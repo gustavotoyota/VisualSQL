@@ -40,7 +40,7 @@ export default {
 
 
   beforeDestroy() {
-    document.removeEventListener('pointerdown', this.onDocumentCapturePointerDown)
+    document.removeEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
     document.removeEventListener('pointermove', this.onDocumentPointerMove)
     document.removeEventListener('pointerup', this.onDocumentPointerUp)
   },
@@ -223,6 +223,19 @@ export default {
           this.tab.links.new.from = { ...worldPos }
 
         return
+      }
+
+
+
+
+      // Node creation
+      
+      if (this.nodeCreation.active && !this.nodeCreation.create) {
+        let dist = Math.sqrt(
+          Math.pow(this.pointerPos.x - this.nodeCreation.dragStart.x, 2) +
+          Math.pow(this.pointerPos.y - this.nodeCreation.dragStart.y, 2))
+
+        this.nodeCreation.create = dist >= 8
       }
     },
 
