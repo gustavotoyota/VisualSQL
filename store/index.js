@@ -211,8 +211,10 @@ export const mutations = {
           end: null,
         },
 
-        states: [],
-        currentStateIdx: -1,
+        undoRedo: {
+          states: [],
+          currentStateIdx: -1,
+        },
       }
 
       state.project.tabs.push(moduleTab)
@@ -696,8 +698,8 @@ export const mutations = {
 
     delete moduleState.name
     
-    tab.states.splice(++tab.currentStateIdx)
-    tab.states.push(JSON.stringify(moduleState))
+    tab.undoRedo.states.splice(++tab.undoRedo.currentStateIdx)
+    tab.undoRedo.states.push(JSON.stringify(moduleState))
   },
   replaceState(state) {
     let tab = this.getters.currentTab
@@ -714,8 +716,8 @@ export const mutations = {
 
     delete moduleState.name
     
-    tab.states.splice(tab.currentStateIdx)
-    Vue.set(tab.states, tab.currentStateIdx, JSON.stringify(moduleState))
+    tab.undoRedo.states.splice(tab.undoRedo.currentStateIdx)
+    Vue.set(tab.undoRedo.states, tab.undoRedo.currentStateIdx, JSON.stringify(moduleState))
   },
 
 
@@ -732,12 +734,12 @@ export const mutations = {
 
 
 
-    if (tab.currentStateIdx === 0)
+    if (tab.undoRedo.currentStateIdx === 0)
       return
 
     this.commit('clearSelection')
 
-    Object.assign(module, JSON.parse(tab.states[--tab.currentStateIdx]))
+    Object.assign(module, JSON.parse(tab.undoRedo.states[--tab.undoRedo.currentStateIdx]))
   },
   redo(state) {
     let tab = this.getters.currentTab
@@ -750,12 +752,12 @@ export const mutations = {
 
 
 
-    if (tab.currentStateIdx === tab.states.length - 1)
+    if (tab.undoRedo.currentStateIdx === tab.undoRedo.states.length - 1)
       return
 
     this.commit('clearSelection')
     
-    Object.assign(module, JSON.parse(tab.states[++tab.currentStateIdx]))
+    Object.assign(module, JSON.parse(tab.undoRedo.states[++tab.undoRedo.currentStateIdx]))
   },
 
 
