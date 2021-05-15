@@ -4,8 +4,12 @@
     <template v-slot:activator="{ on, attrs }">
 
       <v-btn style="min-width: 36px; margin-right: -3px"
+
       width="0" v-bind="attrs" v-on="on"
-      @pointerdown.stop="" @click="createNode">
+
+      @pointerdown.stop="onPointerDown"
+      
+      @click="onClick">
         <NodeIcon :type="type"></NodeIcon>
       </v-btn>
 
@@ -46,15 +50,33 @@
 
 export default {
 
+
+
   props: {
     tab: Object,
     type: String,
   },
 
 
+
+  computed: {
+
+    ..._vuex.mapFields([
+      'pointerPos',
+      'nodeCreation',
+    ]),
+
+  },
+
+
+
   methods: {
 
-    createNode() {
+
+    onClick() {
+      if (this.nodeCreation.create)
+        return
+
       this.$store.commit('createNode', {
         moduleId: this.tab.moduleId,
 
@@ -68,6 +90,16 @@ export default {
         },
       })
     },
+
+
+
+    onPointerDown() {
+      this.nodeCreation.nodeType = this.type
+      this.nodeCreation.dragStart = _app.shallowCopy(this.pointerPos)
+      this.nodeCreation.active = true
+      this.nodeCreation.create = false
+    },
+
 
   },
 

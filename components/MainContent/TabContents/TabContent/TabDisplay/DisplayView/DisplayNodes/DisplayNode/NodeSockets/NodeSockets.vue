@@ -46,8 +46,6 @@ export default {
   methods: {
 
     inputPointerDown(socket, event) {
-      event.target.releasePointerCapture(event.pointerId)
-      
       if (event.button !== 0)
         return
 
@@ -82,8 +80,6 @@ export default {
 
 
     outputPointerDown(event) {
-      event.target.releasePointerCapture(event.pointerId)
-
       if (event.button !== 0)
         return
 

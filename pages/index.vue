@@ -3,28 +3,27 @@
 
 
 
-    <MainMenu>
-    </MainMenu>
+    <MainMenu/>
 
 
 
-    <LeftSidebar>
-    </LeftSidebar>
+    <LeftSidebar/>
 
 
 
-    <MainContent>
-    </MainContent>
+    <MainContent/>
 
 
 
-    <RightSidebar>
-    </RightSidebar>
+    <RightSidebar/>
 
 
 
-    <Snackbar>
-    </Snackbar>
+    <Snackbar/>
+
+
+
+    <NodeDragging/>
 
 
 
@@ -57,17 +56,17 @@ export default {
     this.sidebars.right = innerWidth >= 600
 
     
-    document.addEventListener('keydown', this.onKeyDown)
+    document.addEventListener('keydown', this.onDocumentKeyDown)
   },
   beforeDestroy() {
-    document.removeEventListener('keydown', this.onKeyDown)
+    document.removeEventListener('keydown', this.onDocumentKeyDown)
   },
 
 
 
   methods: {
 
-    onKeyDown(event) {
+    onDocumentKeyDown(event) {
       if (document.activeElement !== document.body)
         return
 
