@@ -1,32 +1,11 @@
 <template>
   <div :id="`display-${tab.id}`"
-  style="position: relative; flex: 1; overflow: hidden"
-
-  @pointerdown.capture="onCapturePointerDown" 
-  @pointerdown="onPointerDown"
-  
-  @wheel="onMouseWheel">
+  style="position: relative; flex: 1; overflow: hidden">
 
 
+    <DisplayView :tab="tab" :module="module"/>
 
-    <DisplaySVG :tab="tab" :module="module">
-    </DisplaySVG>
-
-
-
-    <DisplayView :tab="tab" :module="module">
-    </DisplayView>
-
-
-    
-    <DisplaySelection :tab="tab">
-    </DisplaySelection>
-
-
-
-    <DisplayButtons :tab="tab" :module="module">
-    </DisplayButtons>
-
+    <DisplayButtons :tab="tab" :module="module"/>
 
 
   </div>
@@ -34,6 +13,8 @@
 
 <script>
 export default {
+
+
 
   props: {
     tab: Object,
@@ -49,8 +30,9 @@ export default {
 
 
   mounted() {
-    document.addEventListener('pointermove', this.onPointerMove)
-    document.addEventListener('pointerup', this.onPointerUp)
+    document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
+    document.addEventListener('pointermove', this.onDocumentPointerMove)
+    document.addEventListener('pointerup', this.onDocumentPointerUp)
 
     this.$store.commit('fitScreen')
   },
@@ -58,8 +40,21 @@ export default {
 
 
   beforeDestroy() {
-    document.removeEventListener('pointermove', this.onPointerMove)
-    document.removeEventListener('pointerup', this.onPointerUp)
+    document.removeEventListener('pointerdown', this.onDocumentCapturePointerDown)
+    document.removeEventListener('pointermove', this.onDocumentPointerMove)
+    document.removeEventListener('pointerup', this.onDocumentPointerUp)
+  },
+
+
+
+
+  computed: {
+
+    ..._vuex.mapFields([
+      'pointerPos',
+      'nodeCreation',
+    ]),
+
   },
 
 
@@ -68,72 +63,14 @@ export default {
   methods: {
 
 
-
-    onCapturePointerDown(event) {
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
-
-      this.$set(this.tab.camera.pinch.pointers, event.pointerId, pointerPos)
-    },
-
-
-
-    onPointerDown(event) {
-      if (!event.isPrimary) {
-        this.tab.camera.panTimeout = null
-        return
-      }
-
-
-
-
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
-
-
-
-      
-      // Panning
-
-      if (event.pointerType !== 'mouse' || event.button === 1) {
-        this.tab.camera.panPos = { ...pointerPos }
-
-        if (event.pointerType !== 'mouse') {
-          this.tab.camera.panStart = { ...pointerPos }
-
-          this.tab.camera.panTimeout = setTimeout(() => {
-            if (this.tab.camera.panTimeout == null)
-              return
-
-            this.tab.camera.panPos = null
-            this.tab.camera.panTimeout = null
-
-            this.tab.selection.start = { ...pointerPos }
-            this.tab.selection.end = { ...pointerPos }
-          }, 300)
-        }
-      }
-
-
-
-      
-      // Node deselection
-
-      if (event.button === 0 && !event.ctrlKey)
-        this.$store.commit('clearSelection')
-
-
-
-
-      // Selecting
-
-      if (event.pointerType === 'mouse' && event.button === 0) {
-        this.tab.selection.start = { ...pointerPos }
-        this.tab.selection.end = { ...pointerPos }
-      }
+    
+    onDocumentCapturePointerDown(event) {
+      event.target.releasePointerCapture(event.pointerId)
     },
 
     
     
-    onPointerMove(event) {
+    onDocumentPointerMove(event) {
       // Compute pointer position
 
       let pointerPos = _app.getPointerPos(this.tab.id, event)
@@ -148,7 +85,7 @@ export default {
 
       let pointers = Object.values(this.tab.camera.pinch.pointers)
 
-      if (pointers.length === 2) {
+      if (pointers.length >= 2) {
         // Compute center and distance
 
         let center = {
@@ -208,6 +145,16 @@ export default {
 
       if (!event.isPrimary)
         return
+
+
+
+
+      // Pointer position
+
+      this.pointerPos = {
+        x: event.clientX,
+        y: event.clientY,
+      }
 
 
 
@@ -281,8 +228,11 @@ export default {
 
     
 
-    onPointerUp(event) {
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
+    onDocumentPointerUp(event) {
+      // Node creation
+
+      if (this.nodeCreation.active)
+        this.nodeCreation.active = false
 
 
       
@@ -381,39 +331,6 @@ export default {
       
       if (this.tab.links.new != null && event.button === 0)
         this.tab.links.new = null
-    },
-    
-
-
-    onMouseWheel(event) {
-      // Calculate world position
-
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
-      let worldPos = _app.screenToWorld(this.tab, pointerPos)
-
-
-
-
-      // Update camera zoom
-
-      let multiplier = event.deltaY > 0 ? (1 / 1.2) : 1.2
-
-      let oldZoom = this.tab.camera.zoom
-
-      this.tab.camera.zoom = Math.min(Math.max(
-        this.tab.camera.zoom * multiplier, _app.minZoom), _app.maxZoom)
-
-
-
-
-      // Update camera position
-
-      let ratio = this.tab.camera.zoom / oldZoom
-
-      this.tab.camera.pos = {
-        x: worldPos.x + (this.tab.camera.pos.x - worldPos.x) / ratio,
-        y: worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio,
-      }
     },
 
 

@@ -56,6 +56,24 @@ let initialState = {
   // Clipboard
 
   clipboard: null,
+
+
+
+
+  // Pointer position
+
+  pointerPos: { x: 0, y: 0 },
+
+
+  
+
+  // Node creation
+
+  nodeCreation: {
+    nodeType: null,
+    dragStart: null,
+    active: false,
+  },
   
 
 
