@@ -10,11 +10,11 @@
           <div>Join type:</div>
         </template>
         
-        <v-radio label="Inner join" value="inner-join"></v-radio>
-        <v-radio label="Left join" value="left-join"></v-radio>
-        <v-radio label="Right join" value="right-join"></v-radio>
-        <v-radio label="Full join" value="full-join"></v-radio>
-        <v-radio label="Cross join" value="cross-join"></v-radio>
+        <v-radio label="Inner join" value="inner-join" :disabled="isNodeTypeDisabled('inner-join')"/>
+        <v-radio label="Left join" value="left-join" :disabled="isNodeTypeDisabled('left-join')"/>
+        <v-radio label="Right join" value="right-join" :disabled="isNodeTypeDisabled('right-join')"/>
+        <v-radio label="Full join" value="full-join" :disabled="isNodeTypeDisabled('full-join')"/>
+        <v-radio label="Cross join" value="cross-join" :disabled="isNodeTypeDisabled('cross-join')"/>
       </v-radio-group>
 
 
@@ -36,9 +36,32 @@
 <script>
 export default {
 
+
   props: {
     node: Object,
   },
+
+
+
+  computed: {
+
+    database() {
+      return _app.databases[this.$store.state.project.sql.database]
+    },
+
+  },
+
+
+
+  methods: {
+
+    isNodeTypeDisabled(nodeType) {
+      return this.database.infos.disabledNodeTypes.includes(nodeType)
+    },
+
+  },
+
+
 
 }
 </script>
