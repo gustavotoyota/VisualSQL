@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .link {
   pointer-events: visibleStroke;
 

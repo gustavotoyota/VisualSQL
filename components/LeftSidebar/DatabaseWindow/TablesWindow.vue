@@ -4,12 +4,10 @@
 
 
 
-    <DatabaseWindowHead>
-    </DatabaseWindowHead>
+    <TablesWindowHead/>
 
 
-    <DatabaseWindowContent>
-    </DatabaseWindowContent>
+    <TablesWindowContent/>
 
 
 

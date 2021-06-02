@@ -19,7 +19,7 @@
   <v-icon v-else-if="type == 'transform'" :large="large">mdi-atom-variant</v-icon>
   <v-icon v-else-if="type == 'distinct'" :large="large">mdi-format-list-bulleted-type</v-icon>
   <v-icon v-else-if="type == 'sort'" :large="large">mdi-sort-ascending</v-icon>
-  <v-icon v-else-if="type == 'reduce'" :large="large">mdi-arrow-expand-vertical</v-icon>
+  <v-icon v-else-if="type == 'limit'" :large="large">mdi-arrow-expand-vertical</v-icon>
 
   <span v-else-if="type == 'pivot'" class="material-icons"
   :style="{ 'font-size': large ? '36px' : '' }">

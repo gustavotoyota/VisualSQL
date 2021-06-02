@@ -16,6 +16,7 @@
         
 
 
+
     <v-menu offset-y>
 
       <template v-slot:activator="{ on, attrs }">
@@ -30,15 +31,36 @@
       
       <v-list dense width="150">
 
-        <EditTable :table="table">
-        </EditTable>
+        <!-- Edit table -->
 
-        <DeleteTable :table="table">
-        </DeleteTable>
+        <TableDialog v-slot="{ on }" title="Edit table"
+        :name="table.name" :columns="table.columns"
+        @submit="Object.assign(table, $event)">
+          
+          <v-list-item v-on="on">
+
+            <v-list-item-icon style="margin-right: 10px">
+                <v-icon>mdi-square-edit-outline</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Edit</v-list-item-title>
+
+          </v-list-item>
+
+        </TableDialog>
+
+
+
+        <!-- Delete table -->
+
+        <DeleteTable :table="table"/>
         
       </v-list>
 
     </v-menu>
+
+
+
 
   </v-list-item>
 </template>

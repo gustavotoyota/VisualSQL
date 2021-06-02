@@ -20,8 +20,7 @@
 
     <div style="flex: 1; height: 0; overflow-y: auto">
 
-      <Properties>
-      </Properties>
+      <Properties/>
 
     </div>
 

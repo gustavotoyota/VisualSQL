@@ -17,7 +17,22 @@ export default function generateTree(store, module, root, options) {
 
 
 function processNode(module, node, treeObj) {
-  let deps = []
+  // Check node type
+
+  const database = _app.databases[treeObj.store.state.project.sql.database]
+
+  if (database.infos.disabledNodeTypes.includes(node.type)) {
+    treeObj.error = `Invalid query: database doesn\'t have the ${_app.nodeTypes[node.type].title} node.`
+    treeObj.node = node
+    return
+  }
+
+
+
+
+  // Process inputs
+
+  let inputs = []
 
   for (let linkId of node.incomingLinks) {
     let link = module.links[linkId]
@@ -27,14 +42,15 @@ function processNode(module, node, treeObj) {
       return
     }
 
-    let dep = module.nodes[link.from]
-    let depObj = processNode(module, dep, treeObj)
+    let input = module.nodes[link.from]
+    let inputObj = processNode(module, input, treeObj)
 
     if (treeObj.error)
       return
 
-    deps.push({
-      obj: depObj,
+    inputs.push({
+      obj: inputObj,
+      
       link: link,
     })
   }
@@ -44,7 +60,7 @@ function processNode(module, node, treeObj) {
 
   // Node type processing
 
-  let nodeObj = nodeTypeProcessing[node.type](node, deps, treeObj)
+  let nodeObj = nodeTypeProcessing[node.type](node, inputs, treeObj)
 
 
   
@@ -111,7 +127,7 @@ const sqlClauseLevels = {
   transform: 2,
   distinct: 3,
   sort: 4,
-  reduce: 5,
+  limit: 5,
 }
 
 
@@ -124,22 +140,14 @@ let nodeTypeProcessing = {}
 
 // Data sources
 
-nodeTypeProcessing['table'] = (node, deps, treeObj) => {
-  /*
-  if (node.props.tableName === '') {
-    treeObj.error = 'Query incomplete: referenced table not found.'
-    treeObj.node = node
-    return
-  }
-  */
-
+nodeTypeProcessing['table'] = (node, inputs, treeObj) => {
   return createSelect({
     sourceType: 'table',
 
     tableName: processField(node.props.tableName),
   })
 }
-nodeTypeProcessing['node'] = (node, deps, treeObj) => {
+nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
   // Get reference node object
 
   let parts = node.props.nodeName.split('.', 2)
@@ -160,14 +168,7 @@ nodeTypeProcessing['node'] = (node, deps, treeObj) => {
 
   return refNodeObj
 }
-nodeTypeProcessing['sql'] = (node, deps, treeObj) => {
-  if (node.props.sql.trim() === '') {
-    treeObj.error = 'Query incomplete: SQL is empty.'
-    treeObj.node = node
-    return
-  }
-
-
+nodeTypeProcessing['sql'] = (node, inputs, treeObj) => {
   return {
     objectType: 'sql',
 
@@ -180,38 +181,46 @@ nodeTypeProcessing['sql'] = (node, deps, treeObj) => {
 
 // Set operations
 
-function setOperationProcessing(node, deps, treeObj) {
+function setOperationProcessing(node, inputs, treeObj) {
   // First object
 
   let nodeObj
 
-  if (deps[0].obj.objectType === 'set-operations') {
-    nodeObj = _app.notSoShallowCopy(deps[0].obj)
+  if (inputs[0].obj.objectType === 'set-operations') {
+    nodeObj = _app.notSoShallowCopy(inputs[0].obj)
   } else {
     nodeObj = {
       objectType: 'set-operations',
 
       sources: [
-        { obj: deps[0].obj },
+        { obj: inputs[0].obj },
       ],
     }
   }
 
 
 
+
   // Second object
 
-  if (deps[1].obj.objectType === 'set-operations'
-  && deps[1].obj.sources.length === 1)
-    nodeObj.sources.push({ ...deps[1].obj.sources[0] })
-  else
-    nodeObj.sources.push({ obj: deps[1].obj })
+  let operationObj = {
+    obj: inputs[1].obj,
 
-  Object.assign(nodeObj.sources[nodeObj.sources.length - 1], {
     operationType: node.type,
 
     allowDuplicates: node.props.allowDuplicates,
-  })
+  }
+
+  if (operationObj.obj.objectType === 'set-operations')
+    operationObj.obj = createSelect({
+      sourceType: 'object',
+
+      alias: inputs[1].link.props.alias,
+
+      obj: inputs[1].obj,
+    })
+
+  nodeObj.sources.push(operationObj)
   
 
 
@@ -228,28 +237,31 @@ nodeTypeProcessing['intersection'] = setOperationProcessing
 
 // Joins
 
-function joinProcessing(node, deps, treeObj) {
+function joinProcessing(node, inputs, treeObj) {
   // First object
 
-  let nodeObj = initNodeObj(deps[0], 'from', 'from')
+  let nodeObj = initNodeObj(inputs[0], 'from', 'from')
 
 
 
   // Second object
 
-  if (deps[1].obj.objectType === 'select'
-  && deps[1].obj.clauseLevel <= sqlClauseLevels['from']
-  && deps[1].obj.from.length === 1)
-    nodeObj.from.push({ ...deps[1].obj.from[0] })
+  let joinObj
+
+  if (inputs[1].obj.objectType === 'select'
+  && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
+  && inputs[1].obj.from.length === 1)
+    joinObj = { ...inputs[1].obj.from[0] }
   else
-    nodeObj.from.push({ sourceType: 'object', obj: deps[1].obj })
+    joinObj = { sourceType: 'object', obj: inputs[1].obj }
 
-  Object.assign(nodeObj.from[nodeObj.from.length - 1], {
-    alias: deps[1].link.props.alias,
+  joinObj.alias = inputs[1].link.props.alias
+  
+  joinObj.joinType = node.type
+  if (node.type !== 'cross-join')
+    joinObj.joinCondition = processField(node.props.condition)
 
-    joinType: node.type,
-    joinCondition: processField(node.props.condition),
-  })
+  nodeObj.from.push(joinObj)
 
 
 
@@ -265,8 +277,8 @@ nodeTypeProcessing['cross-join'] = joinProcessing
 
 
 
-nodeTypeProcessing['filter'] = (node, deps, treeObj) => {
-  let nodeObj = initNodeObj(deps[0], 'where', 'where')
+nodeTypeProcessing['filter'] = (node, inputs, treeObj) => {
+  let nodeObj = initNodeObj(inputs[0], 'where', 'where')
   
   if (nodeObj.where == null)
     nodeObj.where = []
@@ -275,8 +287,8 @@ nodeTypeProcessing['filter'] = (node, deps, treeObj) => {
 
   return nodeObj 
 }
-nodeTypeProcessing['transform'] = (node, deps, treeObj) => {
-  let nodeObj = initNodeObj(deps[0], 'where', 'transform')
+nodeTypeProcessing['transform'] = (node, inputs, treeObj) => {
+  let nodeObj = initNodeObj(inputs[0], 'where', 'transform')
 
   nodeObj.group = node.props.group.active ? {
     columns: processField(node.props.group.columns),
@@ -290,34 +302,28 @@ nodeTypeProcessing['transform'] = (node, deps, treeObj) => {
 
   return nodeObj
 }
-nodeTypeProcessing['distinct'] = (node, deps, treeObj) => {
-  let nodeObj = initNodeObj(deps[0], 'transform', 'distinct')
+nodeTypeProcessing['distinct'] = (node, inputs, treeObj) => {
+  let nodeObj = initNodeObj(inputs[0], 'transform', 'distinct')
 
-  nodeObj.distinct = node.props.columns.trim()
+  nodeObj.distinct = true
 
   return nodeObj
 }
-nodeTypeProcessing['sort'] = (node, deps, treeObj) => {
-  let nodeObj = initNodeObj(deps[0], 'distinct', 'sort')
+nodeTypeProcessing['sort'] = (node, inputs, treeObj) => {
+  let nodeObj = initNodeObj(inputs[0], 'distinct', 'sort')
 
   nodeObj.sort = processField(node.props.columns)
 
   return nodeObj
 }
-nodeTypeProcessing['reduce'] = (node, deps, treeObj) => {
-  let nodeObj = initNodeObj(deps[0], 'sort', 'reduce')
+nodeTypeProcessing['limit'] = (node, inputs, treeObj) => {
+  let nodeObj = initNodeObj(inputs[0], 'sort', 'limit')
 
-  nodeObj.reduce = node.props.offset.active || node.props.limit.active ? {
-    offset: node.props.offset.active ? {
-      value: processField(node.props.offset.value),
-    } : null,
+  nodeObj.limit = {
+    value: node.props.limit.value,
+  }
 
-    limit: node.props.limit.active ? {
-      value: processField(node.props.limit.value),
-      percent: node.props.limit.percent,
-      withTies: node.props.limit.withTies,
-    } : null,
-  } : null
+  nodeObj.offset = node.props.offset
 
   return nodeObj
 }
@@ -325,24 +331,24 @@ nodeTypeProcessing['reduce'] = (node, deps, treeObj) => {
 
 
 
-function initNodeObj(dep, maxClause, newClause) {
+function initNodeObj(input, maxClause, newClause) {
   let nodeObj
 
-  if (dep.obj.objectType === 'select'
-  && dep.obj.clauseLevel <= sqlClauseLevels[maxClause]
-  && (dep.link.props.alias === '' ||
-  (dep.link.props.alias !== '' && dep.obj.from.length === 1))) {
-    nodeObj = _app.notSoShallowCopy(dep.obj)
+  if (input.obj.objectType === 'select'
+  && input.obj.clauseLevel <= sqlClauseLevels[maxClause]
+  && (input.link.props.alias === '' ||
+  (input.link.props.alias !== '' && input.obj.from.length === 1))) {
+    nodeObj = _app.notSoShallowCopy(input.obj)
 
-    if (dep.link.props.alias !== '')
-      nodeObj.from[0].alias = dep.link.props.alias
+    if (input.link.props.alias !== '')
+      nodeObj.from[0].alias = input.link.props.alias
   } else {
     nodeObj = createSelect({
       sourceType: 'object',
 
-      alias: dep.link.props.alias,
+      alias: input.link.props.alias,
 
-      obj: dep.obj,
+      obj: input.obj,
     })
   }
 

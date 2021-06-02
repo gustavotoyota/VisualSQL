@@ -2,12 +2,10 @@
   <div>
 
 
-    <NodeButtons :tab="tab">
-    </NodeButtons>
+    <NodeButtons :tab="tab"/>
 
 
-    <CameraButtons :tab="tab" :module="module">
-    </CameraButtons>
+    <CameraButtons :tab="tab" :module="module"/>
     
     
   </div>

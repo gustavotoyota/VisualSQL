@@ -25,7 +25,7 @@
 
 
 
-    <v-divider vertical inset class="mx-2"></v-divider>
+    <v-divider vertical inset class="mx-2"/>
 
 
 
@@ -41,12 +41,12 @@
     
 
 
-    <v-divider vertical inset class="mx-2"></v-divider>
+    <v-divider vertical inset class="mx-2"/>
 
 
 
-    <GenerateSQL :module="module" :disabled="emptyNodeSelection">
-    </GenerateSQL>
+    <GenerateSQL :module="module" :tab="tab"
+    :disabled="emptyNodeSelection"/>
 
 
   </v-toolbar>

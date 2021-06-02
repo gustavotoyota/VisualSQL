@@ -8,8 +8,7 @@
 
       <TableItem
       v-for="table in tables" :key="table.id"
-      :table="table">
-      </TableItem>
+      :table="table"/>
 
 
     </draggable>

@@ -41,7 +41,7 @@ let initialState = {
     // SQL
 
     sql: {
-      database: 'postgres',
+      database: 'mysql',
 
       uppercaseKeywords: true,
 

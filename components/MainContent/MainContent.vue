@@ -3,12 +3,10 @@
 
 
 
-    <TabButtons>
-    </TabButtons>
+    <TabButtons/>
 
 
-    <TabContents>
-    </TabContents>
+    <TabContents/>
 
 
 

@@ -13,7 +13,7 @@
 
         <v-card-title>Generate SQL</v-card-title>
         
-        <v-divider></v-divider>
+        <v-divider/>
         
         <v-card-text style="height: 420px; display: flex">
 
@@ -24,9 +24,10 @@
                 Database:
               </div>
 
-              <v-select class="mt-1" dense outlined hide-details background-color="#101010"
+              <v-select class="mt-1" dense outlined
+              hide-details background-color="#101010"
               :menu-props="{ top: false, offsetY: true }"
-              :items="$app.databases" item-text="text" item-value="value"
+              :items="$app.databaseItems" item-text="text" item-value="value"
               v-model="project.sql.database">
               </v-select>
             </div>
@@ -65,31 +66,16 @@
 
           <div class="pl-5 pt-6 pb-1" style="flex: 1; display: flex">
 
-            <MonacoEditor
-              class="editor" v-model="sql" language="sql"
-              style="flex: 1; width: 0; border-radius: 5px; overflow: hidden"
-              :options="{
-                theme: 'vs-dark',
-                automaticLayout: true,
-                lineNumbers: 'off',
-                minimap: { enabled: false },
-                padding: { top: 2, bottom: 2 },
-                glyphMargin: false,
-                folding: false,
-                lineDecorationsWidth: 3,
-                lineNumbersMinChars: 0,
-                scrollBeyondLastLine: false,
-                quickSuggestions: false,
-                readOnly: true,
-              }"
-
-              @editorDidMount="editorDidMount"/>
+            <CodeEditor v-model="sql"
+            style="flex: 1; width: 0"
+            :options="{ readOnly: true }"
+            @editorDidMount="editorDidMount"/>
 
           </div>
 
         </v-card-text>
         
-        <v-divider></v-divider>
+        <v-divider/>
         
         <v-card-actions>
           
@@ -118,6 +104,8 @@ export default {
 
   props: {
     module: Object,
+    tab: Object,
+
     disabled: Boolean,
   },
 
@@ -139,10 +127,11 @@ export default {
     
     ..._vuex.mapFields([
       'project',
+      'snackbar',
     ]),
     
-    ..._vuex.mapFields([
-      'snackbar',
+    ..._vuex.mapGetters([
+      'activeNode',
     ]),
 
   },
@@ -160,27 +149,46 @@ export default {
 
 
     generateSQL() {
-      let treeObj = _app.sqlGeneration[this.project.sql.database].generateTree(
-        this.$store, this.module, this.$store.getters.activeNode)
+      // Column tracking
+
+      let columnsObj = _app.columnTracking.init(this.$store)
+      
+      columnsObj.processNode(this.module, this.activeNode)
+
+
+
+
+      // Tree generation
+
+      let treeObj = _app.databases[this.project.sql.database].generateTree(
+        this.$store, this.module, this.activeNode, { columnsObj: columnsObj })
       
       if (treeObj.error != null) {
         this.snackbar.text = treeObj.error
         this.snackbar.active = true
+
+        this.$store.commit('clearSelection')
+        this.tab.nodes.selected[treeObj.node.id] = true
+        this.tab.nodes.activeId = treeObj.node.id
+
         return
       }
+      
 
 
 
+      // SQL generation
 
       let sqlOptions = _app.deepCopy(this.project.sql)
 
-      let sqlObj = _app.sqlGeneration[this.project.sql.database].
-        generateSQL(treeObj, sqlOptions)
+      let sqlObj = _app.databases[this.project.sql.database].generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 
 
 
+
+      // Show dialog
 
       this.dialog = true
 

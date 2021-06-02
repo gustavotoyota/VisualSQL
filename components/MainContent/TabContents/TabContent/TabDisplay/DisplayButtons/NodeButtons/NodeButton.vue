@@ -1,11 +1,13 @@
 <template>
   <v-tooltip top>
 
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ on }">
 
       <v-btn style="min-width: 36px; margin-right: -3px"
 
-      width="0" v-bind="attrs" v-on="on"
+      width="0" v-on="on"
+
+      :disabled="database.infos.disabledNodeTypes.includes(type)"
 
       @pointerdown.stop="onPointerDown"
       
@@ -36,7 +38,7 @@
       <span v-else-if="type == 'transform'">Transform</span>
       <span v-else-if="type == 'distinct'">Distinct</span>
       <span v-else-if="type == 'sort'">Sort</span>
-      <span v-else-if="type == 'reduce'">Reduce</span>
+      <span v-else-if="type == 'limit'">Limit</span>
 
       <span v-else-if="type == 'pivot'">Pivot</span>
       <span v-else-if="type == 'output'">Output</span>
@@ -65,6 +67,10 @@ export default {
       'pointerPos',
       'nodeCreation',
     ]),
+
+    database() {
+      return _app.databases[this.$store.state.project.sql.database]
+    },
 
   },
 

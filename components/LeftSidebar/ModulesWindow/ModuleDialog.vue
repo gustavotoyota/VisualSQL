@@ -2,40 +2,31 @@
   <v-dialog max-width="280" eager v-model="active">
 
 
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ on }">
 
-      <v-list-item v-bind="attrs" v-on="on">
-
-        <v-list-item-icon style="margin-right: 10px">
-            <v-icon>mdi-square-edit-outline</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-title>Rename</v-list-item-title>
-
-      </v-list-item>
+      <slot :on="on"/>
 
     </template>
 
 
 
-    <v-form ref="form" @submit.prevent="
-    active = false; module.name = name">
+    <v-form @submit.prevent="active = false; $emit('submit', fields)">
     
       <v-card>
 
         <v-card-title>
-          Rename module
+          {{ title }}
         </v-card-title>
 
         <v-card-text>
 
           <v-text-field label="Module name"
-          autofocus v-model="name">
+          autofocus v-model="fields.name">
           </v-text-field>
 
         </v-card-text>
 
-        <v-divider></v-divider>
+        <v-divider/>
 
         <v-card-actions>
 
@@ -63,17 +54,38 @@
 <script>
 export default {
 
+
   props: {
-    module: { type: Object },
+    title: String,
+
+    name: String,
   },
+
+
 
   data() {
     return {
       active: false,
-      
-      name: this.module.name,
+
+      fields: {
+        name: '',
+      },
     }
   },
+
+
+
+  watch: {
+
+    active(value) {
+      if (!value)
+        return
+
+      this.fields.name = this.name ?? ''
+    }
+
+  },
+
 
 }
 </script>

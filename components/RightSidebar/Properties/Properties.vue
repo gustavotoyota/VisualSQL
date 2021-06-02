@@ -2,14 +2,13 @@
   <div v-if="activeNode != null" class="mb-6">
 
     <div class="mx-5 mt-4 font-weight-medium">
-      {{ $app.nodeTypes[activeNode.type].description }} node
+      {{ $app.nodeTypes[activeNode.type].title }} node
     </div>
 
 
 
 
-    <v-divider class="mt-3">
-    </v-divider>
+    <v-divider class="mt-3"/>
 
 
 
@@ -38,27 +37,23 @@
 
 
 
-    <v-divider class="mt-6" v-if="activeNode.type !== 'output'">
-    </v-divider>
+    <v-divider class="mt-6"/>
 
 
 
 
-    <TableProperties :node="activeNode"></TableProperties>
-    <ModuleProperties :node="activeNode"></ModuleProperties>
-    <NodeProperties :node="activeNode"></NodeProperties>
-    <SQLProperties :node="activeNode"></SQLProperties>
+    <TableProperties :node="activeNode"/>
+    <NodeProperties :node="activeNode"/>
+    <SQLProperties :node="activeNode"/>
     
-    <SetOperationProperties :node="activeNode"></SetOperationProperties>
-    <JoinProperties :node="activeNode"></JoinProperties>
+    <SetOperationProperties :node="activeNode"/>
+    <JoinProperties :node="activeNode"/>
 
-    <FilterProperties :node="activeNode"></FilterProperties>
-    <TransformProperties :node="activeNode"></TransformProperties>
-    <DistinctProperties :node="activeNode"></DistinctProperties>
-    <SortProperties :node="activeNode"></SortProperties>
-    <ReduceProperties :node="activeNode"></ReduceProperties>
-    
-    <PivotProperties :node="activeNode"></PivotProperties>
+    <FilterProperties :node="activeNode"/>
+    <TransformProperties :node="activeNode"/>
+    <DistinctProperties :node="activeNode"/>
+    <SortProperties :node="activeNode"/>
+    <LimitProperties :node="activeNode"/>
     
     
   </div>
@@ -74,8 +69,7 @@
 
 
 
-    <v-divider class="mt-3">
-    </v-divider>
+    <v-divider class="mt-3"/>
 
 
 

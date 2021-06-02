@@ -8,15 +8,15 @@
           <div>Set operation:</div>
         </template>
         
-        <v-radio label="Union" value="union"></v-radio>
-        <v-radio label="Difference" value="difference"></v-radio>
-        <v-radio label="Intersection" value="intersection"></v-radio>
+        <v-radio label="Union" value="union" :disabled="isNodeTypeDisabled('union')"/>
+        <v-radio label="Difference" value="difference" :disabled="isNodeTypeDisabled('difference')"/>
+        <v-radio label="Intersection" value="intersection" :disabled="isNodeTypeDisabled('intersection')"/>
       </v-radio-group>
     </div>
 
 
     <div v-if="node.type === 'union'">
-      <v-divider class="mt-6"></v-divider>
+      <v-divider class="mt-6"/>
 
 
       <div class="mx-5 mt-5">
@@ -33,8 +33,29 @@
 <script>
 export default {
 
+
   props: {
     node: Object,
+  },
+
+
+
+  computed: {
+
+    database() {
+      return _app.databases[this.$store.state.project.sql.database]
+    },
+
+  },
+
+
+
+  methods: {
+
+    isNodeTypeDisabled(nodeType) {
+      return this.database.infos.disabledNodeTypes.includes(nodeType)
+    },
+
   },
 
 }
