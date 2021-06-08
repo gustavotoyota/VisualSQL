@@ -510,4 +510,13 @@ html {
 .v-dialog {
   overflow: visible;
 }
+
+
+
+
+/* IE11 button fix */
+
+.v-btn {
+  padding: 0 !important;
+}
 </style>
