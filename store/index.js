@@ -772,87 +772,96 @@ mutations.redo = function (state) {
 
 // Getters
 
-export const getters = {
-  getField,
+export const getters = {}
+
+
+
+
+getters.getField = getField
 
 
   
 
-  getModuleIdx: (state) => (moduleId) => {
-    return state.project.modules.findIndex(module => module.id === moduleId)
-  },
-  getModule: (state, getters) => (moduleId) => {
-    return state.project.modules[getters.getModuleIdx(moduleId)]
-  },
-
-
-
-  getTableIdx: (state) => (tableId) => {
-    return state.project.tables.findIndex(table => table.id === tableId)
-  },
-  getTable: (state, getters) => (tableId) => {
-    return state.project.tables[getters.getTableIdx(tableId)]
-  },
-
-
-  
-  getTabIdx: (state) => (tabId) => {
-    return state.project.tabs.findIndex(tab => tab.id === tabId)
-  },
-  getTab: (state, getters) => (tabId) => {
-    return state.project.tabs[getters.getTabIdx(tabId)]
-  },
-
-
-
-  getModuleTabIdx: (state) => (moduleId) => {
-    return state.project.tabs.findIndex(tab => tab.moduleId === moduleId)
-  },
-  getModuleTab: (state, getters) => (moduleId) => {
-    return state.project.tabs[getters.getModuleTabIdx(moduleId)]
-  },
-
-
-
-  currentTab(state, getters) {
-    return getters.getTab(state.project.tabId)
-  },
-  currentModule(state, getters) {
-    let currentTab = getters.currentTab
-
-    if (currentTab == null)
-      return null
-      
-    return getters.getModule(currentTab.moduleId)
-  },
-
-
-
-  activeNode(state, getters) {
-    let currentTab = getters.currentTab
-
-    if (currentTab == null)
-      return null
-
-    let currentModule = getters.getModule(currentTab.moduleId)
-
-    return currentModule.nodes[currentTab.nodes.activeId]
-  },
-  activeLink(state, getters) {
-    let currentTab = getters.currentTab
-
-    if (currentTab == null)
-      return null
-
-    let currentModule = getters.getModule(currentTab.moduleId)
-
-    return currentModule.links[currentTab.links.activeId]
-  },
+getters.getModuleIdx = (state) => (moduleId) => {
+  return state.project.modules.findIndex(module => module.id === moduleId)
+}
+getters.getModule = (state, getters) => (moduleId) => {
+  return state.project.modules[getters.getModuleIdx(moduleId)]
 }
 
 
 
 
+getters.getTableIdx = (state) => (tableId) => {
+  return state.project.tables.findIndex(table => table.id === tableId)
+}
+getters.getTable = (state, getters) => (tableId) => {
+  return state.project.tables[getters.getTableIdx(tableId)]
+}
+
+
+
+
+getters.getTabIdx = (state) => (tabId) => {
+  return state.project.tabs.findIndex(tab => tab.id === tabId)
+}
+getters.getTab = (state, getters) => (tabId) => {
+  return state.project.tabs[getters.getTabIdx(tabId)]
+}
+
+
+
+
+getters.getModuleTabIdx = (state) => (moduleId) => {
+  return state.project.tabs.findIndex(tab => tab.moduleId === moduleId)
+}
+getters.getModuleTab = (state, getters) => (moduleId) => {
+  return state.project.tabs[getters.getModuleTabIdx(moduleId)]
+}
+
+
+
+
+getters.currentTab = (state, getters) => {
+  return getters.getTab(state.project.tabId)
+}
+getters.currentModule = (state, getters) => {
+  let currentTab = getters.currentTab
+
+  if (currentTab == null)
+    return null
+    
+  return getters.getModule(currentTab.moduleId)
+}
+
+
+
+
+getters.activeNode = (state, getters) => {
+  let currentTab = getters.currentTab
+
+  if (currentTab == null)
+    return null
+
+  let currentModule = getters.getModule(currentTab.moduleId)
+
+  return currentModule.nodes[currentTab.nodes.activeId]
+}
+getters.activeLink = (state, getters) => {
+  let currentTab = getters.currentTab
+
+  if (currentTab == null)
+    return null
+
+  let currentModule = getters.getModule(currentTab.moduleId)
+
+  return currentModule.links[currentTab.links.activeId]
+}
+
+
+
+
+// Actions
 
 export const actions = {}
 
