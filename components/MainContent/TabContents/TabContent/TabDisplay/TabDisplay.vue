@@ -41,18 +41,6 @@ export default {
 
 
 
-
-  computed: {
-
-    ..._vuex.mapFields([
-      'pointerPos',
-      'nodeCreation',
-    ]),
-
-  },
-
-
-
   
   methods: {
 
@@ -145,7 +133,7 @@ export default {
 
       // Pointer position
 
-      this.pointerPos = {
+      this.$state.pointerPos = {
         x: event.clientX,
         y: event.clientY,
       }
@@ -224,12 +212,12 @@ export default {
 
       // Node creation
       
-      if (this.nodeCreation.active && !this.nodeCreation.create) {
+      if (this.$state.nodeCreation.active && !this.$state.nodeCreation.create) {
         let dist = Math.sqrt(
-          Math.pow(this.pointerPos.x - this.nodeCreation.dragStart.x, 2) +
-          Math.pow(this.pointerPos.y - this.nodeCreation.dragStart.y, 2))
+          Math.pow(this.$state.pointerPos.x - this.$state.nodeCreation.dragStart.x, 2) +
+          Math.pow(this.$state.pointerPos.y - this.$state.nodeCreation.dragStart.y, 2))
 
-        this.nodeCreation.create = dist >= 8
+        this.$state.nodeCreation.create = dist >= 8
       }
     },
 
@@ -238,8 +226,8 @@ export default {
     onDocumentPointerUp(event) {
       // Node creation
 
-      if (this.nodeCreation.active)
-        this.nodeCreation.active = false
+      if (this.$state.nodeCreation.active)
+        this.$state.nodeCreation.active = false
 
 
       

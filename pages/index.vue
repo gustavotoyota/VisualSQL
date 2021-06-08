@@ -35,19 +35,9 @@ export default {
 
 
 
-  computed: {
-
-    ..._vuex.mapFields([
-      'sidebars',
-    ]),
-
-  },
-
-
-
   mounted() {
-    this.sidebars.left = innerWidth >= 900
-    this.sidebars.right = innerWidth >= 600
+    this.$state.sidebars.left = innerWidth >= 900
+    this.$state.sidebars.right = innerWidth >= 600
 
     
     document.addEventListener('keydown', this.onDocumentKeyDown)

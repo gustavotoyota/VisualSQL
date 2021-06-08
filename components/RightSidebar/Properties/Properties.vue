@@ -1,8 +1,8 @@
 <template>
-  <div v-if="activeNode != null" class="mb-6">
+  <div v-if="$getters.activeNode != null" class="mb-6">
 
     <div class="mx-5 mt-4 font-weight-medium">
-      {{ $app.nodeTypes[activeNode.type].title }} node
+      {{ $app.nodeTypes[$getters.activeNode.type].title }} node
     </div>
 
 
@@ -19,7 +19,7 @@
       </div>
 
       <v-text-field dense solo hide-details
-      class="mt-1 body-2" v-model="activeNode.props.name">
+      class="mt-1 body-2" v-model="$getters.activeNode.props.name">
       </v-text-field>
     </div>
     
@@ -30,7 +30,7 @@
       </div>
 
       <v-textarea dense solo hide-details class="mt-1 body-2"
-      no-resize rows="2" v-model="activeNode.props.description">
+      no-resize rows="2" v-model="$getters.activeNode.props.description">
       </v-textarea>
     </div>
 
@@ -42,25 +42,25 @@
 
 
 
-    <TableProperties :node="activeNode"/>
-    <NodeProperties :node="activeNode"/>
-    <SQLProperties :node="activeNode"/>
+    <TableProperties :node="$getters.activeNode"/>
+    <NodeProperties :node="$getters.activeNode"/>
+    <SQLProperties :node="$getters.activeNode"/>
     
-    <SetOperationProperties :node="activeNode"/>
-    <JoinProperties :node="activeNode"/>
+    <SetOperationProperties :node="$getters.activeNode"/>
+    <JoinProperties :node="$getters.activeNode"/>
 
-    <FilterProperties :node="activeNode"/>
-    <TransformProperties :node="activeNode"/>
-    <DistinctProperties :node="activeNode"/>
-    <SortProperties :node="activeNode"/>
-    <LimitProperties :node="activeNode"/>
+    <FilterProperties :node="$getters.activeNode"/>
+    <TransformProperties :node="$getters.activeNode"/>
+    <DistinctProperties :node="$getters.activeNode"/>
+    <SortProperties :node="$getters.activeNode"/>
+    <LimitProperties :node="$getters.activeNode"/>
     
     
   </div>
 
 
 
-  <div v-else-if="activeLink != null">
+  <div v-else-if="$getters.activeLink != null">
 
     <div class="mx-5 mt-4 font-weight-medium">
       Link
@@ -80,7 +80,7 @@
       </div>
 
       <v-text-field dense solo hide-details
-      class="mt-1 body-2" v-model="activeLink.props.alias">
+      class="mt-1 body-2" v-model="$getters.activeLink.props.alias">
       </v-text-field>
     </div>
 
@@ -107,13 +107,8 @@ export default {
   
   computed: {
 
-    ..._vuex.mapGetters([
-      'activeNode',
-      'activeLink',
-    ]),
-
     activeObject() {
-      return this.activeNode ?? this.activeLink
+      return this.$getters.activeNode ?? this.$getters.activeLink
     },
     
   },

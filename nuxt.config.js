@@ -30,12 +30,13 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/draggable.js',
-    '~/plugins/monaco.js',
+    { src: '~/plugins/draggable.js' },
+    { src: '~/plugins/monaco.js' },
     { src: '~/plugins/codemirror.js', mode: 'client' },
-    '~/plugins/directives.js',
-    '~/plugins/vuex.js',
-    '~/plugins/app/app.js',
+    { src: '~/plugins/directives.js' },
+    { src: '~/plugins/vuex.js' },
+    { src: '~/plugins/mixin.js' },
+    { src: '~/plugins/app/app.js' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

@@ -7,7 +7,7 @@
 
       width="0" v-on="on"
 
-      :disabled="database.infos.disabledNodeTypes.includes(type)"
+      :disabled="$app.databases[$state.project.sql.database].infos.disabledNodeTypes.includes(type)"
 
       @pointerdown.stop="onPointerDown"
       
@@ -61,26 +61,11 @@ export default {
 
 
 
-  computed: {
-
-    ..._vuex.mapFields([
-      'pointerPos',
-      'nodeCreation',
-    ]),
-
-    database() {
-      return _app.databases[this.$store.state.project.sql.database]
-    },
-
-  },
-
-
-
   methods: {
 
 
     onClick() {
-      if (this.nodeCreation.create)
+      if (this.$state.nodeCreation.create)
         return
 
       this.$store.commit('createNode', {
@@ -100,10 +85,10 @@ export default {
 
 
     onPointerDown() {
-      this.nodeCreation.nodeType = this.type
-      this.nodeCreation.dragStart = _app.shallowCopy(this.pointerPos)
-      this.nodeCreation.active = true
-      this.nodeCreation.create = false
+      this.$state.nodeCreation.nodeType = this.type
+      this.$state.nodeCreation.dragStart = _app.shallowCopy(this.$state.pointerPos)
+      this.$state.nodeCreation.active = true
+      this.$state.nodeCreation.create = false
     },
 
 

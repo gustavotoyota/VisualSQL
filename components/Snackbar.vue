@@ -1,15 +1,19 @@
 <template>
 
 
-  <v-snackbar v-model="snackbar.active">
-    {{ snackbar.text }}
+  <v-snackbar v-model="$state.snackbar.active">
+
+    {{ $state.snackbar.text }}
 
     <template v-slot:action="{ attrs }">
+
       <v-btn color="red" text v-bind="attrs"
-      @click="snackbar.active = false">
+      @click="$state.snackbar.active = false">
         Close
       </v-btn>
+
     </template>
+
   </v-snackbar>
 
 
@@ -17,15 +21,6 @@
 
 <script>
 export default {
-
-  computed: {
-
-    ..._vuex.mapFields([
-      'snackbar',
-    ]),
-
-  },
-
 }
 </script>
 

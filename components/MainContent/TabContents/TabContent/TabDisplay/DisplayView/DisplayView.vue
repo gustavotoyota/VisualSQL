@@ -29,17 +29,6 @@ export default {
 
 
 
-  computed: {
-
-    ..._vuex.mapFields([
-      'nodeCreation',
-    ]),
-
-  },
-
-
-
-
   methods: {
 
 
@@ -56,7 +45,7 @@ export default {
 
 
     onPointerUp(event) {
-      if (this.nodeCreation.active && this.nodeCreation.create) {
+      if (this.$state.nodeCreation.active && this.$state.nodeCreation.create) {
         let pointerPos = _app.getPointerPos(this.tab.id, event)
         let worldPos = _app.screenToWorld(this.tab, pointerPos)
         
@@ -64,7 +53,7 @@ export default {
           moduleId: this.tab.moduleId,
 
           node: {
-            type: this.nodeCreation.nodeType,
+            type: this.$state.nodeCreation.nodeType,
 
             pos: {
               x: worldPos.x,

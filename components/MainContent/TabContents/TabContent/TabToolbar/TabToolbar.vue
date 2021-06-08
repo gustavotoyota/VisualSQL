@@ -13,7 +13,7 @@
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Paste" :disabled="clipboard == null"
+    <ToolbarButton tooltip="Paste" :disabled="$state.clipboard == null"
     @click="$store.commit('pasteNodes')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
@@ -62,10 +62,6 @@ export default {
 
 
   computed: {
-
-    ..._vuex.mapFields([
-      'clipboard',
-    ]),
 
     emptyNodeSelection() {
       return Object.keys(this.tab.nodes.selected).length === 0

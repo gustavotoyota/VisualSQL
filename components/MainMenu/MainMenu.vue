@@ -47,7 +47,7 @@
 
     :items="$app.databaseItems" item-text="text" item-value="value"
 
-    v-model="$store.state.project.sql.database"/>
+    v-model="$state.project.sql.database"/>
 
 
 

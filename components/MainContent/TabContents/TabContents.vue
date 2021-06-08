@@ -1,11 +1,11 @@
 <template>
   <v-tabs-items style="flex: 1" touchless mandatory
-  v-model="tabIdx" :key="'i' + rerenderTabs">
+  v-model="tabIdx" :key="'i' + $state.project.rerenderTabs">
 
 
     <TabContent
-    v-for="tab in tabs" :key="tab.id"
-    :tab="tab" :module="getModule(tab.moduleId)"/>
+    v-for="tab in $state.project.tabs" :key="tab.id"
+    :tab="tab" :module="$getters.getModule(tab.moduleId)"/>
 
 
   </v-tabs-items>
@@ -17,33 +17,14 @@ export default {
 
   computed: {
 
-
-    ..._vuex.mapFields([
-      'project.modules',
-
-      'project.tabs',
-      'project.tabId',
-      'project.rerenderTabs',
-    ]),
-
-
-
-    ..._vuex.mapGetters([
-      'getModule',
-      'getTabIdx',
-    ]),
-
-    
-
     tabIdx: {
       get() {
-        return this.getTabIdx(this.tabId)
+        return this.$getters.getTabIdx(this.$state.project.tabId)
       },
       set(value) {
-        this.tabId = this.tabs[value || 0].id
+        this.$state.project.tabId = this.$state.project.tabs[value || 0].id
       },
     },
-
 
   },
 
