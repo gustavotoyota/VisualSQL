@@ -13,6 +13,16 @@ export const state = () => ({
   // Project
 
   project: null,
+  
+
+
+
+  // Sidebars
+
+  sidebars: {
+    left: true,
+    right: true,
+  },
 
 
 
@@ -22,13 +32,6 @@ export const state = () => ({
   tabs: {
     rerender: 0,
   },
-  
-
-
-
-  // Clipboard
-
-  clipboard: null,
 
 
 
@@ -52,11 +55,10 @@ export const state = () => ({
 
 
 
-  // Sidebars
+  // Clipboard
 
-  sidebars: {
-    left: true,
-    right: true,
+  clipboard: {
+    value: null,
   },
 
   
@@ -554,13 +556,13 @@ mutations.copySelectedNodes = function (state) {
 
 
 
-  state.clipboard = {
+  state.clipboard.value = {
     nodes: nodes,
     links: links,
   }
 }
 mutations.pasteNodes = function (state) {
-  if (state.clipboard == null)
+  if (state.clipboard.value == null)
     return
 
 
@@ -579,7 +581,7 @@ mutations.pasteNodes = function (state) {
 
 
 
-  for (let node of state.clipboard.nodes) {
+  for (let node of state.clipboard.value.nodes) {
     this.commit('createNode', {
       moduleId: module.id,
 
@@ -600,7 +602,7 @@ mutations.pasteNodes = function (state) {
 
 
 
-  for (let link of state.clipboard.links) {
+  for (let link of state.clipboard.value.links) {
     let linkId = module.nextLinkId
 
     this.commit('createLink', {
