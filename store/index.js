@@ -34,10 +34,10 @@ export const state = () => ({
   // Node creation
 
   nodeCreation: {
+    active: false,
     nodeType: null,
     dragStart: null,
-    active: false,
-    create: false,
+    visible: false,
   },
   
 

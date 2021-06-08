@@ -65,7 +65,7 @@ export default {
 
 
     onClick() {
-      if (this.$state.nodeCreation.create)
+      if (this.$state.nodeCreation.visible)
         return
 
       this.$store.commit('createNode', {
@@ -85,10 +85,10 @@ export default {
 
 
     onPointerDown() {
+      this.$state.nodeCreation.active = true
       this.$state.nodeCreation.nodeType = this.type
       this.$state.nodeCreation.dragStart = _app.shallowCopy(this.$state.pointerPos)
-      this.$state.nodeCreation.active = true
-      this.$state.nodeCreation.create = false
+      this.$state.nodeCreation.visible = false
     },
 
 

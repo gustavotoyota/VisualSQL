@@ -45,7 +45,7 @@ export default {
 
 
     onPointerUp(event) {
-      if (this.$state.nodeCreation.active && this.$state.nodeCreation.create) {
+      if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
         let pointerPos = _app.getPointerPos(this.tab.id, event)
         let worldPos = _app.screenToWorld(this.tab, pointerPos)
         

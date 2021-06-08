@@ -212,12 +212,12 @@ export default {
 
       // Node creation
       
-      if (this.$state.nodeCreation.active && !this.$state.nodeCreation.create) {
+      if (this.$state.nodeCreation.active && !this.$state.nodeCreation.visible) {
         let dist = Math.sqrt(
           Math.pow(this.$state.pointerPos.x - this.$state.nodeCreation.dragStart.x, 2) +
           Math.pow(this.$state.pointerPos.y - this.$state.nodeCreation.dragStart.y, 2))
 
-        this.$state.nodeCreation.create = dist >= 8
+        this.$state.nodeCreation.visible = dist >= 8
       }
     },
 
