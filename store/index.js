@@ -62,7 +62,7 @@ export const state = () => ({
   pinching: {
     pointers: {},
     
-    centerPos: null,
+    center: null,
     distance: null,
   },
 
@@ -103,7 +103,7 @@ export const state = () => ({
   nodeCreation: {
     active: false,
     nodeType: null,
-    dragStartPos: null,
+    dragStart: null,
     visible: false,
   },
   
@@ -564,15 +564,15 @@ mutations.copySelectedNodes = function (state) {
       if (linkId == null)
         continue
 
-      if (linkMap.hasOwnProperty(linkId))
+      if (linkId in linkMap)
         continue
 
       let link = module.links[linkId]
 
-      if (!tab.nodes.selected.hasOwnProperty(link.from))
+      if (!(link.from in tab.nodes.selected))
         continue
 
-      if (!tab.nodes.selected.hasOwnProperty(link.to))
+      if (!(link.to in tab.nodes.selected))
         continue
       
       linkMap[link.id] = links.length

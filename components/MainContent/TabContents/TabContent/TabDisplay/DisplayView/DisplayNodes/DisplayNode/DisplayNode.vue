@@ -51,7 +51,7 @@ export default {
   computed: {
 
     selected() {
-      return this.tab.nodes.selected.hasOwnProperty(this.node.id)
+      return this.node.id in this.tab.nodes.selected
     },
 
     active() {

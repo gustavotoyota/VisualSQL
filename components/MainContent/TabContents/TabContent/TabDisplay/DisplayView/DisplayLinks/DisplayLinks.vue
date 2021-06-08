@@ -36,7 +36,7 @@ export default {
   methods: {
 
     isLinkSelected(link) {
-      return this.tab.links.selected.hasOwnProperty(link.id)
+      return link.id in this.tab.links.selected
     },
 
 

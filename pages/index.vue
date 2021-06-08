@@ -80,7 +80,7 @@ export default {
 
       let pointerPos = _app.getPointerPos(event)
       
-      if (this.$state.pinching.pointers.hasOwnProperty(event.pointerId))
+      if (event.pointerId in this.$state.pinching.pointers)
         this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
 
 
@@ -266,7 +266,7 @@ export default {
 
       // Remove pinch pointer
 
-      if (this.$state.pinching.pointers.hasOwnProperty(event.pointerId)) {
+      if (event.pointerId in this.$state.pinching.pointers) {
         this.$delete(this.$state.pinching.pointers, event.pointerId)
 
         if (Object.keys(this.$state.pinching.pointers).length === 1) {
@@ -312,7 +312,7 @@ export default {
           || node.pos.y < topLeft.y || node.pos.y > bottomRight.y)
             continue
 
-          if (currentTab.nodes.selected.hasOwnProperty(node.id))
+          if (node.id in currentTab.nodes.selected)
             this.$delete(currentTab.nodes.selected, node.id)
           else
             this.$set(currentTab.nodes.selected, node.id, true)
@@ -329,7 +329,7 @@ export default {
           || linkPos.y < topLeft.y || linkPos.y > bottomRight.y)
             continue
 
-          if (currentTab.links.selected.hasOwnProperty(link.id))
+          if (link.id in currentTab.links.selected)
             this.$delete(currentTab.links.selected, link.id)
           else
             this.$set(currentTab.links.selected, link.id, true)
