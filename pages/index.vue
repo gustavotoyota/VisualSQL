@@ -78,7 +78,7 @@ export default {
       
       // Compute pointer position
 
-      let pointerPos = _app.getPointerPos(currentTab.id, event)
+      let pointerPos = _app.getPointerPos(event)
       
       if (currentTab.camera.pinch.pointers.hasOwnProperty(event.pointerId))
         this.$set(currentTab.camera.pinch.pointers, event.pointerId, pointerPos)
@@ -157,8 +157,8 @@ export default {
       // Pointer position
 
       this.$state.pointerPos = {
-        x: event.clientX,
-        y: event.clientY,
+        x: event.pageX,
+        y: event.pageY,
       }
 
 

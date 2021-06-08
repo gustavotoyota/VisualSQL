@@ -680,7 +680,7 @@ mutations.fitScreen = function (state) {
 
   // Camera zoom
 
-  let displayRect = _app.getDisplayRect(tab.id)
+  let displayRect = _app.getDisplayRect()
 
   tab.camera.zoom = 1
 

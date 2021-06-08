@@ -27,7 +27,7 @@ export default {
 
 
 
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
+      let pointerPos = _app.getPointerPos(event)
 
 
 

@@ -27,22 +27,22 @@ utils.notSoShallowCopy = (obj) => {
 
 
 
-utils.getDisplayElem = function (tabId) {
-  return document.getElementById(`display-${tabId}`)
+utils.getDisplayElem = function () {
+  return document.getElementById(`display-${$nuxt.$store.state.project.tabId}`)
 }
-utils.getDisplayRect = function (tabId) {
-  return _app.getDisplayElem(tabId).getBoundingClientRect()
+utils.getDisplayRect = function () {
+  return _app.getDisplayElem().getBoundingClientRect()
 }
 
 
 
 
-utils.getPointerPos = function (tabId, event) {
-  let tabRect = _app.getDisplayRect(tabId)
+utils.getPointerPos = function (event) {
+  let displayRect = _app.getDisplayRect()
   
   return {
-    x: event.clientX - tabRect.x,
-    y: event.clientY - tabRect.y
+    x: event.pageX - displayRect.x,
+    y: event.pageY - displayRect.y
   }
 }
 
@@ -50,7 +50,7 @@ utils.getPointerPos = function (tabId, event) {
 
 
 utils.worldToScreen = function (tab, worldPos) {
-  let tabRect = _app.getDisplayRect(tab.id)
+  let tabRect = _app.getDisplayRect()
 
   return {
     x: tabRect.width / 2 + (worldPos.x - tab.camera.pos.x) * tab.camera.zoom,
@@ -58,7 +58,7 @@ utils.worldToScreen = function (tab, worldPos) {
   }
 }
 utils.screenToWorld = function (tab, screenPos) {
-  let tabRect = _app.getDisplayRect(tab.id)
+  let tabRect = _app.getDisplayRect()
 
   return {
     x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
