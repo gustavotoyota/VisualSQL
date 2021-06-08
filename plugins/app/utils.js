@@ -41,8 +41,8 @@ utils.getPointerPos = function (event) {
   let displayRect = _app.getDisplayRect()
   
   return {
-    x: event.pageX - displayRect.x,
-    y: event.pageY - displayRect.y
+    x: event.pageX - displayRect.left,
+    y: event.pageY - displayRect.top
   }
 }
 
