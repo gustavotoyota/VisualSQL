@@ -222,6 +222,9 @@ export const mutations = {
     }
 
     state.project.tabId = moduleTab.id
+
+    if (moduleTab.undoRedo.currentStateIdx < 0)
+      this.commit('saveState')
   },
   closeTab(state, tabId) {
     state.project.tabs.splice(this.getters.getTabIdx(tabId), 1)
@@ -843,4 +846,14 @@ export const getters = {
 
     return currentModule.links[currentTab.links.activeId]
   },
+}
+
+
+
+
+
+export const actions = {}
+
+actions.nuxtServerInit = function (context) {
+  this.commit('resetProject')
 }

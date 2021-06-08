@@ -45,12 +45,6 @@ export default {
 
 
 
-  created() {
-    this.$store.commit('resetProject')
-  },
-
-
-
   mounted() {
     this.sidebars.left = innerWidth >= 900
     this.sidebars.right = innerWidth >= 600

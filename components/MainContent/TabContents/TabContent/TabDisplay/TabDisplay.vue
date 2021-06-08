@@ -23,12 +23,6 @@ export default {
 
 
 
-  created() {
-    this.$store.commit('saveState')
-  },
-
-
-
   mounted() {
     document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
     document.addEventListener('pointermove', this.onDocumentPointerMove)
