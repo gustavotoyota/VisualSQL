@@ -80,15 +80,15 @@ export default {
 
       let pointerPos = _app.getPointerPos(event)
       
-      if (currentTab.camera.pinch.pointers.hasOwnProperty(event.pointerId))
-        this.$set(currentTab.camera.pinch.pointers, event.pointerId, pointerPos)
+      if (this.$state.pinching.pointers.hasOwnProperty(event.pointerId))
+        this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
 
 
 
         
       // Pinch zoom
 
-      let pointers = Object.values(currentTab.camera.pinch.pointers)
+      let pointers = Object.values(this.$state.pinching.pointers)
 
       if (pointers.length >= 2) {
         // Compute center and distance
@@ -105,10 +105,10 @@ export default {
 
 
 
-        if (currentTab.camera.pinch.center != null) {
+        if (this.$state.pinching.centerPos != null) {
           // Compute ratio
 
-          let ratio = distance / currentTab.camera.pinch.distance
+          let ratio = distance / this.$state.pinching.distance
 
 
 
@@ -118,8 +118,8 @@ export default {
           let worldPos = _app.screenToWorld(currentTab, center)
 
           let centerOffset = {
-            x: center.x - currentTab.camera.pinch.center.x,
-            y: center.y - currentTab.camera.pinch.center.y,
+            x: center.x - this.$state.pinching.centerPos.x,
+            y: center.y - this.$state.pinching.centerPos.y,
           }
 
           currentTab.camera.pos.x = -centerOffset.x / currentTab.camera.zoom +
@@ -139,8 +139,8 @@ export default {
 
 
 
-        currentTab.camera.pinch.center = center
-        currentTab.camera.pinch.distance = distance
+        this.$state.pinching.centerPos = center
+        this.$state.pinching.distance = distance
 
         return
       }
@@ -166,19 +166,19 @@ export default {
 
       // Panning
 
-      if (currentTab.camera.panPos != null) {
-        currentTab.camera.pos.x -= (pointerPos.x - currentTab.camera.panPos.x) / currentTab.camera.zoom
-        currentTab.camera.pos.y -= (pointerPos.y - currentTab.camera.panPos.y) / currentTab.camera.zoom
+      if (this.$state.panning.currentPos != null) {
+        currentTab.camera.pos.x -= (pointerPos.x - this.$state.panning.currentPos.x) / currentTab.camera.zoom
+        currentTab.camera.pos.y -= (pointerPos.y - this.$state.panning.currentPos.y) / currentTab.camera.zoom
         
-        currentTab.camera.panPos = { ...pointerPos }
+        this.$state.panning.currentPos = { ...pointerPos }
 
-        if (event.pointerType !== 'mouse' && currentTab.camera.panTimeout != null) {
+        if (event.pointerType !== 'mouse' && this.$state.panning.selectTimeout != null) {
           let dist = Math.sqrt(
-            Math.pow(pointerPos.x - currentTab.camera.panStart.x, 2) +
-            Math.pow(pointerPos.y - currentTab.camera.panStart.y, 2))
+            Math.pow(pointerPos.x - this.$state.panning.startPos.x, 2) +
+            Math.pow(pointerPos.y - this.$state.panning.startPos.y, 2))
 
           if (dist > 5)
-            currentTab.camera.panTimeout = null
+            this.$state.panning.selectTimeout = null
         }
 
         return
@@ -189,8 +189,8 @@ export default {
 
       // Selecting
 
-      if (currentTab.selection.start != null) {
-        currentTab.selection.end = { ...pointerPos }
+      if (this.$state.selecting.startPos != null) {
+        this.$state.selecting.endPos = { ...pointerPos }
 
         return
       }
@@ -200,16 +200,16 @@ export default {
 
       // Dragging
 
-      if (currentTab.nodes.dragPos != null) {
+      if (this.$state.dragging.currentPos != null) {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
           let node = currentModule.nodes[nodeId]
 
-          node.pos.x += (pointerPos.x - currentTab.nodes.dragPos.x) / currentTab.camera.zoom
-          node.pos.y += (pointerPos.y - currentTab.nodes.dragPos.y) / currentTab.camera.zoom
+          node.pos.x += (pointerPos.x - this.$state.dragging.currentPos.x) / currentTab.camera.zoom
+          node.pos.y += (pointerPos.y - this.$state.dragging.currentPos.y) / currentTab.camera.zoom
         }
 
-        currentTab.nodes.dragPos = { ...pointerPos }
-        currentTab.nodes.dragged = true
+        this.$state.dragging.currentPos = { ...pointerPos }
+        this.$state.dragging.dragged = true
 
         return
       }
@@ -219,13 +219,13 @@ export default {
 
       // Linking
 
-      if (currentTab.links.new != null) {
+      if (this.$state.linking.newLink != null) {
         let worldPos = _app.screenToWorld(currentTab, pointerPos)
 
-        if (typeof(currentTab.links.new.from) === 'number')
-          currentTab.links.new.to = { ...worldPos }
+        if (typeof(this.$state.linking.newLink.from) === 'number')
+          this.$state.linking.newLink.to = { ...worldPos }
         else
-          currentTab.links.new.from = { ...worldPos }
+          this.$state.linking.newLink.from = { ...worldPos }
 
         return
       }
@@ -237,8 +237,8 @@ export default {
       
       if (this.$state.nodeCreation.active && !this.$state.nodeCreation.visible) {
         let dist = Math.sqrt(
-          Math.pow(this.$state.pointer.pagePos.x - this.$state.nodeCreation.dragStart.x, 2) +
-          Math.pow(this.$state.pointer.pagePos.y - this.$state.nodeCreation.dragStart.y, 2))
+          Math.pow(this.$state.pointer.pagePos.x - this.$state.nodeCreation.dragStartPos.x, 2) +
+          Math.pow(this.$state.pointer.pagePos.y - this.$state.nodeCreation.dragStartPos.y, 2))
 
         this.$state.nodeCreation.visible = dist >= 8
       }
@@ -266,12 +266,12 @@ export default {
 
       // Remove pinch pointer
 
-      if (currentTab.camera.pinch.pointers.hasOwnProperty(event.pointerId)) {
-        this.$delete(currentTab.camera.pinch.pointers, event.pointerId)
+      if (this.$state.pinching.pointers.hasOwnProperty(event.pointerId)) {
+        this.$delete(this.$state.pinching.pointers, event.pointerId)
 
-        if (Object.keys(currentTab.camera.pinch.pointers).length === 1) {
-          currentTab.camera.pinch.center = null
-          currentTab.camera.pinch.distance = null
+        if (Object.keys(this.$state.pinching.pointers).length === 1) {
+          this.$state.pinching.centerPos = null
+          this.$state.pinching.distance = null
         }
       }
 
@@ -280,11 +280,12 @@ export default {
 
       // Panning
 
-      if (currentTab.camera.panPos != null &&
+      if (this.$state.panning.currentPos != null &&
       (event.pointerType !== 'mouse' || event.button === 1)) {
-        currentTab.camera.panPos = null
-        currentTab.camera.panStart = null
-        currentTab.camera.panTimeout = null
+        this.$state.panning.currentPos = null
+
+        this.$state.panning.startPos = null
+        this.$state.panning.selectTimeout = null
       }
 
 
@@ -292,9 +293,9 @@ export default {
 
       // Selecting
 
-      if (event.button === 0 && currentTab, currentTab.selection.start != null) {
-        let worldStart = _app.screenToWorld(currentTab, currentTab.selection.start)
-        let worldEnd = _app.screenToWorld(currentTab, currentTab.selection.end)
+      if (event.button === 0 && currentTab, this.$state.selecting.startPos != null) {
+        let worldStart = _app.screenToWorld(currentTab, this.$state.selecting.startPos)
+        let worldEnd = _app.screenToWorld(currentTab, this.$state.selecting.endPos)
 
         let topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),
@@ -335,8 +336,8 @@ export default {
         }
 
 
-        currentTab.selection.start = null
-        currentTab.selection.end = null
+        this.$state.selecting.startPos = null
+        this.$state.selecting.endPos = null
       }
 
 
@@ -344,10 +345,10 @@ export default {
 
       // Dragging
 
-      if (currentTab.nodes.dragPos != null && event.button === 0) {
-        currentTab.nodes.dragPos = null
+      if (this.$state.dragging.currentPos != null && event.button === 0) {
+        this.$state.dragging.currentPos = null
         
-        if (currentTab.nodes.dragged)
+        if (this.$state.dragging.dragged)
           this.$store.commit('saveState')
       }
 
@@ -356,8 +357,8 @@ export default {
 
       // Linking
       
-      if (currentTab.links.new != null && event.button === 0)
-        currentTab.links.new = null
+      if (this.$state.linking.newLink != null && event.button === 0)
+        this.$state.linking.newLink = null
     },
 
 

@@ -49,7 +49,7 @@ export default {
       if (event.button !== 0)
         return
 
-      this.tab.links.new = {
+      this.$state.linking.newLink = {
         from: null,
         to: this.node.id,
         socket: socket,
@@ -59,23 +59,23 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.tab.links.new == null)
+      if (this.$state.linking.newLink == null)
         return
 
-      if (typeof(this.tab.links.new.from) === 'number'
-      && this.tab.links.new.from !== this.node.id) {
+      if (typeof(this.$state.linking.newLink.from) === 'number'
+      && this.$state.linking.newLink.from !== this.node.id) {
 
-        this.tab.links.new.to = this.node.id
-        this.tab.links.new.socket = socket
+        this.$state.linking.newLink.to = this.node.id
+        this.$state.linking.newLink.socket = socket
 
         this.$store.commit('createLink', {
           moduleId: this.tab.moduleId,
-          link: this.tab.links.new,
+          link: this.$state.linking.newLink,
         })
 
       }
 
-      this.tab.links.new = null
+      this.$state.linking.newLink = null
     },
 
 
@@ -83,7 +83,7 @@ export default {
       if (event.button !== 0)
         return
 
-      this.tab.links.new = {
+      this.$state.linking.newLink = {
         from: this.node.id,
         to: null,
         socket: null,
@@ -93,22 +93,22 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.tab.links.new == null)
+      if (this.$state.linking.newLink == null)
         return
 
-      if (typeof(this.tab.links.new.to) === 'number'
-      && this.tab.links.new.to !== this.node.id) {
+      if (typeof(this.$state.linking.newLink.to) === 'number'
+      && this.$state.linking.newLink.to !== this.node.id) {
 
-        this.tab.links.new.from = this.node.id
+        this.$state.linking.newLink.from = this.node.id
 
         this.$store.commit('createLink', {
           moduleId: this.tab.moduleId,
-          link: this.tab.links.new,
+          link: this.$state.linking.newLink,
         })
 
       }
 
-      this.tab.links.new = null
+      this.$state.linking.newLink = null
     },
     
   },

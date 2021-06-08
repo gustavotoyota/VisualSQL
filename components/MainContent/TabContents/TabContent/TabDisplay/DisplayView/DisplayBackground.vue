@@ -20,7 +20,7 @@ export default {
 
     onPointerDown(event) {
       if (!event.isPrimary) {
-        this.tab.camera.panTimeout = null
+        this.$state.panning.selectTimeout = null
         return
       }
 
@@ -34,23 +34,23 @@ export default {
       
       // Panning
 
-      if (event.pointerType !== 'mouse' || event.button === 1) {
-        this.tab.camera.panPos = { ...pointerPos }
+      if (event.button === 1)
+        this.$state.panning.currentPos = { ...pointerPos }
+      
+      if (event.pointerType !== 'mouse') {
+        this.$state.panning.currentPos = { ...pointerPos }
 
-        if (event.pointerType !== 'mouse') {
-          this.tab.camera.panStart = { ...pointerPos }
+        this.$state.panning.startPos = { ...pointerPos }
+        this.$state.panning.selectTimeout = setTimeout(() => {
+          if (this.$state.panning.selectTimeout == null)
+            return
 
-          this.tab.camera.panTimeout = setTimeout(() => {
-            if (this.tab.camera.panTimeout == null)
-              return
+          this.$state.panning.currentPos = null
+          this.$state.panning.selectTimeout = null
 
-            this.tab.camera.panPos = null
-            this.tab.camera.panTimeout = null
-
-            this.tab.selection.start = { ...pointerPos }
-            this.tab.selection.end = { ...pointerPos }
-          }, 300)
-        }
+          this.$state.selecting.startPos = { ...pointerPos }
+          this.$state.selecting.endPos = { ...pointerPos }
+        }, 300)
       }
 
 
@@ -67,8 +67,8 @@ export default {
       // Selecting
 
       if (event.pointerType === 'mouse' && event.button === 0) {
-        this.tab.selection.start = { ...pointerPos }
-        this.tab.selection.end = { ...pointerPos }
+        this.$state.selecting.startPos = { ...pointerPos }
+        this.$state.selecting.endPos = { ...pointerPos }
       }
     },
 

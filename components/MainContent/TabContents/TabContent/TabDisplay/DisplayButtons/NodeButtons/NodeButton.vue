@@ -87,7 +87,7 @@ export default {
     onPointerDown() {
       this.$state.nodeCreation.active = true
       this.$state.nodeCreation.nodeType = this.type
-      this.$state.nodeCreation.dragStart = _app.shallowCopy(this.$state.pointer.pagePos)
+      this.$state.nodeCreation.dragStartPos = _app.shallowCopy(this.$state.pointer.pagePos)
       this.$state.nodeCreation.visible = false
     },
 

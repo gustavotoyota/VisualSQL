@@ -43,6 +43,59 @@ export const state = () => ({
   },
 
 
+
+
+  // Panning
+  
+  panning: {
+    currentPos: null,
+
+    startPos: null,
+    selectTimeout: null,
+  },
+
+
+
+
+  // Pinching
+
+  pinching: {
+    pointers: {},
+    
+    centerPos: null,
+    distance: null,
+  },
+
+
+
+
+  // Dragging
+  
+  dragging: {
+    currentPos: null,
+    dragged: false,
+  },
+
+
+
+
+  // Linking
+  
+  linking: {
+    newLink: null,
+  },
+
+
+
+
+  // Selecting
+
+  selecting: {
+    startPos: null,
+    endPos: null,
+  },
+
+
   
 
   // Node creation
@@ -50,7 +103,7 @@ export const state = () => ({
   nodeCreation: {
     active: false,
     nodeType: null,
-    dragStart: null,
+    dragStartPos: null,
     visible: false,
   },
   
@@ -195,37 +248,16 @@ mutations.createTab = function (state, moduleId) {
       camera: {
         pos: { x: 0, y: 0 },
         zoom: 1,
-
-        
-        panPos: null,
-        panStart: null,
-        panTimeout: null,
-
-        pinch: {
-          pointers: {},
-          center: null,
-          distance: null,
-        },
       },
 
       nodes: {
         selected: {},
         activeId: null,
-
-        dragPos: null,
-        dragged: false,
       },
 
       links: {
-        new: null,
-
         selected: {},
         activeId: null,
-      },
-
-      selection: {
-        start: null,
-        end: null,
       },
 
       undoRedo: {

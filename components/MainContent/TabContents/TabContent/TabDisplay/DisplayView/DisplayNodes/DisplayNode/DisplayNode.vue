@@ -92,8 +92,8 @@ export default {
 
       let pointerPos = _app.getPointerPos(event)
 
-      this.tab.nodes.dragPos = { ...pointerPos }
-      this.tab.nodes.dragged = false
+      this.$state.dragging.currentPos = { ...pointerPos }
+      this.$state.dragging.dragged = false
     },
 
   },

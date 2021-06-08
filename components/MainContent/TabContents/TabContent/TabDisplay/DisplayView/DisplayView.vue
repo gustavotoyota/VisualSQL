@@ -36,9 +36,9 @@ export default {
     onPointerDown(event) {
       let pointerPos = _app.getPointerPos(event)
 
-      this.$set(this.tab.camera.pinch.pointers, event.pointerId, pointerPos)
+      this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
 
-      if (this.tab.camera.pinch.pointers.length >= 2)
+      if (this.$state.pinching.pointers.length >= 2)
         event.stopPropagation()
     },
 
