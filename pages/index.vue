@@ -501,4 +501,13 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #404040;
 }
+
+
+
+
+/* Dialog overflow */
+
+.v-dialog {
+  overflow: visible;
+}
 </style>

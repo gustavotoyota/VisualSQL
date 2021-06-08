@@ -1,7 +1,7 @@
 <template>
   <MonacoEditor language="sql" v-model="inputValue" class="editor"
 
-  style="border-radius: 5px; overflow: hidden; border: 1px solid #303030"
+  style="border: 1px solid #303030"
 
   @editorDidMount="$emit('editorDidMount', $event)"
 
