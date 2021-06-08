@@ -5,7 +5,7 @@
   pointer-events: none; overflow: hidden">
     <v-btn style="position: absolute; z-index: 999;
     min-width: 36px; transform: translate(-50%, -50%)" width="0"
-    :style="{ left: `${$state.pointerPos.x}px`, top: `${$state.pointerPos.y}px` }">
+    :style="{ left: `${$state.pointer.pagePos.x}px`, top: `${$state.pointer.pagePos.y}px` }">
       <NodeIcon :type="$state.nodeCreation.nodeType"></NodeIcon>
     </v-btn>
   </div>

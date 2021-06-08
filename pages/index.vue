@@ -156,7 +156,7 @@ export default {
 
       // Pointer position
 
-      this.$state.pointerPos = {
+      this.$state.pointer.pagePos = {
         x: event.pageX,
         y: event.pageY,
       }
@@ -237,8 +237,8 @@ export default {
       
       if (this.$state.nodeCreation.active && !this.$state.nodeCreation.visible) {
         let dist = Math.sqrt(
-          Math.pow(this.$state.pointerPos.x - this.$state.nodeCreation.dragStart.x, 2) +
-          Math.pow(this.$state.pointerPos.y - this.$state.nodeCreation.dragStart.y, 2))
+          Math.pow(this.$state.pointer.pagePos.x - this.$state.nodeCreation.dragStart.x, 2) +
+          Math.pow(this.$state.pointer.pagePos.y - this.$state.nodeCreation.dragStart.y, 2))
 
         this.$state.nodeCreation.visible = dist >= 8
       }

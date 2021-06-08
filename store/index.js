@@ -38,7 +38,9 @@ export const state = () => ({
 
   // Pointer position
 
-  pointerPos: { x: 0, y: 0 },
+  pointer: {
+    pagePos: { x: 0, y: 0 },
+  },
 
 
   
