@@ -315,6 +315,11 @@ mutations.createNode = function (state, payload) {
 
 
 
+  if (!payload.dontActivate)
+    this.commit('activateNode', node.id)
+
+  
+
   if (!payload.dontSaveState)
     this.commit('saveState')
 }
@@ -396,6 +401,9 @@ mutations.createLink = function (state, payload) {
 
 
 
+  if (!payload.dontActivate)
+    this.commit('activateLink', link.id)
+
 
   if (!payload.dontSaveState)
     this.commit('saveState')
@@ -456,6 +464,39 @@ mutations.selectAll = function (state) {
 
 
 
+mutations.activateNode = function (state, nodeId) {
+  let tab = this.getters.currentTab
+
+  if (tab == null)
+    return
+
+
+
+  this.commit('clearSelection')
+
+  Vue.set(tab.nodes.selected, nodeId, true)
+  
+  tab.nodes.activeId = nodeId
+}
+mutations.activateLink = function (state, linkId) {
+  let tab = this.getters.currentTab
+
+  if (tab == null)
+    return
+
+
+    
+  this.commit('clearSelection')
+
+  Vue.set(tab.links.selected, linkId, true)
+  
+  tab.links.activeId = linkId
+}
+
+
+
+
+
 mutations.deleteSelection = function (state) {
   let tab = this.getters.currentTab
 
@@ -504,6 +545,8 @@ mutations.copySelection = function (state) {
   
 
 
+  
+  // Gather selected nodes
 
   let selectedNodes = []
   for (let nodeId of Object.keys(tab.nodes.selected))
@@ -601,6 +644,7 @@ mutations.paste = function (state) {
 
 
 
+
   let tab = this.getters.currentTab
 
   if (tab == null)
@@ -610,10 +654,13 @@ mutations.paste = function (state) {
 
   
 
+
   let firstNodeId = module.nextNodeId
   let firstLinkId = module.nextLinkId
 
 
+
+  // Paste nodes
 
   for (let node of state.clipboard.value.nodes) {
     this.commit('createNode', {
@@ -630,11 +677,15 @@ mutations.paste = function (state) {
         props: _app.deepCopy(node.props),
       },
 
+      dontActivate: true,
       dontSaveState: true,
     })
   }
 
 
+
+
+  // Paste links
 
   for (let link of state.clipboard.value.links) {
     let linkId = module.nextLinkId
@@ -650,6 +701,7 @@ mutations.paste = function (state) {
         props: _app.deepCopy(link.props),
       },
 
+      dontActivate: true,
       dontSaveState: true,
     })
 
@@ -660,6 +712,7 @@ mutations.paste = function (state) {
 
 
 
+  // Select pasted objects
 
   tab.nodes.selected = {}
   for (let nodeId = firstNodeId; nodeId < module.nextNodeId; ++nodeId)
@@ -671,6 +724,7 @@ mutations.paste = function (state) {
 
   tab.nodes.activeId = firstNodeId
   tab.links.activeId = null
+
 
 
   
