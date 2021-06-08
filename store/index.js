@@ -7,49 +7,13 @@ export const strict = false
 
 
 
-let initialState = {
+export const state = () => ({
 
 
-  project: {
-    // Modules
+  // Project
 
-    modules: [],
-    nextModuleId: 0,
-
-
-
-
-    // Tables
-
-    tables: [],
-    nextTableId: 0,
-
-
-
-
-    // Tabs
-    
-    tabs: [],
-    nextTabId: 0,
-
-    tabId: 0,
-    rerenderTabs: 0,
-
-
-
-
-    // SQL
-
-    sql: {
-      database: 'mysql',
-
-      uppercaseKeywords: true,
-
-      indentWithSpaces: true,
-      indentSize: 2,
-    },
-  },
-
+  project: null,
+  
 
 
 
@@ -97,11 +61,8 @@ let initialState = {
   },
 
 
-}
+})
 
-
-
-export const state = () => _app.deepCopy(initialState)
 
 
 
@@ -112,7 +73,45 @@ export const mutations = {
 
 
   resetProject(state) {
-    state.project = _app.deepCopy(initialState.project)
+    state.project = {
+      // Modules
+  
+      modules: [],
+      nextModuleId: 0,
+  
+  
+  
+  
+      // Tables
+  
+      tables: [],
+      nextTableId: 0,
+  
+  
+  
+  
+      // Tabs
+      
+      tabs: [],
+      nextTabId: 0,
+  
+      tabId: 0,
+      rerenderTabs: 0,
+  
+  
+  
+  
+      // SQL
+  
+      sql: {
+        database: 'mysql',
+  
+        uppercaseKeywords: true,
+  
+        indentWithSpaces: true,
+        indentSize: 2,
+      },
+    }
 
     this.commit('createModule', 'module_1')
   },
