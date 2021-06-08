@@ -15,9 +15,9 @@
 
 
     <v-tabs show-arrows style="flex: 1; width: 0"
-    v-model="tabIdx" :key="'t' + $state.project.rerenderTabs">
+    v-model="tabIdx" :key="'t' + $state.tabs.rerender">
 
-      <draggable v-model="$state.project.tabs" @end="$state.project.rerenderTabs++"
+      <draggable v-model="$state.project.tabs" @end="$state.tabs.rerender++"
       delay="250" touch-start-threshold="4" animation="200"
       class="v-slide-group__content v-tabs-bar__content">
 

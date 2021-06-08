@@ -13,6 +13,15 @@ export const state = () => ({
   // Project
 
   project: null,
+
+
+
+  
+  // Tabs
+
+  tabs: {
+    rerender: 0,
+  },
   
 
 
@@ -101,7 +110,6 @@ mutations.resetProject = function (state) {
     nextTabId: 0,
 
     tabId: 0,
-    rerenderTabs: 0,
 
 
 

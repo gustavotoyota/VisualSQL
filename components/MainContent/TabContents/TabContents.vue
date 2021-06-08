@@ -1,6 +1,6 @@
 <template>
   <v-tabs-items style="flex: 1" touchless mandatory
-  v-model="tabIdx" :key="'i' + $state.project.rerenderTabs">
+  v-model="tabIdx" :key="'i' + $state.tabs.rerender">
 
 
     <TabContent
