@@ -386,15 +386,15 @@ export default {
 
 
       if (event.code === 'KeyX' && event.ctrlKey) {
-        this.$store.commit('cutSelectedNodes')
+        this.$store.commit('cutSelection')
         return
       }
       if (event.code === 'KeyC' && event.ctrlKey) {
-        this.$store.commit('copySelectedNodes')
+        this.$store.commit('copySelection')
         return
       }
       if (event.code === 'KeyV' && event.ctrlKey) {
-        this.$store.commit('pasteNodes')
+        this.$store.commit('paste')
         return
       }
 

@@ -490,11 +490,11 @@ mutations.deleteSelection = function (state) {
 
 
 
-mutations.cutSelectedNodes = function (state) {
-  this.commit('copySelectedNodes')
+mutations.cutSelection = function (state) {
+  this.commit('copySelection')
   this.commit('deleteSelection')
 }
-mutations.copySelectedNodes = function (state) {
+mutations.copySelection = function (state) {
   let tab = this.getters.currentTab
 
   if (tab == null)
@@ -595,7 +595,7 @@ mutations.copySelectedNodes = function (state) {
     links: links,
   }
 }
-mutations.pasteNodes = function (state) {
+mutations.paste = function (state) {
   if (state.clipboard.value == null)
     return
 
