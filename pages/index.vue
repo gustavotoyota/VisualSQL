@@ -366,45 +366,46 @@ export default {
 
 
     onDocumentKeyDown(event) {
-      if (document.activeElement !== document.body)
+      if (event.target.nodeName === 'INPUT'
+      || event.target.nodeName === 'TEXTAREA')
         return
 
 
 
-      if (event.code === 'KeyA' && event.ctrlKey) {
+      if ((event.code === 'KeyA' || event.keyCode === 65) && event.ctrlKey) {
         this.$store.commit('selectAll')
         return
       }
 
         
 
-      if (event.code === 'Delete') {
+      if (event.code === 'Delete' || event.keyCode === 46) {
         this.$store.commit('deleteSelection')
         return
       }
 
 
 
-      if (event.code === 'KeyX' && event.ctrlKey) {
+      if ((event.code === 'KeyX' || event.keyCode === 88) && event.ctrlKey) {
         this.$store.commit('cutSelection')
         return
       }
-      if (event.code === 'KeyC' && event.ctrlKey) {
+      if ((event.code === 'KeyC' || event.keyCode === 67) && event.ctrlKey) {
         this.$store.commit('copySelection')
         return
       }
-      if (event.code === 'KeyV' && event.ctrlKey) {
+      if ((event.code === 'KeyV' || event.keyCode === 86) && event.ctrlKey) {
         this.$store.commit('paste')
         return
       }
 
 
 
-      if (event.code === 'KeyZ' && event.ctrlKey) {
+      if ((event.code === 'KeyZ' || event.keyCode === 90) && event.ctrlKey) {
         this.$store.commit('undo')
         return
       }
-      if (event.code === 'KeyY' && event.ctrlKey) {
+      if ((event.code === 'KeyY' || event.keyCode === 89) && event.ctrlKey) {
         this.$store.commit('redo')
         return
       }
