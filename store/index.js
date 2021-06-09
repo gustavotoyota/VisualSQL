@@ -48,6 +48,8 @@ export const state = () => ({
   // Panning
   
   panning: {
+    active: false,
+
     currentPos: null,
 
     startPos: null,
@@ -72,8 +74,11 @@ export const state = () => ({
   // Dragging
   
   dragging: {
+    active: false,
+
     currentPos: null,
-    dragged: false,
+    
+    saveState: false,
   },
 
 
@@ -82,6 +87,8 @@ export const state = () => ({
   // Linking
   
   linking: {
+    active: false,
+
     newLink: null,
   },
 
@@ -91,6 +98,8 @@ export const state = () => ({
   // Selecting
 
   selecting: {
+    active: false,
+
     startPos: null,
     endPos: null,
   },
@@ -102,7 +111,9 @@ export const state = () => ({
 
   nodeCreation: {
     active: false,
+
     nodeType: null,
+
     dragStart: null,
     visible: false,
   },
@@ -123,6 +134,7 @@ export const state = () => ({
 
   snackbar: {
     active: false,
+    
     text: '',
   },
 

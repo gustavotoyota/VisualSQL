@@ -34,20 +34,27 @@ export default {
       
       // Panning
 
-      if (event.button === 1)
-        this.$state.panning.currentPos = { ...pointerPos }
-      
       if (event.pointerType !== 'mouse') {
-        this.$state.panning.currentPos = { ...pointerPos }
+        this.$state.panning.active = true
 
+        this.$state.panning.currentPos = { ...pointerPos }
+        
+
+        
         this.$state.panning.startPos = { ...pointerPos }
+
         this.$state.panning.selectTimeout = setTimeout(() => {
-          if (this.$state.panning.selectTimeout == null
-          || this.$state.pinching.centerPos != null)
+          if (this.$state.panning.selectTimeout == null)
             return
 
-          this.$state.panning.currentPos = null
+
+
+          this.$state.panning.active = false
           this.$state.panning.selectTimeout = null
+
+
+
+          this.$state.selecting.active = true
 
           this.$state.selecting.startPos = { ...pointerPos }
           this.$state.selecting.endPos = { ...pointerPos }
@@ -68,6 +75,8 @@ export default {
       // Selecting
 
       if (event.pointerType === 'mouse' && event.button === 0) {
+        this.$state.selecting.active = true
+
         this.$state.selecting.startPos = { ...pointerPos }
         this.$state.selecting.endPos = { ...pointerPos }
       }

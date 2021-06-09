@@ -49,6 +49,8 @@ export default {
       if (event.button !== 0)
         return
 
+      this.$state.linking.active = true
+
       this.$state.linking.newLink = {
         from: null,
         to: this.node.id,
@@ -59,7 +61,7 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.$state.linking.newLink == null)
+      if (!this.$state.linking.active)
         return
 
       if (typeof(this.$state.linking.newLink.from) === 'number'
@@ -75,13 +77,15 @@ export default {
 
       }
 
-      this.$state.linking.newLink = null
+      this.$state.linking.active = false
     },
 
 
     outputPointerDown(event) {
       if (event.button !== 0)
         return
+
+      this.$state.linking.active = true
 
       this.$state.linking.newLink = {
         from: this.node.id,
@@ -93,7 +97,7 @@ export default {
       if (event.button !== 0)
         return
 
-      if (this.$state.linking.newLink == null)
+      if (!this.$state.linking.active)
         return
 
       if (typeof(this.$state.linking.newLink.to) === 'number'
@@ -108,7 +112,7 @@ export default {
 
       }
 
-      this.$state.linking.newLink = null
+      this.$state.linking.active = false
     },
     
   },

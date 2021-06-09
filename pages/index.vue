@@ -166,7 +166,7 @@ export default {
 
       // Panning
 
-      if (this.$state.panning.currentPos != null) {
+      if (this.$state.panning.active) {
         currentTab.camera.pos.x -= (pointerPos.x - this.$state.panning.currentPos.x) / currentTab.camera.zoom
         currentTab.camera.pos.y -= (pointerPos.y - this.$state.panning.currentPos.y) / currentTab.camera.zoom
         
@@ -189,7 +189,7 @@ export default {
 
       // Selecting
 
-      if (this.$state.selecting.startPos != null) {
+      if (this.$state.selecting.active) {
         this.$state.selecting.endPos = { ...pointerPos }
 
         return
@@ -200,7 +200,7 @@ export default {
 
       // Dragging
 
-      if (this.$state.dragging.currentPos != null) {
+      if (this.$state.dragging.active) {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
           let node = currentModule.nodes[nodeId]
 
@@ -209,7 +209,8 @@ export default {
         }
 
         this.$state.dragging.currentPos = { ...pointerPos }
-        this.$state.dragging.dragged = true
+
+        this.$state.dragging.saveState = true
 
         return
       }
@@ -219,7 +220,7 @@ export default {
 
       // Linking
 
-      if (this.$state.linking.newLink != null) {
+      if (this.$state.linking.active) {
         let worldPos = _app.screenToWorld(currentTab, pointerPos)
 
         if (typeof(this.$state.linking.newLink.from) === 'number')
@@ -280,8 +281,10 @@ export default {
 
       // Panning
 
-      if (this.$state.panning.currentPos != null &&
+      if (this.$state.panning.active &&
       (event.pointerType !== 'mouse' || event.button === 1)) {
+        this.$state.panning.active = false
+
         this.$state.panning.currentPos = null
 
         this.$state.panning.startPos = null
@@ -293,7 +296,7 @@ export default {
 
       // Selecting
 
-      if (event.button === 0 && currentTab, this.$state.selecting.startPos != null) {
+      if (event.button === 0 && this.$state.selecting.active) {
         let worldStart = _app.screenToWorld(currentTab, this.$state.selecting.startPos)
         let worldEnd = _app.screenToWorld(currentTab, this.$state.selecting.endPos)
 
@@ -316,6 +319,9 @@ export default {
             this.$delete(currentTab.nodes.selected, node.id)
           else
             this.$set(currentTab.nodes.selected, node.id, true)
+
+          if (node.id === currentTab.nodes.activeId)
+            currentTab.nodes.activeId = null
         }
 
 
@@ -333,11 +339,13 @@ export default {
             this.$delete(currentTab.links.selected, link.id)
           else
             this.$set(currentTab.links.selected, link.id, true)
+
+          if (link.id === currentTab.links.activeId)
+            currentTab.links.activeId = null
         }
 
 
-        this.$state.selecting.startPos = null
-        this.$state.selecting.endPos = null
+        this.$state.selecting.active = false
       }
 
 
@@ -345,10 +353,10 @@ export default {
 
       // Dragging
 
-      if (this.$state.dragging.currentPos != null && event.button === 0) {
-        this.$state.dragging.currentPos = null
+      if (this.$state.dragging.active && event.button === 0) {
+        this.$state.dragging.active = false
         
-        if (this.$state.dragging.dragged)
+        if (this.$state.dragging.saveState)
           this.$store.commit('saveState')
       }
 
@@ -357,8 +365,8 @@ export default {
 
       // Linking
       
-      if (this.$state.linking.newLink != null && event.button === 0)
-        this.$state.linking.newLink = null
+      if (this.$state.linking.active && event.button === 0)
+        this.$state.linking.active = false
     },
 
 

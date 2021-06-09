@@ -40,6 +40,17 @@ export default {
 
       if (Object.keys(this.$state.pinching.pointers).length >= 2)
         event.stopPropagation()
+
+
+
+
+      // Panning
+
+      if (event.button === 1) {
+        this.$state.panning.active = true
+
+        this.$state.panning.currentPos = { ...pointerPos }
+      }
     },
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$state.selecting.startPos != null" class="selection"
+  <div v-if="$state.selecting.active" class="selection"
   :style="{
     left: `${Math.min($state.selecting.startPos.x, $state.selecting.endPos.x)}px`,
     top: `${Math.min($state.selecting.startPos.y, $state.selecting.endPos.y)}px`,

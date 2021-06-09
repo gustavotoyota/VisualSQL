@@ -13,7 +13,7 @@
         
 
         <DisplayLink new-link :tab="tab"
-        v-if="$state.linking.newLink != null
+        v-if="$state.linking.active
         && $state.linking.newLink.from != null
         && $state.linking.newLink.to != null"
         :module="module" :link="$state.linking.newLink"/>

@@ -92,8 +92,9 @@ export default {
 
       let pointerPos = _app.getPointerPos(event)
 
+      this.$state.dragging.active = true
       this.$state.dragging.currentPos = { ...pointerPos }
-      this.$state.dragging.dragged = false
+      this.$state.dragging.saveState = false
     },
 
   },
