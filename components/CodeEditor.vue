@@ -91,4 +91,8 @@ export default {
 .editor /deep/ .margin {
   background-color: #101010 !important;
 }
+
+.editor /deep/ .suggest-widget {
+  width: 250px !important;
+}
 </style>
