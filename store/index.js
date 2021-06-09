@@ -190,7 +190,14 @@ mutations.resetProject = function (state) {
 
 
 mutations.createModule = function (state, name) {
-  let module = {
+  let module = state.project.modules.find(module => module.name === name)
+
+  if (module != null || name === '')
+    return
+
+
+
+  module = {
     id: state.project.nextModuleId++,
 
     name: name,
@@ -210,6 +217,7 @@ mutations.createModule = function (state, name) {
 }
 mutations.deleteModule = function (state, moduleId) {
   let moduleTab = this.getters.getModuleTab(moduleId)
+
   if (moduleTab != null)
     this.commit('closeTab', moduleTab.id)
 
@@ -220,6 +228,13 @@ mutations.deleteModule = function (state, moduleId) {
 
 
 mutations.createTable = function (state, payload) {
+  let table = state.project.tables.find(table => table.name === payload.name)
+
+  if (table != null || payload.name === '')
+    return
+
+    
+
   state.project.tables.push({
     id: state.project.nextTableId++,
 
@@ -657,6 +672,7 @@ mutations.paste = function (state) {
 
   let firstNodeId = module.nextNodeId
   let firstLinkId = module.nextLinkId
+
 
 
 
