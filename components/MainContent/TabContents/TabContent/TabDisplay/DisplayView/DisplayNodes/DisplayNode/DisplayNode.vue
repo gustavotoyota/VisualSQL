@@ -5,7 +5,7 @@
 
 
     <v-btn x-large width="0" @pointerdown="onPointerDown"
-    style="min-width: 52px; transform: translate(-50%, -50%); pointer-events: auto"
+    style="min-width: 52px; padding: 0; transform: translate(-50%, -50%); pointer-events: auto"
     :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')">
       <NodeIcon :type="node.type" large></NodeIcon>
     </v-btn>
