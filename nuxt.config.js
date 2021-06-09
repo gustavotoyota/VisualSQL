@@ -23,19 +23,12 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    // lib css
-    'codemirror/lib/codemirror.css',
-    // merge css
-    'codemirror/addon/merge/merge.css',
-    // theme css
-    'codemirror/theme/base16-dark.css',
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
-    { src: '~/plugins/codemirror.js', mode: 'client' },
     { src: '~/plugins/directives.js' },
     { src: '~/plugins/vuex.js' },
     { src: '~/plugins/mixin.js' },
