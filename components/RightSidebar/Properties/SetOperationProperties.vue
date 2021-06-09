@@ -43,7 +43,7 @@ export default {
   computed: {
 
     database() {
-      return _app.databases[this.$state.project.sql.database]
+      return _app.databases.data[this.$state.project.sql.database]
     },
 
   },

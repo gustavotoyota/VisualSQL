@@ -45,7 +45,7 @@
     hide-details background-color="#101010"
     :menu-props="{ top: false, offsetY: true }"
 
-    :items="$app.databaseItems" item-text="text" item-value="value"
+    :items="$app.databases.items" item-text="text" item-value="value"
 
     v-model="$state.project.sql.database"/>
 

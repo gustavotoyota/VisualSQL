@@ -19,7 +19,7 @@ export default function generateTree(store, module, root, options) {
 function processNode(module, node, treeObj) {
   // Check node type
 
-  const database = _app.databases[treeObj.store.state.project.sql.database]
+  const database = _app.databases.data[treeObj.store.state.project.sql.database]
 
   if (database.infos.disabledNodeTypes.includes(node.type)) {
     treeObj.error = `Invalid query: database doesn\'t have the ${_app.nodeTypes[node.type].title} node.`

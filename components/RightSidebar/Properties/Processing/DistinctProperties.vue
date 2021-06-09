@@ -4,7 +4,7 @@
 
     <PropCodeEditor
     
-    v-if="node.type === 'distinct' && $app.databases[database].infos.distinctOn"
+    v-if="node.type === 'distinct' && $app.databases.data[$state.project.sql.database].infos.distinctOn"
 
     class="mx-5 mt-5"
 
@@ -20,15 +20,6 @@ export default {
 
   props: {
     node: Object,
-  },
-
-
-  computed: {
-
-    ..._vuex.mapFields([
-      'project.sql.database',
-    ]),
-
   },
 
 }

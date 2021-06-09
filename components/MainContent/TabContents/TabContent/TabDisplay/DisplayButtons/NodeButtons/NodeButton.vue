@@ -3,6 +3,8 @@
   <DisplayButton btn-style="margin-right: 1px"
 
   :tooltip="$app.nodeTypes[type].title"
+
+  :disabled="$app.databases.data[$state.project.sql.database].infos.disabledNodeTypes.includes(type)"
   
   @pointerdown.stop="onPointerDown"
   @click="onClick">
