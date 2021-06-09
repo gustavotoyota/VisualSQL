@@ -5,7 +5,7 @@
 
 
     <v-btn x-large width="0" @pointerdown="onPointerDown"
-    style="min-width: 52px; transform: translate(-50%, -50%); pointer-events: auto"
+    style="min-width: 52px; padding: 0; transform: translate(-50%, -50%); pointer-events: auto"
     :color="active ? 'light-blue darken-1' : (selected ? 'light-blue darken-4' : '')">
       <NodeIcon :type="node.type" large></NodeIcon>
     </v-btn>
@@ -51,7 +51,7 @@ export default {
   computed: {
 
     selected() {
-      return this.tab.nodes.selected.hasOwnProperty(this.node.id)
+      return this.node.id in this.tab.nodes.selected
     },
 
     active() {
@@ -90,10 +90,11 @@ export default {
 
 
 
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
+      let displayPos = _app.getDisplayPos(event)
 
-      this.tab.nodes.dragPos = { ...pointerPos }
-      this.tab.nodes.dragged = false
+      this.$state.dragging.active = true
+      this.$state.dragging.currentPos = { ...displayPos }
+      this.$state.dragging.saveState = false
     },
 
   },

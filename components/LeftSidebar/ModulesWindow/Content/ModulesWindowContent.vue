@@ -2,12 +2,12 @@
   <v-list dense style="flex: 1; overflow-y: auto">
       
 
-    <draggable v-model="modules" delay="250"
+    <draggable v-model="$state.project.modules" delay="250"
     touch-start-threshold="4" animation="200">
 
 
       <ModuleItem
-      v-for="module in modules" :key="module.id"
+      v-for="module in $state.project.modules" :key="module.id"
       :module="module"/>
 
 
@@ -19,15 +19,6 @@
 
 <script>
 export default {
-
-
-  computed: {
-    ..._vuex.mapFields([
-      'project.modules',
-    ]),
-  },
-
-
 }
 </script>
 

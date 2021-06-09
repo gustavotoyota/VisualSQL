@@ -4,17 +4,17 @@
 
 
     <ToolbarButton tooltip="Cut" :disabled="emptyNodeSelection"
-    @click="$store.commit('cutSelectedNodes')">
+    @click="$store.commit('cutSelection')">
       <v-icon dense>mdi-content-cut</v-icon>
     </ToolbarButton>
 
     <ToolbarButton tooltip="Copy" :disabled="emptyNodeSelection"
-    @click="$store.commit('copySelectedNodes')">
+    @click="$store.commit('copySelection')">
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Paste" :disabled="clipboard == null"
-    @click="$store.commit('pasteNodes')">
+    <ToolbarButton tooltip="Paste" :disabled="$state.clipboard.value == null"
+    @click="$store.commit('paste')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 
@@ -62,10 +62,6 @@ export default {
 
 
   computed: {
-
-    ..._vuex.mapFields([
-      'clipboard',
-    ]),
 
     emptyNodeSelection() {
       return Object.keys(this.tab.nodes.selected).length === 0

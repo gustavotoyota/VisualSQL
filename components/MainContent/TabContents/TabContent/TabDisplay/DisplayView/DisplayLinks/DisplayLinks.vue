@@ -2,8 +2,8 @@
   <svg style="position: absolute; pointer-events: none"
   left="0" top="0" width="100%" height="100%">
     <svg x="50%" y="50%" style="overflow: visible">
-      <g :style="'transform: scale(' + tab.camera.zoom + ') ' +
-      'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)'">
+      <g :transform="'scale(' + tab.camera.zoom + ') ' +
+      'translate(' + -tab.camera.pos.x + ', ' + -tab.camera.pos.y + ')'">
 
         
         <DisplayLink :tab="tab"
@@ -13,10 +13,10 @@
         
 
         <DisplayLink new-link :tab="tab"
-        v-if="tab.links.new != null
-        && tab.links.new.from != null
-        && tab.links.new.to != null"
-        :module="module" :link="tab.links.new"/>
+        v-if="$state.linking.active
+        && $state.linking.newLink.from != null
+        && $state.linking.newLink.to != null"
+        :module="module" :link="$state.linking.newLink"/>
         
 
       </g>
@@ -36,7 +36,7 @@ export default {
   methods: {
 
     isLinkSelected(link) {
-      return this.tab.links.selected.hasOwnProperty(link.id)
+      return link.id in this.tab.links.selected
     },
 
 

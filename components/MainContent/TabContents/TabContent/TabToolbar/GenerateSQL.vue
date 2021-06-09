@@ -27,13 +27,13 @@
               <v-select class="mt-1" dense outlined
               hide-details background-color="#101010"
               :menu-props="{ top: false, offsetY: true }"
-              :items="$app.databaseItems" item-text="text" item-value="value"
-              v-model="project.sql.database">
+              :items="$app.databases.items" item-text="text" item-value="value"
+              v-model="$state.project.sql.database">
               </v-select>
             </div>
 
             <v-radio-group hide-details
-            v-model="project.sql.uppercaseKeywords">
+            v-model="$state.project.sql.uppercaseKeywords">
               <template v-slot:label>
                 <div>Keyword case:</div>
               </template>
@@ -43,7 +43,7 @@
             </v-radio-group>
 
             <v-radio-group hide-details
-            v-model="project.sql.indentWithSpaces">
+            v-model="$state.project.sql.indentWithSpaces">
               <template v-slot:label>
                 <div>Indentation characters:</div>
               </template>
@@ -53,7 +53,7 @@
             </v-radio-group>
 
             <v-radio-group hide-details
-            v-model="project.sql.indentSize">
+            v-model="$state.project.sql.indentSize">
               <template v-slot:label>
                 <div>Indentation size:</div>
               </template>
@@ -123,21 +123,6 @@ export default {
 
 
 
-  computed: {
-    
-    ..._vuex.mapFields([
-      'project',
-      'snackbar',
-    ]),
-    
-    ..._vuex.mapGetters([
-      'activeNode',
-    ]),
-
-  },
-
-
-
   methods: {
 
     editorDidMount(editor) {
@@ -153,19 +138,19 @@ export default {
 
       let columnsObj = _app.columnTracking.init(this.$store)
       
-      columnsObj.processNode(this.module, this.activeNode)
+      columnsObj.processNode(this.module, this.$getters.activeNode)
 
 
 
 
       // Tree generation
 
-      let treeObj = _app.databases[this.project.sql.database].generateTree(
-        this.$store, this.module, this.activeNode, { columnsObj: columnsObj })
+      let treeObj = _app.databases.data[this.$state.project.sql.database].generateTree(
+        this.$store, this.module, this.$getters.activeNode, { columnsObj: columnsObj })
       
       if (treeObj.error != null) {
-        this.snackbar.text = treeObj.error
-        this.snackbar.active = true
+        this.$state.snackbar.text = treeObj.error
+        this.$state.snackbar.active = true
 
         this.$store.commit('clearSelection')
         this.tab.nodes.selected[treeObj.node.id] = true
@@ -179,9 +164,9 @@ export default {
 
       // SQL generation
 
-      let sqlOptions = _app.deepCopy(this.project.sql)
+      let sqlOptions = _app.deepCopy(this.$state.project.sql)
 
-      let sqlObj = _app.databases[this.project.sql.database].generateSQL(treeObj, sqlOptions)
+      let sqlObj = _app.databases.data[this.$state.project.sql.database].generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 
@@ -202,7 +187,7 @@ export default {
 
     updateEditor() {
       monacoEditor.getModel().updateOptions({
-        tabSize: this.project.sql.indentSize
+        tabSize: this.$state.project.sql.indentSize
       })
     },
 
@@ -213,7 +198,7 @@ export default {
 
   watch: {
 
-    'project.sql': {
+    '$state.project.sql': {
       handler(value) {
         if (!this.dialog)
           return

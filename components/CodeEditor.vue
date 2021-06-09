@@ -1,9 +1,9 @@
 <template>
-  <MonacoEditor language="sql" v-model="inputValue" class="editor"
+  <MonacoEditor language="sql" v-model="inputValue"
 
-  style="border-radius: 5px; overflow: hidden; border: 1px solid #303030"
+  class="editor" style="border: 1px solid #303030"
 
-  @editorDidMount="$emit('editorDidMount', $event)"
+  @editorDidMount="editorDidMount"
 
   :options="{
     theme: 'vs-dark',
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+let completionItemProvider = null
+
 export default {
 
 
@@ -34,6 +36,8 @@ export default {
     value: String,
 
     options: { type: Object, default: () => ({}) },
+
+    hints: { type: Array, default: () => [] },
   },
 
 
@@ -48,6 +52,34 @@ export default {
   },
 
 
+
+  methods: {
+
+    editorDidMount(editor) {
+      editor.getModel().getHints = () => this.hints
+
+      if (!completionItemProvider) {
+        completionItemProvider = monaco.languages.registerCompletionItemProvider('sql', {
+          provideCompletionItems: function (model, position) {
+            let items = { suggestions: [] }
+            
+            for (let hint of model.getHints())
+              items.suggestions.push({ label: hint, insertText: hint })
+            
+            if (model.getHints().length === 0)
+              items.suggestions.push({ label: '', insertText: '' })
+
+            return items
+          },
+        })
+      }
+
+      this.$emit('editorDidMount', editor)
+    },
+
+  },
+
+
 }
 </script>
 
@@ -58,5 +90,9 @@ export default {
 
 .editor /deep/ .margin {
   background-color: #101010 !important;
+}
+
+.editor /deep/ .suggest-widget {
+  width: 250px !important;
 }
 </style>

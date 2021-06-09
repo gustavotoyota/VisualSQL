@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; inset: 0"
+  <div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0"
 
   @pointerdown.capture="onPointerDown"
   @pointerup="onPointerUp"
@@ -29,42 +29,42 @@ export default {
 
 
 
-  computed: {
-
-    ..._vuex.mapFields([
-      'nodeCreation',
-    ]),
-
-  },
-
-
-
-
   methods: {
 
 
 
     onPointerDown(event) {
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
+      let displayPos = _app.getDisplayPos(event)
 
-      this.$set(this.tab.camera.pinch.pointers, event.pointerId, pointerPos)
+      this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
 
-      if (this.tab.camera.pinch.pointers.length >= 2)
+      if (Object.keys(this.$state.pinching.pointers).length >= 2)
         event.stopPropagation()
+
+
+
+
+      // Panning
+
+      if (event.button === 1) {
+        this.$state.panning.active = true
+
+        this.$state.panning.currentPos = { ...displayPos }
+      }
     },
 
 
 
     onPointerUp(event) {
-      if (this.nodeCreation.active && this.nodeCreation.create) {
-        let pointerPos = _app.getPointerPos(this.tab.id, event)
-        let worldPos = _app.screenToWorld(this.tab, pointerPos)
+      if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
+        let displayPos = _app.getDisplayPos(event)
+        let worldPos = _app.screenToWorld(this.tab, displayPos)
         
         this.$store.commit('createNode', {
           moduleId: this.tab.moduleId,
 
           node: {
-            type: this.nodeCreation.nodeType,
+            type: this.$state.nodeCreation.nodeType,
 
             pos: {
               x: worldPos.x,
@@ -81,8 +81,8 @@ export default {
     onMouseWheel(event) {
       // Calculate world position
 
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
-      let worldPos = _app.screenToWorld(this.tab, pointerPos)
+      let displayPos = _app.getDisplayPos(event)
+      let worldPos = _app.screenToWorld(this.tab, displayPos)
 
 
 

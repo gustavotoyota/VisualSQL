@@ -21,7 +21,7 @@ export default {
   computed: {
 
     selected() {
-      return this.tab.links.selected.hasOwnProperty(this.link.id)
+      return this.link.id in this.tab.links.selected
     },
 
     active() {

@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; inset: 0"
+  <div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0"
   @pointerdown="onPointerDown">
   </div>
 </template>
@@ -20,37 +20,45 @@ export default {
 
     onPointerDown(event) {
       if (!event.isPrimary) {
-        this.tab.camera.panTimeout = null
+        this.$state.panning.selectTimeout = null
         return
       }
 
 
 
 
-      let pointerPos = _app.getPointerPos(this.tab.id, event)
+      let displayPos = _app.getDisplayPos(event)
 
 
 
       
       // Panning
 
-      if (event.pointerType !== 'mouse' || event.button === 1) {
-        this.tab.camera.panPos = { ...pointerPos }
+      if (event.pointerType !== 'mouse') {
+        this.$state.panning.active = true
 
-        if (event.pointerType !== 'mouse') {
-          this.tab.camera.panStart = { ...pointerPos }
+        this.$state.panning.currentPos = { ...displayPos }
+        
 
-          this.tab.camera.panTimeout = setTimeout(() => {
-            if (this.tab.camera.panTimeout == null)
-              return
+        
+        this.$state.panning.startPos = { ...displayPos }
 
-            this.tab.camera.panPos = null
-            this.tab.camera.panTimeout = null
+        this.$state.panning.selectTimeout = setTimeout(() => {
+          if (this.$state.panning.selectTimeout == null)
+            return
 
-            this.tab.selection.start = { ...pointerPos }
-            this.tab.selection.end = { ...pointerPos }
-          }, 300)
-        }
+
+
+          this.$state.panning.active = false
+          this.$state.panning.selectTimeout = null
+
+
+
+          this.$state.selecting.active = true
+
+          this.$state.selecting.startPos = { ...displayPos }
+          this.$state.selecting.endPos = { ...displayPos }
+        }, 300)
       }
 
 
@@ -67,8 +75,10 @@ export default {
       // Selecting
 
       if (event.pointerType === 'mouse' && event.button === 0) {
-        this.tab.selection.start = { ...pointerPos }
-        this.tab.selection.end = { ...pointerPos }
+        this.$state.selecting.active = true
+
+        this.$state.selecting.startPos = { ...displayPos }
+        this.$state.selecting.endPos = { ...displayPos }
       }
     },
 

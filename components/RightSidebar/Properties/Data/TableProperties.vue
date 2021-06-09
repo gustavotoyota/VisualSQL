@@ -27,18 +27,12 @@ export default {
 
 
   computed: {
-
-
-    ..._vuex.mapFields([
-      'project.tables',
-    ]),
     
-
 
     tableNames() {
       let tableNames = []
 
-      for (let table of this.tables)
+      for (let table of this.$state.project.tables)
         tableNames.push(table.name)
 
       return tableNames

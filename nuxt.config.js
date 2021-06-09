@@ -15,27 +15,24 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
-    ]
+    ],
+    script: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js' },
+    ],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    // lib css
-    'codemirror/lib/codemirror.css',
-    // merge css
-    'codemirror/addon/merge/merge.css',
-    // theme css
-    'codemirror/theme/base16-dark.css',
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/draggable.js',
-    '~/plugins/monaco.js',
-    { src: '~/plugins/codemirror.js', mode: 'client' },
-    '~/plugins/directives.js',
-    '~/plugins/vuex.js',
-    '~/plugins/app/app.js',
+    { src: '~/plugins/draggable.js' },
+    { src: '~/plugins/monaco.js' },
+    { src: '~/plugins/directives.js' },
+    { src: '~/plugins/vuex.js' },
+    { src: '~/plugins/mixin.js' },
+    { src: '~/plugins/app/app.js' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

@@ -1,8 +1,8 @@
 <template>
   <v-tooltip bottom>
     <template v-slot:activator="{ on: tooltip }">
-      <v-btn depressed style="min-width: 28px"
-      small width="0" v-on="{ ...tooltip }" text
+      <v-btn style="min-width: 28px; padding: 0"
+      small text width="0" v-on="{ ...tooltip }"
       :disabled="disabled" @click="$emit('click', $event)">
         <slot></slot>
       </v-btn>

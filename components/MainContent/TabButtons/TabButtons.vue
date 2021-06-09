@@ -5,9 +5,9 @@
 
     <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
     border-top-left-radius: 0; border-bottom-left-radius: 0" width="0"
-    @click="leftSidebar = !leftSidebar">
+    @click="$state.sidebars.left = !$state.sidebars.left">
       <span style="position: relative; left: -2px; top: 1px">
-        <v-icon v-if="leftSidebar" dense>mdi-chevron-double-left</v-icon>
+        <v-icon v-if="$state.sidebars.left" dense>mdi-chevron-double-left</v-icon>
         <v-icon v-else dense>mdi-chevron-double-right</v-icon>
       </span>
     </v-btn>
@@ -15,15 +15,15 @@
 
 
     <v-tabs show-arrows style="flex: 1; width: 0"
-    v-model="tabIdx" :key="'t' + rerenderTabs">
+    v-model="tabIdx" :key="'t' + $state.tabs.rerender">
 
-      <draggable v-model="tabs" @end="rerenderTabs++"
+      <draggable v-model="$state.project.tabs" @end="$state.tabs.rerender++"
       delay="250" touch-start-threshold="4" animation="200"
       class="v-slide-group__content v-tabs-bar__content">
 
         <TabButton
-        v-for="tab in tabs" :key="tab.id"
-        :tab="tab" :module="getModule(tab.moduleId)"/>
+        v-for="tab in $state.project.tabs" :key="tab.id"
+        :tab="tab" :module="$getters.getModule(tab.moduleId)"/>
 
       </draggable>
 
@@ -33,9 +33,9 @@
 
     <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
     border-top-right-radius: 0; border-bottom-right-radius: 0" width="0"
-    @click="rightSidebar = !rightSidebar">
+    @click="$state.sidebars.right = !$state.sidebars.right">
       <span style="position: relative; left: 2px; top: 1px">
-        <v-icon v-if="rightSidebar" dense>mdi-chevron-double-right</v-icon>
+        <v-icon v-if="$state.sidebars.right" dense>mdi-chevron-double-right</v-icon>
         <v-icon v-else dense>mdi-chevron-double-left</v-icon>
       </span>
     </v-btn>
@@ -51,41 +51,14 @@ export default {
 
   computed: {
 
-
-    ..._vuex.mapFields([
-      'project.modules',
-
-
-      'project.tabs',
-      'project.tabId',
-      'project.rerenderTabs',
-    ]),
-
-
-
-    ..._vuex.mapFields({
-      'leftSidebar': 'sidebars.left',
-      'rightSidebar': 'sidebars.right',
-    }),
-
-
-
-    ..._vuex.mapGetters([
-      'getModule',
-      'getTabIdx',
-    ]),
-
-    
-
     tabIdx: {
       get() {
-        return this.getTabIdx(this.tabId)
+        return this.$getters.getTabIdx(this.$state.project.tabId)
       },
       set(value) {
-        this.tabId = this.tabs[value || 0].id
+        this.$state.project.tabId = this.$state.project.tabs[value || 0].id
       },
     },
-
 
   },
 
