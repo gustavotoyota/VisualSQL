@@ -40,20 +40,11 @@ export default {
 
 
 
-  computed: {
-
-    database() {
-      return _app.databases.data[this.$state.project.sql.database]
-    },
-
-  },
-
-
-
   methods: {
 
     isNodeTypeDisabled(nodeType) {
-      return this.database.infos.disabledNodeTypes.includes(nodeType)
+      return _app.databases.data[this.$state.project.sql.database].
+        infos.disabledNodeTypes.includes(nodeType)
     },
 
   },

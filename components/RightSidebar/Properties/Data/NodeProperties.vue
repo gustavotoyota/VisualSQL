@@ -28,18 +28,12 @@ export default {
 
 
   computed: {
-
-
-    ..._vuex.mapFields([
-      'project.modules',
-    ]),
     
-
-
+    
     nodeNames() {
       let nodeNames = []
 
-      for (let module of this.modules)
+      for (let module of this.$state.project.modules)
         for (let node of Object.values(module.nodes))
           if (node.props.name !== '')
             nodeNames.push(module.name + '.' + node.props.name)
