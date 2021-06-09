@@ -38,7 +38,7 @@ export default {
 
       this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
 
-      if (this.$state.pinching.pointers.length >= 2)
+      if (Object.keys(this.$state.pinching.pointers).length >= 2)
         event.stopPropagation()
     },
 
