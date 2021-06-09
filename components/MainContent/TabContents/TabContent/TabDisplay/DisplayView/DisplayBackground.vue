@@ -42,7 +42,8 @@ export default {
 
         this.$state.panning.startPos = { ...pointerPos }
         this.$state.panning.selectTimeout = setTimeout(() => {
-          if (this.$state.panning.selectTimeout == null)
+          if (this.$state.panning.selectTimeout == null
+          || this.$state.pinching.centerPos != null)
             return
 
           this.$state.panning.currentPos = null
