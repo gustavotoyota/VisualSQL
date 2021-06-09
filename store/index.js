@@ -64,7 +64,7 @@ export const state = () => ({
   pinching: {
     pointers: {},
     
-    center: null,
+    centerPos: null,
     distance: null,
   },
 

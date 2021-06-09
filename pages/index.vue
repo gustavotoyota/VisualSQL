@@ -93,7 +93,7 @@ export default {
       if (pointers.length >= 2) {
         // Compute center and distance
 
-        let center = {
+        let centerPos = {
           x: (pointers[0].x + pointers[1].x) / 2,
           y: (pointers[0].y + pointers[1].y) / 2,
         }
@@ -115,11 +115,11 @@ export default {
 
           // Camera position update
 
-          let worldPos = _app.screenToWorld(currentTab, center)
+          let worldPos = _app.screenToWorld(currentTab, centerPos)
 
           let centerOffset = {
-            x: center.x - this.$state.pinching.centerPos.x,
-            y: center.y - this.$state.pinching.centerPos.y,
+            x: centerPos.x - this.$state.pinching.centerPos.x,
+            y: centerPos.y - this.$state.pinching.centerPos.y,
           }
 
           currentTab.camera.pos.x = -centerOffset.x / currentTab.camera.zoom +
@@ -139,7 +139,7 @@ export default {
 
 
 
-        this.$state.pinching.centerPos = center
+        this.$state.pinching.centerPos = centerPos
         this.$state.pinching.distance = distance
 
         return
