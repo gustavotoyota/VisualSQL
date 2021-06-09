@@ -90,10 +90,10 @@ export default {
 
 
 
-      let pointerPos = _app.getPointerPos(event)
+      let displayPos = _app.getDisplayPos(event)
 
       this.$state.dragging.active = true
-      this.$state.dragging.currentPos = { ...pointerPos }
+      this.$state.dragging.currentPos = { ...displayPos }
       this.$state.dragging.saveState = false
     },
 

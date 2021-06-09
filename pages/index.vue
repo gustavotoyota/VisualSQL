@@ -78,10 +78,10 @@ export default {
       
       // Compute pointer position
 
-      let pointerPos = _app.getPointerPos(event)
+      let displayPos = _app.getDisplayPos(event)
       
       if (event.pointerId in this.$state.pinching.pointers)
-        this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
+        this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
 
 
 
@@ -167,15 +167,15 @@ export default {
       // Panning
 
       if (this.$state.panning.active) {
-        currentTab.camera.pos.x -= (pointerPos.x - this.$state.panning.currentPos.x) / currentTab.camera.zoom
-        currentTab.camera.pos.y -= (pointerPos.y - this.$state.panning.currentPos.y) / currentTab.camera.zoom
+        currentTab.camera.pos.x -= (displayPos.x - this.$state.panning.currentPos.x) / currentTab.camera.zoom
+        currentTab.camera.pos.y -= (displayPos.y - this.$state.panning.currentPos.y) / currentTab.camera.zoom
         
-        this.$state.panning.currentPos = { ...pointerPos }
+        this.$state.panning.currentPos = { ...displayPos }
 
         if (event.pointerType !== 'mouse' && this.$state.panning.selectTimeout != null) {
           let dist = Math.sqrt(
-            Math.pow(pointerPos.x - this.$state.panning.startPos.x, 2) +
-            Math.pow(pointerPos.y - this.$state.panning.startPos.y, 2))
+            Math.pow(displayPos.x - this.$state.panning.startPos.x, 2) +
+            Math.pow(displayPos.y - this.$state.panning.startPos.y, 2))
 
           if (dist > 5)
             this.$state.panning.selectTimeout = null
@@ -190,7 +190,7 @@ export default {
       // Selecting
 
       if (this.$state.selecting.active) {
-        this.$state.selecting.endPos = { ...pointerPos }
+        this.$state.selecting.endPos = { ...displayPos }
 
         return
       }
@@ -204,11 +204,11 @@ export default {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
           let node = currentModule.nodes[nodeId]
 
-          node.pos.x += (pointerPos.x - this.$state.dragging.currentPos.x) / currentTab.camera.zoom
-          node.pos.y += (pointerPos.y - this.$state.dragging.currentPos.y) / currentTab.camera.zoom
+          node.pos.x += (displayPos.x - this.$state.dragging.currentPos.x) / currentTab.camera.zoom
+          node.pos.y += (displayPos.y - this.$state.dragging.currentPos.y) / currentTab.camera.zoom
         }
 
-        this.$state.dragging.currentPos = { ...pointerPos }
+        this.$state.dragging.currentPos = { ...displayPos }
 
         this.$state.dragging.saveState = true
 
@@ -221,7 +221,7 @@ export default {
       // Linking
 
       if (this.$state.linking.active) {
-        let worldPos = _app.screenToWorld(currentTab, pointerPos)
+        let worldPos = _app.screenToWorld(currentTab, displayPos)
 
         if (typeof(this.$state.linking.newLink.from) === 'number')
           this.$state.linking.newLink.to = { ...worldPos }

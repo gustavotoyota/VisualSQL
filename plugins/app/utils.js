@@ -37,7 +37,7 @@ utils.getDisplayRect = function () {
 
 
 
-utils.getPointerPos = function (event) {
+utils.getDisplayPos = function (event) {
   let displayRect = _app.getDisplayRect()
   
   return {

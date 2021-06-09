@@ -27,7 +27,7 @@ export default {
 
 
 
-      let pointerPos = _app.getPointerPos(event)
+      let displayPos = _app.getDisplayPos(event)
 
 
 
@@ -37,11 +37,11 @@ export default {
       if (event.pointerType !== 'mouse') {
         this.$state.panning.active = true
 
-        this.$state.panning.currentPos = { ...pointerPos }
+        this.$state.panning.currentPos = { ...displayPos }
         
 
         
-        this.$state.panning.startPos = { ...pointerPos }
+        this.$state.panning.startPos = { ...displayPos }
 
         this.$state.panning.selectTimeout = setTimeout(() => {
           if (this.$state.panning.selectTimeout == null)
@@ -56,8 +56,8 @@ export default {
 
           this.$state.selecting.active = true
 
-          this.$state.selecting.startPos = { ...pointerPos }
-          this.$state.selecting.endPos = { ...pointerPos }
+          this.$state.selecting.startPos = { ...displayPos }
+          this.$state.selecting.endPos = { ...displayPos }
         }, 300)
       }
 
@@ -77,8 +77,8 @@ export default {
       if (event.pointerType === 'mouse' && event.button === 0) {
         this.$state.selecting.active = true
 
-        this.$state.selecting.startPos = { ...pointerPos }
-        this.$state.selecting.endPos = { ...pointerPos }
+        this.$state.selecting.startPos = { ...displayPos }
+        this.$state.selecting.endPos = { ...displayPos }
       }
     },
 

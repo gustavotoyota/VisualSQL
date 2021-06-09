@@ -34,9 +34,9 @@ export default {
 
 
     onPointerDown(event) {
-      let pointerPos = _app.getPointerPos(event)
+      let displayPos = _app.getDisplayPos(event)
 
-      this.$set(this.$state.pinching.pointers, event.pointerId, pointerPos)
+      this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
 
       if (Object.keys(this.$state.pinching.pointers).length >= 2)
         event.stopPropagation()
@@ -49,7 +49,7 @@ export default {
       if (event.button === 1) {
         this.$state.panning.active = true
 
-        this.$state.panning.currentPos = { ...pointerPos }
+        this.$state.panning.currentPos = { ...displayPos }
       }
     },
 
@@ -57,8 +57,8 @@ export default {
 
     onPointerUp(event) {
       if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
-        let pointerPos = _app.getPointerPos(event)
-        let worldPos = _app.screenToWorld(this.tab, pointerPos)
+        let displayPos = _app.getDisplayPos(event)
+        let worldPos = _app.screenToWorld(this.tab, displayPos)
         
         this.$store.commit('createNode', {
           moduleId: this.tab.moduleId,
@@ -81,8 +81,8 @@ export default {
     onMouseWheel(event) {
       // Calculate world position
 
-      let pointerPos = _app.getPointerPos(event)
-      let worldPos = _app.screenToWorld(this.tab, pointerPos)
+      let displayPos = _app.getDisplayPos(event)
+      let worldPos = _app.screenToWorld(this.tab, displayPos)
 
 
 
