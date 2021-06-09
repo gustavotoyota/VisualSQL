@@ -2,27 +2,21 @@
   <div style="position: absolute; right: 16px; top: 16px">
     
     <div style="margin-top: 1px">
-      <v-tooltip top>
-        <template v-slot:activator="{ on: tooltip }">
-          <v-btn style="min-width: 36px" width="0" v-on="{ ...tooltip }"
-          @pointerdown.stop="" @click="tab.camera.zoom = 1">
-            <v-icon>mdi-magnify-remove-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>Reset zoom</span>
-      </v-tooltip>
+
+      <DisplayButton tooltip="Reset zoom"
+      @click="tab.camera.zoom = 1">
+        <v-icon>mdi-magnify-remove-outline</v-icon>
+      </DisplayButton>
+
     </div>
 
     <div style="margin-top: 1px">
-      <v-tooltip top>
-        <template v-slot:activator="{ on: tooltip }">
-          <v-btn style="min-width: 36px" width="0" v-on="{ ...tooltip }"
-          @pointerdown.stop="" @click="$store.commit('fitScreen')">
-            <v-icon>mdi-crop-free</v-icon>
-          </v-btn>
-        </template>
-        <span>Fit screen</span>
-      </v-tooltip>
+
+      <DisplayButton tooltip="Fit screen"
+      @click="$store.commit('fitScreen')">
+        <v-icon>mdi-crop-free</v-icon>
+      </DisplayButton>
+      
     </div>
 
   </div>
