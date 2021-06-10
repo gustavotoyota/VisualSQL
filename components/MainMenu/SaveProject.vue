@@ -16,7 +16,7 @@ export default {
 
     async onClick(event) {
       if (window.showSaveFilePicker == null) {
-        saveAs(_app.createProjectBlob(), 'project.vsql')
+        saveAs(_app.saveLoad.createProjectBlob(), 'project.vsql')
 
         this.$state.saving.modified = false
 
@@ -33,7 +33,7 @@ export default {
           }],
         })
 
-        _app.tryUpdateProjectFile()
+        _app.saveLoad.tryUpdateProjectFile()
       } catch {
       }
     },
