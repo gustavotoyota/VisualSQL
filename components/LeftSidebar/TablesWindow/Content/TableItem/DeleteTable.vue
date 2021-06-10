@@ -37,12 +37,13 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="primary" text @click="
-        $store.commit('deleteTable', table.id); active = false">
+        <v-btn color="primary" text ref="yes"
+        @click="$store.commit('deleteTable', table.id); active = false">
           Yes
         </v-btn>
 
-        <v-btn color="primary" text @click="active = false">
+        <v-btn color="primary" text
+        @click="active = false">
           No
         </v-btn>
 
@@ -71,6 +72,21 @@ export default {
     return {
       active: false,
     }
+  },
+
+
+
+  watch: {
+
+    active(value) {
+      if (!value)
+        return
+
+      setTimeout(() => {
+        this.$refs.yes.$el.focus()
+      })
+    },
+
   },
 
 
