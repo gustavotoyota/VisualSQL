@@ -422,6 +422,33 @@ export default {
   },
 
 
+
+
+  watch: {
+
+    '$state.project': {
+      deep: true,
+
+      handler() {
+        if (this.$state.saving.ignoreChange) {
+          this.$state.saving.ignoreChange = false
+          return
+        }
+
+        this.$state.saving.modified = true
+
+        if (this.$state.saving.timeout != null)
+          clearTimeout(this.$state.saving.timeout)
+
+        this.$state.saving.timeout = setTimeout(() => {
+          _app.tryUpdateProjectFile()
+        }, 500)
+      },
+    },
+
+  },
+
+
 }
 </script>
 

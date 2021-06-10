@@ -14,7 +14,7 @@ export default {
       try {
         // Get file handle
 
-        _app.fileHandle = (await showOpenFilePicker({
+        this.$state.saving.fileHandle = (await showOpenFilePicker({
           types: [{
             description: 'Visual SQL files',
             accept: { 'application/json': ['.vsql'] },
@@ -25,7 +25,7 @@ export default {
 
         // Get file
 
-        const file = await _app.fileHandle.getFile()
+        const file = await this.$state.saving.fileHandle.getFile()
 
 
 
@@ -50,6 +50,13 @@ export default {
 
           for (const tab of this.$state.project.tabs)
             this.$store.commit('saveState', tab)
+
+
+
+          // Initialize saving state
+
+          this.$state.saving.ignoreChange = true
+          this.$state.saving.modified = false
         }
 
         fileReader.readAsText(file)

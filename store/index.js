@@ -12,6 +12,20 @@ export const state = () => ({
   // Project
 
   project: null,
+
+
+
+
+  // Save/load
+
+  saving: {
+    ignoreChange: true,
+    modified: false,
+
+    fileHandle: null,
+
+    timeout: false,
+  },
   
 
 
@@ -152,6 +166,15 @@ export const mutations = {}
 
   
 mutations.resetProject = function (state) {
+  // Initialize saving state
+
+  state.saving.ignoreChange = state.project != null
+  state.saving.modified = false
+
+  state.saving.fileHandle = null
+
+
+
   state.project = {
     // Modules
 
@@ -190,6 +213,8 @@ mutations.resetProject = function (state) {
       indentSize: 2,
     },
   }
+
+
 
   this.commit('createModule', 'module_1')
 }

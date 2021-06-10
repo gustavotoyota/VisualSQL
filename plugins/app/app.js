@@ -47,9 +47,7 @@ _app.columnTracking = columnTracking
 
 // Save/Load
 
-_app.saveProject = async function () {
-  // Remove undo/redo data
-
+_app.createProjectBlob = function () {
   const project = _app.deepCopy($nuxt.$store.state.project)
 
   for (const tab of project.tabs) {
@@ -58,16 +56,30 @@ _app.saveProject = async function () {
       currentStateIdx: -1,
     }
   }
+  
+  return new Blob(
+    [JSON.stringify(project, null, 2)],
+    { type: 'application/json' })
+}
+
+_app.tryUpdateProjectFile = async function () {
+  if ($nuxt.$store.state.saving.fileHandle == null)
+    return
 
 
 
-  // Save project
+  try {
+    const writable = await $nuxt.$store.state.saving.fileHandle.createWritable()
 
-  const writable = await _app.fileHandle.createWritable()
+    await writable.write(_app.createProjectBlob())
 
-  await writable.write(JSON.stringify(project, null, 2))
+    await writable.close()
 
-  await writable.close()
+    
+
+    $nuxt.$store.state.saving.modified = false
+  } catch {
+  }
 }
 
 

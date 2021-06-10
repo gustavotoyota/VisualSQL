@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <v-btn depressed small text
+    <v-btn depressed small text class="px-2"
     :disabled="disabled" @click="generateSQL">
       Generate SQL
     </v-btn>
