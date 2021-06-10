@@ -29,7 +29,7 @@
           <div>
             Columns:
             
-            <CodeEditor
+            <CodeEditor :key="`columns-${active}`"
             class="mt-1" style="height: 220px"
             v-model="fields.columns"/>
               

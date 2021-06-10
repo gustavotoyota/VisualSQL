@@ -67,6 +67,7 @@
           <div class="pl-5 pt-6 pb-1" style="flex: 1; display: flex">
 
             <CodeEditor v-model="sql"
+            :key="`sql-${dialog}`"
             style="flex: 1; width: 0"
             :options="{ readOnly: true }"
             @editorDidMount="editorDidMount"/>
