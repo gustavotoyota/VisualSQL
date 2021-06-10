@@ -15,23 +15,26 @@ export default {
   methods: {
 
     async onClick(event) {
-      if (window.showSaveFilePicker != null) {
-        try {
-          this.$state.saving.fileHandle = null
-          this.$state.saving.fileHandle = await showSaveFilePicker({
-            types: [{
-              description: 'Visual SQL files',
-              accept: { 'application/json': ['.vsql'] },
-            }],
-          })
-
-          _app.tryUpdateProjectFile()
-        } catch {
-        }
-      } else {
+      if (window.showSaveFilePicker == null) {
         saveAs(_app.createProjectBlob(), 'project.vsql')
 
         this.$state.saving.modified = false
+
+        return
+      }
+
+
+
+      try {
+        this.$state.saving.fileHandle = await showSaveFilePicker({
+          types: [{
+            description: 'Visual SQL files',
+            accept: { 'application/json': ['.vsql'] },
+          }],
+        })
+
+        _app.tryUpdateProjectFile()
+      } catch {
       }
     },
 

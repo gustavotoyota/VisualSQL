@@ -62,6 +62,32 @@ _app.createProjectBlob = function () {
     { type: 'application/json' })
 }
 
+_app.loadProject = function (projectStr) {
+  // Load project
+
+  $nuxt.$store.state.project = JSON.parse(projectStr)
+
+
+
+  // Rerender tabs
+
+  $nuxt.$store.state.tabs.rerender++
+
+
+
+  // Initialize undo/redo states
+
+  for (const tab of $nuxt.$store.state.project.tabs)
+    $nuxt.$store.commit('saveState', tab)
+
+
+
+  // Initialize saving state
+
+  $nuxt.$store.state.saving.ignoreChange = true
+  $nuxt.$store.state.saving.modified = false
+}
+
 _app.tryUpdateProjectFile = async function () {
   if ($nuxt.$store.state.saving.fileHandle == null)
     return

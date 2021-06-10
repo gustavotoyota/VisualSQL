@@ -1,6 +1,12 @@
 <template>
   <ToolbarButton tooltip="Open project" @click="onClick">
+
     <v-icon dense>mdi-folder-open</v-icon>
+
+    <input ref="file"
+    class="d-none" type="file"
+    @change="onFileChange"/>
+
   </ToolbarButton>
 </template>
 
@@ -10,7 +16,39 @@ export default {
 
   methods: {
 
+
+    onFileChange(event) {
+      if (event.target.files.length === 0)
+        return
+
+      const file = event.target.files[0]
+
+
+
+      const fileReader = new FileReader()
+
+      fileReader.onload = (event) => {
+        _app.loadProject(event.target.result)
+
+        this.$state.saving.fileHandle = null
+      }
+
+      fileReader.readAsText(file)
+
+
+
+      this.$refs.file.value = ''
+    },
+
+
+
     async onClick(event) {
+      if (window.showOpenFilePicker == null) {
+        this.$refs.file.click()
+        return
+      }
+      
+
       try {
         // Get file handle
 
@@ -34,29 +72,7 @@ export default {
         const fileReader = new FileReader()
         
         fileReader.onload = (event) => {
-          // Load project
-
-          this.$state.project = JSON.parse(event.target.result)
-
-
-
-          // Rerender tabs
-
-          this.$state.tabs.rerender++
-
-
-
-          // Initialize undo/redo states
-
-          for (const tab of this.$state.project.tabs)
-            this.$store.commit('saveState', tab)
-
-
-
-          // Initialize saving state
-
-          this.$state.saving.ignoreChange = true
-          this.$state.saving.modified = false
+          _app.loadProject(event.target.result)
         }
 
         fileReader.readAsText(file)
