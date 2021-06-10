@@ -79,3 +79,48 @@ getters.activeLink = (state, getters) => {
 
   return currentModule.links[currentTab.links.activeId]
 }
+
+
+
+
+
+
+getters.getDisplayElem = (state, getters) => () => {
+  return document.getElementById(`display-${state.project.tabId}`)
+}
+getters.getDisplayRect = (state, getters) => () => {
+  return getters.getDisplayElem().getBoundingClientRect()
+}
+
+
+
+
+
+getters.getDisplayPos = (state, getters) => (event) => {
+  let displayRect = getters.getDisplayRect()
+  
+  return {
+    x: event.pageX - displayRect.left,
+    y: event.pageY - displayRect.top
+  }
+}
+
+
+
+
+getters.worldToScreen = (state, getters) => (module, worldPos) => {
+  let displayRect = getters.getDisplayRect()
+
+  return {
+    x: displayRect.width / 2 + (worldPos.x - module.camera.pos.x) * module.camera.zoom,
+    y: displayRect.height / 2 + (worldPos.y - module.camera.pos.y) * module.camera.zoom,
+  }
+}
+getters.screenToWorld = (state, getters) => (module, screenPos) => {
+  let displayRect = getters.getDisplayRect()
+
+  return {
+    x: module.camera.pos.x + (screenPos.x - displayRect.width / 2) / module.camera.zoom,
+    y: module.camera.pos.y + (screenPos.y - displayRect.height / 2) / module.camera.zoom,
+  }
+}

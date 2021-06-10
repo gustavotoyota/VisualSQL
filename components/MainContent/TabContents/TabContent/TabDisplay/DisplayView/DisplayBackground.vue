@@ -27,7 +27,7 @@ export default {
 
 
 
-      let displayPos = _app.getDisplayPos(event)
+      let displayPos = this.$getters.getDisplayPos(event)
 
 
 

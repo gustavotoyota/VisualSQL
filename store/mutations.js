@@ -689,7 +689,7 @@ mutations.fitScreen = function (state) {
 
   // Camera zoom
 
-  let displayRect = _app.getDisplayRect()
+  let displayRect = this.getters.getDisplayRect()
 
   module.camera.zoom = 1
 

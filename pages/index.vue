@@ -78,7 +78,7 @@ export default {
       
       // Compute pointer position
 
-      let displayPos = _app.getDisplayPos(event)
+      let displayPos = this.$getters.getDisplayPos(event)
       
       if (event.pointerId in this.$state.pinching.pointers)
         this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
@@ -115,7 +115,7 @@ export default {
 
           // Camera position update
 
-          let worldPos = _app.screenToWorld(currentModule, centerPos)
+          let worldPos = this.$getters.screenToWorld(currentModule, centerPos)
 
           let centerOffset = {
             x: centerPos.x - this.$state.pinching.centerPos.x,
@@ -221,7 +221,7 @@ export default {
       // Linking
 
       if (this.$state.linking.active) {
-        let worldPos = _app.screenToWorld(currentModule, displayPos)
+        let worldPos = this.$getters.screenToWorld(currentModule, displayPos)
 
         if (typeof(this.$state.linking.newLink.from) === 'number')
           this.$state.linking.newLink.to = { ...worldPos }
@@ -297,8 +297,8 @@ export default {
       // Selecting
 
       if (event.button === 0 && this.$state.selecting.active) {
-        let worldStart = _app.screenToWorld(currentModule, this.$state.selecting.startPos)
-        let worldEnd = _app.screenToWorld(currentModule, this.$state.selecting.endPos)
+        let worldStart = this.$getters.screenToWorld(currentModule, this.$state.selecting.startPos)
+        let worldEnd = this.$getters.screenToWorld(currentModule, this.$state.selecting.endPos)
 
         let topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),
