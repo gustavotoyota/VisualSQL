@@ -48,9 +48,24 @@ _app.columnTracking = columnTracking
 // Save/Load
 
 _app.saveProject = async function () {
+  // Remove undo/redo data
+
+  const project = _app.deepCopy($nuxt.$store.state.project)
+
+  for (const tab of project.tabs) {
+    tab.undoRedo = {
+      states: [],
+      currentStateIdx: -1,
+    }
+  }
+
+
+
+  // Save project
+
   const writable = await _app.fileHandle.createWritable()
 
-  await writable.write(JSON.stringify($nuxt.$store.state.project, null, 2))
+  await writable.write(JSON.stringify(project, null, 2))
 
   await writable.close()
 }
