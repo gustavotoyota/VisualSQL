@@ -20,9 +20,7 @@
       <v-icon dense>mdi-folder-open</v-icon>
     </ToolbarButton>
     
-    <ToolbarButton tooltip="Save project">
-      <v-icon dense>mdi-content-save</v-icon>
-    </ToolbarButton>
+    <SaveProject/>
 
 
 

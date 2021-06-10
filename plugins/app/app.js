@@ -44,6 +44,22 @@ _app.columnTracking = columnTracking
 
 
 
+
+// Save/Load
+
+_app.saveProject = async function () {
+  const writable = await _app.fileHandle.createWritable()
+
+  await writable.write(JSON.stringify($nuxt.$store.state.project, null, 2))
+
+  await writable.close()
+}
+
+
+
+
+
+
 // Settings
 
 _app.minZoom = Math.pow(1 / 1.2, 16)
