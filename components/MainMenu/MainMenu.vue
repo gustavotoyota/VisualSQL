@@ -13,12 +13,9 @@
 
 
 
-    <NewProject>
-    </NewProject>
+    <NewProject/>
     
-    <ToolbarButton tooltip="Open project">
-      <v-icon dense>mdi-folder-open</v-icon>
-    </ToolbarButton>
+    <OpenProject/>
     
     <SaveProject/>
 

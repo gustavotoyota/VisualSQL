@@ -293,6 +293,8 @@ mutations.createTab = function (state, moduleId) {
   }
 
   state.project.tabId = moduleTab.id
+
+  state.tabs.rerender++
   
   if (moduleTab.undoRedo.currentStateIdx < 0)
     this.commit('saveState')
@@ -812,8 +814,8 @@ mutations.fitScreen = function (state) {
 
 
 
-mutations.saveState = function (state) {
-  let tab = this.getters.currentTab
+mutations.saveState = function (state, tab) {
+  tab = tab || this.getters.currentTab
 
   if (tab == null)
     return
