@@ -21,8 +21,9 @@
 
         <v-card-text>
 
-          <v-text-field label="Table name"
-          autofocus v-model="fields.name">
+          <v-text-field ref="name"
+          label="Table name"
+          v-model="fields.name">
           </v-text-field>
 
           
@@ -97,6 +98,10 @@ export default {
 
       this.fields.name = this.name ?? ''
       this.fields.columns = this.columns ?? ''
+
+      setTimeout(() => {
+        this.$refs.name.focus()
+      })
     }
 
   },

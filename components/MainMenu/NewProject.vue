@@ -29,11 +29,13 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="primary" text @click="$store.commit('resetProject'); active = false">
+        <v-btn color="primary" text ref="yes"
+        @click="$store.commit('resetProject'); active = false">
           Yes
         </v-btn>
 
-        <v-btn color="primary" text @click="active = false">
+        <v-btn color="primary" text
+        @click="active = false">
           No
         </v-btn>
 
@@ -50,6 +52,7 @@
 <script>
 export default {
 
+
   data() {
 
     return {
@@ -57,6 +60,21 @@ export default {
     }
 
   },
+
+
+  watch: {
+
+    active(value) {
+      if (!value)
+        return
+
+      setTimeout(() => {
+        this.$refs.yes.$el.focus()
+      })
+    },
+
+  },
+
 
 }
 </script>
