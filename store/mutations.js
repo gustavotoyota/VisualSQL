@@ -214,7 +214,7 @@ mutations.createNode = function (state, payload) {
 
 
 
-  Object.assign(node.props, _app.deepCopy(nodeTypeInfo.props))
+  Object.assign(node.props, _utils.deepCopy(nodeTypeInfo.props))
   Object.assign(node, payload.node)
 
 
@@ -290,7 +290,7 @@ mutations.createLink = function (state, payload) {
   let existingLinkId = module.nodes[link.to].incomingLinks[link.socket]
 
   if (existingLinkId != null) {
-    link.props = _app.deepCopy(module.links[existingLinkId].props)
+    link.props = _utils.deepCopy(module.links[existingLinkId].props)
 
     this.commit('deleteLink', {
       moduleId: module.id,
@@ -507,7 +507,7 @@ mutations.copySelection = function (state) {
         y: node.pos.y - centerPos.y,
       },
 
-      props: _app.deepCopy(node.props),
+      props: _utils.deepCopy(node.props),
     })
   }
 
@@ -543,7 +543,7 @@ mutations.copySelection = function (state) {
         to: nodeMap[link.to],
         socket: link.socket,
 
-        props: _app.deepCopy(link.props),
+        props: _utils.deepCopy(link.props),
       })
     }
   }
@@ -593,7 +593,7 @@ mutations.paste = function (state) {
           y: module.camera.pos.y + node.pos.y,
         },
 
-        props: _app.deepCopy(node.props),
+        props: _utils.deepCopy(node.props),
       },
 
       dontActivate: true,
@@ -617,7 +617,7 @@ mutations.paste = function (state) {
         to: firstNodeId + link.to,
         socket: link.socket,
 
-        props: _app.deepCopy(link.props),
+        props: _utils.deepCopy(link.props),
       },
 
       dontActivate: true,
@@ -723,7 +723,7 @@ mutations.saveState = function (state, tab) {
 
   
 
-  let moduleState = _app.deepCopy(module)
+  let moduleState = _utils.deepCopy(module)
 
   delete moduleState.name
   
@@ -741,7 +741,7 @@ mutations.replaceState = function (state) {
 
   
 
-  let moduleState = _app.deepCopy(module)
+  let moduleState = _utils.deepCopy(module)
 
   delete moduleState.name
   

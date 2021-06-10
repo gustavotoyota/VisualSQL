@@ -1,14 +1,4 @@
 global._app = {}
-
-
-
-
-
-// Utils
-
-import utils from './utils.js'
-
-Object.assign(_app, utils)
   
 
 
@@ -48,7 +38,7 @@ _app.columnTracking = columnTracking
 // Save/Load
 
 _app.createProjectBlob = function () {
-  const project = _app.deepCopy(_store.state.project)
+  const project = _utils.deepCopy(_store.state.project)
 
   for (const tab of project.tabs) {
     tab.undoRedo = {

@@ -1,13 +1,12 @@
-const utils = {}
-export default utils
+global._utils = {}
 
 
 
 
-utils.deepCopy = (obj) => {
+_utils.deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
-utils.shallowCopy = (obj) => {
+_utils.shallowCopy = (obj) => {
   if (Array.isArray(obj))
     return obj.slice()
 
@@ -16,11 +15,11 @@ utils.shallowCopy = (obj) => {
 
   return obj
 }
-utils.notSoShallowCopy = (obj) => {
+_utils.notSoShallowCopy = (obj) => {
   let result = Array.isArray(obj) ? [] : {}
 
   for (const [key, value] of Object.entries(obj))
-    result[key] = _app.shallowCopy(value)
+    result[key] = _utils.shallowCopy(value)
 
   return result
 }

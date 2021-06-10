@@ -165,7 +165,7 @@ export default {
 
       // SQL generation
 
-      let sqlOptions = _app.deepCopy(this.$state.project.sql)
+      let sqlOptions = _utils.deepCopy(this.$state.project.sql)
 
       let sqlObj = _app.databases.data[this.$state.project.sql.database].generateSQL(treeObj, sqlOptions)
 

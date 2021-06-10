@@ -32,7 +32,8 @@ export default {
 
     { src: '~/plugins/global-mixin.js' },
     { src: '~/plugins/store-utils.js' },
-    
+    { src: '~/plugins/utils.js' },
+
     { src: '~/plugins/app/app.js' },
   ],
 
