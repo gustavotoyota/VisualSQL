@@ -1,9 +1,7 @@
 <template>
-  <path :class="newLink ? 'newLink' : 'link'"
-  :d="getLinkCommand()"
-  :cursor="newLink ? '' : 'pointer'"
+  <path class="link" cursor="pointer" :d="linkCommand"
   :style="active ? 'stroke: rgb(3, 155, 229)' : (selected ? 'stroke: rgb(1, 87, 155)' : '')"
-  @pointerdown="$emit('pointerdown', $event)"/>
+  @pointerdown="onPointerDown"/>
 </template>
 
 <script>
@@ -14,7 +12,6 @@ export default {
     module: Object,
     
     link: Object,
-    newLink: Boolean,
   },
 
 
@@ -27,13 +24,10 @@ export default {
     active() {
       return this.tab.links.activeId === this.link.id
     },
-
-  },
-
-
-  methods: {
     
-    getLinkCommand() {
+
+    
+    linkCommand() {
       let srcSocketPos
       if (typeof(this.link.from) === "object")
         srcSocketPos = { ...this.link.from }
@@ -66,6 +60,40 @@ export default {
 
   },
 
+
+
+
+  methods: {
+
+    onPointerDown(event) {
+      if (event.button === 0)
+        event.stopPropagation()
+      else
+        return
+
+
+
+      if (!event.ctrlKey && !this.selected)
+        this.$store.commit('clearSelection')
+      else
+        this.tab.nodes.activeId = null
+
+
+        
+      if (event.ctrlKey && this.selected) {
+        this.$delete(this.tab.links.selected, this.link.id)
+        
+        this.tab.links.activeId = null
+      } else {
+        this.$set(this.tab.links.selected, this.link.id, true)
+        
+        this.tab.links.activeId = this.link.id
+      }
+    },
+
+  },
+  
+
 }
 </script>
 
@@ -80,14 +108,5 @@ export default {
 }
 .link:hover {
   stroke: #b0b0b0;
-}
-
-.newLink {
-  pointer-events: none;
-
-  stroke: #b0b0b0;
-  stroke-width: 3.5;
-
-  fill: transparent;
 }
 </style>

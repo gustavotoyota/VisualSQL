@@ -1,71 +1,35 @@
 <template>
+
   <svg style="position: absolute; pointer-events: none"
   left="0" top="0" width="100%" height="100%">
+
     <svg x="50%" y="50%" style="overflow: visible">
+
       <g :transform="'scale(' + module.camera.zoom + ') ' +
       'translate(' + -module.camera.pos.x + ', ' + -module.camera.pos.y + ')'">
 
         
-        <DisplayLink :tab="tab"
-        v-for="link in module.links" :key="link.id"
-        :module="module" :link="link"
-        @pointerdown="selectLink(link, $event)"/>
+        <DisplayLink v-for="link in module.links" :key="link.id"
+        :tab="tab" :module="module" :link="link"/>
         
-
-        <DisplayLink new-link :tab="tab"
-        v-if="$state.linking.active
-        && $state.linking.newLink.from != null
-        && $state.linking.newLink.to != null"
-        :module="module" :link="$state.linking.newLink"/>
+        <DisplayNewLink :tab="tab" :module="module"/>
         
 
       </g>
+
     </svg>
+
   </svg>
+
 </template>
 
 <script>
 export default {
 
+
   props: {
     tab: Object,
     module: Object,
-  },
-
-
-  methods: {
-
-    isLinkSelected(link) {
-      return link.id in this.tab.links.selected
-    },
-
-
-    selectLink(link, event) {
-      if (event.button === 0)
-        event.stopPropagation()
-      else
-        return
-
-
-
-      if (!event.ctrlKey && !this.isLinkSelected(link))
-        this.$store.commit('clearSelection')
-      else
-        this.tab.nodes.activeId = null
-
-
-        
-      if (event.ctrlKey && this.isLinkSelected(link)) {
-        this.$delete(this.tab.links.selected, link.id)
-        
-        this.tab.links.activeId = null
-      } else {
-        this.$set(this.tab.links.selected, link.id, true)
-        
-        this.tab.links.activeId = link.id
-      }
-    },
-
   },
 
 
