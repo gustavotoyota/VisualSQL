@@ -29,8 +29,10 @@ export default {
   plugins: [
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
-    { src: '~/plugins/directives.js' },
-    { src: '~/plugins/mixin.js' },
+
+    { src: '~/plugins/global-mixin.js' },
+    { src: '~/plugins/store-utils.js' },
+    
     { src: '~/plugins/app/app.js' },
   ],
 

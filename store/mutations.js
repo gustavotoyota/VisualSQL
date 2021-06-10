@@ -8,6 +8,8 @@ export default mutations
 
 
 
+
+// Project
   
 mutations.resetProject = function (state) {
   // Initialize saving state
@@ -66,6 +68,9 @@ mutations.resetProject = function (state) {
 
 
 
+
+// Modules
+
 mutations.createModule = function (state, name) {
   let module = state.project.modules.find(module => module.name === name)
 
@@ -109,6 +114,9 @@ mutations.deleteModule = function (state, moduleId) {
 
 
 
+
+// Tables
+
 mutations.createTable = function (state, payload) {
   let table = state.project.tables.find(table => table.name === payload.name)
 
@@ -132,6 +140,9 @@ mutations.deleteTable = function (state, tableId) {
 
 
 
+
+
+// Tabs
 
 mutations.createTab = function (state, moduleId) {
   let moduleTab = this.getters.getModuleTab(moduleId)
@@ -174,6 +185,9 @@ mutations.closeTab = function (state, tabId) {
 
 
 
+
+
+// Nodes
 
 mutations.createNode = function (state, payload) {
   let module = this.getters.getModule(payload.moduleId)
@@ -252,6 +266,9 @@ mutations.deleteNode = function (state, payload) {
 
 
 
+
+// Links
+
 mutations.createLink = function (state, payload) {
   // Create link
 
@@ -320,6 +337,9 @@ mutations.deleteLink = function (state, payload) {
 
 
 
+
+
+// Selection
 
 mutations.clearSelection = function (state) {
   let tab = this.getters.currentTab
@@ -424,6 +444,10 @@ mutations.deleteSelection = function (state) {
 }
 
 
+
+
+
+// Copy/paste
 
 mutations.cutSelection = function (state) {
   this.commit('copySelection')
@@ -629,6 +653,8 @@ mutations.paste = function (state) {
 
 
 
+// Camera
+
 mutations.fitScreen = function (state) {
   let tab = this.getters.currentTab
 
@@ -682,6 +708,9 @@ mutations.fitScreen = function (state) {
 
 
 
+
+
+// Undo/redo
 
 mutations.saveState = function (state, tab) {
   tab = tab || this.getters.currentTab

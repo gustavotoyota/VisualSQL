@@ -48,7 +48,7 @@ _app.columnTracking = columnTracking
 // Save/Load
 
 _app.createProjectBlob = function () {
-  const project = _app.deepCopy($nuxt.$store.state.project)
+  const project = _app.deepCopy(_store.state.project)
 
   for (const tab of project.tabs) {
     tab.undoRedo = {
@@ -65,37 +65,37 @@ _app.createProjectBlob = function () {
 _app.loadProject = function (projectStr) {
   // Load project
 
-  $nuxt.$store.state.project = JSON.parse(projectStr)
+  _store.state.project = JSON.parse(projectStr)
 
 
 
   // Rerender tabs
 
-  $nuxt.$store.state.tabs.rerender++
+  _store.state.tabs.rerender++
 
 
 
   // Initialize undo/redo states
 
-  for (const tab of $nuxt.$store.state.project.tabs)
-    $nuxt.$store.commit('saveState', tab)
+  for (const tab of _store.state.project.tabs)
+    _store.commit('saveState', tab)
 
 
 
   // Initialize saving state
 
-  $nuxt.$store.state.saving.ignoreChange = true
-  $nuxt.$store.state.saving.modified = false
+  _store.state.saving.ignoreChange = true
+  _store.state.saving.modified = false
 }
 
 _app.tryUpdateProjectFile = async function () {
-  if ($nuxt.$store.state.saving.fileHandle == null)
+  if (_store.state.saving.fileHandle == null)
     return
 
 
 
   try {
-    const writable = await $nuxt.$store.state.saving.fileHandle.createWritable()
+    const writable = await _store.state.saving.fileHandle.createWritable()
 
     await writable.write(_app.createProjectBlob())
 
@@ -103,7 +103,7 @@ _app.tryUpdateProjectFile = async function () {
 
     
 
-    $nuxt.$store.state.saving.modified = false
+    _store.state.saving.modified = false
   } catch {
   }
 }

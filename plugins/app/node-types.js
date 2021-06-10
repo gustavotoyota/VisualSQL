@@ -1,4 +1,5 @@
 const nodeTypes = {}
+export default nodeTypes
 
 
 
@@ -214,7 +215,3 @@ nodeTypes['limit'] = {
     },
   },
 }
-
-
-
-export default nodeTypes

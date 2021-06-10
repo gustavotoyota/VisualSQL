@@ -1,4 +1,5 @@
 const utils = {}
+export default utils
 
 
 
@@ -28,7 +29,7 @@ utils.notSoShallowCopy = (obj) => {
 
 
 utils.getDisplayElem = function () {
-  return document.getElementById(`display-${$nuxt.$store.state.project.tabId}`)
+  return document.getElementById(`display-${_store.state.project.tabId}`)
 }
 utils.getDisplayRect = function () {
   return _app.getDisplayElem().getBoundingClientRect()
@@ -65,8 +66,3 @@ utils.screenToWorld = function (module, screenPos) {
     y: module.camera.pos.y + (screenPos.y - displayRect.height / 2) / module.camera.zoom,
   }
 }
-
-
-
-
-export default utils
