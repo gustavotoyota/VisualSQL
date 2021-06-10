@@ -15,7 +15,6 @@
 export default {
 
 
-
   props: {
     tab: Object,
     module: Object,
@@ -24,9 +23,12 @@ export default {
 
 
   mounted() {
-    this.$store.commit('fitScreen')
-  },
+    if (!this.tab.initialized) {
+      this.$store.commit('fitScreen')
 
+      this.tab.initialized = true
+    }
+  },
   
 
 }
