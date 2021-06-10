@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { getField, updateField } from 'vuex-map-fields'
 
 
 
@@ -149,9 +148,6 @@ export const state = () => ({
 
 export const mutations = {}
 
-
-
-mutations.updateField = updateField
 
 
   
@@ -899,11 +895,6 @@ mutations.redo = function (state) {
 // Getters
 
 export const getters = {}
-
-
-
-
-getters.getField = getField
 
 
   
