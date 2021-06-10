@@ -44,6 +44,75 @@ _app.columnTracking = columnTracking
 
 
 
+
+// Save/Load
+
+_app.createProjectBlob = function () {
+  const project = _app.deepCopy($nuxt.$store.state.project)
+
+  for (const tab of project.tabs) {
+    tab.undoRedo = {
+      states: [],
+      currentStateIdx: -1,
+    }
+  }
+  
+  return new Blob(
+    [JSON.stringify(project, null, 2)],
+    { type: 'application/json' })
+}
+
+_app.loadProject = function (projectStr) {
+  // Load project
+
+  $nuxt.$store.state.project = JSON.parse(projectStr)
+
+
+
+  // Rerender tabs
+
+  $nuxt.$store.state.tabs.rerender++
+
+
+
+  // Initialize undo/redo states
+
+  for (const tab of $nuxt.$store.state.project.tabs)
+    $nuxt.$store.commit('saveState', tab)
+
+
+
+  // Initialize saving state
+
+  $nuxt.$store.state.saving.ignoreChange = true
+  $nuxt.$store.state.saving.modified = false
+}
+
+_app.tryUpdateProjectFile = async function () {
+  if ($nuxt.$store.state.saving.fileHandle == null)
+    return
+
+
+
+  try {
+    const writable = await $nuxt.$store.state.saving.fileHandle.createWritable()
+
+    await writable.write(_app.createProjectBlob())
+
+    await writable.close()
+
+    
+
+    $nuxt.$store.state.saving.modified = false
+  } catch {
+  }
+}
+
+
+
+
+
+
 // Settings
 
 _app.minZoom = Math.pow(1 / 1.2, 16)

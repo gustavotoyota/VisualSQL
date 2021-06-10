@@ -12,6 +12,20 @@ export const state = () => ({
   // Project
 
   project: null,
+
+
+
+
+  // Save/load
+
+  saving: {
+    ignoreChange: true,
+    modified: false,
+
+    fileHandle: null,
+
+    timeout: false,
+  },
   
 
 
@@ -152,6 +166,15 @@ export const mutations = {}
 
   
 mutations.resetProject = function (state) {
+  // Initialize saving state
+
+  state.saving.ignoreChange = state.project != null
+  state.saving.modified = false
+
+  state.saving.fileHandle = null
+
+
+
   state.project = {
     // Modules
 
@@ -190,6 +213,8 @@ mutations.resetProject = function (state) {
       indentSize: 2,
     },
   }
+
+
 
   this.commit('createModule', 'module_1')
 }
@@ -293,6 +318,8 @@ mutations.createTab = function (state, moduleId) {
   }
 
   state.project.tabId = moduleTab.id
+
+  state.tabs.rerender++
   
   if (moduleTab.undoRedo.currentStateIdx < 0)
     this.commit('saveState')
@@ -812,8 +839,8 @@ mutations.fitScreen = function (state) {
 
 
 
-mutations.saveState = function (state) {
-  let tab = this.getters.currentTab
+mutations.saveState = function (state, tab) {
+  tab = tab || this.getters.currentTab
 
   if (tab == null)
     return
