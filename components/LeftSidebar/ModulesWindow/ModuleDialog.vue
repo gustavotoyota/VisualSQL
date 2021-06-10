@@ -20,8 +20,9 @@
 
         <v-card-text>
 
-          <v-text-field label="Module name"
-          autofocus v-model="fields.name">
+          <v-text-field ref="name"
+          label="Module name"
+          v-model="fields.name">
           </v-text-field>
 
         </v-card-text>
@@ -82,6 +83,10 @@ export default {
         return
 
       this.fields.name = this.name ?? ''
+
+      setTimeout(() => {
+        this.$refs.name.focus()
+      })
     }
 
   },

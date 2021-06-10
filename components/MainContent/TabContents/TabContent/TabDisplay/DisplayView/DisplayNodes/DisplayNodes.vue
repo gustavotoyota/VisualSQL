@@ -9,8 +9,8 @@
     <!-- Viewbox -->
 
     <div style="width: 0; height: 0"
-    :style="{ transform: 'scale(' + tab.camera.zoom +') ' +
-    'translate(' + -tab.camera.pos.x + 'px, ' + -tab.camera.pos.y + 'px)' }">
+    :style="{ transform: 'scale(' + module.camera.zoom +') ' +
+    'translate(' + -module.camera.pos.x + 'px, ' + -module.camera.pos.y + 'px)' }">
 
 
       <DisplayAlias

@@ -30,7 +30,6 @@ export default {
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
     { src: '~/plugins/directives.js' },
-    { src: '~/plugins/vuex.js' },
     { src: '~/plugins/mixin.js' },
     { src: '~/plugins/app/app.js' },
   ],

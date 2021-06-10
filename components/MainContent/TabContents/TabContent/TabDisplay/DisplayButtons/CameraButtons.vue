@@ -4,7 +4,7 @@
     <div style="margin-top: 1px">
 
       <DisplayButton tooltip="Reset zoom"
-      @click="tab.camera.zoom = 1">
+      @click="module.camera.zoom = 1">
         <v-icon>mdi-magnify-remove-outline</v-icon>
       </DisplayButton>
 
@@ -27,6 +27,7 @@ export default {
 
   props: {
     tab: Object,
+    module: Object,
   },
 
 }

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { getField, updateField } from 'vuex-map-fields'
 
 
 
@@ -151,9 +150,6 @@ export const mutations = {}
 
 
 
-mutations.updateField = updateField
-
-
   
 mutations.resetProject = function (state) {
   state.project = {
@@ -219,6 +215,11 @@ mutations.createModule = function (state, name) {
 
     links: {},
     nextLinkId: 0,
+
+    camera: {
+      pos: { x: 0, y: 0 },
+      zoom: 1,
+    },
   }
 
   state.project.modules.push(module)
@@ -271,11 +272,6 @@ mutations.createTab = function (state, moduleId) {
       id: state.project.nextTabId++,
 
       moduleId: moduleId,
-
-      camera: {
-        pos: { x: 0, y: 0 },
-        zoom: 1,
-      },
 
       nodes: {
         selected: {},
@@ -698,8 +694,8 @@ mutations.paste = function (state) {
         type: node.type,
 
         pos: {
-          x: tab.camera.pos.x + node.pos.x,
-          y: tab.camera.pos.y + node.pos.y,
+          x: module.camera.pos.x + node.pos.x,
+          y: module.camera.pos.y + node.pos.y,
         },
 
         props: _app.deepCopy(node.props),
@@ -786,7 +782,7 @@ mutations.fitScreen = function (state) {
     bottomRight.y = Math.max(bottomRight.y, node.pos.y)
   }
 
-  tab.camera.pos = {
+  module.camera.pos = {
     x: ((topLeft.x + bottomRight.x) / 2) || 0,
     y: ((topLeft.y + bottomRight.y) / 2) || 0,
   }
@@ -798,19 +794,19 @@ mutations.fitScreen = function (state) {
 
   let displayRect = _app.getDisplayRect()
 
-  tab.camera.zoom = 1
+  module.camera.zoom = 1
 
-  if (topLeft.x !== tab.camera.pos.x && isFinite(topLeft.x))
-    tab.camera.zoom = Math.min(tab.camera.zoom,
+  if (topLeft.x !== module.camera.pos.x && isFinite(topLeft.x))
+    module.camera.zoom = Math.min(module.camera.zoom,
       (Math.min(150, displayRect.width / 4) - displayRect.width / 2) /
-      (topLeft.x - tab.camera.pos.x))
+      (topLeft.x - module.camera.pos.x))
 
-  if (topLeft.y !== tab.camera.pos.y && isFinite(topLeft.y))
-    tab.camera.zoom = Math.min(tab.camera.zoom,
+  if (topLeft.y !== module.camera.pos.y && isFinite(topLeft.y))
+    module.camera.zoom = Math.min(module.camera.zoom,
       (Math.min(75, displayRect.height / 4) - displayRect.height / 2) /
-      (topLeft.y - tab.camera.pos.y))
+      (topLeft.y - module.camera.pos.y))
 
-  tab.camera.zoom = Math.max(tab.camera.zoom, _app.minZoom)
+  module.camera.zoom = Math.max(module.camera.zoom, _app.minZoom)
 }
 
 
@@ -899,11 +895,6 @@ mutations.redo = function (state) {
 // Getters
 
 export const getters = {}
-
-
-
-
-getters.getField = getField
 
 
   

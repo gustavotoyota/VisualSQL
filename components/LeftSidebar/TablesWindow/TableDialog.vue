@@ -21,15 +21,16 @@
 
         <v-card-text>
 
-          <v-text-field label="Table name"
-          autofocus v-model="fields.name">
+          <v-text-field ref="name"
+          label="Table name"
+          v-model="fields.name">
           </v-text-field>
 
           
           <div>
             Columns:
             
-            <CodeEditor
+            <CodeEditor :key="`columns-${active}`"
             class="mt-1" style="height: 220px"
             v-model="fields.columns"/>
               
@@ -97,6 +98,10 @@ export default {
 
       this.fields.name = this.name ?? ''
       this.fields.columns = this.columns ?? ''
+
+      setTimeout(() => {
+        this.$refs.name.focus()
+      })
     }
 
   },

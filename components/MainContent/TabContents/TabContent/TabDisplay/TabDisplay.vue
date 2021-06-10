@@ -15,18 +15,10 @@
 export default {
 
 
-
   props: {
     tab: Object,
     module: Object,
   },
-
-
-
-  mounted() {
-    this.$store.commit('fitScreen')
-  },
-
   
 
 }
