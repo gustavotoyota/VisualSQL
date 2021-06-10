@@ -24,6 +24,8 @@ export default {
 
   props: {
     tab: Object,
+    module: Object,
+    
     type: String,
   },
 
@@ -51,8 +53,8 @@ export default {
           type: this.type,
 
           pos: {
-            x: this.tab.camera.pos.x,
-            y: this.tab.camera.pos.y,
+            x: this.module.camera.pos.x,
+            y: this.module.camera.pos.y,
           },
         },
       })

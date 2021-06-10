@@ -49,20 +49,20 @@ utils.getDisplayPos = function (event) {
 
 
 
-utils.worldToScreen = function (tab, worldPos) {
-  let tabRect = _app.getDisplayRect()
+utils.worldToScreen = function (module, worldPos) {
+  let displayRect = _app.getDisplayRect()
 
   return {
-    x: tabRect.width / 2 + (worldPos.x - tab.camera.pos.x) * tab.camera.zoom,
-    y: tabRect.height / 2 + (worldPos.y - tab.camera.pos.y) * tab.camera.zoom,
+    x: displayRect.width / 2 + (worldPos.x - module.camera.pos.x) * module.camera.zoom,
+    y: displayRect.height / 2 + (worldPos.y - module.camera.pos.y) * module.camera.zoom,
   }
 }
-utils.screenToWorld = function (tab, screenPos) {
-  let tabRect = _app.getDisplayRect()
+utils.screenToWorld = function (module, screenPos) {
+  let displayRect = _app.getDisplayRect()
 
   return {
-    x: tab.camera.pos.x + (screenPos.x - tabRect.width / 2) / tab.camera.zoom,
-    y: tab.camera.pos.y + (screenPos.y - tabRect.height / 2) / tab.camera.zoom,
+    x: module.camera.pos.x + (screenPos.x - displayRect.width / 2) / module.camera.zoom,
+    y: module.camera.pos.y + (screenPos.y - displayRect.height / 2) / module.camera.zoom,
   }
 }
 

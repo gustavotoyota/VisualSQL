@@ -115,25 +115,25 @@ export default {
 
           // Camera position update
 
-          let worldPos = _app.screenToWorld(currentTab, centerPos)
+          let worldPos = _app.screenToWorld(currentModule, centerPos)
 
           let centerOffset = {
             x: centerPos.x - this.$state.pinching.centerPos.x,
             y: centerPos.y - this.$state.pinching.centerPos.y,
           }
 
-          currentTab.camera.pos.x = -centerOffset.x / currentTab.camera.zoom +
-            worldPos.x + (currentTab.camera.pos.x - worldPos.x) / ratio
-          currentTab.camera.pos.y = -centerOffset.y / currentTab.camera.zoom +
-            worldPos.y + (currentTab.camera.pos.y - worldPos.y) / ratio
+          currentModule.camera.pos.x = -centerOffset.x / currentModule.camera.zoom +
+            worldPos.x + (currentModule.camera.pos.x - worldPos.x) / ratio
+          currentModule.camera.pos.y = -centerOffset.y / currentModule.camera.zoom +
+            worldPos.y + (currentModule.camera.pos.y - worldPos.y) / ratio
 
 
 
           
           // Camera zoom update
           
-          currentTab.camera.zoom = Math.min(Math.max(
-            currentTab.camera.zoom * ratio, _app.minZoom), _app.maxZoom)
+          currentModule.camera.zoom = Math.min(Math.max(
+            currentModule.camera.zoom * ratio, _app.minZoom), _app.maxZoom)
         }
 
 
@@ -167,8 +167,8 @@ export default {
       // Panning
 
       if (this.$state.panning.active) {
-        currentTab.camera.pos.x -= (displayPos.x - this.$state.panning.currentPos.x) / currentTab.camera.zoom
-        currentTab.camera.pos.y -= (displayPos.y - this.$state.panning.currentPos.y) / currentTab.camera.zoom
+        currentModule.camera.pos.x -= (displayPos.x - this.$state.panning.currentPos.x) / currentModule.camera.zoom
+        currentModule.camera.pos.y -= (displayPos.y - this.$state.panning.currentPos.y) / currentModule.camera.zoom
         
         this.$state.panning.currentPos = { ...displayPos }
 
@@ -204,8 +204,8 @@ export default {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
           let node = currentModule.nodes[nodeId]
 
-          node.pos.x += (displayPos.x - this.$state.dragging.currentPos.x) / currentTab.camera.zoom
-          node.pos.y += (displayPos.y - this.$state.dragging.currentPos.y) / currentTab.camera.zoom
+          node.pos.x += (displayPos.x - this.$state.dragging.currentPos.x) / currentModule.camera.zoom
+          node.pos.y += (displayPos.y - this.$state.dragging.currentPos.y) / currentModule.camera.zoom
         }
 
         this.$state.dragging.currentPos = { ...displayPos }
@@ -221,7 +221,7 @@ export default {
       // Linking
 
       if (this.$state.linking.active) {
-        let worldPos = _app.screenToWorld(currentTab, displayPos)
+        let worldPos = _app.screenToWorld(currentModule, displayPos)
 
         if (typeof(this.$state.linking.newLink.from) === 'number')
           this.$state.linking.newLink.to = { ...worldPos }
@@ -297,8 +297,8 @@ export default {
       // Selecting
 
       if (event.button === 0 && this.$state.selecting.active) {
-        let worldStart = _app.screenToWorld(currentTab, this.$state.selecting.startPos)
-        let worldEnd = _app.screenToWorld(currentTab, this.$state.selecting.endPos)
+        let worldStart = _app.screenToWorld(currentModule, this.$state.selecting.startPos)
+        let worldEnd = _app.screenToWorld(currentModule, this.$state.selecting.endPos)
 
         let topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),

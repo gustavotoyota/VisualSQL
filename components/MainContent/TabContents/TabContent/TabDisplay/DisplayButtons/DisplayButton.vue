@@ -21,6 +21,7 @@
 <script>
 export default {
 
+
   props: {
 
     tooltip: { type: String },
@@ -30,6 +31,7 @@ export default {
     btnStyle: { type: String },
 
   },
+
 
 }
 </script>

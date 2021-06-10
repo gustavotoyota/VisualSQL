@@ -3,43 +3,43 @@
   width: 0; height: 0; white-space: nowrap">
 
     <div style="display: flex">
-      <NodeButton :tab="tab" type="table"/>
-      <NodeButton :tab="tab" type="union"/>
+      <NodeButton :tab="tab" :module="module" type="table"/>
+      <NodeButton :tab="tab" :module="module" type="union"/>
     </div>
     
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="node"/>
-      <NodeButton :tab="tab" type="difference"/>
+      <NodeButton :tab="tab" :module="module" type="node"/>
+      <NodeButton :tab="tab" :module="module" type="difference"/>
     </div>
 
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="sql"/>
-      <NodeButton :tab="tab" type="intersection"/>
+      <NodeButton :tab="tab" :module="module" type="sql"/>
+      <NodeButton :tab="tab" :module="module" type="intersection"/>
     </div>
 
     <div style="margin-top: 12px; display: flex">
-      <NodeButton :tab="tab" type="inner-join"/>
-      <NodeButton :tab="tab" type="filter"/>
+      <NodeButton :tab="tab" :module="module" type="inner-join"/>
+      <NodeButton :tab="tab" :module="module" type="filter"/>
     </div>
 
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="left-join"/>
-      <NodeButton :tab="tab" type="transform"/>
+      <NodeButton :tab="tab" :module="module" type="left-join"/>
+      <NodeButton :tab="tab" :module="module" type="transform"/>
     </div>
 
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="right-join"/>
-      <NodeButton :tab="tab" type="distinct"/>
+      <NodeButton :tab="tab" :module="module" type="right-join"/>
+      <NodeButton :tab="tab" :module="module" type="distinct"/>
     </div>
 
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="full-join"/>
-      <NodeButton :tab="tab" type="sort"/>
+      <NodeButton :tab="tab" :module="module" type="full-join"/>
+      <NodeButton :tab="tab" :module="module" type="sort"/>
     </div>
 
     <div style="margin-top: 1px; display: flex">
-      <NodeButton :tab="tab" type="cross-join"/>
-      <NodeButton :tab="tab" type="limit"/>
+      <NodeButton :tab="tab" :module="module" type="cross-join"/>
+      <NodeButton :tab="tab" :module="module" type="limit"/>
     </div>
 
   </div>
@@ -48,9 +48,14 @@
 <script>
 export default {
 
+
   props: {
+
     tab: Object,
+    module: Object,
+
   },
+
 
 }
 </script>

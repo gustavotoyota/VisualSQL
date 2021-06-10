@@ -19,16 +19,6 @@ export default {
     tab: Object,
     module: Object,
   },
-
-
-
-  mounted() {
-    if (!this.tab.initialized) {
-      this.$store.commit('fitScreen')
-
-      this.tab.initialized = true
-    }
-  },
   
 
 }

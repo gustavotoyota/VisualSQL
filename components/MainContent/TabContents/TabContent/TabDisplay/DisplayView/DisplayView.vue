@@ -58,7 +58,7 @@ export default {
     onPointerUp(event) {
       if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
         let displayPos = _app.getDisplayPos(event)
-        let worldPos = _app.screenToWorld(this.tab, displayPos)
+        let worldPos = _app.screenToWorld(this.module, displayPos)
         
         this.$store.commit('createNode', {
           moduleId: this.tab.moduleId,
@@ -82,7 +82,7 @@ export default {
       // Calculate world position
 
       let displayPos = _app.getDisplayPos(event)
-      let worldPos = _app.screenToWorld(this.tab, displayPos)
+      let worldPos = _app.screenToWorld(this.module, displayPos)
 
 
 
@@ -91,21 +91,21 @@ export default {
 
       let multiplier = event.deltaY > 0 ? (1 / 1.2) : 1.2
 
-      let oldZoom = this.tab.camera.zoom
+      let oldZoom = this.module.camera.zoom
 
-      this.tab.camera.zoom = Math.min(Math.max(
-        this.tab.camera.zoom * multiplier, _app.minZoom), _app.maxZoom)
+      this.module.camera.zoom = Math.min(Math.max(
+        this.module.camera.zoom * multiplier, _app.minZoom), _app.maxZoom)
 
 
 
 
       // Update camera position
 
-      let ratio = this.tab.camera.zoom / oldZoom
+      let ratio = this.module.camera.zoom / oldZoom
 
-      this.tab.camera.pos = {
-        x: worldPos.x + (this.tab.camera.pos.x - worldPos.x) / ratio,
-        y: worldPos.y + (this.tab.camera.pos.y - worldPos.y) / ratio,
+      this.module.camera.pos = {
+        x: worldPos.x + (this.module.camera.pos.x - worldPos.x) / ratio,
+        y: worldPos.y + (this.module.camera.pos.y - worldPos.y) / ratio,
       }
     },
     

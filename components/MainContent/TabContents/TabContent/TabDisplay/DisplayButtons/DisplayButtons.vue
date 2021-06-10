@@ -1,12 +1,9 @@
 <template>
   <div>
 
-
-    <NodeButtons :tab="tab"/>
-
+    <NodeButtons :tab="tab" :module="module"/>
 
     <CameraButtons :tab="tab" :module="module"/>
-    
     
   </div>
 </template>
