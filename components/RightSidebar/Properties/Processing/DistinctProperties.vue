@@ -8,7 +8,7 @@
 
     class="mx-5 mt-5"
 
-    label="Columns (DISTINCT ON):"
+    label="Columns (DISTINCT ON)"
     v-model="node.props.columns"/>
 
   </div>

@@ -10,14 +10,12 @@
           <v-icon style="font-size: 15px">mdi-format-list-bulleted</v-icon>
         </v-btn>
 
-        <v-btn style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
-          <v-icon style="font-size: 15px">mdi-arrow-expand</v-icon>
-        </v-btn>
+        <PropCodeEditorExpand :title="label" v-model="inputValue"/>
 
       </span>
 
       <span class="body-2 grey--text text--lighten-1">
-        {{ label }}
+        {{ label }}:
       </span>
       
     </div>
