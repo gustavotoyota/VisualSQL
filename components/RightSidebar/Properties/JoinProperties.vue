@@ -23,7 +23,7 @@
       
       v-if="node.type !== 'cross-join'"
 
-      label="Join condition:"
+      label="Join condition (ON):"
       v-model="node.props.condition"/>
 
 

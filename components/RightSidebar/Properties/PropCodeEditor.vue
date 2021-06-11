@@ -2,11 +2,27 @@
 
   <div>
 
-    <div class="body-2 grey--text text--lighten-1">
-      {{ label }}
+    <div>
+
+      <span style="float: right">
+
+        <v-btn style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
+          <v-icon style="font-size: 15px">mdi-format-list-bulleted</v-icon>
+        </v-btn>
+
+        <v-btn style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
+          <v-icon style="font-size: 15px">mdi-arrow-expand</v-icon>
+        </v-btn>
+
+      </span>
+
+      <span class="body-2 grey--text text--lighten-1">
+        {{ label }}
+      </span>
+      
     </div>
 
-    <CodeEditor class="mt-1 editor"
+    <CodeEditor style="clear: right" class="mt-1 editor"
     :style="{ height: `${height}px` }"
     v-model="inputValue"/>
 

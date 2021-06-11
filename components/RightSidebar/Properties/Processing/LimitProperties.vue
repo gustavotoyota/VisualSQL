@@ -4,7 +4,7 @@
 
     <div class="mx-5 mt-4">
       <div class="body-2 grey--text text--lighten-1">
-        Limit:
+        Limit (LIMIT/FETCH/TOP...):
       </div>
 
       <v-text-field dense solo hide-details
@@ -16,7 +16,7 @@
 
     <div class="mx-5 mt-4">
       <div class="body-2 grey--text text--lighten-1">
-        Offset:
+        Offset (OFFSET):
       </div>
 
       <v-text-field dense solo hide-details
