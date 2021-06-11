@@ -1,15 +1,15 @@
 global._app = {}
-
-
-
-
-
-// Utils
-
-import utils from './utils.js'
-
-Object.assign(_app, utils)
   
+
+
+
+
+// Save/load
+
+import saveLoad from './save-load.js'
+
+_app.saveLoad = saveLoad
+
 
 
 
@@ -19,16 +19,6 @@ Object.assign(_app, utils)
 import nodeTypes from './node-types.js'
 
 _app.nodeTypes = nodeTypes
-
-
-
-
-
-// SQL
-
-import databases from './databases/databases.js'
-
-_app.databases = databases
 
 
 
@@ -44,70 +34,11 @@ _app.columnTracking = columnTracking
 
 
 
+// SQL
 
-// Save/Load
+import databases from './databases/databases.js'
 
-_app.createProjectBlob = function () {
-  const project = _app.deepCopy($nuxt.$store.state.project)
-
-  for (const tab of project.tabs) {
-    tab.undoRedo = {
-      states: [],
-      currentStateIdx: -1,
-    }
-  }
-  
-  return new Blob(
-    [JSON.stringify(project, null, 2)],
-    { type: 'application/json' })
-}
-
-_app.loadProject = function (projectStr) {
-  // Load project
-
-  $nuxt.$store.state.project = JSON.parse(projectStr)
-
-
-
-  // Rerender tabs
-
-  $nuxt.$store.state.tabs.rerender++
-
-
-
-  // Initialize undo/redo states
-
-  for (const tab of $nuxt.$store.state.project.tabs)
-    $nuxt.$store.commit('saveState', tab)
-
-
-
-  // Initialize saving state
-
-  $nuxt.$store.state.saving.ignoreChange = true
-  $nuxt.$store.state.saving.modified = false
-}
-
-_app.tryUpdateProjectFile = async function () {
-  if ($nuxt.$store.state.saving.fileHandle == null)
-    return
-
-
-
-  try {
-    const writable = await $nuxt.$store.state.saving.fileHandle.createWritable()
-
-    await writable.write(_app.createProjectBlob())
-
-    await writable.close()
-
-    
-
-    $nuxt.$store.state.saving.modified = false
-  } catch {
-  }
-}
-
+_app.databases = databases
 
 
 

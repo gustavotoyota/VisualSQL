@@ -34,7 +34,7 @@ export default {
 
 
     onPointerDown(event) {
-      let displayPos = _app.getDisplayPos(event)
+      let displayPos = this.$getters.getDisplayPos(event)
 
       this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
 
@@ -57,8 +57,8 @@ export default {
 
     onPointerUp(event) {
       if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
-        let displayPos = _app.getDisplayPos(event)
-        let worldPos = _app.screenToWorld(this.module, displayPos)
+        let displayPos = this.$getters.getDisplayPos(event)
+        let worldPos = this.$getters.screenToWorld(this.module, displayPos)
         
         this.$store.commit('createNode', {
           moduleId: this.tab.moduleId,
@@ -81,8 +81,8 @@ export default {
     onMouseWheel(event) {
       // Calculate world position
 
-      let displayPos = _app.getDisplayPos(event)
-      let worldPos = _app.screenToWorld(this.module, displayPos)
+      let displayPos = this.$getters.getDisplayPos(event)
+      let worldPos = this.$getters.screenToWorld(this.module, displayPos)
 
 
 

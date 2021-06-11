@@ -187,7 +187,7 @@ function setOperationProcessing(node, inputs, treeObj) {
   let nodeObj
 
   if (inputs[0].obj.objectType === 'set-operations') {
-    nodeObj = _app.notSoShallowCopy(inputs[0].obj)
+    nodeObj = _utils.notSoShallowCopy(inputs[0].obj)
   } else {
     nodeObj = {
       objectType: 'set-operations',
@@ -338,7 +338,7 @@ function initNodeObj(input, maxClause, newClause) {
   && input.obj.clauseLevel <= sqlClauseLevels[maxClause]
   && (input.link.props.alias === '' ||
   (input.link.props.alias !== '' && input.obj.from.length === 1))) {
-    nodeObj = _app.notSoShallowCopy(input.obj)
+    nodeObj = _utils.notSoShallowCopy(input.obj)
 
     if (input.link.props.alias !== '')
       nodeObj.from[0].alias = input.link.props.alias
