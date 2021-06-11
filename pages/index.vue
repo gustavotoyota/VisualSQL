@@ -1,5 +1,6 @@
 <template>
-  <v-app dark style="touch-action: none">
+  <v-app dark style="touch-action: none"
+  :style="!$state.loaded ? 'display: none' : ''">
 
 
 
@@ -36,6 +37,16 @@ export default {
 
 
   mounted() {
+    if (document.readyState === 'complete') {
+      this.$state.loaded = true
+    } else {
+      window.addEventListener('load', () => {
+        this.$state.loaded = true
+      })
+    }
+
+
+
     this.$state.sidebars.left = innerWidth >= 900
     this.$state.sidebars.right = innerWidth >= 600
 
@@ -475,6 +486,14 @@ html {
 
 html {
   overscroll-behavior-y: none;
+}
+
+
+
+/* Background color */
+
+body {
+  background-color: #272727;
 }
 
 
