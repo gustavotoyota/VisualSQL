@@ -37,20 +37,27 @@ export default {
 
 
   mounted() {
-    if (document.readyState === 'complete') {
+    // Loading
+
+    window.addEventListener('load', () => {
       this.$state.loaded = true
-    } else {
-      window.addEventListener('load', () => {
-        this.$state.loaded = true
-      })
-    }
+    })
+    
+    if (document.readyState === 'complete')
+      this.$state.loaded = true
 
 
+
+
+    // Sidebars
 
     this.$state.sidebars.left = innerWidth >= 900
     this.$state.sidebars.right = innerWidth >= 600
 
 
+
+
+    // Global events
 
     document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
     document.addEventListener('pointermove', this.onDocumentPointerMove)
