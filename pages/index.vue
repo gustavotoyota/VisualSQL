@@ -466,7 +466,7 @@ export default {
 /* Hide scrollbar */
 
 html {
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 
