@@ -1,6 +1,10 @@
 export default () => ({
 
 
+  loaded: false,
+  
+
+
 
   // Project
 
