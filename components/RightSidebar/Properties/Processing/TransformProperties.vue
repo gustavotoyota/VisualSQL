@@ -17,7 +17,7 @@
 
         class="mx-5 mt-5"
 
-        label="Columns to group by:"
+        label="Group columns (GROUP BY)"
         v-model="node.props.group.columns"/>
         
 
@@ -27,7 +27,7 @@
 
         class="mx-5 mt-5"
 
-        label="Filter condition for grouped rows:"
+        label="Filter condition (HAVING)"
         v-model="node.props.group.condition"/>
 
 
@@ -47,7 +47,7 @@
 
     class="mx-5 mt-5"
 
-    label="Output columns:"
+    label="Output columns (SELECT)"
     v-model="node.props.columns"/>
 
 

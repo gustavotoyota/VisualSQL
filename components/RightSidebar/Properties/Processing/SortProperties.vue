@@ -7,7 +7,7 @@
 
   class="mx-5 mt-5"
 
-  label="Columns to sort by:"
+  label="Columns (ORDER BY)"
   v-model="node.props.columns"/>
   
   

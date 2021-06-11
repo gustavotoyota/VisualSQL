@@ -7,7 +7,7 @@
 
   class="mx-5 mt-5"
 
-  label="Filter condition:"
+  label="Filter condition (WHERE)"
   v-model="node.props.condition"/>
   
   
