@@ -20,6 +20,8 @@
 
 
       <PropCodeEditor
+
+      style="margin-top: -5px"
       
       v-if="node.type !== 'cross-join'"
 

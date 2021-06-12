@@ -23,27 +23,27 @@
     
     <v-list dense width="175">
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table1.column1</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table1.column2</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table2.column1</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table2.column2</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table3.column1</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.stop="">
+      <v-list-item @click.prevent="">
         <v-list-item-title>table3.column2</v-list-item-title>
       </v-list-item>
       
