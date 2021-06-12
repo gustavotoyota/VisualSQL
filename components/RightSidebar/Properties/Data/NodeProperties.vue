@@ -4,7 +4,7 @@
 
     <div class="mx-5 mt-5">
       <div class="body-2 grey--text text--lighten-1">
-        Referenced node:
+        Referenced node (FROM):
       </div>
 
 

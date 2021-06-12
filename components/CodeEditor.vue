@@ -61,10 +61,24 @@ export default {
       if (!completionItemProvider) {
         completionItemProvider = monaco.languages.registerCompletionItemProvider('sql', {
           provideCompletionItems: function (model, position) {
-            let items = { suggestions: [] }
+            const items = { suggestions: [] }
+
+            const word = model.getWordAtPosition(position)
             
-            for (let hint of model.getHints())
-              items.suggestions.push({ label: hint, insertText: hint })
+            for (const hint of model.getHints()) {
+              const suggestion = { label: hint, insertText: hint }
+
+              if (word != null) {
+                suggestion.range = {
+                  startLineNumber: position.lineNumber,
+                  endLineNumber: position.lineNumber,
+                  startColumn: word.startColumn,
+                  endColumn: word.endColumn,
+                }
+              }
+
+              items.suggestions.push(suggestion)
+            }
             
             if (model.getHints().length === 0)
               items.suggestions.push({ label: '', insertText: '' })

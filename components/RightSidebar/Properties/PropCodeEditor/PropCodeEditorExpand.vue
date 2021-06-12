@@ -26,7 +26,15 @@
 
     <v-card>
 
-      <v-card-title>{{ title }}</v-card-title>
+      <v-card-title>
+        
+        {{ title }}
+
+        <v-spacer/>
+
+        <PropCodeEditorColumns/>
+
+      </v-card-title>
       
       <v-divider/>
       

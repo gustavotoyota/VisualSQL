@@ -34,7 +34,7 @@ nodeTypes['sql'] = {
   numInputs: 0,
   hasOutput: true,
 
-  title: 'Sql',
+  title: 'SQL',
 
   props: {
     sql: '',
