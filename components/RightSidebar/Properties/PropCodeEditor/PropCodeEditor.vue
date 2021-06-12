@@ -6,9 +6,7 @@
 
       <span style="float: right">
 
-        <v-btn style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
-          <v-icon style="font-size: 15px">mdi-format-list-bulleted</v-icon>
-        </v-btn>
+        <PropCodeEditorColumns small/>
 
         <PropCodeEditorExpand :title="label" v-model="inputValue"/>
 
@@ -22,7 +20,7 @@
 
     <CodeEditor style="clear: right" class="mt-1 editor"
     :style="{ height: `${height}px` }"
-    v-model="inputValue"/>
+    v-model="inputValue" :hints="['table1.column1', 'table1.column2', 'table2.column1', 'table2.column2']"/>
 
   </div>
 

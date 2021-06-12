@@ -4,7 +4,7 @@
 
     <div class="mx-5 mt-5">
       <div class="body-2 grey--text text--lighten-1">
-        Referenced table:
+        Referenced table (FROM):
       </div>
 
       <v-combobox class="mt-1" dense solo hide-details
