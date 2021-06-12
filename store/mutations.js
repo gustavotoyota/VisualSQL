@@ -61,6 +61,10 @@ mutations.resetProject = function (state) {
   }
 
 
+  
+  state.tabs.rerender++
+
+
 
   this.commit('createModule', 'module_1')
 }
@@ -173,8 +177,6 @@ mutations.createTab = function (state, moduleId) {
   }
 
   state.project.tabId = moduleTab.id
-
-  state.tabs.rerender++
   
   if (moduleTab.undoRedo.currentStateIdx < 0)
     this.commit('saveState')
@@ -194,7 +196,7 @@ mutations.createNode = function (state, payload) {
 
 
   
-  let nodeTypeInfo = _app.nodeTypes[payload.node.type]
+  let nodeTypeInfo = $app.nodeTypes[payload.node.type]
 
   let node = {
     id: module.nextNodeId++,
@@ -214,7 +216,7 @@ mutations.createNode = function (state, payload) {
 
 
 
-  Object.assign(node.props, _utils.deepCopy(nodeTypeInfo.props))
+  Object.assign(node.props, $utils.deepCopy(nodeTypeInfo.props))
   Object.assign(node, payload.node)
 
 
@@ -290,7 +292,7 @@ mutations.createLink = function (state, payload) {
   let existingLinkId = module.nodes[link.to].incomingLinks[link.socket]
 
   if (existingLinkId != null) {
-    link.props = _utils.deepCopy(module.links[existingLinkId].props)
+    link.props = $utils.deepCopy(module.links[existingLinkId].props)
 
     this.commit('deleteLink', {
       moduleId: module.id,
@@ -507,7 +509,7 @@ mutations.copySelection = function (state) {
         y: node.pos.y - centerPos.y,
       },
 
-      props: _utils.deepCopy(node.props),
+      props: $utils.deepCopy(node.props),
     })
   }
 
@@ -543,7 +545,7 @@ mutations.copySelection = function (state) {
         to: nodeMap[link.to],
         socket: link.socket,
 
-        props: _utils.deepCopy(link.props),
+        props: $utils.deepCopy(link.props),
       })
     }
   }
@@ -593,7 +595,7 @@ mutations.paste = function (state) {
           y: module.camera.pos.y + node.pos.y,
         },
 
-        props: _utils.deepCopy(node.props),
+        props: $utils.deepCopy(node.props),
       },
 
       dontActivate: true,
@@ -617,7 +619,7 @@ mutations.paste = function (state) {
         to: firstNodeId + link.to,
         socket: link.socket,
 
-        props: _utils.deepCopy(link.props),
+        props: $utils.deepCopy(link.props),
       },
 
       dontActivate: true,
@@ -703,7 +705,7 @@ mutations.fitScreen = function (state) {
       (Math.min(75, displayRect.height / 4) - displayRect.height / 2) /
       (topLeft.y - module.camera.pos.y))
 
-  module.camera.zoom = Math.max(module.camera.zoom, _app.minZoom)
+  module.camera.zoom = Math.max(module.camera.zoom, $app.minZoom)
 }
 
 
@@ -723,7 +725,7 @@ mutations.saveState = function (state, tab) {
 
   
 
-  let moduleState = _utils.deepCopy(module)
+  let moduleState = $utils.deepCopy(module)
 
   delete moduleState.name
   
@@ -741,7 +743,7 @@ mutations.replaceState = function (state) {
 
   
 
-  let moduleState = _utils.deepCopy(module)
+  let moduleState = $utils.deepCopy(module)
 
   delete moduleState.name
   

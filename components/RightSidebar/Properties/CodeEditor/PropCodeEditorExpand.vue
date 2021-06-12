@@ -38,7 +38,7 @@
       
       <v-divider/>
       
-      <v-card-text style="height: 500px; display: flex">
+      <v-card-text style="height: 480px; display: flex">
 
         <CodeEditor v-model="inputValue"
         :key="`sql-${dialog}`" class="mt-5"

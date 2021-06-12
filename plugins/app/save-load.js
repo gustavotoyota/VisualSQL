@@ -10,27 +10,27 @@ export default saveLoad
 saveLoad.loadProject = function (projectStr) {
   // Load project
 
-  _store.state.project = JSON.parse(projectStr)
+  $state.project = JSON.parse(projectStr)
 
 
 
   // Rerender tabs
 
-  _store.state.tabs.rerender++
+  $state.tabs.rerender++
 
 
 
   // Initialize undo/redo states
 
-  for (const tab of _store.state.project.tabs)
-    _store.commit('saveState', tab)
+  for (const tab of $state.project.tabs)
+    $store.commit('saveState', tab)
 
 
 
   // Initialize saving state
 
-  _store.state.saving.ignoreChange = true
-  _store.state.saving.modified = false
+  $state.saving.ignoreChange = true
+  $state.saving.modified = false
 }
 
 
@@ -40,7 +40,7 @@ saveLoad.loadProject = function (projectStr) {
 // Save
 
 saveLoad.createProjectBlob = function () {
-  const project = _utils.deepCopy(_store.state.project)
+  const project = $utils.deepCopy($state.project)
 
   for (const tab of project.tabs) {
     tab.undoRedo = {
@@ -54,13 +54,13 @@ saveLoad.createProjectBlob = function () {
     { type: 'application/json' })
 }
 saveLoad.tryUpdateProjectFile = async function () {
-  if (_store.state.saving.fileHandle == null)
+  if ($state.saving.fileHandle == null)
     return
 
 
 
   try {
-    const writable = await _store.state.saving.fileHandle.createWritable()
+    const writable = await $state.saving.fileHandle.createWritable()
 
     await writable.write(saveLoad.createProjectBlob())
 
@@ -68,7 +68,7 @@ saveLoad.tryUpdateProjectFile = async function () {
 
     
 
-    _store.state.saving.modified = false
+    $state.saving.modified = false
   } catch {
   }
 }

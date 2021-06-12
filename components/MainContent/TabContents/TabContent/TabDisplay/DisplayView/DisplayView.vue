@@ -94,7 +94,7 @@ export default {
       let oldZoom = this.module.camera.zoom
 
       this.module.camera.zoom = Math.min(Math.max(
-        this.module.camera.zoom * multiplier, _app.minZoom), _app.maxZoom)
+        this.module.camera.zoom * multiplier, $app.minZoom), $app.maxZoom)
 
 
 

@@ -28,7 +28,7 @@ export default {
         srcSocketPos = { ...this.link.from }
       else {
         srcSocketPos = { ...this.module.nodes[this.link.from].pos }
-        srcSocketPos.x += _app.socketOffset.x
+        srcSocketPos.x += $app.socketOffset.x
       }
 
       let destSocketPos
@@ -38,10 +38,10 @@ export default {
         let destNode = this.module.nodes[this.link.to]
 
         destSocketPos = { ...destNode.pos }
-        destSocketPos.x -= _app.socketOffset.x
+        destSocketPos.x -= $app.socketOffset.x
       
         if (destNode.incomingLinks.length === 2)
-          destSocketPos.y += _app.socketOffset.y * (this.link.socket * 2 - 1)
+          destSocketPos.y += $app.socketOffset.y * (this.link.socket * 2 - 1)
       }
 
       let controlOffset = Math.abs((destSocketPos.x - srcSocketPos.x) / 2) +

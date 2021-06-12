@@ -137,7 +137,7 @@ export default {
     generateSQL() {
       // Column tracking
 
-      let columnsObj = _app.columnTracking.init(this.$store)
+      let columnsObj = $app.columnTracking.init(this.$store)
       
       columnsObj.processNode(this.module, this.$getters.activeNode)
 
@@ -146,7 +146,7 @@ export default {
 
       // Tree generation
 
-      let treeObj = _app.databases.data[this.$state.project.sql.database].generateTree(
+      let treeObj = $app.databases.data[this.$state.project.sql.database].generateTree(
         this.$store, this.module, this.$getters.activeNode, { columnsObj: columnsObj })
       
       if (treeObj.error != null) {
@@ -165,9 +165,9 @@ export default {
 
       // SQL generation
 
-      let sqlOptions = _utils.deepCopy(this.$state.project.sql)
+      let sqlOptions = $utils.deepCopy(this.$state.project.sql)
 
-      let sqlObj = _app.databases.data[this.$state.project.sql.database].generateSQL(treeObj, sqlOptions)
+      let sqlObj = $app.databases.data[this.$state.project.sql.database].generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 

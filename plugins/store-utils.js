@@ -1,16 +1,11 @@
-global._store = {}
-
-
-
-
-Object.defineProperties(_store, {
+Object.defineProperties(global, {
   
-  state: {
+  $state: {
     get() { return $nuxt.$store.state },
     set(value) { $nuxt.$store.state = value },
   },
 
-  getters: {
+  $getters: {
     get() { return $nuxt.$store.getters },
   },
 
@@ -19,6 +14,8 @@ Object.defineProperties(_store, {
 
 
 
-_store.commit = (mutation, payload) => {
+global.$store = {}
+
+$store.commit = (mutation, payload) => {
   $nuxt.$store.commit(mutation, payload)
 }

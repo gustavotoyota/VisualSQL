@@ -2,28 +2,23 @@
   <div v-if="node.type === 'limit'">
 
 
-    <div class="mx-5 mt-4">
-      <div class="body-2 grey--text text--lighten-1">
-        Limit (LIMIT/FETCH/TOP...):
-      </div>
+    <PropCodeEditor
 
-      <v-text-field dense solo hide-details
-      class="mt-2 body-2" type="number"
-      v-model="node.props.limit.value">
-      </v-text-field>
-    </div>
+    class="mx-5 mt-5"
+    :height="60"
+
+    label="Limit (LIMIT/FETCH/TOP...)"
+    v-model="node.props.limit.value"/>
 
 
-    <div class="mx-5 mt-4">
-      <div class="body-2 grey--text text--lighten-1">
-        Offset (OFFSET):
-      </div>
 
-      <v-text-field dense solo hide-details
-      class="mt-2 body-2" type="number"
-      v-model="node.props.offset">
-      </v-text-field>
-    </div>
+    <PropCodeEditor
+
+    class="mx-5 mt-5"
+    :height="60"
+
+    label="Offset (OFFSET)"
+    v-model="node.props.offset"/>
 
 
   </div>
