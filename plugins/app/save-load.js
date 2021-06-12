@@ -43,9 +43,9 @@ saveLoad.createProjectBlob = function () {
   const project = $utils.deepCopy($state.project)
 
   for (const tab of project.tabs.list) {
-    tab.undoRedo = {
-      states: [],
-      currentStateIdx: -1,
+    tab.states = {
+      list: [],
+      currentIdx: -1,
     }
   }
   

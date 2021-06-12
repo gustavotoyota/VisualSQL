@@ -29,12 +29,12 @@
 
 
 
-    <ToolbarButton tooltip="Undo" :disabled="tab.undoRedo.currentStateIdx === 0"
+    <ToolbarButton tooltip="Undo" :disabled="tab.states.currentIdx === 0"
     @click="$store.commit('undo')">
       <v-icon dense>mdi-undo</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Redo" :disabled="tab.undoRedo.currentStateIdx === tab.undoRedo.states.length - 1"
+    <ToolbarButton tooltip="Redo" :disabled="tab.states.currentIdx === tab.states.list.length - 1"
     @click="$store.commit('redo')">
       <v-icon dense>mdi-redo</v-icon>
     </ToolbarButton>

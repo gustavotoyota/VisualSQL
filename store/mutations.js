@@ -26,7 +26,6 @@ mutations.resetProject = function (state) {
 
     modules: {
       list: [],
-
       nextId: 0,
     },
 
@@ -37,7 +36,6 @@ mutations.resetProject = function (state) {
 
     tables: {
       list: [],
-
       nextId: 0,
     },
 
@@ -48,7 +46,6 @@ mutations.resetProject = function (state) {
     
     tabs: {
       list: [],
-
       nextId: 0,
       currentId: 0,
     },
@@ -99,13 +96,11 @@ mutations.createModule = function (state, name) {
     data: {
       nodes: {
         map: {},
-
         nextId: 0,
       },
 
       links: {
         map: {},
-        
         nextId: 0,
       },
     },
@@ -182,10 +177,10 @@ mutations.createTab = function (state, moduleId) {
         selected: {},
         activeId: null,
       },
-
-      undoRedo: {
-        states: [],
-        currentStateIdx: -1,
+      
+      states: {
+        list: [],
+        currentIdx: -1,
       },
     }
 
@@ -194,7 +189,7 @@ mutations.createTab = function (state, moduleId) {
 
   state.project.tabs.currentId = moduleTab.id
   
-  if (moduleTab.undoRedo.currentStateIdx < 0)
+  if (moduleTab.states.currentIdx < 0)
     this.commit('saveState')
 }
 mutations.closeTab = function (state, tabId) {
@@ -743,8 +738,8 @@ mutations.saveState = function (state, tab) {
 
   let moduleState = $utils.deepCopy(module.data)
   
-  tab.undoRedo.states.splice(++tab.undoRedo.currentStateIdx)
-  tab.undoRedo.states.push(JSON.stringify(moduleState))
+  tab.states.list.splice(++tab.states.currentIdx)
+  tab.states.list.push(JSON.stringify(moduleState))
 }
 mutations.replaceState = function (state) {
   let tab = this.getters.currentTab
@@ -759,8 +754,8 @@ mutations.replaceState = function (state) {
 
   let moduleState = $utils.deepCopy(module.data)
   
-  tab.undoRedo.states.splice(tab.undoRedo.currentStateIdx)
-  Vue.set(tab.undoRedo.states, tab.undoRedo.currentStateIdx, JSON.stringify(moduleState))
+  tab.states.list.splice(tab.states.currentIdx)
+  Vue.set(tab.states.list, tab.states.currentIdx, JSON.stringify(moduleState))
 }
 
 
@@ -777,12 +772,12 @@ mutations.undo = function (state) {
 
 
 
-  if (tab.undoRedo.currentStateIdx === 0)
+  if (tab.states.currentIdx === 0)
     return
 
   this.commit('clearSelection')
 
-  module.data = JSON.parse(tab.undoRedo.states[--tab.undoRedo.currentStateIdx])
+  module.data = JSON.parse(tab.states.list[--tab.states.currentIdx])
 }
 mutations.redo = function (state) {
   let tab = this.getters.currentTab
@@ -795,10 +790,10 @@ mutations.redo = function (state) {
 
 
 
-  if (tab.undoRedo.currentStateIdx === tab.undoRedo.states.length - 1)
+  if (tab.states.currentIdx === tab.states.list.length - 1)
     return
 
   this.commit('clearSelection')
   
-  module.data = JSON.parse(tab.undoRedo.states[++tab.undoRedo.currentStateIdx])
+  module.data = JSON.parse(tab.states.list[++tab.states.currentIdx])
 }
