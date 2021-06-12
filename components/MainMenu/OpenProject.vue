@@ -28,7 +28,7 @@ export default {
       const fileReader = new FileReader()
 
       fileReader.onload = (event) => {
-        _app.saveLoad.loadProject(event.target.result)
+        $app.saveLoad.loadProject(event.target.result)
 
         this.$state.saving.fileHandle = null
       }
@@ -72,7 +72,7 @@ export default {
         const fileReader = new FileReader()
         
         fileReader.onload = (event) => {
-          _app.saveLoad.loadProject(event.target.result)
+          $app.saveLoad.loadProject(event.target.result)
         }
 
         fileReader.readAsText(file)

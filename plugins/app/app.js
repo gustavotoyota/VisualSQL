@@ -1,4 +1,4 @@
-global._app = {}
+global.$app = {}
   
 
 
@@ -8,7 +8,7 @@ global._app = {}
 
 import saveLoad from './save-load.js'
 
-_app.saveLoad = saveLoad
+$app.saveLoad = saveLoad
 
 
 
@@ -18,7 +18,7 @@ _app.saveLoad = saveLoad
 
 import nodeTypes from './node-types.js'
 
-_app.nodeTypes = nodeTypes
+$app.nodeTypes = nodeTypes
 
 
 
@@ -28,7 +28,7 @@ _app.nodeTypes = nodeTypes
 
 import columnTracking from './column-tracking.js'
 
-_app.columnTracking = columnTracking
+$app.columnTracking = columnTracking
 
 
 
@@ -38,7 +38,7 @@ _app.columnTracking = columnTracking
 
 import databases from './databases/databases.js'
 
-_app.databases = databases
+$app.databases = databases
 
 
 
@@ -46,17 +46,17 @@ _app.databases = databases
 
 // Settings
 
-_app.minZoom = Math.pow(1 / 1.2, 16)
-_app.maxZoom = Math.pow(1.2, 12)
+$app.minZoom = Math.pow(1 / 1.2, 16)
+$app.maxZoom = Math.pow(1.2, 12)
 
 
 
 
 
-_app.socketOffset = { x: 34, y: 12 }
+$app.socketOffset = { x: 34, y: 12 }
 
 
 
 
 
-export default (context, inject) => inject('app', _app)
+export default (context, inject) => inject('app', $app)

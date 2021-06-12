@@ -19,10 +19,10 @@ export default function generateTree(store, module, root, options) {
 function processNode(module, node, treeObj) {
   // Check node type
 
-  const database = _app.databases.data[treeObj.store.state.project.sql.database]
+  const database = $app.databases.data[treeObj.store.state.project.sql.database]
 
   if (database.infos.disabledNodeTypes.includes(node.type)) {
-    treeObj.error = `Invalid query: database doesn\'t have the ${_app.nodeTypes[node.type].title} node.`
+    treeObj.error = `Invalid query: database doesn\'t have the ${$app.nodeTypes[node.type].title} node.`
     treeObj.node = node
     return
   }
@@ -187,7 +187,7 @@ function setOperationProcessing(node, inputs, treeObj) {
   let nodeObj
 
   if (inputs[0].obj.objectType === 'set-operations') {
-    nodeObj = _utils.notSoShallowCopy(inputs[0].obj)
+    nodeObj = $utils.notSoShallowCopy(inputs[0].obj)
   } else {
     nodeObj = {
       objectType: 'set-operations',
@@ -338,7 +338,7 @@ function initNodeObj(input, maxClause, newClause) {
   && input.obj.clauseLevel <= sqlClauseLevels[maxClause]
   && (input.link.props.alias === '' ||
   (input.link.props.alias !== '' && input.obj.from.length === 1))) {
-    nodeObj = _utils.notSoShallowCopy(input.obj)
+    nodeObj = $utils.notSoShallowCopy(input.obj)
 
     if (input.link.props.alias !== '')
       nodeObj.from[0].alias = input.link.props.alias

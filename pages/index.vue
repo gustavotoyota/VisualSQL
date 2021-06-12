@@ -151,7 +151,7 @@ export default {
           // Camera zoom update
           
           currentModule.camera.zoom = Math.min(Math.max(
-            currentModule.camera.zoom * ratio, _app.minZoom), _app.maxZoom)
+            currentModule.camera.zoom * ratio, $app.minZoom), $app.maxZoom)
         }
 
 
@@ -459,7 +459,7 @@ export default {
           clearTimeout(this.$state.saving.timeout)
 
         this.$state.saving.timeout = setTimeout(() => {
-          _app.saveLoad.tryUpdateProjectFile()
+          $app.saveLoad.tryUpdateProjectFile()
         }, 500)
       },
     },

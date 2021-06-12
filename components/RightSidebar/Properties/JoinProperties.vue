@@ -46,7 +46,7 @@ export default {
   methods: {
 
     isNodeTypeDisabled(nodeType) {
-      return _app.databases.data[this.$state.project.sql.database].
+      return $app.databases.data[this.$state.project.sql.database].
         infos.disabledNodeTypes.includes(nodeType)
     },
 
