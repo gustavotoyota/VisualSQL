@@ -152,7 +152,7 @@ nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
 
   let parts = node.props.nodeName.split('.', 2)
 
-  let refModule = treeObj.store.state.project.modules.find(module => module.name === parts[0])
+  let refModule = treeObj.store.state.project.modules.list.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)

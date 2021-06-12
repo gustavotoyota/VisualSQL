@@ -4,7 +4,7 @@
 
 
     <TabContent
-    v-for="tab in $state.project.tabs" :key="tab.id"
+    v-for="tab in $state.project.tabs.list" :key="tab.id"
     :tab="tab" :module="$getters.getModule(tab.moduleId)"/>
 
 
@@ -19,10 +19,10 @@ export default {
 
     tabIdx: {
       get() {
-        return this.$getters.getTabIdx(this.$state.project.tabId)
+        return this.$getters.getTabIdx(this.$state.project.tabs.currentId)
       },
       set(value) {
-        this.$state.project.tabId = this.$state.project.tabs[value || 0].id
+        this.$state.project.tabs.currentId = this.$state.project.tabs.list[value || 0].id
       },
     },
 

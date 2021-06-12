@@ -24,26 +24,34 @@ mutations.resetProject = function (state) {
   state.project = {
     // Modules
 
-    modules: [],
-    nextModuleId: 0,
+    modules: {
+      list: [],
+
+      nextId: 0,
+    },
 
 
 
 
     // Tables
 
-    tables: [],
-    nextTableId: 0,
+    tables: {
+      list: [],
+
+      nextId: 0,
+    },
 
 
 
 
     // Tabs
     
-    tabs: [],
-    nextTabId: 0,
+    tabs: {
+      list: [],
 
-    tabId: 0,
+      nextId: 0,
+      currentId: 0,
+    },
 
 
 
@@ -76,7 +84,7 @@ mutations.resetProject = function (state) {
 // Modules
 
 mutations.createModule = function (state, name) {
-  let module = state.project.modules.find(module => module.name === name)
+  let module = state.project.modules.list.find(module => module.name === name)
 
   if (module != null || name === '')
     return
@@ -84,18 +92,20 @@ mutations.createModule = function (state, name) {
 
 
   module = {
-    id: state.project.nextModuleId++,
+    id: state.project.modules.nextId++,
 
     name: name,
 
     data: {
       nodes: {
         map: {},
+
         nextId: 0,
       },
 
       links: {
         map: {},
+        
         nextId: 0,
       },
     },
@@ -106,7 +116,7 @@ mutations.createModule = function (state, name) {
     },
   }
 
-  state.project.modules.push(module)
+  state.project.modules.list.push(module)
 
 
 
@@ -118,7 +128,7 @@ mutations.deleteModule = function (state, moduleId) {
   if (moduleTab != null)
     this.commit('closeTab', moduleTab.id)
 
-  state.project.modules.splice(this.getters.getModuleIdx(moduleId), 1)
+  state.project.modules.list.splice(this.getters.getModuleIdx(moduleId), 1)
 }
 
 
@@ -128,15 +138,15 @@ mutations.deleteModule = function (state, moduleId) {
 // Tables
 
 mutations.createTable = function (state, payload) {
-  let table = state.project.tables.find(table => table.name === payload.name)
+  let table = state.project.tables.list.find(table => table.name === payload.name)
 
   if (table != null || payload.name === '')
     return
 
     
 
-  state.project.tables.push({
-    id: state.project.nextTableId++,
+  state.project.tables.list.push({
+    id: state.project.tables.nextId++,
 
     name: payload.name,
 
@@ -144,7 +154,7 @@ mutations.createTable = function (state, payload) {
   })
 }
 mutations.deleteTable = function (state, tableId) {
-  state.project.tables.splice(
+  state.project.tables.list.splice(
     this.getters.getTableIdx(tableId), 1)
 }
 
@@ -159,7 +169,7 @@ mutations.createTab = function (state, moduleId) {
 
   if (moduleTab == null) {
     moduleTab = {
-      id: state.project.nextTabId++,
+      id: state.project.tabs.nextId++,
 
       moduleId: moduleId,
 
@@ -179,16 +189,16 @@ mutations.createTab = function (state, moduleId) {
       },
     }
 
-    state.project.tabs.push(moduleTab)
+    state.project.tabs.list.push(moduleTab)
   }
 
-  state.project.tabId = moduleTab.id
+  state.project.tabs.currentId = moduleTab.id
   
   if (moduleTab.undoRedo.currentStateIdx < 0)
     this.commit('saveState')
 }
 mutations.closeTab = function (state, tabId) {
-  state.project.tabs.splice(this.getters.getTabIdx(tabId), 1)
+  state.project.tabs.list.splice(this.getters.getTabIdx(tabId), 1)
 }
 
 

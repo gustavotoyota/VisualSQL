@@ -64,7 +64,7 @@ let nodeProcessing = {}
 
 
 nodeProcessing['table'] = (node, inputsColumns, columnsObj) => {
-  let table = columnsObj.store.state.project.tables.find(
+  let table = columnsObj.store.state.project.tables.list.find(
     table => table.name === node.props.tableName)
 
   if (!table)
@@ -81,7 +81,7 @@ nodeProcessing['table'] = (node, inputsColumns, columnsObj) => {
 nodeProcessing['node'] = (node, inputsColumns, columnsObj) => {
   let parts = node.props.nodeName.split('.', 2)
 
-  let refModule = columnsObj.store.state.project.modules.find(module => module.name === parts[0])
+  let refModule = columnsObj.store.state.project.modules.list.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)
