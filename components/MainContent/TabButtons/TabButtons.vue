@@ -17,12 +17,12 @@
     <v-tabs show-arrows style="flex: 1; width: 0"
     v-model="tabIdx" :key="'t' + $state.tabs.rerender">
 
-      <draggable v-model="$state.project.tabs" @end="$state.tabs.rerender++"
+      <draggable v-model="$state.project.tabs.list" @end="$state.tabs.rerender++"
       delay="250" touch-start-threshold="4" animation="200"
       class="v-slide-group__content v-tabs-bar__content">
 
         <TabButton
-        v-for="tab in $state.project.tabs" :key="tab.id"
+        v-for="tab in $state.project.tabs.list" :key="tab.id"
         :tab="tab" :module="$getters.getModule(tab.moduleId)"/>
 
       </draggable>
@@ -53,10 +53,10 @@ export default {
 
     tabIdx: {
       get() {
-        return this.$getters.getTabIdx(this.$state.project.tabId)
+        return this.$getters.getTabIdx(this.$state.project.tabs.currentId)
       },
       set(value) {
-        this.$state.project.tabId = this.$state.project.tabs[value || 0].id
+        this.$state.project.tabs.currentId = this.$state.project.tabs.list[value || 0].id
       },
     },
 

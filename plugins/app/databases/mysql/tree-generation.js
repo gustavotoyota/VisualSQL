@@ -35,14 +35,14 @@ function processNode(module, node, treeObj) {
   let inputs = []
 
   for (let linkId of node.incomingLinks) {
-    let link = module.links[linkId]
+    let link = module.data.links.map[linkId]
     if (link == null) {
       treeObj.error = 'Query incomplete: node input missing.'
       treeObj.node = node
       return
     }
 
-    let input = module.nodes[link.from]
+    let input = module.data.nodes.map[link.from]
     let inputObj = processNode(module, input, treeObj)
 
     if (treeObj.error)
@@ -152,11 +152,11 @@ nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
 
   let parts = node.props.nodeName.split('.', 2)
 
-  let refModule = treeObj.store.state.project.modules.find(module => module.name === parts[0])
+  let refModule = treeObj.store.state.project.modules.list.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)
-    refNode = Object.values(refModule.nodes).find(node => node.props.name === parts[1])
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
 
   if (refNode == null) {
     treeObj.error = 'Query incomplete: referenced node not found.'

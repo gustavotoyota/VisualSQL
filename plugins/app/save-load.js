@@ -22,7 +22,7 @@ saveLoad.loadProject = function (projectStr) {
 
   // Initialize undo/redo states
 
-  for (const tab of $state.project.tabs)
+  for (const tab of $state.project.tabs.list)
     $store.commit('saveState', tab)
 
 
@@ -42,10 +42,10 @@ saveLoad.loadProject = function (projectStr) {
 saveLoad.createProjectBlob = function () {
   const project = $utils.deepCopy($state.project)
 
-  for (const tab of project.tabs) {
-    tab.undoRedo = {
-      states: [],
-      currentStateIdx: -1,
+  for (const tab of project.tabs.list) {
+    tab.states = {
+      currentIdx: -1,
+      list: [],
     }
   }
   

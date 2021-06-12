@@ -9,7 +9,7 @@
       'translate(' + -module.camera.pos.x + ', ' + -module.camera.pos.y + ')'">
 
         
-        <DisplayLink v-for="link in module.links" :key="link.id"
+        <DisplayLink v-for="link in module.data.links.map" :key="link.id"
         :tab="tab" :module="module" :link="link"/>
         
         <DisplayNewLink :tab="tab" :module="module"/>

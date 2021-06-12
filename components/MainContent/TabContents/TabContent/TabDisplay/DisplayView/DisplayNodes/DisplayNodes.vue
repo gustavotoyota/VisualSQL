@@ -14,13 +14,13 @@
 
 
       <DisplayAlias
-      v-for="link in module.links" :key="`link_${link.id}`"
+      v-for="link in module.data.links.map" :key="`link_${link.id}`"
       :module="module" :link="link">
       </DisplayAlias>
 
 
       <DisplayNode
-      v-for="node in module.nodes" :key="`node_${node.id}`"
+      v-for="node in module.data.nodes.map" :key="`node_${node.id}`"
       :node="node" :tab="tab">
       </DisplayNode>
 

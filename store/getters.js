@@ -5,47 +5,47 @@ export default getters
   
 
 getters.getModuleIdx = (state) => (moduleId) => {
-  return state.project.modules.findIndex(module => module.id === moduleId)
+  return state.project.modules.list.findIndex(module => module.id === moduleId)
 }
 getters.getModule = (state, getters) => (moduleId) => {
-  return state.project.modules[getters.getModuleIdx(moduleId)]
+  return state.project.modules.list[getters.getModuleIdx(moduleId)]
 }
 
 
 
 
 getters.getTableIdx = (state) => (tableId) => {
-  return state.project.tables.findIndex(table => table.id === tableId)
+  return state.project.tables.list.findIndex(table => table.id === tableId)
 }
 getters.getTable = (state, getters) => (tableId) => {
-  return state.project.tables[getters.getTableIdx(tableId)]
+  return state.project.tables.list[getters.getTableIdx(tableId)]
 }
 
 
 
 
 getters.getTabIdx = (state) => (tabId) => {
-  return state.project.tabs.findIndex(tab => tab.id === tabId)
+  return state.project.tabs.list.findIndex(tab => tab.id === tabId)
 }
 getters.getTab = (state, getters) => (tabId) => {
-  return state.project.tabs[getters.getTabIdx(tabId)]
+  return state.project.tabs.list[getters.getTabIdx(tabId)]
 }
 
 
 
 
 getters.getModuleTabIdx = (state) => (moduleId) => {
-  return state.project.tabs.findIndex(tab => tab.moduleId === moduleId)
+  return state.project.tabs.list.findIndex(tab => tab.moduleId === moduleId)
 }
 getters.getModuleTab = (state, getters) => (moduleId) => {
-  return state.project.tabs[getters.getModuleTabIdx(moduleId)]
+  return state.project.tabs.list[getters.getModuleTabIdx(moduleId)]
 }
 
 
 
 
 getters.currentTab = (state, getters) => {
-  return getters.getTab(state.project.tabId)
+  return getters.getTab(state.project.tabs.currentId)
 }
 getters.currentModule = (state, getters) => {
   let currentTab = getters.currentTab
@@ -67,7 +67,7 @@ getters.activeNode = (state, getters) => {
 
   let currentModule = getters.getModule(currentTab.moduleId)
 
-  return currentModule.nodes[currentTab.nodes.activeId]
+  return currentModule.data.nodes.map[currentTab.nodes.activeId]
 }
 getters.activeLink = (state, getters) => {
   let currentTab = getters.currentTab
@@ -77,7 +77,7 @@ getters.activeLink = (state, getters) => {
 
   let currentModule = getters.getModule(currentTab.moduleId)
 
-  return currentModule.links[currentTab.links.activeId]
+  return currentModule.data.links.map[currentTab.links.activeId]
 }
 
 
@@ -86,7 +86,7 @@ getters.activeLink = (state, getters) => {
 
 
 getters.getDisplayElem = (state, getters) => () => {
-  return document.getElementById(`display-${state.project.tabId}`)
+  return document.getElementById(`display-${state.project.tabs.currentId}`)
 }
 getters.getDisplayRect = (state, getters) => () => {
   return getters.getDisplayElem().getBoundingClientRect()
