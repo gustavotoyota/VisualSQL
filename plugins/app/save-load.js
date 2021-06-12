@@ -70,5 +70,6 @@ saveLoad.tryUpdateProjectFile = async function () {
 
     $state.saving.modified = false
   } catch {
+    $state.saving.fileHandle = null
   }
 }
