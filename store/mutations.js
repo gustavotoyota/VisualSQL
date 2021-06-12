@@ -25,8 +25,8 @@ mutations.resetProject = function (state) {
     // Modules
 
     modules: {
-      list: [],
       nextId: 0,
+      list: [],
     },
 
 
@@ -35,8 +35,8 @@ mutations.resetProject = function (state) {
     // Tables
 
     tables: {
-      list: [],
       nextId: 0,
+      list: [],
     },
 
 
@@ -45,9 +45,9 @@ mutations.resetProject = function (state) {
     // Tabs
     
     tabs: {
-      list: [],
-      nextId: 0,
       currentId: 0,
+      nextId: 0,
+      list: [],
     },
 
 
@@ -95,13 +95,13 @@ mutations.createModule = function (state, name) {
 
     data: {
       nodes: {
-        map: {},
         nextId: 0,
+        map: {},
       },
 
       links: {
-        map: {},
         nextId: 0,
+        map: {},
       },
     },
 
@@ -169,18 +169,18 @@ mutations.createTab = function (state, moduleId) {
       moduleId: moduleId,
 
       nodes: {
-        selected: {},
         activeId: null,
+        selected: {},
       },
 
       links: {
-        selected: {},
         activeId: null,
+        selected: {},
       },
       
       states: {
-        list: [],
         currentIdx: -1,
+        list: [],
       },
     }
 

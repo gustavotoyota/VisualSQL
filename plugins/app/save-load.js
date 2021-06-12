@@ -44,8 +44,8 @@ saveLoad.createProjectBlob = function () {
 
   for (const tab of project.tabs.list) {
     tab.states = {
-      list: [],
       currentIdx: -1,
+      list: [],
     }
   }
   
