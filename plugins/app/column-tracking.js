@@ -28,12 +28,12 @@ function processNode(module, node, columnsObj) {
   let inputsColumns = []
 
   for (let linkId of node.incomingLinks) {
-    let link = module.links[linkId]
+    let link = module.data.links.map[linkId]
 
     let inputColumns
 
     if (link)
-      inputColumns = processNode(module, module.nodes[link.from], columnsObj)
+      inputColumns = processNode(module, module.data.nodes.map[link.from], columnsObj)
     else
       inputColumns = []
       
@@ -85,7 +85,7 @@ nodeProcessing['node'] = (node, inputsColumns, columnsObj) => {
 
   let refNode
   if (refModule != null)
-    refNode = Object.values(refModule.nodes).find(node => node.props.name === parts[1])
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
 
   if (refNode == null)
     return []

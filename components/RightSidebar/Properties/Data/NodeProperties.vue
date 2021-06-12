@@ -34,7 +34,7 @@ export default {
       let nodeNames = []
 
       for (let module of this.$state.project.modules)
-        for (let node of Object.values(module.nodes))
+        for (let node of Object.values(module.data.nodes.map))
           if (node.props.name !== '')
             nodeNames.push(module.name + '.' + node.props.name)
 

@@ -220,7 +220,7 @@ export default {
 
       if (this.$state.dragging.active) {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
-          let node = currentModule.nodes[nodeId]
+          let node = currentModule.data.nodes.map[nodeId]
 
           node.pos.x += (displayPos.x - this.$state.dragging.currentPos.x) / currentModule.camera.zoom
           node.pos.y += (displayPos.y - this.$state.dragging.currentPos.y) / currentModule.camera.zoom
@@ -328,7 +328,7 @@ export default {
         }
 
 
-        for (let node of Object.values(currentModule.nodes)) {
+        for (let node of Object.values(currentModule.data.nodes.map)) {
           if (node.pos.x < topLeft.x || node.pos.x > bottomRight.x
           || node.pos.y < topLeft.y || node.pos.y > bottomRight.y)
             continue
@@ -343,10 +343,10 @@ export default {
         }
 
 
-        for (let link of Object.values(currentModule.links)) {
+        for (let link of Object.values(currentModule.data.links.map)) {
           let linkPos = {
-            x: (currentModule.nodes[link.from].pos.x + currentModule.nodes[link.to].pos.x) / 2,
-            y: (currentModule.nodes[link.from].pos.y + currentModule.nodes[link.to].pos.y) / 2,
+            x: (currentModule.data.nodes.map[link.from].pos.x + currentModule.data.nodes.map[link.to].pos.x) / 2,
+            y: (currentModule.data.nodes.map[link.from].pos.y + currentModule.data.nodes.map[link.to].pos.y) / 2,
           }
 
           if (linkPos.x < topLeft.x || linkPos.x > bottomRight.x

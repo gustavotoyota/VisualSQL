@@ -88,11 +88,17 @@ mutations.createModule = function (state, name) {
 
     name: name,
 
-    nodes: {},
-    nextNodeId: 0,
+    data: {
+      nodes: {
+        map: {},
+        nextId: 0,
+      },
 
-    links: {},
-    nextLinkId: 0,
+      links: {
+        map: {},
+        nextId: 0,
+      },
+    },
 
     camera: {
       pos: { x: 0, y: 0 },
@@ -199,7 +205,7 @@ mutations.createNode = function (state, payload) {
   let nodeTypeInfo = $app.nodeTypes[payload.node.type]
 
   let node = {
-    id: module.nextNodeId++,
+    id: module.data.nodes.nextId++,
 
     pos: { x: 0, y: 0 },
 
@@ -221,7 +227,7 @@ mutations.createNode = function (state, payload) {
 
 
 
-  Vue.set(module.nodes, node.id, node)
+  Vue.set(module.data.nodes.map, node.id, node)
 
 
 
@@ -236,7 +242,7 @@ mutations.createNode = function (state, payload) {
 mutations.deleteNode = function (state, payload) {
   let module = this.getters.getModule(payload.moduleId)
 
-  let node = module.nodes[payload.nodeId]
+  let node = module.data.nodes.map[payload.nodeId]
 
   for (let linkId of node.incomingLinks) {
     if (linkId == null)
@@ -259,7 +265,7 @@ mutations.deleteNode = function (state, payload) {
     })
   }
 
-  Vue.delete(module.nodes, node.id)
+  Vue.delete(module.data.nodes.map, node.id)
 
   if (!payload.dontSaveState)
     this.commit('saveState')
@@ -277,7 +283,7 @@ mutations.createLink = function (state, payload) {
   let module = this.getters.getModule(payload.moduleId)
 
   let link = Object.assign({
-    id: module.nextLinkId++,
+    id: module.data.links.nextId++,
 
     props: {
       alias: '',
@@ -289,10 +295,10 @@ mutations.createLink = function (state, payload) {
 
   // Delete existing link
 
-  let existingLinkId = module.nodes[link.to].incomingLinks[link.socket]
+  let existingLinkId = module.data.nodes.map[link.to].incomingLinks[link.socket]
 
   if (existingLinkId != null) {
-    link.props = $utils.deepCopy(module.links[existingLinkId].props)
+    link.props = $utils.deepCopy(module.data.links.map[existingLinkId].props)
 
     this.commit('deleteLink', {
       moduleId: module.id,
@@ -307,10 +313,10 @@ mutations.createLink = function (state, payload) {
 
   // Setup link references
 
-  Vue.set(module.nodes[link.from].outgoingLinks, link.id, true)
-  Vue.set(module.nodes[link.to].incomingLinks, link.socket, link.id)
+  Vue.set(module.data.nodes.map[link.from].outgoingLinks, link.id, true)
+  Vue.set(module.data.nodes.map[link.to].incomingLinks, link.socket, link.id)
 
-  Vue.set(module.links, link.id, link)
+  Vue.set(module.data.links.map, link.id, link)
 
 
 
@@ -324,12 +330,12 @@ mutations.createLink = function (state, payload) {
 mutations.deleteLink = function (state, payload) {
   let module = this.getters.getModule(payload.moduleId)
 
-  let link = module.links[payload.linkId]
+  let link = module.data.links.map[payload.linkId]
 
-  Vue.delete(module.nodes[link.from].outgoingLinks, link.id)
-  Vue.set(module.nodes[link.to].incomingLinks, link.socket, null)
+  Vue.delete(module.data.nodes.map[link.from].outgoingLinks, link.id)
+  Vue.set(module.data.nodes.map[link.to].incomingLinks, link.socket, null)
 
-  Vue.delete(module.links, link.id)
+  Vue.delete(module.data.links.map, link.id)
 
 
   
@@ -368,11 +374,11 @@ mutations.selectAll = function (state) {
 
 
   tab.nodes.selected = {}
-  for (let node of Object.values(module.nodes))
+  for (let node of Object.values(module.data.nodes.map))
     Vue.set(tab.nodes.selected, node.id, true)
     
   tab.links.selected = {}
-  for (let link of Object.values(module.links))
+  for (let link of Object.values(module.data.links.map))
     Vue.set(tab.links.selected, link.id, true)
 }
 
@@ -470,7 +476,7 @@ mutations.copySelection = function (state) {
 
   let selectedNodes = []
   for (let nodeId of Object.keys(tab.nodes.selected))
-    selectedNodes.push(module.nodes[nodeId])
+    selectedNodes.push(module.data.nodes.map[nodeId])
 
   if (selectedNodes.length === 0)
     return
@@ -530,7 +536,7 @@ mutations.copySelection = function (state) {
       if (linkId in linkMap)
         continue
 
-      let link = module.links[linkId]
+      let link = module.data.links.map[linkId]
 
       if (!(link.from in tab.nodes.selected))
         continue
@@ -575,8 +581,8 @@ mutations.paste = function (state) {
   
 
 
-  let firstNodeId = module.nextNodeId
-  let firstLinkId = module.nextLinkId
+  let firstNodeId = module.data.nodes.nextId
+  let firstLinkId = module.data.links.nextId
 
 
 
@@ -609,7 +615,7 @@ mutations.paste = function (state) {
   // Paste links
 
   for (let link of state.clipboard.value.links) {
-    let linkId = module.nextLinkId
+    let linkId = module.data.links.nextId
 
     this.commit('createLink', {
       moduleId: module.id,
@@ -626,8 +632,8 @@ mutations.paste = function (state) {
       dontSaveState: true,
     })
 
-    Vue.set(module.nodes[firstNodeId + link.from].outgoingLinks, linkId, true)
-    Vue.set(module.nodes[firstNodeId + link.to].incomingLinks, link.socket, linkId)
+    Vue.set(module.data.nodes.map[firstNodeId + link.from].outgoingLinks, linkId, true)
+    Vue.set(module.data.nodes.map[firstNodeId + link.to].incomingLinks, link.socket, linkId)
   }
 
 
@@ -636,11 +642,11 @@ mutations.paste = function (state) {
   // Select pasted objects
 
   tab.nodes.selected = {}
-  for (let nodeId = firstNodeId; nodeId < module.nextNodeId; ++nodeId)
+  for (let nodeId = firstNodeId; nodeId < module.data.nodes.nextId; ++nodeId)
     Vue.set(tab.nodes.selected, nodeId, true)
 
   tab.links.selected = {}
-  for (let linkId = firstLinkId; linkId < module.nextLinkId; ++linkId)
+  for (let linkId = firstLinkId; linkId < module.data.links.nextId; ++linkId)
     Vue.set(tab.links.selected, linkId, true)
 
   tab.nodes.activeId = firstNodeId
@@ -673,7 +679,7 @@ mutations.fitScreen = function (state) {
   let topLeft = { x: Infinity, y: Infinity }
   let bottomRight = { x: -Infinity, y: -Infinity }
 
-  for (let node of Object.values(module.nodes)) {
+  for (let node of Object.values(module.data.nodes.map)) {
     topLeft.x = Math.min(topLeft.x, node.pos.x)
     topLeft.y = Math.min(topLeft.y, node.pos.y)
 
@@ -725,9 +731,7 @@ mutations.saveState = function (state, tab) {
 
   
 
-  let moduleState = $utils.deepCopy(module)
-
-  delete moduleState.name
+  let moduleState = $utils.deepCopy(module.data)
   
   tab.undoRedo.states.splice(++tab.undoRedo.currentStateIdx)
   tab.undoRedo.states.push(JSON.stringify(moduleState))
@@ -743,9 +747,7 @@ mutations.replaceState = function (state) {
 
   
 
-  let moduleState = $utils.deepCopy(module)
-
-  delete moduleState.name
+  let moduleState = $utils.deepCopy(module.data)
   
   tab.undoRedo.states.splice(tab.undoRedo.currentStateIdx)
   Vue.set(tab.undoRedo.states, tab.undoRedo.currentStateIdx, JSON.stringify(moduleState))
@@ -770,7 +772,7 @@ mutations.undo = function (state) {
 
   this.commit('clearSelection')
 
-  Object.assign(module, JSON.parse(tab.undoRedo.states[--tab.undoRedo.currentStateIdx]))
+  module.data = JSON.parse(tab.undoRedo.states[--tab.undoRedo.currentStateIdx])
 }
 mutations.redo = function (state) {
   let tab = this.getters.currentTab
@@ -788,5 +790,5 @@ mutations.redo = function (state) {
 
   this.commit('clearSelection')
   
-  Object.assign(module, JSON.parse(tab.undoRedo.states[++tab.undoRedo.currentStateIdx]))
+  module.data = JSON.parse(tab.undoRedo.states[++tab.undoRedo.currentStateIdx])
 }

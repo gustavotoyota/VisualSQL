@@ -32,7 +32,7 @@ export default {
       if (typeof(this.link.from) === "object")
         srcSocketPos = { ...this.link.from }
       else {
-        srcSocketPos = { ...this.module.nodes[this.link.from].pos }
+        srcSocketPos = { ...this.module.data.nodes.map[this.link.from].pos }
         srcSocketPos.x += $app.socketOffset.x
       }
 
@@ -40,7 +40,7 @@ export default {
       if (typeof(this.link.to) === "object")
         destSocketPos = { ...this.link.to }
       else {
-        let destNode = this.module.nodes[this.link.to]
+        let destNode = this.module.data.nodes.map[this.link.to]
 
         destSocketPos = { ...destNode.pos }
         destSocketPos.x -= $app.socketOffset.x

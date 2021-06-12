@@ -67,7 +67,7 @@ getters.activeNode = (state, getters) => {
 
   let currentModule = getters.getModule(currentTab.moduleId)
 
-  return currentModule.nodes[currentTab.nodes.activeId]
+  return currentModule.data.nodes.map[currentTab.nodes.activeId]
 }
 getters.activeLink = (state, getters) => {
   let currentTab = getters.currentTab
@@ -77,7 +77,7 @@ getters.activeLink = (state, getters) => {
 
   let currentModule = getters.getModule(currentTab.moduleId)
 
-  return currentModule.links[currentTab.links.activeId]
+  return currentModule.data.links.map[currentTab.links.activeId]
 }
 
 
