@@ -61,6 +61,10 @@ mutations.resetProject = function (state) {
   }
 
 
+  
+  state.tabs.rerender++
+
+
 
   this.commit('createModule', 'module_1')
 }
@@ -173,8 +177,6 @@ mutations.createTab = function (state, moduleId) {
   }
 
   state.project.tabId = moduleTab.id
-
-  state.tabs.rerender++
   
   if (moduleTab.undoRedo.currentStateIdx < 0)
     this.commit('saveState')
