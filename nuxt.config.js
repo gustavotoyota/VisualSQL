@@ -1,16 +1,25 @@
 import colors from 'vuetify/es5/util/colors'
 
+
+
+
+const title = 'Visual SQL'
+const description = 'Build SQL queries visually and avoid the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.'
+
+
+
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'Visual SQL | Free Online SQL Tool',
+    title: title + ' | Free Online SQL Tool',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'Build SQL queries visually and avoid the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.' }
+      { hid: 'description', name: 'description', content: description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
@@ -81,12 +90,16 @@ export default {
 
 
   pwa: {
+    icon: {
+      fileName: 'pwa-icon.png',
+    },
     meta: {
-      name: 'Visual SQL',
+      name: title,
     },
     manifest: {
-      name: 'Visual SQL',
-      short_name: 'Visual SQL',
+      name: title,
+      short_name: title,
+      description: description,
       background_color: '#272727',
     },
   },
