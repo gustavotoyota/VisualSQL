@@ -4,7 +4,7 @@
 
 
     <v-app-bar-title>
-      Visual SQL Tool
+      Visual SQL
     </v-app-bar-title>
 
 
