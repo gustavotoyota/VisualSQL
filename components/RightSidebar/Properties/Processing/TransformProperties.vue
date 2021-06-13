@@ -9,11 +9,15 @@
     </div>
 
 
-    <v-expand-transition>
+    <expand-transition
+    @after-enter="rerenderInputs"
+    @after-leave="rerenderInputs">
       <div v-if="node.props.group.active">
 
 
         <PropCodeEditor
+
+        :key="`group-columns-${rerender}`"
 
         class="mx-5 mt-5"
 
@@ -25,6 +29,8 @@
 
         <PropCodeEditor
 
+        :key="`filter-condition-${rerender}`"
+
         class="mx-5 mt-5"
 
         label="Filter condition (HAVING)"
@@ -33,7 +39,7 @@
 
 
       </div>
-    </v-expand-transition>
+    </expand-transition>
 
 
 
@@ -44,6 +50,8 @@
 
 
     <PropCodeEditor
+
+    :key="`output-columns-${rerender}`"
 
     class="mx-5 mt-5"
 
@@ -58,9 +66,29 @@
 <script>
 export default {
 
+
   props: {
     node: Object,
   },
+
+
+
+  data() {
+    return {
+      rerender: 0,
+    }
+  },
+
+
+
+  methods: {
+
+    rerenderInputs() {
+      this.rerender++
+    },
+
+  },
+
 
 }
 </script>
