@@ -82,11 +82,11 @@ export default {
 
   pwa: {
     meta: {
-      name: 'Visual SQL Tool',
+      name: 'Visual SQL',
     },
     manifest: {
-      name: 'Visual SQL Tool',
-      short_name: 'Visual SQL Tool',
+      name: 'Visual SQL',
+      short_name: 'Visual SQL',
       background_color: '#272727',
     },
   },
