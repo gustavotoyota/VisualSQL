@@ -18,7 +18,7 @@
 
     <!-- Properties content -->
 
-    <div style="flex: 1; height: 0; overflow-y: scroll">
+    <div style="flex: 1; height: 0; overflow-y: auto">
 
       <Properties/>
 
