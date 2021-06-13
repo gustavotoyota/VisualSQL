@@ -56,6 +56,10 @@ export default {
 </script>
 
 <style scoped>
+.v-app-bar-title /deep/ .v-app-bar-title__content {
+  visibility: hidden;
+}
+
 .v-select /deep/ .v-input__control .v-input__slot {
   min-height: auto !important;
   display: flex !important;
