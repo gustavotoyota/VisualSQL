@@ -37,33 +37,35 @@ export default {
 
 
   mounted() {
-    // Loading
+    this.$nextTick(() => {
+      // Loading
 
-    window.addEventListener('load', () => {
-      this.$state.loaded = true
+      window.addEventListener('load', () => {
+        this.$state.loaded = true
+      })
+      
+      if (document.readyState === 'complete')
+        this.$state.loaded = true
+
+
+
+
+      // Sidebars
+
+      this.$state.sidebars.left = innerWidth >= 900
+      this.$state.sidebars.right = innerWidth >= 600
+
+
+
+
+      // Global events
+
+      document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
+      document.addEventListener('pointermove', this.onDocumentPointerMove)
+      document.addEventListener('pointerup', this.onDocumentPointerUp)
+      
+      document.addEventListener('keydown', this.onDocumentKeyDown)
     })
-    
-    if (document.readyState === 'complete')
-      this.$state.loaded = true
-
-
-
-
-    // Sidebars
-
-    this.$state.sidebars.left = innerWidth >= 900
-    this.$state.sidebars.right = innerWidth >= 600
-
-
-
-
-    // Global events
-
-    document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
-    document.addEventListener('pointermove', this.onDocumentPointerMove)
-    document.addEventListener('pointerup', this.onDocumentPointerUp)
-    
-    document.addEventListener('keydown', this.onDocumentKeyDown)
   },
   beforeDestroy() {
     document.removeEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
