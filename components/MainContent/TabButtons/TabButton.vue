@@ -4,7 +4,7 @@
     {{ module.name }}
 
     <v-btn small rounded text width="0" @click="closeTab"
-    style="position: relative; left: 6px; min-width: 28px">
+    style="position: relative; left: 6px; min-width: 28px; padding: 0">
       <v-icon dense>mdi-close</v-icon>
     </v-btn>
 
