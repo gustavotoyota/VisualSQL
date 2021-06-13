@@ -2,7 +2,10 @@
   <v-icon v-if="type == 'table'" :large="large">mdi-table</v-icon>
   <v-icon v-else-if="type == 'module'" :large="large">mdi-cube-outline</v-icon>
   <v-icon v-else-if="type == 'node'" :large="large">mdi-hexagon-outline</v-icon>
-  <v-icon v-else-if="type == 'sql'" :large="large">mdi-code-tags</v-icon>
+  <span v-else-if="type == 'sql'" :style="{
+    fontSize: large ? '16px' : '11px',
+    fontWeight: large ? '500' : '700',
+  }">SQL</span>
 
   <v-icon v-else-if="type == 'union-all'" :large="large">mdi-vector-arrange-above</v-icon>
   <v-icon v-else-if="type == 'union'" :large="large">mdi-vector-combine</v-icon>
