@@ -6,11 +6,11 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'Visual SQL | Free Online SQL Builder',
+    title: 'Visual SQL | Free Online SQL Tool',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'Build SQL queries visually and skip the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.' }
+      { hid: 'description', name: 'description', content: 'Build SQL queries visually and avoid the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
