@@ -23,8 +23,9 @@
 
         <template v-slot:activator="{ on: tooltip }">
 
-          <v-btn icon class="ml-2 mt-1" width="32" height="32"
-          style="position: relative; left: -4px; min-width: 32px"
+          <v-btn icon class="ml-2 mt-1"
+          style="position: relative; left: -4px;
+          min-width: 0; width: 32px; height: 32px"
           v-on="{ ...dialog, ...tooltip }">
             <v-icon dense>mdi-plus-thick</v-icon>
           </v-btn>
