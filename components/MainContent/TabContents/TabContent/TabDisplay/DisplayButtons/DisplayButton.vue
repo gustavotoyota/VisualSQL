@@ -3,7 +3,7 @@
 
     <template v-slot:activator="{ on: tooltip }">
 
-      <v-btn style="min-width: 36px; padding: 0" width="0"
+      <v-btn style="min-width: 0; width: 36px; padding: 0"
       :style="btnStyle" :disabled="disabled"
 
       v-on="tooltip" @click="$emit('click', $event)"

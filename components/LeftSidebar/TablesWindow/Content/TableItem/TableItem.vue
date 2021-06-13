@@ -21,8 +21,9 @@
 
       <template v-slot:activator="{ on, attrs }">
 
-        <v-btn icon class="ml-1" width="0" height="28"
-        style="position: relative; left: 6px; min-width: 28px"
+        <v-btn icon class="ml-1"
+        style="position: relative; left: 6px;
+        min-width: 0; width: 28px; height: 28px"
         v-bind="attrs" v-on="on">
           <v-icon dense>mdi-dots-horizontal</v-icon>
         </v-btn>

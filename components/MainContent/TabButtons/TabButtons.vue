@@ -3,8 +3,8 @@
 
 
 
-    <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
-    border-top-left-radius: 0; border-bottom-left-radius: 0" width="0"
+    <v-btn rounded style="flex: none; min-width: 0; width: 48px; height: 48px;
+    border-top-left-radius: 0; border-bottom-left-radius: 0"
     @click="$state.sidebars.left = !$state.sidebars.left">
       <span style="position: relative; left: -2px; top: 1px">
         <v-icon v-if="$state.sidebars.left" dense>mdi-chevron-double-left</v-icon>
@@ -31,8 +31,8 @@
 
 
 
-    <v-btn rounded style="flex: none; height: 48px; min-width: 48px;
-    border-top-right-radius: 0; border-bottom-right-radius: 0" width="0"
+    <v-btn rounded style="flex: none; min-width: 0; width: 48px; height: 48px;
+    border-top-right-radius: 0; border-bottom-right-radius: 0"
     @click="$state.sidebars.right = !$state.sidebars.right">
       <span style="position: relative; left: 2px; top: 1px">
         <v-icon v-if="$state.sidebars.right" dense>mdi-chevron-double-right</v-icon>
