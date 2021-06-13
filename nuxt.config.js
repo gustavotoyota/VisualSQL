@@ -13,7 +13,7 @@ export default {
       { hid: 'description', name: 'description', content: 'Build SQL queries visually and avoid the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
     ],
     script: [
