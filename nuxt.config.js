@@ -90,6 +90,9 @@ export default {
 
 
   pwa: {
+    icon: {
+      fileName: 'pwa-icon.png',
+    },
     meta: {
       name: title,
     },
