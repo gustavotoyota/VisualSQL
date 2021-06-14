@@ -38,8 +38,12 @@ export default {
 
       this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
 
-      if (Object.keys(this.$state.pinching.pointers).length >= 2)
+      if (Object.keys(this.$state.pinching.pointers).length >= 2) {
+        this.$state.panning.selectTimeout = null
+        this.$state.selecting.active = false
+
         event.stopPropagation()
+      }
 
 
 
