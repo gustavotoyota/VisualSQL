@@ -1,4 +1,8 @@
 Object.defineProperties(global, {
+
+  $store: {
+    get() { return $nuxt.$store },
+  },
   
   $state: {
     get() { return $nuxt.$store.state },
@@ -10,12 +14,3 @@ Object.defineProperties(global, {
   },
 
 })
-
-
-
-
-global.$store = {}
-
-$store.commit = (mutation, payload) => {
-  $nuxt.$store.commit(mutation, payload)
-}
