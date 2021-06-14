@@ -90,7 +90,7 @@ nodeProcessing['table'] = (node, inputsColumns, columnsMap) => {
   return $utils.trimItems(table.columns.split(','))
 }
 nodeProcessing['node'] = (node, inputsColumns, columnsMap) => {
-  let parts = node.props.nodeName.split('.', 2)
+  let parts = (node.props.nodeName ?? '').split('.', 2)
 
   let refModule = $state.project.modules.list.find(module => module.name === parts[0])
 
