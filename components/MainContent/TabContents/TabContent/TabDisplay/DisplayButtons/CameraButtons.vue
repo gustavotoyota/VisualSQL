@@ -12,9 +12,9 @@
 
     <div style="margin-top: 1px">
 
-      <DisplayButton tooltip="Fit screen"
-      @click="$store.commit('fitScreen')">
-        <v-icon>mdi-crop-free</v-icon>
+      <DisplayButton tooltip="Fit to screen"
+      @click="$store.commit('fitToScreen')">
+        <v-icon>mdi-image-filter-center-focus-weak</v-icon>
       </DisplayButton>
       
     </div>

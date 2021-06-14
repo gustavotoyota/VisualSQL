@@ -1,7 +1,6 @@
 <template>
   <v-icon v-if="type == 'table'" :large="large">mdi-table</v-icon>
-  <v-icon v-else-if="type == 'module'" :large="large">mdi-cube-outline</v-icon>
-  <v-icon v-else-if="type == 'node'" :large="large">mdi-hexagon-outline</v-icon>
+  <v-icon v-else-if="type == 'node'" :large="large">mdi-google-circles-extended</v-icon>
   <span v-else-if="type == 'sql'" :style="{
     fontSize: large ? '16px' : '11px',
     fontWeight: large ? '500' : '700',
