@@ -1,16 +1,14 @@
-export default function generateTree(store, module, root, options) {
+export default function generateTree(module, node) {
   let treeObj = {}
 
-  treeObj.options = options
-
-  treeObj.store = store
-
-  treeObj.error = null
-  treeObj.node = null
+  treeObj.error = {
+    message: null,
+    node: null,
+  }
 
   treeObj.commons = []
 
-  treeObj.rootObj = processNode(module, root, treeObj)
+  treeObj.rootObj = processNode(module, node, treeObj)
 
   return treeObj
 }
@@ -19,11 +17,11 @@ export default function generateTree(store, module, root, options) {
 function processNode(module, node, treeObj) {
   // Check node type
 
-  const database = $app.databases.data[treeObj.store.state.project.sql.database]
+  const database = $app.databases.data[$state.project.sql.database]
 
   if (database.infos.disabledNodeTypes.includes(node.type)) {
-    treeObj.error = `Invalid query: database doesn\'t have the ${$app.nodeTypes[node.type].title} node.`
-    treeObj.node = node
+    treeObj.error.message = `Invalid query: ${$app.nodeTypes[node.type].title} node doesn\'t exist in current database.`
+    treeObj.error.node = node
     return
   }
 
@@ -37,15 +35,15 @@ function processNode(module, node, treeObj) {
   for (let linkId of node.incomingLinks) {
     let link = module.data.links.map[linkId]
     if (link == null) {
-      treeObj.error = 'Query incomplete: node input missing.'
-      treeObj.node = node
+      treeObj.error.message = 'Query incomplete: node input missing.'
+      treeObj.error.node = node
       return
     }
 
     let input = module.data.nodes.map[link.from]
     let inputObj = processNode(module, input, treeObj)
 
-    if (treeObj.error)
+    if (treeObj.error.message)
       return
 
     inputs.push({
@@ -152,15 +150,15 @@ nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
 
   let parts = node.props.nodeName.split('.', 2)
 
-  let refModule = treeObj.store.state.project.modules.list.find(module => module.name === parts[0])
+  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)
     refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
 
   if (refNode == null) {
-    treeObj.error = 'Query incomplete: referenced node not found.'
-    treeObj.node = node
+    treeObj.error.message = 'Query incomplete: referenced node not found.'
+    treeObj.error.node = node
     return
   }
 
