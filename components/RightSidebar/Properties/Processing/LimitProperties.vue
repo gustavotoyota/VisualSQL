@@ -8,7 +8,9 @@
     :height="60"
 
     label="Limit (LIMIT/FETCH/TOP...)"
-    v-model="node.props.limit.value"/>
+    v-model="node.props.limit.value"
+
+    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
 
 
@@ -18,7 +20,9 @@
     :height="60"
 
     label="Offset (OFFSET)"
-    v-model="node.props.offset"/>
+    v-model="node.props.offset"
+
+    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
 
   </div>
