@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y left max-height="200">
+  <v-menu v-if="columns != null" offset-y left max-height="200">
 
     <template v-slot:activator="{ on: menu }">
 
@@ -15,7 +15,10 @@
 
         </template>
 
-        <span>Columns</span>
+        <div style="text-align: center">
+          Columns
+          <div>(Ctrl + Space)</div>
+        </div>
 
       </v-tooltip>
 
@@ -23,28 +26,13 @@
     
     <v-list dense width="175">
 
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table1.column1</v-list-item-title>
+      <v-list-item v-if="columns.length === 0">
+        <v-list-item-title>No columns found</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table1.column2</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table2.column1</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table2.column2</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table3.column1</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table3.column2</v-list-item-title>
+      <v-list-item @click.prevent=""
+      v-for="column in columns" :key="column">
+        <v-list-item-title>{{ column }}</v-list-item-title>
       </v-list-item>
       
     </v-list>
@@ -58,6 +46,8 @@ export default {
 
   props: {
     small: { type: Boolean },
+    
+    columns: { type: Array, default: null },
   },
 
 }

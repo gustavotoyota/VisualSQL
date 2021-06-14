@@ -6,7 +6,7 @@
 
       <span style="float: right">
 
-        <PropCodeEditorColumns small/>
+        <PropCodeEditorColumns small :columns="columns"/>
 
         <PropCodeEditorExpand :title="label" v-model="inputValue"/>
 
@@ -20,7 +20,7 @@
 
     <CodeEditor style="clear: right" class="mt-1 editor"
     :style="{ height: `${height}px` }"
-    v-model="inputValue" :hints="['table1.column1', 'table1.column2', 'table2.column1', 'table2.column2']"/>
+    v-model="inputValue" :hints="columns || []"/>
 
   </div>
 
@@ -31,11 +31,13 @@ export default {
 
 
   props: {
-    label: String,
+    label: { type: String },
 
     height: { type: Number, default: 110 },
 
-    value: String,
+    value: { type: String },
+    
+    columns: { type: Array, default: null },
   },
 
 

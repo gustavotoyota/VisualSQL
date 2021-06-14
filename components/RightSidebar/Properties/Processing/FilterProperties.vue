@@ -7,6 +7,8 @@
 
   class="mx-5 mt-5"
 
+  :columns="$app.columnTracking.processNode($getters.currentModule, node)"
+
   label="Filter condition (WHERE)"
   v-model="node.props.condition"/>
   
