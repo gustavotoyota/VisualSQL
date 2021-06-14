@@ -32,7 +32,7 @@
 
         <v-spacer/>
 
-        <PropCodeEditorColumns/>
+        <PropCodeEditorColumns :columns="columns"/>
 
       </v-card-title>
       
@@ -42,7 +42,7 @@
 
         <CodeEditor v-model="inputValue"
         :key="`sql-${dialog}`" class="mt-5"
-        style="flex: 1; width: 0"/>
+        style="flex: 1; width: 0" :hints="columns"/>
 
       </v-card-text>
       
@@ -73,6 +73,8 @@ export default {
     title: { type: String },
 
     value: { type: String },
+
+    columns: { type: Array },
   },
 
 

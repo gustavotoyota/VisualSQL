@@ -64,9 +64,11 @@ export default {
             const items = { suggestions: [] }
 
             const word = model.getWordAtPosition(position)
+
+            const hints = model.getHints()
             
-            for (const hint of model.getHints()) {
-              const suggestion = { label: hint, insertText: hint }
+            for (let i = 0; i < hints.length; ++i) {
+              const suggestion = { label: hints[i], insertText: hints[i], sortText: i.toString() }
 
               if (word != null) {
                 suggestion.range = {
@@ -80,7 +82,7 @@ export default {
               items.suggestions.push(suggestion)
             }
             
-            if (model.getHints().length === 0)
+            if (hints.length === 0)
               items.suggestions.push({ label: '', insertText: '' })
 
             return items

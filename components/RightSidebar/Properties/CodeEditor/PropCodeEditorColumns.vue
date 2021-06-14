@@ -16,7 +16,7 @@
         </template>
 
         <div style="text-align: center">
-          Columns
+          <div>Available columns</div>
           <div>(Ctrl + Space)</div>
         </div>
 
@@ -27,7 +27,7 @@
     <v-list dense width="175">
 
       <v-list-item v-if="columns.length === 0">
-        <v-list-item-title>No columns found</v-list-item-title>
+        <v-list-item-title>No input columns</v-list-item-title>
       </v-list-item>
 
       <v-list-item @click.prevent=""
@@ -47,7 +47,7 @@ export default {
   props: {
     small: { type: Boolean },
     
-    columns: { type: Array, default: null },
+    columns: { type: Array },
   },
 
 }

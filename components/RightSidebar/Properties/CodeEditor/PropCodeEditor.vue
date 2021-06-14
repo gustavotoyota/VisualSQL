@@ -8,7 +8,8 @@
 
         <PropCodeEditorColumns small :columns="columns"/>
 
-        <PropCodeEditorExpand :title="label" v-model="inputValue"/>
+        <PropCodeEditorExpand :title="label"
+        v-model="inputValue" :columns="columns"/>
 
       </span>
 

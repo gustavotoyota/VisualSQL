@@ -23,3 +23,21 @@ $utils.notSoShallowCopy = (obj) => {
 
   return result
 }
+
+
+
+
+$utils.arrayUnion = (array1, array2) => {
+  const result = array1.slice()
+
+  for (const item of array2)
+    if (!result.includes(item))
+      result.push(item)
+  
+  return result
+}
+$utils.trimItems = (array) => {
+  return array.map(function (value, index, array) {
+    return value.trim()
+  })
+}
