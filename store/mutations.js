@@ -668,7 +668,7 @@ mutations.paste = function (state) {
 
 // Camera
 
-mutations.fitScreen = function (state) {
+mutations.fitToScreen = function (state) {
   let tab = this.getters.currentTab
 
   if (tab == null)
@@ -678,18 +678,62 @@ mutations.fitScreen = function (state) {
 
 
 
+
+
+  // Gather selected object positions
+
+  const positions = []
+
+  for (const nodeId in tab.nodes.selected)
+    positions.push(module.data.nodes.map[nodeId].pos)
+
+  for (const linkId in tab.links.selected){
+    const link = module.data.links.map[linkId]
+
+    const srcNode = module.data.nodes.map[link.from]
+    const destNode = module.data.nodes.map[link.to]
+    
+    positions.push({
+      x: (srcNode.pos.x + destNode.pos.x) / 2,
+      y: (srcNode.pos.y + destNode.pos.y) / 2,
+    })
+  }
+
+
+
+
+
+  // No objects selected: gather all object positions
+
+  if (positions.length === 0) {
+    for (const node of Object.values(module.data.nodes.map))
+      positions.push(node.pos)
+
+    for (const link of Object.values(module.data.links.map)) {
+      const srcNode = module.data.nodes.map[link.from]
+      const destNode = module.data.nodes.map[link.to]
+
+      positions.push({
+        x: (srcNode.pos.x + destNode.pos.x) / 2,
+        y: (srcNode.pos.y + destNode.pos.y) / 2,
+      })
+    }
+  }
+
+
+
   
   // Camera position
 
   let topLeft = { x: Infinity, y: Infinity }
   let bottomRight = { x: -Infinity, y: -Infinity }
 
-  for (let node of Object.values(module.data.nodes.map)) {
-    topLeft.x = Math.min(topLeft.x, node.pos.x)
-    topLeft.y = Math.min(topLeft.y, node.pos.y)
+  for (const pos of positions) {
+    topLeft.x = Math.min(topLeft.x, pos.x)
+    topLeft.y = Math.min(topLeft.y, pos.y)
 
-    bottomRight.x = Math.max(bottomRight.x, node.pos.x)
-    bottomRight.y = Math.max(bottomRight.y, node.pos.y)
+    bottomRight.x = Math.max(bottomRight.x, pos.x)
+    bottomRight.y = Math.max(bottomRight.y, pos.y)
   }
 
   module.camera.pos = {
