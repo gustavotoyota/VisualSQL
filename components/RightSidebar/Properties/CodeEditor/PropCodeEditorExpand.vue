@@ -8,7 +8,7 @@
 
         <template v-slot:activator="{ on: tooltip }">
 
-          <v-btn v-on="{ ...dialog, ...tooltip }"
+          <v-btn v-on="{ ...dialog, ...tooltip }" depressed
           style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
             <v-icon style="font-size: 15px">mdi-arrow-expand</v-icon>
           </v-btn>

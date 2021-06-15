@@ -8,7 +8,7 @@
         <template v-slot:activator="{ on: tooltip }">
 
           <v-btn v-on="{ ...menu, ...tooltip }"
-          style="min-width: 0; min-height: 0; padding: 0"
+          style="min-width: 0; min-height: 0; padding: 0" :depressed="small"
           :style="small ? 'width: 24px; height: 24px' : 'width: 32px; height: 32px'">
             <v-icon :style="small ? 'font-size: 15px' : ''">mdi-format-list-bulleted</v-icon>
           </v-btn>
