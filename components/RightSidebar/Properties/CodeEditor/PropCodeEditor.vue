@@ -19,8 +19,8 @@
       
     </div>
 
-    <CodeEditor style="clear: right" class="mt-1 editor"
-    :style="{ height: `${height}px` }"
+    <CodeEditor class="mt-1" :style="{ height: `${height}px` }"
+    style="clear: right; border: 1px solid #505050"
     v-model="inputValue" :hints="columns || []"/>
 
   </div>
@@ -56,6 +56,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

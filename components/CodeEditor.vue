@@ -1,7 +1,7 @@
 <template>
-  <MonacoEditor language="sql" v-model="inputValue"
+  <MonacoEditor v-model="inputValue"
 
-  class="editor" style="border: 1px solid #303030"
+  language="sql" class="editor"
 
   @editorDidMount="editorDidMount"
 
@@ -100,6 +100,10 @@ export default {
 </script>
 
 <style scoped>
+.editor {
+  border: 1px solid #404040;
+}
+
 .editor /deep/ .monaco-editor-background {
   background-color: #101010 !important;
 }
