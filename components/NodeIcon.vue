@@ -2,9 +2,7 @@
   <v-icon v-if="type == 'table'" :large="large">mdi-table</v-icon>
   <v-icon v-else-if="type == 'node'" :large="large">mdi-image-filter-tilt-shift</v-icon>
   <span v-else-if="type == 'sql'" :style="{
-    fontSize: large ? '16px' : '11px',
-    fontWeight: large ? '500' : '700',
-  }">SQL</span>
+    fontSize: large ? '16px' : '11px', fontWeight: large ? '500' : '700'}">SQL</span>
 
   <v-icon v-else-if="type == 'union-all'" :large="large">mdi-vector-arrange-above</v-icon>
   <v-icon v-else-if="type == 'union'" :large="large">mdi-vector-combine</v-icon>
@@ -22,12 +20,6 @@
   <v-icon v-else-if="type == 'distinct'" :large="large">mdi-format-list-bulleted-type</v-icon>
   <v-icon v-else-if="type == 'sort'" :large="large">mdi-sort-ascending</v-icon>
   <v-icon v-else-if="type == 'limit'" :large="large">mdi-arrow-expand-vertical</v-icon>
-
-  <span v-else-if="type == 'pivot'" class="material-icons"
-  :style="{ 'font-size': large ? '36px' : '' }">
-    pivot_table_chart
-  </span>
-  <v-icon v-else-if="type == 'output'" :large="large">mdi-logout-variant</v-icon>
 </template>
 
 <script>
