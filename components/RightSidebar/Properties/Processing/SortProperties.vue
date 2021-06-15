@@ -8,7 +8,9 @@
   class="mx-5 mt-5"
 
   label="Columns (ORDER BY)"
-  v-model="node.props.columns"/>
+  v-model="node.props.columns"
+
+  :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
   
   
 </template>

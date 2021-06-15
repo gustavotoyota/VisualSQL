@@ -135,27 +135,18 @@ export default {
 
 
     generateSQL() {
-      // Column tracking
-
-      let columnsObj = $app.columnTracking.init(this.$store)
-      
-      columnsObj.processNode(this.module, this.$getters.activeNode)
-
-
-
-
       // Tree generation
 
-      let treeObj = $app.databases.data[this.$state.project.sql.database].generateTree(
-        this.$store, this.module, this.$getters.activeNode, { columnsObj: columnsObj })
+      let treeObj = $app.databases.data[this.$state.project.sql.database].
+        generateTree(this.module, this.$getters.activeNode)
       
-      if (treeObj.error != null) {
-        this.$state.snackbar.text = treeObj.error
+      if (treeObj.error.message != null) {
+        this.$state.snackbar.text = treeObj.error.message
         this.$state.snackbar.active = true
 
         this.$store.commit('clearSelection')
-        this.tab.nodes.selected[treeObj.node.id] = true
-        this.tab.nodes.activeId = treeObj.node.id
+        this.tab.nodes.selected[treeObj.error.node.id] = true
+        this.tab.nodes.activeId = treeObj.error.node.id
 
         return
       }
@@ -167,7 +158,8 @@ export default {
 
       let sqlOptions = $utils.deepCopy(this.$state.project.sql)
 
-      let sqlObj = $app.databases.data[this.$state.project.sql.database].generateSQL(treeObj, sqlOptions)
+      let sqlObj = $app.databases.data[this.$state.project.sql.database].
+        generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
 

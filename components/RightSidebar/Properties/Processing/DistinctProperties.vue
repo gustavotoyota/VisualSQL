@@ -9,7 +9,9 @@
     class="mx-5 mt-5"
 
     label="Columns (DISTINCT ON)"
-    v-model="node.props.columns"/>
+    v-model="node.props.columns"
+
+    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
   </div>
 

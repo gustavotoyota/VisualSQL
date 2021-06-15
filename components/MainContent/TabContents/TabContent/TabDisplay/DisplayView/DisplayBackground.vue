@@ -19,14 +19,6 @@ export default {
 
 
     onPointerDown(event) {
-      if (!event.isPrimary) {
-        this.$state.panning.selectTimeout = null
-        return
-      }
-
-
-
-
       let displayPos = this.$getters.getDisplayPos(event)
 
 

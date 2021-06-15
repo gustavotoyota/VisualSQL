@@ -8,7 +8,7 @@
 
         <template v-slot:activator="{ on: tooltip }">
 
-          <v-btn v-on="{ ...dialog, ...tooltip }"
+          <v-btn v-on="{ ...dialog, ...tooltip }" depressed
           style="min-width: 0; width: 24px; min-height: 0; height: 24px; padding: 0">
             <v-icon style="font-size: 15px">mdi-arrow-expand</v-icon>
           </v-btn>
@@ -32,7 +32,7 @@
 
         <v-spacer/>
 
-        <PropCodeEditorColumns/>
+        <PropCodeEditorColumns :columns="columns"/>
 
       </v-card-title>
       
@@ -42,7 +42,7 @@
 
         <CodeEditor v-model="inputValue"
         :key="`sql-${dialog}`" class="mt-5"
-        style="flex: 1; width: 0"/>
+        style="flex: 1; width: 0" :hints="columns"/>
 
       </v-card-text>
       
@@ -73,6 +73,8 @@ export default {
     title: { type: String },
 
     value: { type: String },
+
+    columns: { type: Array },
   },
 
 

@@ -1,30 +1,27 @@
-export default {
-  init(store) {
-    let columnsObj = {}
+export default { getInputColumns }
 
-    columnsObj.store = store
 
-    columnsObj.nodeColumns = {}
 
-    columnsObj.processNode = (module, node) =>
-      processNode(module, node, columnsObj)
 
-    return columnsObj
-  }
+
+function getInputColumns(module, node) {
+  const inputsColumns = getInputsColumns(module, node, {})
+
+
+
+  let resultColumns = []
+
+  for (const inputColumns of inputsColumns)
+    resultColumns = $utils.arrayUnion(resultColumns, inputColumns)
+
+  return resultColumns
 }
 
 
 
 
-function processNode(module, node, columnsObj) {
-  let nodeColumns = columnsObj.nodeColumns[`${module.id}, ${node.id}`]
 
-  if (nodeColumns)
-    return nodeColumns
-
-
-
-
+function getInputsColumns(module, node, columnsMap) {
   let inputsColumns = []
 
   for (let linkId of node.incomingLinks) {
@@ -32,25 +29,45 @@ function processNode(module, node, columnsObj) {
 
     let inputColumns
 
-    if (link)
-      inputColumns = processNode(module, module.data.nodes.map[link.from], columnsObj)
+    if (link != null)
+      inputColumns = getOutputColumns(module, module.data.nodes.map[link.from], columnsMap)
     else
       inputColumns = []
       
     inputsColumns.push(inputColumns)
   }
 
+  return inputsColumns
+}
+
+
+
+
+
+function getOutputColumns(module, node, columnsMap) {
+  let nodeColumns = columnsMap[`${module.id}, ${node.id}`]
+
+  if (nodeColumns != null)
+    return nodeColumns
+
+
+
+
+  // Get inputs columns
+
+  let inputsColumns = getInputsColumns(module, node, columnsMap)
+
+
 
   
+  // Process output columns
 
   if (node.type in nodeProcessing)
-    nodeColumns = nodeProcessing[node.type](node, inputsColumns, columnsObj)
-  else if (inputsColumns.length > 0)
-    nodeColumns = inputsColumns[0]
+    nodeColumns = nodeProcessing[node.type](node, inputsColumns, columnsMap)
   else
-    nodeColumns = []
+    nodeColumns = inputsColumns[0] ?? []
 
-  columnsObj.nodeColumns[`${module.id}, ${node.id}`] = nodeColumns
+  columnsMap[`${module.id}, ${node.id}`] = nodeColumns
 
   return nodeColumns
 }
@@ -63,25 +80,19 @@ let nodeProcessing = {}
 
 
 
-nodeProcessing['table'] = (node, inputsColumns, columnsObj) => {
-  let table = columnsObj.store.state.project.tables.list.find(
+nodeProcessing['table'] = (node, inputsColumns, columnsMap) => {
+  let table = $state.project.tables.list.find(
     table => table.name === node.props.tableName)
 
-  if (!table)
+  if (table == null)
     return []
 
-  let columns = table.columns.split(',')
-
-  columns.forEach(function (value, index, array) {
-    array[index] = value.trim()
-  })
-
-  return columns
+  return $utils.trimItems(table.columns.split(','))
 }
-nodeProcessing['node'] = (node, inputsColumns, columnsObj) => {
-  let parts = node.props.nodeName.split('.', 2)
+nodeProcessing['node'] = (node, inputsColumns, columnsMap) => {
+  let parts = (node.props.nodeName ?? '').split('.', 2)
 
-  let refModule = columnsObj.store.state.project.modules.list.find(module => module.name === parts[0])
+  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
 
   let refNode
   if (refModule != null)
@@ -90,23 +101,17 @@ nodeProcessing['node'] = (node, inputsColumns, columnsObj) => {
   if (refNode == null)
     return []
 
-  return processNode(refModule, refNode, columnsObj)
+  return getOutputColumns(refModule, refNode, columnsMap)
 }
-nodeProcessing['sql'] = (node, inputsColumns, columnsObj) => {
-  let columns = node.props.sql.split(',')
-
-  columns.forEach(function (value, index, array) {
-    array[index] = value.trim()
-  })
-
-  return columns
+nodeProcessing['sql'] = (node, inputsColumns, columnsMap) => {
+  return $utils.trimItems(node.props.sql.split(','))
 }
 
 
 
 
-function joinProcessing(node, inputsColumns, columnsObj) {
-  return inputsColumns[0].concat(inputsColumns[1])
+function joinProcessing(node, inputsColumns, columnsMap) {
+  return $utils.arrayUnion(inputsColumns[0], inputsColumns[1])
 }
 
 nodeProcessing['inner-join'] = joinProcessing
@@ -118,12 +123,6 @@ nodeProcessing['cross-join'] = joinProcessing
 
 
 
-nodeProcessing['transform'] = (node, inputsColumns, columnsObj) => {
-  let columns = node.props.columns.split(',')
-
-  columns.forEach(function (value, index, array) {
-    array[index] = value.trim()
-  })
-
-  return columns
+nodeProcessing['transform'] = (node, inputsColumns, columnsMap) => {
+  return $utils.trimItems(node.props.columns.split(','))
 }

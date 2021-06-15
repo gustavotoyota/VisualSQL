@@ -1,7 +1,7 @@
 <template>
-  <MonacoEditor language="sql" v-model="inputValue"
+  <MonacoEditor v-model="inputValue"
 
-  class="editor" style="border: 1px solid #303030"
+  language="sql" class="editor"
 
   @editorDidMount="editorDidMount"
 
@@ -64,9 +64,11 @@ export default {
             const items = { suggestions: [] }
 
             const word = model.getWordAtPosition(position)
+
+            const hints = model.getHints()
             
-            for (const hint of model.getHints()) {
-              const suggestion = { label: hint, insertText: hint }
+            for (let i = 0; i < hints.length; ++i) {
+              const suggestion = { label: hints[i], insertText: hints[i], sortText: i.toString() }
 
               if (word != null) {
                 suggestion.range = {
@@ -80,7 +82,7 @@ export default {
               items.suggestions.push(suggestion)
             }
             
-            if (model.getHints().length === 0)
+            if (hints.length === 0)
               items.suggestions.push({ label: '', insertText: '' })
 
             return items
@@ -98,6 +100,10 @@ export default {
 </script>
 
 <style scoped>
+.editor {
+  border: 1px solid #404040;
+}
+
 .editor /deep/ .monaco-editor-background {
   background-color: #101010 !important;
 }

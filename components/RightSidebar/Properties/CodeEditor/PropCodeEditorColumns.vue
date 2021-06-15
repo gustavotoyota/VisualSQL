@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y left max-height="200">
+  <v-menu v-if="columns != null" offset-y left max-height="200">
 
     <template v-slot:activator="{ on: menu }">
 
@@ -8,14 +8,17 @@
         <template v-slot:activator="{ on: tooltip }">
 
           <v-btn v-on="{ ...menu, ...tooltip }"
-          style="min-width: 0; min-height: 0; padding: 0"
+          style="min-width: 0; min-height: 0; padding: 0" :depressed="small"
           :style="small ? 'width: 24px; height: 24px' : 'width: 32px; height: 32px'">
             <v-icon :style="small ? 'font-size: 15px' : ''">mdi-format-list-bulleted</v-icon>
           </v-btn>
 
         </template>
 
-        <span>Columns</span>
+        <div style="text-align: center">
+          <div>Available columns</div>
+          <div>(Ctrl + Space)</div>
+        </div>
 
       </v-tooltip>
 
@@ -23,28 +26,13 @@
     
     <v-list dense width="175">
 
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table1.column1</v-list-item-title>
+      <v-list-item v-if="columns.length === 0">
+        <v-list-item-title>No columns available</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table1.column2</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table2.column1</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table2.column2</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table3.column1</v-list-item-title>
-      </v-list-item>
-
-      <v-list-item @click.prevent="">
-        <v-list-item-title>table3.column2</v-list-item-title>
+      <v-list-item @click.prevent=""
+      v-for="column in columns" :key="column">
+        <v-list-item-title>{{ column }}</v-list-item-title>
       </v-list-item>
       
     </v-list>
@@ -58,6 +46,8 @@ export default {
 
   props: {
     small: { type: Boolean },
+    
+    columns: { type: Array },
   },
 
 }
