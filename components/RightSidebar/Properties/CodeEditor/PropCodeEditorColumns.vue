@@ -27,7 +27,7 @@
     <v-list dense width="175">
 
       <v-list-item v-if="columns.length === 0">
-        <v-list-item-title>No input columns</v-list-item-title>
+        <v-list-item-title>No columns available</v-list-item-title>
       </v-list-item>
 
       <v-list-item @click.prevent=""
