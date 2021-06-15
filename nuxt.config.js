@@ -25,9 +25,6 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
     ],
-    script: [
-      { src: 'https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js' },
-    ],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -36,6 +33,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    { src: '~/plugins/polyfill.js' },
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
     { src: '~/plugins/expand-transition/expand-transition.js' },
