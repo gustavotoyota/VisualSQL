@@ -73,7 +73,13 @@ Lexer.prototype.acceptNot = function (...tokenNames) {
   for (const tokenName of tokenNames)
     patterns.push(this.tokens[tokenName].source.substring(1))
 
-  const pattern = new RegExp('^.*?(?=' + patterns.join('|') + '|$)', 's')
+  let pattern
+  
+  try {
+    pattern = new RegExp('^.*?(?=' + patterns.join('|') + '|$)', 's')
+  } catch {
+    pattern = new RegExp('^[.\r\n]*?(?=' + patterns.join('|') + '|$)')
+  }
 
   const match = this.view.match(pattern)
 
