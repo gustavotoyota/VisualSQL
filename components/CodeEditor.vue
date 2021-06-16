@@ -125,4 +125,12 @@ export default {
 .editor /deep/ .suggest-widget {
   width: 250px !important;
 }
+
+
+
+/* IE11 invisible suggestions fix */
+
+.editor /deep/ .monaco-icon-label-container {
+  flex-basis: auto;
+}
 </style>
