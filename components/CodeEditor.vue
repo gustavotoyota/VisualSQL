@@ -41,6 +41,14 @@ export default {
   },
 
 
+  
+  data() {
+    return {
+      editor: null,
+    }
+  },
+
+
 
   computed: {
     
@@ -56,6 +64,8 @@ export default {
   methods: {
 
     editorDidMount(editor) {
+      this.editor = editor
+
       editor.getModel().getHints = () => this.hints
 
       if (!completionItemProvider) {

@@ -19,7 +19,7 @@
       
     </div>
 
-    <CodeEditor class="mt-1" :style="{ height: `${height}px` }"
+    <CodeEditor ref="editor" class="mt-1" :style="{ height: `${height}px` }"
     style="clear: right; border: 1px solid #505050"
     v-model="inputValue" :hints="columns || []"/>
 
