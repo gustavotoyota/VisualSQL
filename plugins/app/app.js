@@ -26,7 +26,7 @@ $app.nodeTypes = nodeTypes
 
 // Column tracking
 
-import columnTracking from './column-tracking.js'
+import columnTracking from './column-tracking/column-tracking.js'
 
 $app.columnTracking = columnTracking
 
