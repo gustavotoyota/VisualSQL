@@ -57,9 +57,16 @@ export default {
   methods: {
 
     insertColumn(column) {
-      this.$parent.$refs.editor.editor.focus()
+      const editor = this.$parent.$refs.editor.editor
 
-      document.execCommand('insertText', false, column)
+      editor.executeEdits("my-source", [{
+        identifier: { major: 1, minor: 1 },
+        range: editor.getSelection(),
+        text: column,
+        forceMoveMarkers: true,
+      }])
+
+      editor.focus()
     },
 
   },
