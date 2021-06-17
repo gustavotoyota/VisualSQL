@@ -60,6 +60,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    ['@nuxtjs/google-adsense', { id: 'ca-pub-7390527632812452' }],
   ],
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
