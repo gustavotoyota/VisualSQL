@@ -1,5 +1,5 @@
 <template>
-  <div class="caption" style="position: absolute;
+  <div class="caption" style="position: absolute; pointer-events: none;
   transform: translate(-50%, -50%); text-align: center;
   max-width: 150px; width: max-content; word-break: break-word"
   :style="{
