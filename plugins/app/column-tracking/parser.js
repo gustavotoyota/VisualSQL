@@ -214,7 +214,7 @@ function parseParens(lexer) {
 }
 
 function choose(value1, value2, first) {
-  if (first && value1)
+  if ((first && value1) || !value2)
     return value1
     
   return value2
