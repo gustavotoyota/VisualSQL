@@ -14,7 +14,9 @@
 
 
 
-    <NewProject/>
+    <client-only>
+      <NewProject/>
+    </client-only>
     
     <OpenProject/>
     
@@ -41,7 +43,9 @@
 
   
 
-    <About/>
+    <client-only>
+      <About/>
+    </client-only>
 
 
 
