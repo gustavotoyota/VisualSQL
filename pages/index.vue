@@ -1,34 +1,33 @@
 <template>
-  <v-app dark style="touch-action: none"
-  :style="!$state.loaded ? 'display: none' : ''">
+
+  <div>
+
+    <v-app dark v-show="$state.loaded"
+    style="touch-action: none">
 
 
 
-    <MainMenu/>
+      <MainMenu/>
+      <LeftSidebar/>
+      <MainContent/>
+      <RightSidebar/>
 
 
 
-    <LeftSidebar/>
+      <Snackbar/>
+
+      <NodeDragging/>
 
 
 
-    <MainContent/>
+    </v-app>
 
 
 
-    <RightSidebar/>
+    <SplashScreen/>
 
+  </div>
 
-
-    <Snackbar/>
-    
-
-
-    <NodeDragging/>
-
-
-
-  </v-app>
 </template>
 
 <script>
@@ -41,11 +40,16 @@ export default {
       // Loading
 
       window.addEventListener('load', () => {
-        this.$state.loaded = true
+        setTimeout(() => {
+          this.$state.loaded = true
+        }, 1500) 
       })
       
-      if (document.readyState === 'complete')
-        this.$state.loaded = true
+      if (document.readyState === 'complete') {
+        setTimeout(() => {
+          this.$state.loaded = true
+        }, 1500)
+      }
 
 
 
