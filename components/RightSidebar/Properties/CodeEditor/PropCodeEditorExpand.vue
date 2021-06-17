@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="700" eager v-model="dialog">
+  <v-dialog max-width="700" v-model="dialog">
 
     <template v-slot:activator="{ on: dialog }">
 

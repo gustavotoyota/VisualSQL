@@ -1,5 +1,6 @@
 <template>
-  <v-dialog max-width="270" eager v-model="active">
+
+  <v-dialog max-width="270" v-model="active">
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -43,9 +44,7 @@
 
     </v-card>
 
-
   </v-dialog>
-
 
 </template>
 
