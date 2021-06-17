@@ -123,7 +123,7 @@ export default {
 }
 
 .editor /deep/ .suggest-widget {
-  width: 250px !important;
+  width: 240px !important;
 }
 
 
