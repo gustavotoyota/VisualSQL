@@ -26,17 +26,7 @@
 
 
 
-    <ToolbarButton tooltip="Help">
-      <v-icon dense>mdi-help-circle</v-icon>
-    </ToolbarButton>
-
-
-
-    <v-divider vertical inset class="mx-2"/>
-
-
-
-    <v-select dense outlined height="30" class="ml-1"
+    <v-select dense outlined height="30" class="mx-1"
     style="font-size: 14px; flex: none; width: 160px"
     hide-details background-color="#101010"
     :menu-props="{ top: false, offsetY: true }"
@@ -44,6 +34,14 @@
     :items="$app.databases.items" item-text="text" item-value="value"
 
     v-model="$state.project.sql.database"/>
+
+
+
+    <v-divider vertical inset class="mx-2"/>
+
+  
+
+    <About/>
 
 
 
