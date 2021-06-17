@@ -142,7 +142,7 @@ nodeTypeProcessing['table'] = (node, inputs, treeObj) => {
   return createSelect({
     sourceType: 'table',
 
-    tableName: processField(node.props.tableName),
+    tableName: node.props.tableName,
   })
 }
 nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
