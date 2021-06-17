@@ -55,13 +55,10 @@
 
 
 
-    <!--
-    <div style="margin-left: 12px; width: 300px; height: 50px;
-    background-color: black; display: flex; color: white; font-size: 14px;
-    justify-content: center; align-items: center">
-      Ad
-    </div>
-    -->
+    <adsbygoogle
+    :ad-style="{ display: 'inline-block', width: '300px', height: '50px' }"
+    ad-client="ca-pub-7390527632812452"
+    ad-slot="9297057205"/>
 
 
 
