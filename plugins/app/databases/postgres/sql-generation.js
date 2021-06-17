@@ -105,7 +105,7 @@ function printCommons(sqlObj) {
   for (let i = 0; i < sqlObj.treeObj.commons.length; ++i) {
     let common = sqlObj.treeObj.commons[i]
 
-    sqlObj.print(common.name, true)
+    printIdentifier(common.name, sqlObj)
     sqlObj.printLine(' AS (')
 
     
@@ -189,7 +189,7 @@ objectPrinting['select'] = (obj, sqlObj) => {
       
       if (sourceObj.alias || sourceObj.sourceType === 'object') {
         sqlObj.print(' AS ')
-        sqlObj.print(sourceObj.alias || '<missing>', true)
+        printIdentifier(sourceObj.alias, sqlObj)
       }
     }
 
@@ -325,10 +325,10 @@ objectPrinting['select'] = (obj, sqlObj) => {
 const sourcePrinting = {}
 
 sourcePrinting['table'] = (sourceObj, sqlObj) => {
-  sqlObj.print(sourceObj.tableName, true)
+  printIdentifier(sourceObj.tableName, sqlObj)
 }
 sourcePrinting['common'] = (sourceObj, sqlObj) => {
-  sqlObj.print(sqlObj.treeObj.commons[sourceObj.commonIdx].name, true)
+  printIdentifier(sqlObj.treeObj.commons[sourceObj.commonIdx].name, sqlObj)
 }
 sourcePrinting['object'] = (sourceObj, sqlObj) => {
   sqlObj.printLine('(')
@@ -349,4 +349,14 @@ function printObj(obj, sqlObj) {
 }
 function printSourceObj(sourceObj, sqlObj) {
   sourcePrinting[sourceObj.sourceType](sourceObj, sqlObj)
+}
+
+
+
+
+function printIdentifier(identifier, sqlObj) {
+  if (identifier)
+    sqlObj.print('"' + identifier.replace('"', '""') + '"', true)
+  else
+    sqlObj.print('<missing>', true)
 }

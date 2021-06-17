@@ -9,6 +9,5 @@ export default {
   
   
   infos: {
-    distinctOn: true,
   },
 }

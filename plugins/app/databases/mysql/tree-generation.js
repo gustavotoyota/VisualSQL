@@ -19,7 +19,7 @@ function processNode(module, node, treeObj) {
 
   const database = $app.databases.data[$state.project.sql.database]
 
-  if (database.infos.disabledNodeTypes.includes(node.type)) {
+  if ((database.infos.disabledNodeTypes || []).includes(node.type)) {
     treeObj.error.message = `Invalid query: ${$app.nodeTypes[node.type].title} node doesn\'t exist in current database.`
     treeObj.error.node = node
     return
@@ -142,7 +142,7 @@ nodeTypeProcessing['table'] = (node, inputs, treeObj) => {
   return createSelect({
     sourceType: 'table',
 
-    tableName: processField(node.props.tableName),
+    tableName: node.props.tableName,
   })
 }
 nodeTypeProcessing['node'] = (node, inputs, treeObj) => {

@@ -279,19 +279,26 @@ objectPrinting['select'] = (obj, sqlObj) => {
     sqlObj.decrementIndent()
   }
   function printLimitClause(obj, sqlObj) {
-    if (obj.limit && obj.limit.value) {
-      sqlObj.printLine('LIMIT')
-  
-      sqlObj.incrementIndent()
-      sqlObj.printLine(obj.limit.value, true)
-      sqlObj.decrementIndent()
-    }
-
     if (obj.offset) {
       sqlObj.printLine('OFFSET')
       
       sqlObj.incrementIndent()
-      sqlObj.printLine(obj.offset, true)
+  
+      sqlObj.print(obj.offset, true)
+      sqlObj.printLine(' ROWS')
+  
+      sqlObj.decrementIndent()
+    }
+  
+    if (obj.limit && obj.limit.value) {
+      sqlObj.printLine('FETCH')
+  
+      sqlObj.incrementIndent()
+  
+      sqlObj.print('FIRST ')
+      sqlObj.print(obj.limit.value, true)
+      sqlObj.printLine(' ROWS ONLY')
+        
       sqlObj.decrementIndent()
     }
   }
@@ -349,7 +356,7 @@ function printSourceObj(sourceObj, sqlObj) {
 
 function printIdentifier(identifier, sqlObj) {
   if (identifier)
-    sqlObj.print('`' + identifier.replace('`', '``') + '`', true)
+    sqlObj.print('[' + identifier.replace(']', ']]') + ']', true)
   else
     sqlObj.print('<missing>', true)
 }

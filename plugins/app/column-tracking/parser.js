@@ -92,6 +92,9 @@ function parseColumn(lexer, first) {
       'BackTick', 'LeftBracket', 'LeftParen', 'Identifier')
   }
 
+  if (firstValue.toUpperCase() === 'SELECT')
+    return ''
+
   return firstValue
 }
 
@@ -119,26 +122,20 @@ function parseDoubleQuotes(lexer) {
 }
 
 function parseSingleQuotes(lexer) {
-  let value = ''
-
   lexer.eat('SingleQuote')
 
   while (true) {
-    value += lexer.accept('NonSingleQuoteEscape')
+    lexer.accept('NonSingleQuoteEscape')
 
     if (lexer.isEOF())
       throw 'Unclosed literal.'
     
-    if (lexer.eat('SingleQuote', 'Backslash') === '\'') {
-      if (lexer.accept('SingleQuote'))
-        value += '\''
-      else
+    if (lexer.eat('SingleQuote', 'Backslash') === '\'')
+      if (!lexer.accept('SingleQuote'))
         break
-    } else
-      value += lexer.eat('Char')
   }
 
-  return value
+  return ''
 }
 
 function parseBackTicks(lexer) {
@@ -214,7 +211,7 @@ function parseParens(lexer) {
 }
 
 function choose(value1, value2, first) {
-  if (first && value1)
+  if ((first && value1) || !value2)
     return value1
     
   return value2

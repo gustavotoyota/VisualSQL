@@ -4,7 +4,8 @@
 
   :tooltip="$app.nodeTypes[type].title"
 
-  :disabled="$app.databases.data[$state.project.sql.database].infos.disabledNodeTypes.includes(type)"
+  :disabled="($app.databases.data[$state.project.sql.database].
+    infos.disabledNodeTypes || []).includes(type)"
   
   @pointerdown.stop="onPointerDown"
   @click="onClick">
