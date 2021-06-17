@@ -1,5 +1,5 @@
 <template>
-  <div :id="`display-${tab.id}`"
+  <div :id="`display-${tab.id}`" class="display"
   style="position: relative; flex: 1; overflow: hidden">
 
 
@@ -24,6 +24,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.display * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 </style>
