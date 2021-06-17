@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .fade-leave-active {
   transition: opacity 1s;
 }

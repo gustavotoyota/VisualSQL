@@ -24,7 +24,7 @@
 
     </template>
     
-    <v-list dense width="175">
+    <v-list dense width="230">
 
       <v-list-item v-if="columns.length === 0">
         <v-list-item-title>No columns available</v-list-item-title>
@@ -93,7 +93,7 @@ export default {
 
 .v-list-item__title {
   font-family: Consolas;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: normal !important;
   
   color: #e0e0e0;

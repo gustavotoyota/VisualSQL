@@ -561,17 +561,29 @@ mutations.copySelection = function (state) {
     }
   }
 
+  
 
-
-
-  state.clipboard.value = {
+  writeToClipboard(JSON.stringify({
     nodes: nodes,
     links: links,
-  }
+  }, null, 2))
 }
-mutations.paste = function (state) {
-  if (state.clipboard.value == null)
+mutations.paste = async function (state) {
+  const clipboardText = await readFromClipboard()
+
+  if (clipboardText === '')
     return
+
+
+    
+
+  let clipboardValue
+
+  try {
+    clipboardValue = JSON.parse(clipboardText)
+  } catch {
+    return
+  }
 
 
 
@@ -594,7 +606,7 @@ mutations.paste = function (state) {
 
   // Paste nodes
 
-  for (let node of state.clipboard.value.nodes) {
+  for (let node of clipboardValue.nodes) {
     this.commit('createNode', {
       moduleId: module.id,
 
@@ -619,7 +631,7 @@ mutations.paste = function (state) {
 
   // Paste links
 
-  for (let link of state.clipboard.value.links) {
+  for (let link of clipboardValue.links) {
     let linkId = module.data.links.nextId
 
     this.commit('createLink', {
