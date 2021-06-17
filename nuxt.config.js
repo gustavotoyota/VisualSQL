@@ -4,7 +4,7 @@ import colors from 'vuetify/es5/util/colors'
 
 
 const title = 'Visual SQL'
-const description = 'Build SQL queries visually and avoid the inconvenient parts of SQL with Visual SQL, a free node-based tool for efficient SQL query building.'
+const description = 'Build SQL queries visually and avoid the inconvenient side of SQL with Visual SQL, a free node-based tool for efficient SQL query building.'
 
 
 

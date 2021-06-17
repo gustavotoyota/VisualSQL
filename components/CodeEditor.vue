@@ -41,6 +41,14 @@ export default {
   },
 
 
+  
+  data() {
+    return {
+      editor: null,
+    }
+  },
+
+
 
   computed: {
     
@@ -56,6 +64,8 @@ export default {
   methods: {
 
     editorDidMount(editor) {
+      this.editor = editor
+
       editor.getModel().getHints = () => this.hints
 
       if (!completionItemProvider) {
@@ -114,5 +124,13 @@ export default {
 
 .editor /deep/ .suggest-widget {
   width: 250px !important;
+}
+
+
+
+/* IE11 invisible suggestions fix */
+
+.editor /deep/ .monaco-icon-label-container {
+  flex-basis: auto;
 }
 </style>

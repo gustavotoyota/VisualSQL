@@ -79,6 +79,7 @@ let nodeProcessing = {}
 
 
 
+import parseColumns from './parser'
 
 nodeProcessing['table'] = (node, inputsColumns, columnsMap) => {
   let table = $state.project.tables.list.find(
@@ -87,7 +88,7 @@ nodeProcessing['table'] = (node, inputsColumns, columnsMap) => {
   if (table == null)
     return []
 
-  return $utils.trimItems(table.columns.split(','))
+  return parseColumns(table.columns, true)
 }
 nodeProcessing['node'] = (node, inputsColumns, columnsMap) => {
   let parts = (node.props.nodeName ?? '').split('.', 2)
@@ -104,7 +105,7 @@ nodeProcessing['node'] = (node, inputsColumns, columnsMap) => {
   return getOutputColumns(refModule, refNode, columnsMap)
 }
 nodeProcessing['sql'] = (node, inputsColumns, columnsMap) => {
-  return $utils.trimItems(node.props.sql.split(','))
+  return parseColumns(node.props.sql, false)
 }
 
 
@@ -124,5 +125,5 @@ nodeProcessing['cross-join'] = joinProcessing
 
 
 nodeProcessing['transform'] = (node, inputsColumns, columnsMap) => {
-  return $utils.trimItems(node.props.columns.split(','))
+  return parseColumns(node.props.columns, false)
 }

@@ -30,8 +30,9 @@
         <v-list-item-title>No columns available</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click.prevent=""
-      v-for="column in columns" :key="column">
+      <v-list-item
+      v-for="column in columns" :key="column"
+      @click="insertColumn(column)">
         <v-list-item-title>{{ column }}</v-list-item-title>
       </v-list-item>
       
@@ -44,11 +45,34 @@
 <script>
 export default {
 
+
   props: {
     small: { type: Boolean },
     
     columns: { type: Array },
+
+    editor: { type: Object },
   },
+
+
+
+  methods: {
+
+    insertColumn(column) {
+      const editor = this.editor
+
+      editor.executeEdits("my-source", [{
+        identifier: { major: 1, minor: 1 },
+        range: editor.getSelection(),
+        text: column,
+        forceMoveMarkers: true,
+      }])
+
+      editor.focus()
+    },
+
+  },
+
 
 }
 </script>
