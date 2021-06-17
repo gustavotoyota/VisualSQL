@@ -1,5 +1,6 @@
 <template>
-  <v-app-bar app clipped-left clipped-right dense>
+  <v-app-bar app clipped-left clipped-right dense
+  style="height: 50px; padding-top: 1px; padding-right: 0">
 
 
 
@@ -46,6 +47,20 @@
 
 
 
+    <v-spacer/>
+
+
+
+    <!--
+    <div style="margin-left: 12px; width: 300px; height: 50px;
+    background-color: black; display: flex; color: white; font-size: 14px;
+    justify-content: center; align-items: center">
+      Ad
+    </div>
+    -->
+
+
+
   </v-app-bar>
 </template>
 
@@ -56,6 +71,10 @@ export default {
 </script>
 
 <style scoped>
+.v-app-bar /deep/ .v-toolbar__content {
+  padding-right: 0;
+}
+
 .v-app-bar-title /deep/ .v-app-bar-title__content {
   visibility: hidden;
 }
