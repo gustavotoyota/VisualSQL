@@ -127,15 +127,6 @@ export default () => ({
     dragStart: null,
     visible: false,
   },
-  
-
-
-
-  // Clipboard
-
-  clipboard: {
-    value: null,
-  },
 
   
 

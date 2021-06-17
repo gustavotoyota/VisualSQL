@@ -13,7 +13,7 @@
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
-    <ToolbarButton tooltip="Paste" :disabled="$state.clipboard.value == null"
+    <ToolbarButton tooltip="Paste"
     @click="$store.commit('paste')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
