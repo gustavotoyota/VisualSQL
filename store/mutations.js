@@ -568,19 +568,23 @@ mutations.copySelection = function (state) {
     links: links,
   }, null, 2))
 }
-mutations.paste = async function (state) {
-  const clipboardText = await readFromClipboard()
+mutations.paste = async function (state, clipboardText) {
+  // Get clipboard text
+
+  clipboardText = clipboardText || await readFromClipboard()
 
   if (clipboardText === '')
     return
 
 
     
+    
+  // Get clipboard object
 
-  let clipboardValue
+  let clipboardObj
 
   try {
-    clipboardValue = JSON.parse(clipboardText)
+    clipboardObj = JSON.parse(clipboardText)
   } catch {
     return
   }
@@ -606,7 +610,7 @@ mutations.paste = async function (state) {
 
   // Paste nodes
 
-  for (let node of clipboardValue.nodes) {
+  for (let node of clipboardObj.nodes) {
     this.commit('createNode', {
       moduleId: module.id,
 
@@ -631,7 +635,7 @@ mutations.paste = async function (state) {
 
   // Paste links
 
-  for (let link of clipboardValue.links) {
+  for (let link of clipboardObj.links) {
     let linkId = module.data.links.nextId
 
     this.commit('createLink', {

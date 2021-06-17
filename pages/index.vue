@@ -69,6 +69,8 @@ export default {
       document.addEventListener('pointerup', this.onDocumentPointerUp)
       
       document.addEventListener('keydown', this.onDocumentKeyDown)
+      
+      document.addEventListener('paste', this.onPaste)
     })
   },
   beforeDestroy() {
@@ -77,6 +79,8 @@ export default {
     document.removeEventListener('pointerup', this.onDocumentPointerUp)
 
     document.removeEventListener('keydown', this.onDocumentKeyDown)
+    
+    document.removeEventListener('paste', this.onPaste)
   },
 
 
@@ -426,7 +430,7 @@ export default {
         this.$store.commit('copySelection')
         return
       }
-      if ((event.code === 'KeyV' || event.keyCode === 86) && event.ctrlKey) {
+      if (window.clipboardData && (event.code === 'KeyV' || event.keyCode === 86) && event.ctrlKey) {
         this.$store.commit('paste')
         return
       }
@@ -441,6 +445,19 @@ export default {
         this.$store.commit('redo')
         return
       }
+    },
+
+
+
+
+
+    onPaste(event) {
+      if (event.target.tagName == 'INPUT' || event.target.tagName == 'TEXTAREA')
+        return
+
+      const text = (event.clipboardData || window.clipboardData).getData('text')
+
+      this.$store.commit('paste', text)
     },
 
   },

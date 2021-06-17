@@ -1,10 +1,16 @@
 global.writeToClipboard = function (text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+    return
+  }
+  
   if (window.clipboardData) {
     clipboardData.setData('Text', text)
     return
   }
 
-  if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+  if (document.queryCommandSupported
+  && document.queryCommandSupported('copy')) {
     const elem = document.createElement('span')
   
     elem.textContent = text
@@ -25,24 +31,20 @@ global.writeToClipboard = function (text) {
 
     selection.removeAllRanges()
     document.body.removeChild(elem)
-
-    return
-  }
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text)
+    
     return
   }
 }
 
 global.readFromClipboard = async function () {
-  if (window.clipboardData)
-    return clipboardData.getData('Text')
-
   if (navigator.clipboard && navigator.clipboard.readText)
     return await navigator.clipboard.readText()
 
-  if (document.execCommand && document.queryCommandSupported('paste')) {
+  if (window.clipboardData)
+    return clipboardData.getData('Text')
+
+  if (document.queryCommandSupported
+  && document.queryCommandSupported('paste')) {
     const elem = document.createElement('textarea')
 
     document.body.appendChild(elem)
