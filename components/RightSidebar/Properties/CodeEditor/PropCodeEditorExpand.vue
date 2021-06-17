@@ -32,7 +32,8 @@
 
         <v-spacer/>
 
-        <PropCodeEditorColumns :columns="columns"/>
+        <PropCodeEditorColumns
+        :columns="columns" :editor="editor"/>
 
       </v-card-title>
       
@@ -41,6 +42,7 @@
       <v-card-text style="height: 480px; display: flex">
 
         <CodeEditor v-model="inputValue"
+        @editorDidMount="editorDidMount"
         :key="`sql-${dialog}`" class="mt-5"
         style="flex: 1; width: 0" :hints="columns"/>
 
@@ -93,7 +95,19 @@ export default {
   data() {
     return {
       dialog: false,
+
+      editor: null,
     }
+  },
+
+
+
+  methods: {
+
+    editorDidMount(editor) {
+      this.editor = editor
+    },
+
   },
 
 

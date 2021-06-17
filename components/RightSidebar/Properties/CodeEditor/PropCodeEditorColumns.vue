@@ -50,6 +50,8 @@ export default {
     small: { type: Boolean },
     
     columns: { type: Array },
+
+    editor: { type: Object },
   },
 
 
@@ -57,7 +59,7 @@ export default {
   methods: {
 
     insertColumn(column) {
-      const editor = this.$parent.$refs.editor.editor
+      const editor = this.editor
 
       editor.executeEdits("my-source", [{
         identifier: { major: 1, minor: 1 },

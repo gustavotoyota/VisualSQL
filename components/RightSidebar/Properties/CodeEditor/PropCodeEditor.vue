@@ -6,7 +6,8 @@
 
       <span style="float: right">
 
-        <PropCodeEditorColumns small :columns="columns"/>
+        <PropCodeEditorColumns small
+        :columns="columns" :editor="editor"/>
 
         <PropCodeEditorExpand :title="label"
         v-model="inputValue" :columns="columns"/>
@@ -20,7 +21,7 @@
     </div>
 
     <CodeEditor ref="editor" class="mt-1" :style="{ height: `${height}px` }"
-    style="clear: right; border: 1px solid #505050"
+    style="clear: right; border: 1px solid #505050" @editorDidMount="editorDidMount"
     v-model="inputValue" :hints="columns || []"/>
 
   </div>
@@ -48,6 +49,24 @@ export default {
     inputValue: {
       get() { return this.value },
       set(value) { this.$emit('input', value) },
+    },
+
+  },
+
+
+
+  data() {
+    return {
+      editor: null,
+    }
+  },
+
+
+
+  methods: {
+
+    editorDidMount(editor) {
+      this.editor = editor
     },
 
   },
