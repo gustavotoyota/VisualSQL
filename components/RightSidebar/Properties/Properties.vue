@@ -14,11 +14,35 @@
 
 
     <div class="mx-5 mt-5">
+      
+      <v-tooltip top open-delay="250">
+
+        <template v-slot:activator="{ on, attrs }">
+
+          <div v-on="on" v-bind="attrs"
+          style="display: inline-block; float: right">
+
+            <v-checkbox hide-details label="Common"
+            style="margin-top: -7px; position: relative; z-index: 9999"/>
+
+          </div>
+
+        </template>
+
+        <div style="white-space: nowrap">
+          <div>If checked, the SQL</div>
+          <div>of this node will be</div>
+          <div>generated as CTE</div>
+        </div>
+
+      </v-tooltip>
+
+
       <div class="body-2 grey--text text--lighten-1">
         Node name:
       </div>
 
-      <v-text-field dense solo hide-details
+      <v-text-field dense solo hide-details style="clear: right"
       class="mt-1 body-2" v-model="$getters.activeNode.props.name">
       </v-text-field>
     </div>
