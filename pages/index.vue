@@ -36,42 +36,40 @@ export default {
 
 
   mounted() {
-    this.$nextTick(() => {
-      // Loading
+    // Loading
 
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          this.$state.loaded = true
-        }, 1500) 
-      })
-      
-      if (document.readyState === 'complete') {
-        setTimeout(() => {
-          this.$state.loaded = true
-        }, 1500)
-      }
-
-
-
-
-      // Sidebars
-
-      this.$state.sidebars.left = innerWidth >= 900
-      this.$state.sidebars.right = innerWidth >= 600
-
-
-
-
-      // Global events
-
-      document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
-      document.addEventListener('pointermove', this.onDocumentPointerMove)
-      document.addEventListener('pointerup', this.onDocumentPointerUp)
-      
-      document.addEventListener('keydown', this.onDocumentKeyDown)
-      
-      document.addEventListener('paste', this.onPaste)
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        this.$state.loaded = true
+      }, 1500) 
     })
+    
+    if (document.readyState === 'complete') {
+      setTimeout(() => {
+        this.$state.loaded = true
+      }, 1500)
+    }
+
+
+
+
+    // Sidebars
+
+    this.$state.sidebars.left = innerWidth >= 900
+    this.$state.sidebars.right = innerWidth >= 600
+
+
+
+
+    // Global events
+
+    document.addEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
+    document.addEventListener('pointermove', this.onDocumentPointerMove)
+    document.addEventListener('pointerup', this.onDocumentPointerUp)
+    
+    document.addEventListener('keydown', this.onDocumentKeyDown)
+    
+    document.addEventListener('paste', this.onPaste)
   },
   beforeDestroy() {
     document.removeEventListener('pointerdown', this.onDocumentCapturePointerDown, true)
