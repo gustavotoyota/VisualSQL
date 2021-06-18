@@ -55,10 +55,24 @@
 
 
 
-    <adsbygoogle
-    :ad-style="{ display: 'inline-block', width: '300px', height: '50px' }"
-    ad-client="ca-pub-7390527632812452"
-    ad-slot="9297057205"/>
+    <div style="margin-left: 8px; width: 300px; height: 50px">
+
+      <adsbygoogle
+
+      :ad-style="{
+        display: 'inline-block',
+
+        width: '300px',
+        height: '50px',
+      }"
+
+      ad-client="ca-pub-7390527632812452"
+      ad-slot="9297057205"
+      
+      ad-format="rectangular"
+      data-full-width-responsive="false"/>
+
+    </div>
 
 
 
