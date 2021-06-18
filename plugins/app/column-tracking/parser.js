@@ -40,7 +40,9 @@ export default function (text, first) {
 
   try {
     return parseColumns(lexer, first)
-  } catch {
+  } catch (err) {
+    console.log(err)
+
     return []
   }
 }

@@ -57,6 +57,7 @@
 
     <div style="margin-left: 8px; width: 300px; height: 50px">
 
+      <!--
       <adsbygoogle
 
       :ad-style="{
@@ -71,6 +72,7 @@
       
       ad-format="rectangular"
       data-full-width-responsive="false"/>
+      -->
 
     </div>
 

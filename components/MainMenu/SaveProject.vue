@@ -34,7 +34,8 @@ export default {
         })
 
         $app.saveLoad.tryUpdateProjectFile()
-      } catch {
+      } catch (err) {
+        console.log(err)
       }
     },
 
