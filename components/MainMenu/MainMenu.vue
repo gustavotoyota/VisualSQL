@@ -26,6 +26,12 @@
 
 
 
+    <ToolbarButton tooltip="Help" btn-style="display: none">
+      <v-icon dense>mdi-help-circle</v-icon>
+    </ToolbarButton>
+
+
+
     <v-select dense outlined height="30" class="mx-1"
     style="font-size: 14px; flex: none; width: 160px"
     hide-details background-color="#101010"
@@ -49,13 +55,24 @@
 
 
 
-    <!--
-    <div style="margin-left: 12px; width: 300px; height: 50px;
-    background-color: black; display: flex; color: white; font-size: 14px;
-    justify-content: center; align-items: center">
-      Ad
+    <div style="margin-left: 8px; width: 300px; height: 50px">
+
+      <adsbygoogle
+
+      :ad-style="{
+        display: 'inline-block',
+
+        width: '300px',
+        height: '50px',
+      }"
+
+      ad-client="ca-pub-7390527632812452"
+      ad-slot="9297057205"
+      
+      ad-format="rectangular"
+      data-full-width-responsive="false"/>
+
     </div>
-    -->
 
 
 

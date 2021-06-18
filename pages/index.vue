@@ -494,6 +494,15 @@ export default {
 </script>
 
 <style>
+*:not(input) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
 /* Hide scrollbar */
 
 html {

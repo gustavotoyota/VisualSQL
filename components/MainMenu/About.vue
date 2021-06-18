@@ -15,14 +15,15 @@
       
     <v-card>
 
-      <v-card-title>About</v-card-title>
+      <v-card-title>About Visual SQL</v-card-title>
       
       <v-divider/>
 
-      <v-card-text class="mt-4">
-        <div>Visual SQL</div>
-        <div>Developed by Kyota Langard</div>
-        <div><a href="mail:kyota.langard@gmail.com">kyota.langard@gmail.com</a></div>
+      <v-card-text class="content mt-5 mb-1">
+        Developed by Kyota Langard<br/>
+        <a href="mailto:kyota.langard@gmail.com">kyota.langard@gmail.com</a><br/>
+        
+        <div style="margin-top: 18px"><PrivacyPolicy/></div>
       </v-card-text>
 
       <v-divider/>
@@ -58,6 +59,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.content * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
 </style>
