@@ -63,7 +63,7 @@ function processNode(module, node, treeObj) {
 
   
 
-  if (node.props.name === '')
+  if (node.props.name === '' || !node.props.common)
     return nodeObj
 
 

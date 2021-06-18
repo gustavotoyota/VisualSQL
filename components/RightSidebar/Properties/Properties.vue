@@ -23,6 +23,8 @@
           style="display: inline-block; float: right">
 
             <v-checkbox hide-details label="Common"
+            v-model="$getters.activeNode.props.common"
+            :disabled="$getters.activeNode.props.name === ''"
             style="margin-top: -7px; position: relative; z-index: 9999"/>
 
           </div>
