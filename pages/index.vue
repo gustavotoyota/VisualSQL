@@ -481,7 +481,7 @@ export default {
 
         this.$state.saving.timeout = setTimeout(() => {
           $app.saveLoad.tryUpdateProjectFile()
-        }, 500)
+        }, 1000)
       },
     },
 
