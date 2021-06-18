@@ -76,7 +76,8 @@ export default {
         }
 
         fileReader.readAsText(file)
-      } catch {
+      } catch (err) {
+        console.log(err)
       }
     },
 

@@ -585,7 +585,9 @@ mutations.paste = async function (state, clipboardText) {
 
   try {
     clipboardObj = JSON.parse(clipboardText)
-  } catch {
+  } catch (err) {
+    console.log(err)
+    
     return
   }
 

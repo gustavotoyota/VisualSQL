@@ -69,7 +69,9 @@ saveLoad.tryUpdateProjectFile = async function () {
     
 
     $state.saving.modified = false
-  } catch {
+  } catch (err) {
+    console.log(err)
+    
     $state.saving.fileHandle = null
   }
 }
