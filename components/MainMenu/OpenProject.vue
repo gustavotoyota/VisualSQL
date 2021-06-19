@@ -3,7 +3,7 @@
 
     <v-icon dense>mdi-folder-open</v-icon>
 
-    <input ref="file"
+    <input ref="file" accept="application/json"
     class="d-none" type="file"
     @change="onFileChange"/>
 
@@ -55,7 +55,7 @@ export default {
         this.$state.saving.fileHandle = (await showOpenFilePicker({
           types: [{
             description: 'Visual SQL files',
-            accept: { 'application/json': ['.vsql'] },
+            accept: { 'application/json': [] },
           }],
         }))[0]
 

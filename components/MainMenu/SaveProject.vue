@@ -16,7 +16,7 @@ export default {
 
     async onClick(event) {
       if (window.showSaveFilePicker == null) {
-        saveAs($app.saveLoad.createProjectBlob(), 'project.vsql')
+        saveAs($app.saveLoad.createProjectBlob(), 'project.json')
 
         this.$state.saving.modified = false
 
@@ -29,7 +29,7 @@ export default {
         this.$state.saving.fileHandle = await showSaveFilePicker({
           types: [{
             description: 'Visual SQL files',
-            accept: { 'application/json': ['.vsql'] },
+            accept: { 'application/json': [] },
           }],
         })
 
