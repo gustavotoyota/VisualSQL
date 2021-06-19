@@ -328,7 +328,7 @@ TreeObj.prototype.processField = function (input, node) {
     output.push(input.substring(lastIndex, match.index))
     lastIndex = match.index + match[0].length
 
-    output.push(this.getRefNodeObj(match[1], node))
+    output.push(this.getRefNodeObj(match[1].replace('##', '#'), node))
   }
 
   return output
