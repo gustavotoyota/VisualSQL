@@ -255,7 +255,12 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
       writer.printLine('OFFSET', true)
       
       writer.incrementIndent()
-      writer.printField(obj.offset)
+
+      if (isFieldNumeric(obj.offset))
+        writer.printLine(`${obj.offset[0]} ROWS`)
+      else
+        writer.printField(obj.offset)
+
       writer.decrementIndent()
     }
   
@@ -263,7 +268,12 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
       writer.printLine('FETCH', true)
   
       writer.incrementIndent()
-      writer.printField(obj.limit)
+
+      if (isFieldNumeric(obj.limit))
+        writer.printLine(`FIRST ${obj.limit[0]} ROWS ONLY`)
+      else
+        writer.printField(obj.limit)
+
       writer.decrementIndent()
     }
   }
@@ -445,4 +455,7 @@ Writer.prototype.printIdentifier = function (identifier) {
 function isFieldEmpty(field) {
   return field.length === 0 ||
     (field.length === 1 && field[0] === '')
+}
+function isFieldNumeric(field) {
+  return field.length === 1 && !isNaN(field[0])
 }
