@@ -153,31 +153,13 @@ TreeObj.prototype.nodeTypeProcessing['table'] = function (node, inputs) {
   })
 }
 TreeObj.prototype.nodeTypeProcessing['node'] = function (node, inputs) {
-  // Get reference node object
-
-  let parts = node.props.nodeName.split('.', 2)
-
-  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
-
-  let refNode
-  if (refModule != null)
-    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
-
-  if (refNode == null) {
-    this.error.message = 'Query incomplete: referenced node not found.'
-    this.error.node = node
-    return
-  }
-
-  let refNodeObj = this.processNode(refModule, refNode)
-
-  return refNodeObj
+  return this.getRefNodeObj(node.props.nodeName, node)
 }
 TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
   return {
     objectType: 'sql',
 
-    sql: this.processField(node.props.sql),
+    sql: this.processField(node.props.sql, node),
   }
 }
 
@@ -253,7 +235,7 @@ function joinProcessing(node, inputs) {
   
   joinObj.joinType = node.type
   if (node.type !== 'cross-join')
-    joinObj.joinCondition = this.processField(node.props.condition)
+    joinObj.joinCondition = this.processField(node.props.condition, node)
 
   nodeObj.from.push(joinObj)
 
@@ -277,7 +259,7 @@ TreeObj.prototype.nodeTypeProcessing['filter'] = function (node, inputs) {
   if (nodeObj.where == null)
     nodeObj.where = []
 
-  nodeObj.where.push(this.processField(node.props.condition))
+  nodeObj.where.push(this.processField(node.props.condition, node))
 
   return nodeObj 
 }
@@ -285,12 +267,12 @@ TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'where', 'transform')
 
   nodeObj.group = node.props.group.active ? {
-    columns: this.processField(node.props.group.columns),
+    columns: this.processField(node.props.group.columns, node),
 
-    condition: this.processField(node.props.group.condition),
+    condition: this.processField(node.props.group.condition, node),
   } : null
 
-  nodeObj.select = this.processField(node.props.columns)
+  nodeObj.select = this.processField(node.props.columns, node)
   if (nodeObj.select === '')
     nodeObj.select = '*'
 
@@ -306,7 +288,7 @@ TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
 TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'distinct', 'sort')
 
-  nodeObj.sort = this.processField(node.props.columns)
+  nodeObj.sort = this.processField(node.props.columns, node)
 
   return nodeObj
 }
@@ -314,10 +296,10 @@ TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'sort', 'limit')
 
   nodeObj.limit = {
-    value: this.processField(node.props.limit.value),
+    value: this.processField(node.props.limit.value, node),
   }
 
-  nodeObj.offset = this.processField(node.props.offset)
+  nodeObj.offset = this.processField(node.props.offset, node)
 
   return nodeObj
 }
@@ -326,8 +308,51 @@ TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
 
 
 
-TreeObj.prototype.processField = function (field) {
-  return field.trim()
+
+TreeObj.prototype.processField = function (input, node) {
+  input = input.trim()
+
+  const regex = /#(\w+?\.\w+?)#/g
+
+  let output = []
+  let lastIndex = 0
+
+  while (true) {
+    const match = regex.exec(input)
+
+    if (match == null) {
+      output.push(input.substring(lastIndex))
+      break
+    }
+
+    output.push(input.substring(lastIndex, match.index))
+    lastIndex = match.index + match[0].length
+
+    output.push(this.getRefNodeObj(match[1], node))
+  }
+
+  return output
+}
+
+
+
+
+TreeObj.prototype.getRefNodeObj = function (fullName, node) {
+  let parts = fullName.split('.', 2)
+
+  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
+
+  let refNode
+  if (refModule != null)
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
+
+  if (refNode == null) {
+    this.error.message = 'Query incomplete: referenced node not found.'
+    this.error.node = node
+    return
+  }
+
+  return this.processNode(refModule, refNode)
 }
 
 
