@@ -7,8 +7,8 @@
     class="mx-5 mt-5"
     :height="60"
 
-    label="Limit (LIMIT/FETCH/TOP...)"
-    v-model="node.props.limit.value"
+    label="Offset (OFFSET)"
+    v-model="node.props.offset"
 
     :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
@@ -19,8 +19,8 @@
     class="mx-5 mt-5"
     :height="60"
 
-    label="Offset (OFFSET)"
-    v-model="node.props.offset"
+    label="Limit (LIMIT/FETCH/TOP...)"
+    v-model="node.props.limit"
 
     :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 

@@ -1,92 +1,13 @@
 export default function generateSQL(treeObj, options) {
-  let sqlObj = {}
+  const sqlObj = new SQLObj(treeObj, options)
 
-  sqlObj.treeObj = treeObj
-  sqlObj.options = options ?? {}
-  
-  sqlObj.sql = ''
+  const writer = new Writer(sqlObj)
 
+  writer.print(sqlObj.printCommons())
 
+  writer.print(sqlObj.printObj(treeObj.rootObj))
 
-
-  // Indentation
-
-  if (options.indentWithSpaces)
-    sqlObj.indentation = ' '.repeat(options.indentSize)
-  else
-    sqlObj.indentation = '\t'
-
-  sqlObj.indentLevel = 0
-  sqlObj.indentNext = true
-
-
-
-
-  // Print functions
-
-  sqlObj.incrementIndent = () => { ++sqlObj.indentLevel }
-  sqlObj.decrementIndent = () => { --sqlObj.indentLevel }
-
-
-
-
-  sqlObj.indent = () => {
-    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
-
-    if (!sqlObj.indentNext)
-      return
-
-    sqlObj.indentNext = false
-    
-    sqlObj.sql += indentation
-  }
-
-
-
-
-  sqlObj.print = (text, isField) => {
-    sqlObj.indent()
-
-    if (!isField) {
-      if (sqlObj.options.uppercaseKeywords)
-        text = text.toUpperCase()
-      else
-        text = text.toLowerCase()
-    }
-
-    sqlObj.sql += text
-  }
-  sqlObj.printLine = (text, isField) => {
-    sqlObj.print((text ?? '') + '\n', isField)
-
-    sqlObj.indentNext = true
-  }
-  
-
-
-
-  sqlObj.printLines = (text, initialIndent) => {
-    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
-
-    if (initialIndent)
-      sqlObj.indent()
-
-    const parts = text.split('\n')
-  
-    for (let i = 1; i < parts.length; ++i)
-      parts[i] = indentation + parts[i]
-  
-    sqlObj.sql += parts.join('\n') + '\n'
-
-    sqlObj.indentNext = true
-  }
-
-
-
-  
-  printCommons(sqlObj)
-
-  printObj(treeObj.rootObj, sqlObj, 0)
+  sqlObj.sql = writer.text
 
   return sqlObj
 }
@@ -94,33 +15,48 @@ export default function generateSQL(treeObj, options) {
 
 
 
-function printCommons(sqlObj) {
-  if (sqlObj.treeObj.commons.length === 0)
-    return
 
-  sqlObj.printLine('WITH')
+function SQLObj(treeObj, options) {
+  this.treeObj = treeObj
 
-  sqlObj.incrementIndent()
+  this.options = options
+}
 
-  for (let i = 0; i < sqlObj.treeObj.commons.length; ++i) {
-    let common = sqlObj.treeObj.commons[i]
 
-    printIdentifier(common.name, sqlObj)
-    sqlObj.printLine(' AS (')
+
+
+
+SQLObj.prototype.printCommons = function () {
+  if (this.treeObj.commons.length === 0)
+    return ''
+
+  const writer = new Writer(this)
+
+  writer.printLine('WITH', true)
+
+  writer.incrementIndent()
+
+  for (let i = 0; i < this.treeObj.commons.length; ++i) {
+    let common = this.treeObj.commons[i]
+
+    writer.printIdentifier(common.name)
+    writer.printLine(' AS (', true)
 
     
-    sqlObj.incrementIndent()
-    printObj(common.obj, sqlObj)
-    sqlObj.decrementIndent()
+    writer.incrementIndent()
+    writer.print(this.printObj(common.obj))
+    writer.decrementIndent()
     
 
-    sqlObj.print(')')
-    if (i < sqlObj.treeObj.commons.length - 1)
-      sqlObj.print(',')
-    sqlObj.printLine()
+    writer.print(')')
+    if (i < this.treeObj.commons.length - 1)
+    writer.print(',')
+    writer.printLine()
   }
 
-  sqlObj.decrementIndent()
+  writer.decrementIndent()
+
+  return writer.text
 }
 
 
@@ -129,191 +65,231 @@ function printCommons(sqlObj) {
 
 // Object printing
 
-const objectPrinting = {}
+SQLObj.prototype.objectPrinting = {}
 
-objectPrinting['set-operations'] = (obj, sqlObj) => {
-  function printSource(sourceObj) {
-    sqlObj.printLine('(')
-    sqlObj.incrementIndent()
-    printObj(sourceObj.obj, sqlObj)
-    sqlObj.decrementIndent()
-    sqlObj.printLine(')')
+
+
+
+SQLObj.prototype.printObj = function (obj) {
+  return this.objectPrinting[obj.objectType].call(this, obj)
+}
+
+
+
+
+SQLObj.prototype.objectPrinting['set-operations'] = function (obj) {
+  const printSource = (sourceObj) => {
+    writer.printLine('(')
+    writer.incrementIndent()
+    writer.print(this.printObj(sourceObj.obj))
+    writer.decrementIndent()
+    writer.printLine(')')
   }
 
+
+
+  const writer = new Writer(this)
 
 
   printSource(obj.sources[0])
 
 
-
   for (let i = 1; i < obj.sources.length; ++i) {
     let sourceObj = obj.sources[i]
-
 
     
     switch (sourceObj.operationType) {
       case 'union':
-        sqlObj.print('UNION')
+        writer.print('UNION', true)
         if (sourceObj.allowDuplicates)
-          sqlObj.print(' ALL')
+          writer.print(' ALL', true)
         break
-      case 'difference': sqlObj.print('EXCEPT'); break
-      case 'intersection': sqlObj.print('INTERSECT'); break
+      case 'difference': writer.print('EXCEPT', true); break
+      case 'intersection': writer.print('INTERSECT', true); break
     }
     
-    sqlObj.printLine()
-
+    writer.printLine()
 
 
     printSource(sourceObj)
   }
+
+
+  return writer.text
 }
-objectPrinting['sql'] = (obj, sqlObj) => {
-  sqlObj.printLines(obj.sql, true)
+SQLObj.prototype.objectPrinting['sql'] = function (obj) {
+  const writer = new Writer(this)
+
+  writer.printField(obj.sql)
+
+  return writer.text
 }
-objectPrinting['select'] = (obj, sqlObj) => {
-  function printSelectClause(obj, sqlObj) {
-    sqlObj.print('SELECT')
-    if (obj.distinct)
-      sqlObj.print(' DISTINCT')
+SQLObj.prototype.objectPrinting['select'] = function (obj) {
+  const printSelectClause = (obj) => {
+    writer.print('SELECT', true)
+
+    if (obj.distinct) {
+      if (isFieldEmpty(obj.distinct.columns)) {
+        writer.print(' DISTINCT', true)
+      } else {
+        writer.printLine()
+
+        writer.incrementIndent()
+
+        writer.printLine('DISTINCT ON (', true)
+
+        writer.incrementIndent()
+        writer.printField(obj.distinct.columns)
+        writer.decrementIndent()
+
+        writer.print(')')
+
+        writer.decrementIndent()
+      }
+    }
   
-    sqlObj.printLine()
+    writer.printLine()
   
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.select, true)
-    sqlObj.decrementIndent()
+    writer.incrementIndent()
+    writer.printField(obj.select)
+    writer.decrementIndent()
   }
-  function printFromClause(obj, sqlObj) {
-    function printSource(sourceObj) {
-      printSourceObj(sourceObj, sqlObj)
+  const printFromClause = (obj) => {
+    const printSource = (sourceObj) => {
+      writer.print(this.printSourceObj(sourceObj))
       
       if (sourceObj.alias || sourceObj.sourceType === 'object') {
-        sqlObj.print(' AS ')
-        printIdentifier(sourceObj.alias, sqlObj)
+        writer.print(' AS ', true)
+        writer.printIdentifier(sourceObj.alias)
       }
     }
 
 
 
-    sqlObj.printLine('FROM')
+    writer.printLine('FROM', true)
   
-    sqlObj.incrementIndent()
+    writer.incrementIndent()
   
     printSource(obj.from[0])
   
-    sqlObj.printLine()
+    writer.printLine()
     
     
     for (let i = 1; i < obj.from.length; ++i) {
       let sourceObj = obj.from[i]
   
       switch (sourceObj.joinType) {
-        case 'inner-join': sqlObj.print('INNER JOIN '); break
-        case 'left-join': sqlObj.print('LEFT JOIN '); break
-        case 'right-join': sqlObj.print('RIGHT JOIN '); break
-        case 'full-join': sqlObj.print('FULL JOIN '); break
-        case 'cross-join': sqlObj.print('CROSS JOIN '); break
+        case 'inner-join': writer.print('INNER JOIN '); break
+        case 'left-join': writer.print('LEFT JOIN '); break
+        case 'right-join': writer.print('RIGHT JOIN '); break
+        case 'full-join': writer.print('FULL JOIN '); break
+        case 'cross-join': writer.print('CROSS JOIN '); break
       }
   
       printSource(sourceObj)
   
       if (sourceObj.joinType !== 'cross-join') {
-        sqlObj.printLine(' ON')
+        writer.printLine(' ON', true)
   
-        sqlObj.incrementIndent()
-        sqlObj.print(sourceObj.joinCondition, true)
-        sqlObj.decrementIndent()
+        writer.incrementIndent()
+        writer.printField(sourceObj.joinCondition)
+        writer.decrementIndent()
       }
   
-      sqlObj.printLine()
+      writer.printLine()
     }
   
-    sqlObj.decrementIndent()
+    writer.decrementIndent()
   }
-  function printWhereClause(obj, sqlObj) {
+  const printWhereClause = (obj) => {
     if (!obj.where)
       return
   
-    sqlObj.printLine('WHERE')
+    writer.printLine('WHERE', true)
   
-    sqlObj.incrementIndent()
+    writer.incrementIndent()
   
     if (obj.where.length === 1)
-      sqlObj.printLines(obj.where[0], true)
+      writer.printField(obj.where[0])
     else {
-      sqlObj.printLines(`(${obj.where[0]})`, true)
+      writer.printField(`(${obj.where[0]})`)
+
       for (let i = 1; i < obj.where.length; ++i) {
-        sqlObj.print('AND (')
-        sqlObj.printLines(`${obj.where[i]})`)
+        writer.print('AND ', true)
+        writer.printField(`(${obj.where[i]})`)
       }
     }
   
-    sqlObj.decrementIndent()
+    writer.decrementIndent()
   }
-  function printGroupByClause(obj, sqlObj) {
+  const printGroupByClause = (obj) => {
     if (!obj.group)
       return
   
-    sqlObj.printLine('GROUP BY')
+    writer.printLine('GROUP BY', true)
   
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.group.columns, true)
-    sqlObj.decrementIndent()
+    writer.incrementIndent()
+    writer.printField(obj.group.columns)
+    writer.decrementIndent()
   
-    if (obj.group.condition !== '') {
-      sqlObj.printLine('HAVING')
+    if (!isFieldEmpty(obj.group.condition)) {
+      writer.printLine('HAVING', true)
   
-      sqlObj.incrementIndent()
-      sqlObj.printLines(obj.group.condition, true)
-      sqlObj.decrementIndent()
+      writer.incrementIndent()
+      writer.printField(obj.group.condition)
+      writer.decrementIndent()
     }
   }
-  function printOrderByClause(obj, sqlObj) {
-    if (!obj.sort)
+  const printOrderByClause = (obj) => {
+    if (obj.sort == null)
       return
   
-    sqlObj.printLine('ORDER BY')
-  
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.sort, true)
-    sqlObj.decrementIndent()
+    writer.printLine('ORDER BY', true)
+
+    writer.incrementIndent()
+    writer.printField(obj.sort)
+    writer.decrementIndent()
   }
-  function printLimitClause(obj, sqlObj) {
+  const printLimitClause = (obj) => {
     if (obj.offset) {
-      sqlObj.printLine('OFFSET')
+      writer.printLine('OFFSET', true)
       
-      sqlObj.incrementIndent()
-  
-      sqlObj.print(obj.offset, true)
-      sqlObj.printLine(' ROWS')
-  
-      sqlObj.decrementIndent()
+      writer.incrementIndent()
+
+      if (isFieldNumeric(obj.offset))
+        writer.printLine(`${obj.offset[0]} ROWS`)
+      else
+        writer.printField(obj.offset)
+
+      writer.decrementIndent()
     }
   
-    if (obj.limit && obj.limit.value) {
-      sqlObj.printLine('FETCH')
+    if (obj.limit) {
+      writer.printLine('FETCH', true)
   
-      sqlObj.incrementIndent()
-  
-      sqlObj.print('FIRST ')
-      sqlObj.print(obj.limit.value, true)
-      sqlObj.printLine(' ROWS ONLY')
-        
-      sqlObj.decrementIndent()
+      writer.incrementIndent()
+
+      if (isFieldNumeric(obj.limit))
+        writer.printLine(`FIRST ${obj.limit[0]} ROWS ONLY`)
+      else
+        writer.printField(obj.limit)
+
+      writer.decrementIndent()
     }
   }
 
 
 
+  const writer = new Writer(this)
 
-  // Select clauses
-  
-  printSelectClause(obj, sqlObj)
-  printFromClause(obj, sqlObj)
-  printWhereClause(obj, sqlObj)
-  printGroupByClause(obj, sqlObj)
-  printOrderByClause(obj, sqlObj)
-  printLimitClause(obj, sqlObj)
+  printSelectClause(obj)
+  printFromClause(obj)
+  printWhereClause(obj)
+  printGroupByClause(obj)
+  printOrderByClause(obj)
+  printLimitClause(obj)
+
+  return writer.text
 }
 
 
@@ -322,41 +298,164 @@ objectPrinting['select'] = (obj, sqlObj) => {
 
 // Source printing
 
-const sourcePrinting = {}
+SQLObj.prototype.sourcePrinting = {}
 
-sourcePrinting['table'] = (sourceObj, sqlObj) => {
-  printIdentifier(sourceObj.tableName, sqlObj)
-}
-sourcePrinting['common'] = (sourceObj, sqlObj) => {
-  printIdentifier(sqlObj.treeObj.commons[sourceObj.commonIdx].name, sqlObj)
-}
-sourcePrinting['object'] = (sourceObj, sqlObj) => {
-  sqlObj.printLine('(')
 
-  sqlObj.incrementIndent()
-  printObj(sourceObj.obj, sqlObj)
-  sqlObj.decrementIndent()
 
-  sqlObj.print(')')
+
+SQLObj.prototype.printSourceObj = function (sourceObj) {
+  return this.sourcePrinting[sourceObj.sourceType].call(this, sourceObj)
 }
 
 
 
 
+SQLObj.prototype.sourcePrinting['table'] = function (sourceObj) {
+  const writer = new Writer(this)
 
-function printObj(obj, sqlObj) {
-  objectPrinting[obj.objectType](obj, sqlObj)
+  writer.printIdentifier(sourceObj.tableName)
+
+  return writer.text
 }
-function printSourceObj(sourceObj, sqlObj) {
-  sourcePrinting[sourceObj.sourceType](sourceObj, sqlObj)
+SQLObj.prototype.sourcePrinting['common'] = function (sourceObj) {
+  const writer = new Writer(this)
+
+  writer.printIdentifier(this.treeObj.commons[sourceObj.commonIdx].name)
+
+  return writer.text
+}
+SQLObj.prototype.sourcePrinting['object'] = function (sourceObj) {
+  const writer = new Writer(this)
+
+  writer.printLine('(')
+
+  writer.incrementIndent()
+  writer.print(this.printObj(sourceObj.obj))
+  writer.decrementIndent()
+
+  writer.print(')')
+
+  return writer.text
 }
 
 
 
 
-function printIdentifier(identifier, sqlObj) {
-  if (identifier)
-    sqlObj.print('"' + identifier.replace('"', '""') + '"', true)
+
+// Print functionality
+
+function Writer(sqlObj) {
+  this.sqlObj = sqlObj
+  
+  if (sqlObj.options.indentWithSpaces)
+    this.indentation = ' '.repeat(sqlObj.options.indentSize)
   else
-    sqlObj.print('<missing>', true)
+    this.indentation = '\t'
+
+
+  
+
+  this.text = ''
+
+  this.indentLevel = 0
+  this.indentNext = true
+}
+
+
+
+
+
+Writer.prototype.incrementIndent = function () { ++this.indentLevel }
+Writer.prototype.decrementIndent = function () { --this.indentLevel }
+
+
+
+
+
+Writer.prototype.indent = function (force) {
+  if (!this.indentNext && !force)
+    return
+
+  this.indentNext = false
+
+  this.text += this.indentation.repeat(this.indentLevel)
+}
+
+
+
+
+Writer.prototype.print = function (text, capitalize) {
+  if (capitalize) {
+    if (this.sqlObj.options.uppercaseKeywords)
+      text = text.toUpperCase()
+    else
+      text = text.toLowerCase()
+  }
+
+  this.indent()
+
+  const parts = text.split('\n')
+
+  this.text += parts[0]
+
+  for (let i = 1; i < parts.length; ++i) {
+    this.text += '\n'
+
+    if (i === parts.length - 1 && parts[i] === '') {
+      this.indentNext = true
+      break
+    }
+
+    this.indent(true)
+
+    this.text += parts[i]
+  }
+}
+Writer.prototype.printLine = function (text, capitalize) {
+  this.print((text ?? '') + '\n', capitalize)
+}
+
+
+
+
+Writer.prototype.printField = function (field) {
+  if (isFieldEmpty(field)) {
+    this.printLine('<missing field>')
+    return
+  }
+
+  for (const part of field) {
+    if (part.constructor === String) {
+      this.print(part)
+    } else {
+      this.printLine()
+
+      this.incrementIndent()
+      this.print(this.sqlObj.printObj(part))
+      this.decrementIndent()
+    }
+  }
+
+  this.printLine()
+}
+
+
+
+
+Writer.prototype.printIdentifier = function (identifier) {
+  if (identifier)
+    this.print('"' + identifier.replace('"', '""') + '"')
+  else
+    this.print('<missing field>')
+}
+
+
+
+
+function isFieldEmpty(field) {
+  return field.length === 0 ||
+    (field.length === 1 && field[0] === '')
+}
+function isFieldNumeric(field) {
+  return field.length === 1 && !isNaN(field[0])
 }
