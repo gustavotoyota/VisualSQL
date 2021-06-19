@@ -1,92 +1,9 @@
 export default function generateSQL(treeObj, options) {
-  let sqlObj = {}
+  const sqlObj = new SQLObj(treeObj, options)
 
-  sqlObj.treeObj = treeObj
-  sqlObj.options = options ?? {}
-  
-  sqlObj.sql = ''
+  sqlObj.printCommons()
 
-
-
-
-  // Indentation
-
-  if (options.indentWithSpaces)
-    sqlObj.indentation = ' '.repeat(options.indentSize)
-  else
-    sqlObj.indentation = '\t'
-
-  sqlObj.indentLevel = 0
-  sqlObj.indentNext = true
-
-
-
-
-  // Print functions
-
-  sqlObj.incrementIndent = () => { ++sqlObj.indentLevel }
-  sqlObj.decrementIndent = () => { --sqlObj.indentLevel }
-
-
-
-
-  sqlObj.indent = () => {
-    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
-
-    if (!sqlObj.indentNext)
-      return
-
-    sqlObj.indentNext = false
-    
-    sqlObj.sql += indentation
-  }
-
-
-
-
-  sqlObj.print = (text, isField) => {
-    sqlObj.indent()
-
-    if (!isField) {
-      if (sqlObj.options.uppercaseKeywords)
-        text = text.toUpperCase()
-      else
-        text = text.toLowerCase()
-    }
-
-    sqlObj.sql += text
-  }
-  sqlObj.printLine = (text, isField) => {
-    sqlObj.print((text ?? '') + '\n', isField)
-
-    sqlObj.indentNext = true
-  }
-  
-
-
-
-  sqlObj.printLines = (text, initialIndent) => {
-    let indentation = sqlObj.indentation.repeat(sqlObj.indentLevel)
-
-    if (initialIndent)
-      sqlObj.indent()
-
-    const parts = text.split('\n')
-  
-    for (let i = 1; i < parts.length; ++i)
-      parts[i] = indentation + parts[i]
-  
-    sqlObj.sql += parts.join('\n') + '\n'
-
-    sqlObj.indentNext = true
-  }
-
-
-
-  
-  printCommons(sqlObj)
-
-  printObj(treeObj.rootObj, sqlObj, 0)
+  sqlObj.printObj(treeObj.rootObj)
 
   return sqlObj
 }
@@ -94,33 +11,58 @@ export default function generateSQL(treeObj, options) {
 
 
 
-function printCommons(sqlObj) {
-  if (sqlObj.treeObj.commons.length === 0)
+
+function SQLObj(treeObj, options) {
+  this.treeObj = treeObj
+  this.options = options ?? {}
+  
+  this.sql = ''
+
+
+
+
+  // Indentation
+
+  if (options.indentWithSpaces)
+    this.indentation = ' '.repeat(options.indentSize)
+  else
+    this.indentation = '\t'
+
+  this.indentLevel = 0
+  this.indentNext = true
+}
+
+
+
+
+
+SQLObj.prototype.printCommons = function () {
+  if (this.treeObj.commons.length === 0)
     return
 
-  sqlObj.printLine('WITH')
+  this.printLine('WITH')
 
-  sqlObj.incrementIndent()
+  this.incrementIndent()
 
-  for (let i = 0; i < sqlObj.treeObj.commons.length; ++i) {
-    let common = sqlObj.treeObj.commons[i]
+  for (let i = 0; i < this.treeObj.commons.length; ++i) {
+    let common = this.treeObj.commons[i]
 
-    printIdentifier(common.name, sqlObj)
-    sqlObj.printLine(' AS (')
+    this.printIdentifier(common.name)
+    this.printLine(' AS (')
 
     
-    sqlObj.incrementIndent()
-    printObj(common.obj, sqlObj)
-    sqlObj.decrementIndent()
+    this.incrementIndent()
+    this.printObj(common.obj)
+    this.decrementIndent()
     
 
-    sqlObj.print(')')
-    if (i < sqlObj.treeObj.commons.length - 1)
-      sqlObj.print(',')
-    sqlObj.printLine()
+    this.print(')')
+    if (i < this.treeObj.commons.length - 1)
+      this.print(',')
+    this.printLine()
   }
 
-  sqlObj.decrementIndent()
+  this.decrementIndent()
 }
 
 
@@ -129,15 +71,25 @@ function printCommons(sqlObj) {
 
 // Object printing
 
-const objectPrinting = {}
+SQLObj.prototype.objectPrinting = {}
 
-objectPrinting['set-operations'] = (obj, sqlObj) => {
-  function printSource(sourceObj) {
-    sqlObj.printLine('(')
-    sqlObj.incrementIndent()
-    printObj(sourceObj.obj, sqlObj)
-    sqlObj.decrementIndent()
-    sqlObj.printLine(')')
+
+
+
+SQLObj.prototype.printObj = function (obj) {
+  this.objectPrinting[obj.objectType].call(this, obj)
+}
+
+
+
+
+SQLObj.prototype.objectPrinting['set-operations'] = function (obj) {
+  const printSource = (sourceObj) => {
+    this.printLine('(')
+    this.incrementIndent()
+    this.printObj(sourceObj.obj)
+    this.decrementIndent()
+    this.printLine(')')
   }
 
 
@@ -153,153 +105,147 @@ objectPrinting['set-operations'] = (obj, sqlObj) => {
     
     switch (sourceObj.operationType) {
       case 'union':
-        sqlObj.print('UNION')
+        this.print('UNION')
         if (sourceObj.allowDuplicates)
-          sqlObj.print(' ALL')
+          this.print(' ALL')
         break
-      case 'difference': sqlObj.print('EXCEPT'); break
-      case 'intersection': sqlObj.print('INTERSECT'); break
+      case 'difference': this.print('EXCEPT'); break
+      case 'intersection': this.print('INTERSECT'); break
     }
     
-    sqlObj.printLine()
+    this.printLine()
 
 
 
     printSource(sourceObj)
   }
 }
-objectPrinting['sql'] = (obj, sqlObj) => {
-  sqlObj.printLines(obj.sql, true)
+SQLObj.prototype.objectPrinting['sql'] = function (obj) {
+  this.printLine(obj.sql, true)
 }
-objectPrinting['select'] = (obj, sqlObj) => {
-  function printSelectClause(obj, sqlObj) {
-    sqlObj.print('SELECT')
+SQLObj.prototype.objectPrinting['select'] = function (obj) {
+  const printSelectClause = (obj) => {
+    this.print('SELECT')
     if (obj.distinct)
-      sqlObj.print(' DISTINCT')
+      this.print(' DISTINCT')
   
-    sqlObj.printLine()
+    this.printLine()
   
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.select, true)
-    sqlObj.decrementIndent()
+    this.incrementIndent()
+    this.printLine(obj.select, true)
+    this.decrementIndent()
   }
-  function printFromClause(obj, sqlObj) {
-    function printSource(sourceObj) {
-      printSourceObj(sourceObj, sqlObj)
+  const printFromClause = (obj) => {
+    const printSource = (sourceObj) => {
+      this.printSourceObj(sourceObj)
       
       if (sourceObj.alias || sourceObj.sourceType === 'object') {
-        sqlObj.print(' AS ')
-        printIdentifier(sourceObj.alias, sqlObj)
+        this.print(' AS ')
+        this.printIdentifier(sourceObj.alias)
       }
     }
 
 
 
-    sqlObj.printLine('FROM')
+    this.printLine('FROM')
   
-    sqlObj.incrementIndent()
+    this.incrementIndent()
   
     printSource(obj.from[0])
   
-    sqlObj.printLine()
+    this.printLine()
     
     
     for (let i = 1; i < obj.from.length; ++i) {
       let sourceObj = obj.from[i]
   
       switch (sourceObj.joinType) {
-        case 'inner-join': sqlObj.print('INNER JOIN '); break
-        case 'left-join': sqlObj.print('LEFT JOIN '); break
-        case 'right-join': sqlObj.print('RIGHT JOIN '); break
-        case 'full-join': sqlObj.print('FULL JOIN '); break
-        case 'cross-join': sqlObj.print('CROSS JOIN '); break
+        case 'inner-join': this.print('INNER JOIN '); break
+        case 'left-join': this.print('LEFT JOIN '); break
+        case 'right-join': this.print('RIGHT JOIN '); break
+        case 'full-join': this.print('FULL JOIN '); break
+        case 'cross-join': this.print('CROSS JOIN '); break
       }
   
       printSource(sourceObj)
   
       if (sourceObj.joinType !== 'cross-join') {
-        sqlObj.printLine(' ON')
+        this.printLine(' ON')
   
-        sqlObj.incrementIndent()
-        sqlObj.print(sourceObj.joinCondition, true)
-        sqlObj.decrementIndent()
+        this.incrementIndent()
+        this.print(sourceObj.joinCondition, true)
+        this.decrementIndent()
       }
   
-      sqlObj.printLine()
+      this.printLine()
     }
   
-    sqlObj.decrementIndent()
+    this.decrementIndent()
   }
-  function printWhereClause(obj, sqlObj) {
+  const printWhereClause = (obj) => {
     if (!obj.where)
       return
   
-    sqlObj.printLine('WHERE')
+    this.printLine('WHERE')
   
-    sqlObj.incrementIndent()
+    this.incrementIndent()
   
     if (obj.where.length === 1)
-      sqlObj.printLines(obj.where[0], true)
+      this.printLine(obj.where[0], true)
     else {
-      sqlObj.printLines(`(${obj.where[0]})`, true)
+      this.printLine(`(${obj.where[0]})`, true)
+
       for (let i = 1; i < obj.where.length; ++i) {
-        sqlObj.print('AND (')
-        sqlObj.printLines(`${obj.where[i]})`)
+        this.print('AND ')
+        this.printLine(`(${obj.where[i]})`, true)
       }
     }
   
-    sqlObj.decrementIndent()
+    this.decrementIndent()
   }
-  function printGroupByClause(obj, sqlObj) {
+  const printGroupByClause = (obj) => {
     if (!obj.group)
       return
   
-    sqlObj.printLine('GROUP BY')
+    this.printLine('GROUP BY')
   
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.group.columns, true)
-    sqlObj.decrementIndent()
+    this.incrementIndent()
+    this.printLine(obj.group.columns, true)
+    this.decrementIndent()
   
     if (obj.group.condition !== '') {
-      sqlObj.printLine('HAVING')
+      this.printLine('HAVING')
   
-      sqlObj.incrementIndent()
-      sqlObj.printLines(obj.group.condition, true)
-      sqlObj.decrementIndent()
+      this.incrementIndent()
+      this.printLine(obj.group.condition, true)
+      this.decrementIndent()
     }
   }
-  function printOrderByClause(obj, sqlObj) {
-    if (!obj.sort)
+  const printOrderByClause = (obj) => {
+    if (obj.sort == null)
       return
   
-    sqlObj.printLine('ORDER BY')
+    this.printLine('ORDER BY')
   
-    sqlObj.incrementIndent()
-    sqlObj.printLines(obj.sort, true)
-    sqlObj.decrementIndent()
+    this.incrementIndent()
+    this.printLine(obj.sort, true)
+    this.decrementIndent()
   }
-  function printLimitClause(obj, sqlObj) {
+  const printLimitClause = (obj) => {
     if (obj.offset) {
-      sqlObj.printLine('OFFSET')
+      this.printLine('OFFSET')
       
-      sqlObj.incrementIndent()
-  
-      sqlObj.print(obj.offset, true)
-      sqlObj.printLine(' ROWS')
-  
-      sqlObj.decrementIndent()
+      this.incrementIndent()
+      this.printLine(obj.offset, true)
+      this.decrementIndent()
     }
   
     if (obj.limit && obj.limit.value) {
-      sqlObj.printLine('FETCH')
+      this.printLine('FETCH')
   
-      sqlObj.incrementIndent()
-  
-      sqlObj.print('FIRST ')
-      sqlObj.print(obj.limit.value, true)
-      sqlObj.printLine(' ROWS ONLY')
-        
-      sqlObj.decrementIndent()
+      this.incrementIndent()
+      this.printLine(obj.limit.value, true)
+      this.decrementIndent()
     }
   }
 
@@ -308,12 +254,12 @@ objectPrinting['select'] = (obj, sqlObj) => {
 
   // Select clauses
   
-  printSelectClause(obj, sqlObj)
-  printFromClause(obj, sqlObj)
-  printWhereClause(obj, sqlObj)
-  printGroupByClause(obj, sqlObj)
-  printOrderByClause(obj, sqlObj)
-  printLimitClause(obj, sqlObj)
+  printSelectClause(obj)
+  printFromClause(obj)
+  printWhereClause(obj)
+  printGroupByClause(obj)
+  printOrderByClause(obj)
+  printLimitClause(obj)
 }
 
 
@@ -322,41 +268,105 @@ objectPrinting['select'] = (obj, sqlObj) => {
 
 // Source printing
 
-const sourcePrinting = {}
+SQLObj.prototype.sourcePrinting = {}
 
-sourcePrinting['table'] = (sourceObj, sqlObj) => {
-  printIdentifier(sourceObj.tableName, sqlObj)
-}
-sourcePrinting['common'] = (sourceObj, sqlObj) => {
-  printIdentifier(sqlObj.treeObj.commons[sourceObj.commonIdx].name, sqlObj)
-}
-sourcePrinting['object'] = (sourceObj, sqlObj) => {
-  sqlObj.printLine('(')
 
-  sqlObj.incrementIndent()
-  printObj(sourceObj.obj, sqlObj)
-  sqlObj.decrementIndent()
 
-  sqlObj.print(')')
+
+SQLObj.prototype.printSourceObj = function (sourceObj) {
+  this.sourcePrinting[sourceObj.sourceType].call(this, sourceObj)
 }
 
 
 
 
-
-function printObj(obj, sqlObj) {
-  objectPrinting[obj.objectType](obj, sqlObj)
+SQLObj.prototype.sourcePrinting['table'] = function (sourceObj) {
+  this.printIdentifier(sourceObj.tableName)
 }
-function printSourceObj(sourceObj, sqlObj) {
-  sourcePrinting[sourceObj.sourceType](sourceObj, sqlObj)
+SQLObj.prototype.sourcePrinting['common'] = function (sourceObj) {
+  this.printIdentifier(this.treeObj.commons[sourceObj.commonIdx].name)
+}
+SQLObj.prototype.sourcePrinting['object'] = function (sourceObj) {
+  this.printLine('(')
+
+  this.incrementIndent()
+  this.printObj(sourceObj.obj)
+  this.decrementIndent()
+
+  this.print(')')
 }
 
 
 
 
-function printIdentifier(identifier, sqlObj) {
+
+// Print functionality
+
+SQLObj.prototype.incrementIndent = function () { ++this.indentLevel }
+SQLObj.prototype.decrementIndent = function () { --this.indentLevel }
+
+
+
+
+
+SQLObj.prototype.indent = function (force) {
+  if (!this.indentNext && !force)
+    return
+
+  this.indentNext = false
+
+  this.sql += this.indentation.repeat(this.indentLevel)
+}
+
+
+
+
+SQLObj.prototype.print = function (text, isField) {
+  if (!isField) {
+    if (this.options.uppercaseKeywords)
+      text = text.toUpperCase()
+    else
+      text = text.toLowerCase()
+  }
+
+  this.indent()
+
+  const parts = text.split('\n')
+
+  if (isField && text.trim() === '') {
+    this.sql += '<missing field>'
+
+    if (parts.length > 1)
+      this.sql += '\n'
+
+    return
+  }
+
+  this.sql += parts[0]
+
+  for (let i = 1; i < parts.length; ++i) {
+    this.sql += '\n'
+    
+    if (parts[i] === '')
+      continue
+
+    this.indent(true)
+
+    this.sql += parts[i]
+  }
+}
+SQLObj.prototype.printLine = function (text, isField) {
+  this.print((text ?? '') + '\n', isField)
+
+  this.indentNext = true
+}
+
+
+
+
+SQLObj.prototype.printIdentifier = function (identifier) {
   if (identifier)
-    sqlObj.print('"' + identifier.replace('"', '""') + '"', true)
+    this.print('"' + identifier.replace('"', '""') + '"', true)
   else
-    sqlObj.print('<missing>', true)
+    this.print('', true)
 }
