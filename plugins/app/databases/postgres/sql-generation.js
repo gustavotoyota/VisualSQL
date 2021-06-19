@@ -127,8 +127,26 @@ SQLObj.prototype.objectPrinting['sql'] = function (obj) {
 SQLObj.prototype.objectPrinting['select'] = function (obj) {
   const printSelectClause = (obj) => {
     writer.print('SELECT', true)
-    if (obj.distinct)
-      writer.print(' DISTINCT', true)
+
+    if (obj.distinct) {
+      if (isFieldEmpty(obj.distinct.columns)) {
+        writer.print(' DISTINCT', true)
+      } else {
+        writer.printLine()
+
+        writer.incrementIndent()
+
+        writer.printLine('DISTINCT ON (', true)
+
+        writer.incrementIndent()
+        writer.printField(obj.distinct.columns)
+        writer.decrementIndent()
+
+        writer.print(')')
+
+        writer.decrementIndent()
+      }
+    }
   
     writer.printLine()
   
@@ -214,7 +232,7 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
     writer.printField(obj.group.columns)
     writer.decrementIndent()
   
-    if (obj.group.condition !== '') {
+    if (!isFieldEmpty(obj.group.condition)) {
       writer.printLine('HAVING', true)
   
       writer.incrementIndent()
@@ -241,11 +259,11 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
       writer.decrementIndent()
     }
   
-    if (obj.limit && obj.limit.value) {
+    if (obj.limit) {
       writer.printLine('FETCH', true)
   
       writer.incrementIndent()
-      writer.printField(obj.limit.value)
+      writer.printField(obj.limit)
       writer.decrementIndent()
     }
   }
@@ -391,8 +409,8 @@ Writer.prototype.printLine = function (text, capitalize) {
 
 
 Writer.prototype.printField = function (field) {
-  if (field.length === 1 && field[0] === '') {
-    this.printLine('<missing>')
+  if (isFieldEmpty(field)) {
+    this.printLine('<missing field>')
     return
   }
 
@@ -400,8 +418,9 @@ Writer.prototype.printField = function (field) {
     if (part.constructor === String) {
       this.print(part)
     } else {
-      this.incrementIndent()
       this.printLine()
+
+      this.incrementIndent()
       this.print(this.sqlObj.printObj(part))
       this.decrementIndent()
     }
@@ -418,4 +437,12 @@ Writer.prototype.printIdentifier = function (identifier) {
     this.print('"' + identifier.replace('"', '""') + '"')
   else
     this.print('<missing field>')
+}
+
+
+
+
+function isFieldEmpty(field) {
+  return field.length === 0 ||
+    (field.length === 1 && field[0] === '')
 }
