@@ -28,7 +28,6 @@ export default {
       try {
         this.$state.saving.fileHandle = await showSaveFilePicker({
           types: [{
-            description: 'Visual SQL files',
             accept: { 'application/json': [] },
           }],
         })
