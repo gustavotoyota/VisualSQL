@@ -216,6 +216,8 @@ mutations.createNode = function (state, payload) {
 
     props: {
       name: '',
+      common: false,
+
       description: '',
     },
   }
