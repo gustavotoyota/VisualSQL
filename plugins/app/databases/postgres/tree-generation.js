@@ -1,27 +1,32 @@
 export default function generateTree(module, node) {
-  let treeObj = {}
+  return new TreeObj(module, node)
+}
 
-  treeObj.error = {
+
+
+
+function TreeObj(module, node) {
+  this.error = {
     message: null,
     node: null,
   }
 
-  treeObj.commons = []
+  this.commons = []
 
-  treeObj.rootObj = processNode(module, node, treeObj)
-
-  return treeObj
+  this.rootObj = this.processNode(module, node)
 }
 
 
-function processNode(module, node, treeObj) {
+
+
+TreeObj.prototype.processNode = function(module, node) {
   // Check node type
 
   const database = $app.databases.data[$state.project.sql.database]
 
   if ((database.infos.disabledNodeTypes || []).includes(node.type)) {
-    treeObj.error.message = `Invalid query: ${$app.nodeTypes[node.type].title} node doesn\'t exist in current database.`
-    treeObj.error.node = node
+    this.error.message = `Invalid query: ${$app.nodeTypes[node.type].title} node doesn\'t exist in current database.`
+    this.error.node = node
     return
   }
 
@@ -35,15 +40,15 @@ function processNode(module, node, treeObj) {
   for (let linkId of node.incomingLinks) {
     let link = module.data.links.map[linkId]
     if (link == null) {
-      treeObj.error.message = 'Query incomplete: node input missing.'
-      treeObj.error.node = node
+      this.error.message = 'Query incomplete: node input missing.'
+      this.error.node = node
       return
     }
 
     let input = module.data.nodes.map[link.from]
-    let inputObj = processNode(module, input, treeObj)
+    let inputObj = this.processNode(module, input)
 
-    if (treeObj.error.message)
+    if (this.error.message)
       return
 
     inputs.push({
@@ -58,62 +63,64 @@ function processNode(module, node, treeObj) {
 
   // Node type processing
 
-  let nodeObj = nodeTypeProcessing[node.type](node, inputs, treeObj)
+  let nodeObj = this.nodeTypeProcessing[node.type].call(this, node, inputs)
 
 
+
+
+  // Proess common
   
+  if (node.props.common && node.props.name !== '') {
+    // Find common
 
-  if (node.props.name === '')
-    return nodeObj
-
-
-    
-
-  // Find common
-
-  let commonFullName = module.name + '.' + node.props.name
-  let commonIdx = treeObj.commons.findIndex(
-    common => common.fullName === commonFullName)
+    let commonFullName = module.name + '.' + node.props.name
+    let commonIdx = this.commons.findIndex(
+      common => common.fullName === commonFullName)
 
 
 
 
-  // Common not found: Create common
+    // Common not found: Create common
 
-  if (commonIdx < 0) {
-    commonIdx = treeObj.commons.length
+    if (commonIdx < 0) {
+      commonIdx = this.commons.length
 
-    treeObj.commons.push({
-      name: node.props.name,
-      fullName: commonFullName,
+      this.commons.push({
+        name: node.props.name,
+        fullName: commonFullName,
 
-      module: module,
-      node: node,
+        module: module,
+        node: node,
 
-      obj: nodeObj,
+        obj: nodeObj,
+      })
+    }
+
+
+
+
+    // Resolve conflicts
+
+    let conflicts = this.commons.filter(
+      common => common.node.props.name === node.props.name)
+
+    if (conflicts.length > 1)
+      for (let conflict of conflicts)
+        conflict.name = conflict.fullName.replace('.', '_')
+
+
+
+
+    nodeObj = createSelect({
+      sourceType: 'common',
+      
+      commonIdx: commonIdx,
     })
   }
 
 
 
-
-  // Resolve conflicts
-
-  let conflicts = treeObj.commons.filter(
-    common => common.node.props.name === node.props.name)
-
-  if (conflicts.length > 1)
-    for (let conflict of conflicts)
-      conflict.name = conflict.fullName.replace('.', '_')
-
-
-
-
-  return createSelect({
-    sourceType: 'common',
-    
-    commonIdx: commonIdx,
-  })
+  return nodeObj
 }
 
 
@@ -131,46 +138,28 @@ const sqlClauseLevels = {
 
 
 
-let nodeTypeProcessing = {}
+TreeObj.prototype.nodeTypeProcessing = {}
 
 
 
 
 // Data sources
 
-nodeTypeProcessing['table'] = (node, inputs, treeObj) => {
+TreeObj.prototype.nodeTypeProcessing['table'] = function (node, inputs) {
   return createSelect({
     sourceType: 'table',
 
     tableName: node.props.tableName,
   })
 }
-nodeTypeProcessing['node'] = (node, inputs, treeObj) => {
-  // Get reference node object
-
-  let parts = node.props.nodeName.split('.', 2)
-
-  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
-
-  let refNode
-  if (refModule != null)
-    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
-
-  if (refNode == null) {
-    treeObj.error.message = 'Query incomplete: referenced node not found.'
-    treeObj.error.node = node
-    return
-  }
-
-  let refNodeObj = processNode(refModule, refNode, treeObj)
-
-  return refNodeObj
+TreeObj.prototype.nodeTypeProcessing['node'] = function (node, inputs) {
+  return this.getRefNodeObj(node.props.nodeName, node)
 }
-nodeTypeProcessing['sql'] = (node, inputs, treeObj) => {
+TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
   return {
     objectType: 'sql',
 
-    sql: processField(node.props.sql),
+    sql: this.processField(node.props.sql, node),
   }
 }
 
@@ -179,7 +168,7 @@ nodeTypeProcessing['sql'] = (node, inputs, treeObj) => {
 
 // Set operations
 
-function setOperationProcessing(node, inputs, treeObj) {
+function setOperationProcessing(node, inputs) {
   // First object
 
   let nodeObj
@@ -215,16 +204,16 @@ function setOperationProcessing(node, inputs, treeObj) {
   return nodeObj
 }
 
-nodeTypeProcessing['union'] = setOperationProcessing
-nodeTypeProcessing['difference'] = setOperationProcessing
-nodeTypeProcessing['intersection'] = setOperationProcessing
+TreeObj.prototype.nodeTypeProcessing['union'] = setOperationProcessing
+TreeObj.prototype.nodeTypeProcessing['difference'] = setOperationProcessing
+TreeObj.prototype.nodeTypeProcessing['intersection'] = setOperationProcessing
 
 
 
 
 // Joins
 
-function joinProcessing(node, inputs, treeObj) {
+function joinProcessing(node, inputs) {
   // First object
 
   let nodeObj = initNodeObj(inputs[0], 'from', 'from')
@@ -246,7 +235,7 @@ function joinProcessing(node, inputs, treeObj) {
   
   joinObj.joinType = node.type
   if (node.type !== 'cross-join')
-    joinObj.joinCondition = processField(node.props.condition)
+    joinObj.joinCondition = this.processField(node.props.condition, node)
 
   nodeObj.from.push(joinObj)
 
@@ -255,65 +244,116 @@ function joinProcessing(node, inputs, treeObj) {
   return nodeObj
 }
 
-nodeTypeProcessing['inner-join'] = joinProcessing
-nodeTypeProcessing['left-join'] = joinProcessing
-nodeTypeProcessing['right-join'] = joinProcessing
-nodeTypeProcessing['full-join'] = joinProcessing
-nodeTypeProcessing['cross-join'] = joinProcessing
+TreeObj.prototype.nodeTypeProcessing['inner-join'] = joinProcessing
+TreeObj.prototype.nodeTypeProcessing['left-join'] = joinProcessing
+TreeObj.prototype.nodeTypeProcessing['right-join'] = joinProcessing
+TreeObj.prototype.nodeTypeProcessing['full-join'] = joinProcessing
+TreeObj.prototype.nodeTypeProcessing['cross-join'] = joinProcessing
 
 
 
 
-nodeTypeProcessing['filter'] = (node, inputs, treeObj) => {
+TreeObj.prototype.nodeTypeProcessing['filter'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'where', 'where')
   
   if (nodeObj.where == null)
     nodeObj.where = []
 
-  nodeObj.where.push(processField(node.props.condition))
+  nodeObj.where.push(this.processField(node.props.condition, node))
 
   return nodeObj 
 }
-nodeTypeProcessing['transform'] = (node, inputs, treeObj) => {
+TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'where', 'transform')
 
   nodeObj.group = node.props.group.active ? {
-    columns: processField(node.props.group.columns),
+    columns: this.processField(node.props.group.columns, node),
 
-    condition: node.props.group.condition.trim(),
+    condition: this.processField(node.props.group.condition, node),
   } : null
 
-  nodeObj.select = node.props.columns.trim()
-  if (nodeObj.select === '')
-    nodeObj.select = '*'
+  nodeObj.select = this.processField(node.props.columns, node)
 
   return nodeObj
 }
-nodeTypeProcessing['distinct'] = (node, inputs, treeObj) => {
+TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'transform', 'distinct')
 
-  nodeObj.distinct = true
-
-  return nodeObj
-}
-nodeTypeProcessing['sort'] = (node, inputs, treeObj) => {
-  let nodeObj = initNodeObj(inputs[0], 'distinct', 'sort')
-
-  nodeObj.sort = processField(node.props.columns)
-
-  return nodeObj
-}
-nodeTypeProcessing['limit'] = (node, inputs, treeObj) => {
-  let nodeObj = initNodeObj(inputs[0], 'sort', 'limit')
-
-  nodeObj.limit = {
-    value: node.props.limit.value,
+  nodeObj.distinct = {
+    columns: node.props.columns
   }
 
-  nodeObj.offset = node.props.offset
+  return nodeObj
+}
+TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
+  let nodeObj = initNodeObj(inputs[0], 'distinct', 'sort')
+
+  nodeObj.sort = this.processField(node.props.columns, node)
 
   return nodeObj
 }
+TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
+  let nodeObj = initNodeObj(inputs[0], 'sort', 'limit')
+
+  nodeObj.offset = node.props.offset ?
+    this.processField(node.props.offset, node) : null
+  nodeObj.limit = node.props.limit ?
+    this.processField(node.props.limit, node) : null
+
+  return nodeObj
+}
+
+
+
+
+
+
+TreeObj.prototype.processField = function (input, node) {
+  input = input.trim()
+
+  const regex = /#(\w+?\.\w+?)#/g
+
+  let output = []
+  let lastIndex = 0
+
+  while (true) {
+    const match = regex.exec(input)
+
+    if (match == null) {
+      output.push(input.substring(lastIndex))
+      break
+    }
+
+    output.push(input.substring(lastIndex, match.index))
+    lastIndex = match.index + match[0].length
+
+    output.push(this.getRefNodeObj(match[1].replace('##', '#'), node))
+  }
+
+  return output
+}
+
+
+
+
+TreeObj.prototype.getRefNodeObj = function (fullName, node) {
+  let parts = fullName.split('.', 2)
+
+  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
+
+  let refNode
+  if (refModule != null)
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
+
+  if (refNode == null) {
+    this.error.message = 'Query incomplete: referenced node not found.'
+    this.error.node = node
+    return
+  }
+
+  return this.processNode(refModule, refNode)
+}
+
 
 
 
@@ -357,18 +397,6 @@ function createSelect(source) {
       source,
     ],
 
-    select: '*',
+    select: ['*'],
   }
-}
-
-
-
-
-function processField(field) {
-  const trimmed = field.trim()
-  
-  if (trimmed === '')
-    return '<missing>'
-
-  return trimmed
 }
