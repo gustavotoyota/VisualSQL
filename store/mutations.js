@@ -71,7 +71,7 @@ mutations.resetProject = function (state) {
 
 
 
-  this.commit('createModule', 'module_1')
+  this.commit('createModule', 'module1')
 }
   
 
