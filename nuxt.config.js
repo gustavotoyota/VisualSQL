@@ -112,6 +112,7 @@ export default {
   
   googleAnalytics: {
     id: 'UA-199828197-1',
+    require: ['displayfeatures'],
   },
 
 
