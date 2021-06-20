@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="600" v-model="active">
+  <v-dialog max-width="650" v-model="active">
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -20,19 +20,20 @@
       
       <v-divider/>
 
-      <v-card-text style="padding: 0; display: flex">
+      <v-card-text style="padding: 0; display: flex; height: 360px">
 
-        <v-list dense style="width: 175px; height: 350px; overflow-y: auto">
+        <v-list dense style="width: 175px; overflow-y: scroll;
+        border-right: 1px solid #383838">
 
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Node creation</v-list-item-title>
+              <v-list-item-title>Creating nodes</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Node linking</v-list-item-title>
+              <v-list-item-title>Linking nodes</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -44,19 +45,19 @@
 
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>SQL generation</v-list-item-title>
+              <v-list-item-title>Generating SQL</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Modules</v-list-item-title>
+              <v-list-item-title>Using modules</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Node name</v-list-item-title>
+              <v-list-item-title>Named nodes</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -80,8 +81,28 @@
 
         </v-list>
 
-        <div style="flex: 1">
-          asd
+        <div style="flex: 1; overflow-y: scroll;
+        background-color: #101010;
+        padding-top: 30px; padding-left: 30px">
+
+          <img src="/help/creating-nodes.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
+          <img src="/help/linking-nodes.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
+          <img src="/help/node-types.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
+          <img src="/help/generating-sql.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
+          <img src="/help/using-modules.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
+          <img src="/help/named-nodes.png"
+          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+
         </div>
 
       </v-card-text>
