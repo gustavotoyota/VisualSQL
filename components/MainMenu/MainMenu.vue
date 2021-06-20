@@ -26,12 +26,6 @@
 
 
 
-    <ToolbarButton tooltip="Help" btn-style="display: none">
-      <v-icon dense>mdi-help-circle</v-icon>
-    </ToolbarButton>
-
-
-
     <v-select dense outlined height="30" class="mx-1"
     style="font-size: 14px; flex: none; width: 160px"
     hide-details background-color="#101010"
@@ -46,10 +40,12 @@
     <v-divider vertical inset class="mx-2"/>
 
 
-    
-    <ToolbarButton btn-style="width: auto">
-      Help
+
+    <ToolbarButton tooltip="Help" btn-style="display: none">
+      <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>
+    
+    <Help/>
 
     <About/>
 
