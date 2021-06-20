@@ -861,3 +861,24 @@ mutations.redo = function (state) {
   
   module.data = JSON.parse(tab.states.list[++tab.states.currentIdx])
 }
+
+
+
+
+// Snackbar
+
+let snackbarTimeout
+
+mutations.showSnackbar = function (state, payload) {
+  state.snackbar.text = payload.text
+  state.snackbar.color = payload.color
+  state.snackbar.timeout = payload.timeout
+
+  state.snackbar.active = true
+
+  clearTimeout(state.snackbar.timeoutId)
+  
+  state.snackbar.timeoutId = setTimeout(() => {
+    state.snackbar.active = false
+  }, payload.timeout)
+}

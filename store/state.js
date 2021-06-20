@@ -135,8 +135,12 @@ export default () => ({
 
   snackbar: {
     active: false,
-    
+
     text: '',
+    color: '',
+    timeout: 0,
+
+    timeoutId: null,
   },
 
 
