@@ -311,7 +311,7 @@ TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
 TreeObj.prototype.processField = function (input, node) {
   input = input.trim()
 
-  const regex = /#(\w+?\.\w+?)#/g
+  const regex = /#<([^\r\n]+?\.[^\r\n]+?)>#/g
 
   let output = []
   let lastIndex = 0
@@ -327,7 +327,7 @@ TreeObj.prototype.processField = function (input, node) {
     output.push(input.substring(lastIndex, match.index))
     lastIndex = match.index + match[0].length
 
-    output.push(this.getRefNodeObj(match[1].replace('##', '#'), node))
+    output.push(this.getRefNodeObj(match[1], node))
   }
 
   return output
