@@ -45,7 +45,11 @@
 
     <v-divider vertical inset class="mx-2"/>
 
-  
+
+    
+    <ToolbarButton btn-style="width: auto">
+      Help
+    </ToolbarButton>
 
     <About/>
 

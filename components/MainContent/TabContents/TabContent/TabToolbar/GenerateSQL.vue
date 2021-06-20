@@ -1,10 +1,10 @@
 <template>
   <div>
-
-    <v-btn depressed small text class="px-2"
+    
+    <ToolbarButton btn-style="width: auto"
     :disabled="disabled" @click="generateSQL">
       Generate SQL
-    </v-btn>
+    </ToolbarButton>
 
 
     <v-dialog max-width="750" v-model="dialog">
