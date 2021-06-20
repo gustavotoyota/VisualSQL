@@ -61,6 +61,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/gtm',
     ['@nuxtjs/google-adsense', { id: 'ca-pub-7390527632812452' }],
   ],
 
@@ -109,9 +110,16 @@ export default {
     host: '0.0.0.0' // default: localhost
   },
 
+
+  
+  gtm: {
+    id: 'GTM-KH4V429'
+  },
+
   
   googleAnalytics: {
     id: 'UA-199828197-1',
+    require: ['displayfeatures'],
   },
 
 
