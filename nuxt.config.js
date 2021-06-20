@@ -36,7 +36,6 @@ export default {
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
     { src: '~/plugins/expand-transition/expand-transition.js' },
-    { src: '~/plugins/clipboard.js' },
 
     { src: '~/plugins/global-mixin.js' },
     { src: '~/plugins/store-utils.js' },

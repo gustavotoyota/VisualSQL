@@ -565,7 +565,7 @@ mutations.copySelection = function (state) {
 
   
 
-  writeToClipboard(JSON.stringify({
+  $utils.writeToClipboard(JSON.stringify({
     nodes: nodes,
     links: links,
   }, null, 2))
@@ -573,7 +573,7 @@ mutations.copySelection = function (state) {
 mutations.paste = async function (state, clipboardText) {
   // Get clipboard text
 
-  clipboardText = clipboardText || await readFromClipboard()
+  clipboardText = clipboardText || await $utils.readFromClipboard()
 
   if (clipboardText === '')
     return
