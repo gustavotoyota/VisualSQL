@@ -47,8 +47,8 @@
             style="position: relative; top: 18px"></div>
 
             <img :class="card.id" :src="`/help/${card.id}.png`"
-            style="outline: 1px solid #505050"
-            v-intersect="{ handler: onIntersect, options: { threshold: [1] } }"/>
+            style="width: 400px; height: 300px; outline: 1px solid #505050"
+            v-intersect="{ handler: onIntersect, options: { threshold: 1 } }"/>
 
           </div>
 
@@ -113,8 +113,6 @@ export default {
           continue
 
         this.activeCardId = entry.target.className
-
-        console.log(entry)
       }
     },
 
