@@ -85,23 +85,23 @@
         background-color: #101010;
         padding-top: 30px; padding-left: 30px">
 
-          <img src="/help/creating-nodes.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/creating-nodes.png"/>
 
-          <img src="/help/linking-nodes.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/linking-nodes.png"/>
 
-          <img src="/help/node-types.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/node-types.png"/>
 
-          <img src="/help/generating-sql.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/generating-sql.png"/>
 
-          <img src="/help/using-modules.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/using-modules.png"/>
 
-          <img src="/help/named-nodes.png"
-          style="display: block; outline: 1px solid #505050; margin-bottom: 31px"/>
+          <img class="card" src="/help/named-nodes.png"/>
+
+          <img class="card" src="/help/node-description.png"/>
+
+          <img class="card" src="/help/column-tracking.png"/>
+
+          <img class="card" src="/help/subquery-referencing.png"/>
 
         </div>
 
@@ -140,6 +140,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.card {
+  display: block;
+  
+  margin-bottom: 31px;
+  
+  outline: 1px solid #505050;
+}
 </style>
