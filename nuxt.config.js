@@ -4,7 +4,7 @@ import colors from 'vuetify/es5/util/colors'
 
 
 const title = 'Visual SQL'
-const description = 'Build SQL queries visually and avoid the inconvenient side of SQL with Visual SQL, a free node-based tool for efficient SQL query building.'
+const description = 'Build SQL queries visually and avoid the inconvenient side of SQL with Visual SQL, a free online node-based tool for efficient SQL query building.'
 
 
 
@@ -36,6 +36,7 @@ export default {
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
     { src: '~/plugins/expand-transition/expand-transition.js' },
+    { src: '~/plugins/intersection-observer.js' },
 
     { src: '~/plugins/global-mixin.js' },
     { src: '~/plugins/store-utils.js' },

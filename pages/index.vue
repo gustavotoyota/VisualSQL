@@ -501,19 +501,19 @@ export default {
 
 
 
-/* Hide scrollbar */
+
 
 html {
+  /* Hide scrollbar */
   overflow-y: hidden;
-}
 
-
-
-/* Disable pull-to-refresh */
-
-html {
+  /* Disable pull-to-refresh */
   overscroll-behavior-y: none;
+
+  /* Enable smooth scrolling */
+  scroll-behavior: smooth;
 }
+
 
 
 
