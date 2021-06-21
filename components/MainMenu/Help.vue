@@ -25,83 +25,28 @@
         <v-list dense style="width: 175px; overflow-y: scroll;
         border-right: 1px solid #383838">
 
-          <v-list-item>
+          <v-list-item
+          v-for="(card, index) in cards" :key="index"
+          @click="goTo(card.id)">
             <v-list-item-content>
-              <v-list-item-title>Creating nodes</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Linking nodes</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Node types</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Generating SQL</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Using modules</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Named nodes</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Node description</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Subquery referencing</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Column tracking</v-list-item-title>
+              <v-list-item-title>{{ card.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
         </v-list>
 
-        <div style="flex: 1; overflow-y: scroll;
+        <div id="help-container"
+        style="flex: 1; overflow-y: scroll;
         background-color: #101010;
         padding-top: 30px; padding-left: 30px">
 
-          <img class="card" src="/help/creating-nodes.png"/>
+          <div v-for="(card, index) in cards" :key="index">
+            <div :id="`help-${card.id}`"
+            style="position: relative; top: 18px"></div>
 
-          <img class="card" src="/help/linking-nodes.png"/>
-
-          <img class="card" src="/help/node-types.png"/>
-
-          <img class="card" src="/help/generating-sql.png"/>
-
-          <img class="card" src="/help/using-modules.png"/>
-
-          <img class="card" src="/help/named-nodes.png"/>
-
-          <img class="card" src="/help/node-description.png"/>
-
-          <img class="card" src="/help/column-tracking.png"/>
-
-          <img class="card" src="/help/subquery-referencing.png"/>
+            <img class="card"
+            :src="`/help/${card.id}.png`"/>
+          </div>
 
         </div>
 
@@ -133,7 +78,29 @@ export default {
   data() {
     return {
       active: false,
+
+      cards: [
+        { id: 'creating-nodes', title: 'Creating nodes' },
+        { id: 'linking-nodes', title: 'Linking nodes' },
+        { id: 'node-types', title: 'Node types' },
+        { id: 'generating-sql', title: 'Generating SQL' },
+        { id: 'modules', title: 'Modules' },
+        { id: 'named-nodes', title: 'Named nodes' },
+        { id: 'node-description', title: 'Node description' },
+        { id: 'column-tracking', title: 'Column tracking' },
+        { id: 'subquery-referencing', title: 'Subquery referencing' },
+      ],
     }
+  },
+
+
+
+  methods: {
+
+    goTo(target) {
+      this.$vuetify.goTo(`#help-${target}`, { container: '#help-container' })
+    },
+
   },
 
 
