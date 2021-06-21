@@ -25,9 +25,9 @@
         <v-list dense style="width: 175px; overflow-y: scroll;
         border-right: 1px solid #383838">
 
-          <v-list-item
+          <v-list-item @click="goTo(card.id)"
           v-for="(card, index) in cards" :key="index"
-          @click="goTo(card.id)">
+          :input-value="card.id === activeCardId">
             <v-list-item-content>
               <v-list-item-title>{{ card.title }}</v-list-item-title>
             </v-list-item-content>
@@ -40,12 +40,16 @@
         background-color: #101010;
         padding-top: 30px; padding-left: 30px">
 
-          <div v-for="(card, index) in cards" :key="index">
+          <div style="margin-bottom: 31px"
+          v-for="(card, index) in cards" :key="index">
+
             <div :id="`help-${card.id}`"
             style="position: relative; top: 18px"></div>
 
-            <img class="card"
-            :src="`/help/${card.id}.png`"/>
+            <img :class="card.id" :src="`/help/${card.id}.png`"
+            style="outline: 1px solid #505050"
+            v-intersect="{ handler: onIntersect, options: { threshold: [1] } }"/>
+
           </div>
 
         </div>
@@ -79,6 +83,8 @@ export default {
     return {
       active: false,
 
+      activeCardId: 'creating-nodes',
+
       cards: [
         { id: 'creating-nodes', title: 'Creating nodes' },
         { id: 'linking-nodes', title: 'Linking nodes' },
@@ -101,18 +107,22 @@ export default {
       this.$vuetify.goTo(`#help-${target}`, { container: '#help-container' })
     },
 
+    onIntersect(entries) {
+      for (const entry of entries) {
+        if (!entry.isIntersecting)
+          continue
+
+        this.activeCardId = entry.target.className
+
+        console.log(entry)
+      }
+    },
+
   },
 
 
 }
 </script>
 
-<style scoped>
-.card {
-  display: block;
-  
-  margin-bottom: 31px;
-  
-  outline: 1px solid #505050;
-}
+<style>
 </style>
