@@ -565,7 +565,7 @@ mutations.copySelection = function (state) {
 
   
 
-  writeToClipboard(JSON.stringify({
+  $utils.writeToClipboard(JSON.stringify({
     nodes: nodes,
     links: links,
   }, null, 2))
@@ -573,7 +573,7 @@ mutations.copySelection = function (state) {
 mutations.paste = async function (state, clipboardText) {
   // Get clipboard text
 
-  clipboardText = clipboardText || await readFromClipboard()
+  clipboardText = clipboardText || await $utils.readFromClipboard()
 
   if (clipboardText === '')
     return
@@ -860,4 +860,25 @@ mutations.redo = function (state) {
   this.commit('clearSelection')
   
   module.data = JSON.parse(tab.states.list[++tab.states.currentIdx])
+}
+
+
+
+
+// Snackbar
+
+let snackbarTimeout
+
+mutations.showSnackbar = function (state, payload) {
+  state.snackbar.text = payload.text
+  state.snackbar.color = payload.color
+  state.snackbar.timeout = payload.timeout
+
+  state.snackbar.active = true
+
+  clearTimeout(state.snackbar.timeoutId)
+  
+  state.snackbar.timeoutId = setTimeout(() => {
+    state.snackbar.active = false
+  }, payload.timeout)
 }

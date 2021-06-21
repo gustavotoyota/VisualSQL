@@ -1,10 +1,10 @@
 <template>
   <div>
-
-    <v-btn depressed small text class="px-2"
+    
+    <ToolbarButton btn-style="width: auto"
     :disabled="disabled" @click="generateSQL">
       Generate SQL
-    </v-btn>
+    </ToolbarButton>
 
 
     <v-dialog max-width="750" v-model="dialog">
@@ -83,6 +83,11 @@
           <v-spacer></v-spacer>
 
           <v-btn color="blue darken-1" text
+          @click="copySQL">
+            Copy
+          </v-btn>
+
+          <v-btn color="blue darken-1" text
           @click="dialog = false">
             Close
           </v-btn>
@@ -141,8 +146,11 @@ export default {
         generateTree(this.module, this.$getters.activeNode)
       
       if (treeObj.error.message != null) {
-        this.$state.snackbar.text = treeObj.error.message
-        this.$state.snackbar.active = true
+        this.$store.commit('showSnackbar', {
+          text: treeObj.error.message,
+          color: 'red',
+          timeout: 4000,
+        })
 
         this.$store.commit('clearSelection')
         this.tab.nodes.selected[treeObj.error.node.id] = true
@@ -181,6 +189,18 @@ export default {
     updateEditor() {
       monacoEditor.getModel().updateOptions({
         tabSize: this.$state.project.sql.indentSize
+      })
+    },
+
+
+
+    copySQL() {
+      $utils.writeToClipboard(this.sql)
+
+      this.$store.commit('showSnackbar', {
+        text: 'Copied generated SQL',
+        color: 'green',
+        timeout: 2000,
       })
     },
 

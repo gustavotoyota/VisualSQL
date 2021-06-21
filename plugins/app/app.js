@@ -1,4 +1,6 @@
 global.$app = {}
+
+export default (context, inject) => inject('app', $app)
   
 
 
@@ -54,9 +56,3 @@ $app.maxZoom = Math.pow(1.2, 12)
 
 
 $app.socketOffset = { x: 34, y: 12 }
-
-
-
-
-
-export default (context, inject) => inject('app', $app)
