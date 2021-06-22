@@ -1,11 +1,12 @@
 <template>
 
-  <v-dialog max-width="650" v-model="active">
+  <v-dialog max-width="650" v-model="$state.help.active">
 
     <template v-slot:activator="{ on: dialog }">
 
       <ToolbarButton v-on="dialog"
-      btn-style="width: auto">
+      btn-style="width: auto"
+      @click="$state.help.title = 'Help'">
         Help
       </ToolbarButton>
 
@@ -16,14 +17,14 @@
       
     <v-card>
 
-      <v-card-title>Help</v-card-title>
+      <v-card-title>{{ $state.help.title }}</v-card-title>
       
       <v-divider/>
 
       <v-card-text style="padding: 0; display: flex; height: 360px">
 
-        <v-list dense style="width: 175px; overflow-y: scroll;
-        border-right: 1px solid #383838">
+        <v-list dense style="width: 175px;
+        border-right: 1px solid #383838; padding: 0">
 
           <v-list-item @click="goTo(card.id)" color="primary"
           v-for="(card, index) in cards" :key="index"
@@ -40,14 +41,14 @@
         background-color: #101010;
         padding-top: 30px; padding-left: 30px">
 
-          <div style="margin-bottom: 31px"
+          <div style="margin-bottom: 31px; width: 430px"
           v-for="(card, index) in cards" :key="index">
 
             <div :id="`help-${card.id}`"
             style="position: relative; top: 18px"></div>
 
             <img :class="card.id" :src="`/help/${card.id}.png`"
-            style="width: 400px; height: 300px; outline: 1px solid #505050"
+            style="display: block; width: 400px; height: 300px; outline: 1px solid #505050"
             v-intersect="{ handler: onIntersect, options: { threshold: 1 } }"/>
 
           </div>
@@ -63,7 +64,7 @@
         <v-spacer></v-spacer>
 
         <v-btn color="primary" text
-        @click="active = false">
+        @click="$state.help.active = false">
           Close
         </v-btn>
 
@@ -81,8 +82,6 @@ export default {
 
   data() {
     return {
-      active: false,
-
       activeCardId: 'creating-nodes',
 
       cards: [
@@ -93,7 +92,7 @@ export default {
         { id: 'modules', title: 'Modules' },
         { id: 'named-nodes', title: 'Named nodes' },
         { id: 'node-description', title: 'Node description' },
-        { id: 'column-tracking', title: 'Column tracking' },
+        { id: 'column-suggestions', title: 'Column suggestions' },
         { id: 'subquery-referencing', title: 'Subquery referencing' },
       ],
     }
