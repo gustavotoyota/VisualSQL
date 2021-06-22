@@ -6,7 +6,7 @@
 
       <ToolbarButton v-on="dialog"
       btn-style="width: auto"
-      @click="$state.help.title = 'Help'">
+      @click="onButtonClick">
         Help
       </ToolbarButton>
 
@@ -114,6 +114,14 @@ export default {
 
 
   methods: {
+
+    onButtonClick(event) {
+      $state.help.title = 'Help'
+
+      this.activeCardId = 'creating-nodes'
+      
+      this.goTo('creating-nodes')
+    },
 
     goTo(target) {
       $vuetify.goTo(`#help-${target}`, { container: '#help-container' })
