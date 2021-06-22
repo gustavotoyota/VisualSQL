@@ -25,7 +25,7 @@
         <v-list dense style="width: 175px; overflow-y: scroll;
         border-right: 1px solid #383838">
 
-          <v-list-item @click="goTo(card.id)"
+          <v-list-item @click="goTo(card.id)" color="primary"
           v-for="(card, index) in cards" :key="index"
           :input-value="card.id === activeCardId">
             <v-list-item-content>
