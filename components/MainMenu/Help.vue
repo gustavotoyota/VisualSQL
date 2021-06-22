@@ -23,7 +23,7 @@
 
       <v-card-text style="padding: 0; display: flex; height: 360px">
 
-        <v-list dense style="width: 175px;
+        <v-list dense style="width: 173px;
         border-right: 1px solid #383838; padding: 0">
 
           <v-list-item @click="goTo(card.id)" color="primary"
@@ -38,10 +38,11 @@
 
         <div id="help-container"
         style="flex: 1; overflow-y: scroll;
-        background-color: #101010;
-        padding-top: 30px; padding-left: 30px">
+        background-color: #101010; padding-top: 30px;
+        display: flex; flex-direction: column">
 
-          <div style="margin-bottom: 31px; width: 430px"
+          <div style="width: 460px; min-height: 331px;
+          margin: auto; display: flex; justify-content: center"
           v-for="(card, index) in cards" :key="index">
 
             <div :id="`help-${card.id}`"
