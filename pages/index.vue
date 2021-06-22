@@ -56,43 +56,31 @@ export default {
 
 
   mounted() {
-    // First time
-
-    $state.firstTime = localStorage.getItem('firstTime') === null
-
-    localStorage.setItem('firstTime', false)
-
-
-
-
     // Loading
 
-    window.addEventListener('load', () => {
+    function onLoad() {
       setTimeout(() => {
+
+        // Start fading animation
+
         $state.loaded = true
-      }, 1500) 
-    })
-    
-    if (document.readyState === 'complete') {
-      setTimeout(() => {
-        $state.loaded = true
+        
+
+        setTimeout(() => {
+          // Start dialog animation
+
+          $state.help.title = 'Welcome to Visual SQL!'
+
+          $state.help.active = true
+        }, 500)
+
       }, 1500)
     }
 
-
-
-
-
-    // Help
-
-    if ($state.firstTime) {
-      setTimeout(() => {
-        $state.help.title = 'Welcome to Visual SQL!'
-
-        $state.help.active = true
-      })
-    }
-
+    window.addEventListener('load', onLoad)
+    
+    if (document.readyState === 'complete')
+      onLoad()
 
 
 

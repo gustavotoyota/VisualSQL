@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .fade-leave-active {
-  transition: opacity 1s;
+  transition: opacity 0.5s;
 }
 .fade-leave-to {
   opacity: 0;
