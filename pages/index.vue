@@ -36,6 +36,15 @@ export default {
 
 
   mounted() {
+    // First time
+
+    this.$state.firstTime = localStorage.getItem('firstTime') === null
+
+    localStorage.setItem('firstTime', false)
+
+
+
+
     // Loading
 
     window.addEventListener('load', () => {
@@ -49,6 +58,21 @@ export default {
         this.$state.loaded = true
       }, 1500)
     }
+
+
+
+
+
+    // Help
+
+    if (this.$state.firstTime) {
+      setTimeout(() => {
+        this.$state.help.title = 'Welcome to Visual SQL!'
+
+        this.$state.help.active = true
+      })
+    }
+
 
 
 

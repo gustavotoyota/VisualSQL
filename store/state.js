@@ -2,6 +2,11 @@ export default () => ({
 
 
   loaded: false,
+
+
+
+
+  firstTime: false,
   
 
 
@@ -9,6 +14,19 @@ export default () => ({
   // Project
 
   project: null,
+
+
+
+
+  
+  // Help
+
+  help: {
+    active: false,
+
+    title: '',
+  },
+
 
 
 
