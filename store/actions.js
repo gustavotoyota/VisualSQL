@@ -5,5 +5,9 @@ export default actions
 
 
 actions.nuxtServerInit = function (context) {
-  this.commit('resetProject')
+  global.$state = context.state
+  global.$getters = context.getters
+  global.$commit = context.commit
+
+  context.commit('resetProject')
 }
