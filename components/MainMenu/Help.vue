@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="650" v-model="$state.help.active">
+  <v-dialog max-width="651" v-model="$state.help.active">
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -21,36 +21,48 @@
       
       <v-divider/>
 
-      <v-card-text style="padding: 0; display: flex; height: 360px">
+      <v-card-text style="padding: 0">
 
-        <v-list dense style="width: 173px;
-        border-right: 1px solid #383838; padding: 0">
+        <div style="padding: 12px 24px">
+          Visual SQL is a free online SQL query building tool.
+          Below are the available functionalities:
+        </div>
 
-          <v-list-item @click="goTo(card.id)" color="primary"
-          v-for="(card, index) in cards" :key="index"
-          :input-value="card.id === activeCardId">
-            <v-list-item-content>
-              <v-list-item-title>{{ card.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-divider/>
 
-        </v-list>
+        <div style="display: flex; height: 360px">
 
-        <div id="help-container"
-        style="flex: 1; overflow-y: scroll;
-        background-color: #101010; padding-top: 30px;
-        display: flex; flex-direction: column">
+          <v-list dense style="width: 174px;
+          border-right: 1px solid #383838; padding: 0">
 
-          <div style="width: 460px; min-height: 331px;
-          margin: auto; display: flex; justify-content: center"
-          v-for="(card, index) in cards" :key="index">
+            <v-list-item @click="goTo(card.id)" color="primary"
+            style="padding-left: 24px"
+            v-for="(card, index) in cards" :key="index"
+            :input-value="card.id === activeCardId">
+              <v-list-item-content>
+                <v-list-item-title>{{ card.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-            <div :id="`help-${card.id}`"
-            style="position: relative; top: 18px"></div>
+          </v-list>
 
-            <img :class="card.id" :src="`/help/${card.id}.png`"
-            style="display: block; width: 400px; height: 300px; outline: 1px solid #505050"
-            v-intersect="{ handler: onIntersect, options: { threshold: 1 } }"/>
+          <div id="help-container"
+          style="flex: 1; overflow-y: scroll;
+          background-color: #101010; padding-top: 30px;
+          display: flex; flex-direction: column">
+
+            <div style="width: 460px; min-height: 331px;
+            margin: auto; display: flex; justify-content: center"
+            v-for="(card, index) in cards" :key="index">
+
+              <div :id="`help-${card.id}`"
+              style="position: relative; top: 18px"></div>
+
+              <img :class="card.id" :src="`/help/${card.id}.png`"
+              style="display: block; width: 400px; height: 300px; outline: 1px solid #505050"
+              v-intersect="{ handler: onIntersect, options: { threshold: 1 } }"/>
+
+            </div>
 
           </div>
 

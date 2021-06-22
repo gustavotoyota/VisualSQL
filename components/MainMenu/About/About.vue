@@ -61,6 +61,13 @@ export default {
 </script>
 
 <style scoped>
+.content {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
 .content * {
   -webkit-user-select: text !important;
   -moz-user-select: text !important;

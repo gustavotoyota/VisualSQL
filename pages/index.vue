@@ -616,4 +616,13 @@ body {
 .v-dialog {
   overflow: visible;
 }
+
+
+
+
+/* Remove link underline */
+
+a {
+  text-decoration: none;
+}
 </style>
