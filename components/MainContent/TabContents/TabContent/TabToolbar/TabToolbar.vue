@@ -18,6 +18,12 @@
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 
+
+
+    <v-divider vertical inset class="mx-2"/>
+
+    
+
     <ToolbarButton tooltip="Delete" :disabled="emptySelection"
     @click="$store.commit('deleteSelection')">
       <v-icon dense>mdi-delete</v-icon>
