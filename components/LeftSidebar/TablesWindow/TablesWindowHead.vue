@@ -15,8 +15,8 @@
 
 
     <TableDialog v-slot="{ on: dialog }" title="New table"
-    :columns="'column_1 INT NOT NULL,\ncolumn_2 VARCHAR(40) UNIQUE,\n' +
-      'column_3 DATE NOT NULL,\ncolumn_4,\ncolumn_5,\ncolumn_6'"
+    :columns="'column1 INT NOT NULL,\ncolumn2 VARCHAR(40) UNIQUE,\n' +
+      'column3,\ncolumn4'"
     @submit="$store.commit('createTable', $event)">
 
       <v-tooltip top>

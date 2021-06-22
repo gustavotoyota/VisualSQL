@@ -34,7 +34,9 @@
             class="mt-1" style="height: 220px"
             v-model="fields.columns"/>
               
-            <div class="caption">Note: Columns can be SQL or comma-separated</div>
+            <div class="caption">
+              Note: Columns can be either in SQL or comma-separated
+            </div>
           </div>
 
         </v-card-text>
