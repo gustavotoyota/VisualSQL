@@ -486,11 +486,11 @@ export default {
 
 
     onResize(event) {
-      if (innerWidth < 700 &&
+      if (innerWidth < 697 &&
       this.$state.sidebars.left && this.$state.sidebars.right)
         this.$state.sidebars.left = false
       
-      if (innerWidth < 400) {
+      if (innerWidth < 397) {
         this.$state.sidebars.left = false
         this.$state.sidebars.right = false
       }

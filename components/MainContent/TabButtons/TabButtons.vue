@@ -69,14 +69,14 @@ export default {
     toggleLeftSidebar() {
       this.$state.sidebars.left = !this.$state.sidebars.left
 
-      if (this.$state.sidebars.left && innerWidth < 696)
+      if (this.$state.sidebars.left && innerWidth < 697)
         this.$state.sidebars.right = false
     },
     
     toggleRightSidebar() {
       this.$state.sidebars.right = !this.$state.sidebars.right
 
-      if (this.$state.sidebars.right && innerWidth < 696)
+      if (this.$state.sidebars.right && innerWidth < 697)
         this.$state.sidebars.left = false
     },
 
