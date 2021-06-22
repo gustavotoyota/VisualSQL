@@ -3,7 +3,7 @@
   <div>
 
     <v-app dark v-show="$state.loaded"
-    style="touch-action: none">
+    v-resize="onResize" style="touch-action: none">
 
 
 
@@ -480,6 +480,20 @@ export default {
       const text = (event.clipboardData || window.clipboardData).getData('text')
 
       this.$store.commit('paste', text)
+    },
+
+
+
+
+    onResize(event) {
+      if (innerWidth < 700 &&
+      this.$state.sidebars.left && this.$state.sidebars.right)
+        this.$state.sidebars.left = false
+      
+      if (innerWidth < 400) {
+        this.$state.sidebars.left = false
+        this.$state.sidebars.right = false
+      }
     },
 
   },
