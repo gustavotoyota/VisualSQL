@@ -18,7 +18,7 @@ export default {
       if (window.showSaveFilePicker == null) {
         saveAs($app.saveLoad.createProjectBlob(), 'project.json')
 
-        this.$state.saving.modified = false
+        $state.saving.modified = false
 
         return
       }
@@ -26,7 +26,7 @@ export default {
 
 
       try {
-        this.$state.saving.fileHandle = await showSaveFilePicker({
+        $state.saving.fileHandle = await showSaveFilePicker({
           types: [{
             accept: { 'application/json': [] },
           }],

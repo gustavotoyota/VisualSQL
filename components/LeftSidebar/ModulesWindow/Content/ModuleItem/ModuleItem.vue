@@ -1,5 +1,5 @@
 <template>
-  <v-list-item @click="$store.commit('createTab', module.id)">
+  <v-list-item @click="$commit('createTab', module.id)">
 
 
     <v-list-item-icon>

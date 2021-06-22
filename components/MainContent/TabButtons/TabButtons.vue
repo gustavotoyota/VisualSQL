@@ -53,10 +53,10 @@ export default {
 
     tabIdx: {
       get() {
-        return this.$getters.getTabIdx(this.$state.project.tabs.currentId)
+        return $getters.getTabIdx($state.project.tabs.currentId)
       },
       set(value) {
-        this.$state.project.tabs.currentId = this.$state.project.tabs.list[value || 0].id
+        $state.project.tabs.currentId = $state.project.tabs.list[value || 0].id
       },
     },
 
@@ -67,17 +67,17 @@ export default {
   methods: {
 
     toggleLeftSidebar() {
-      this.$state.sidebars.left = !this.$state.sidebars.left
+      $state.sidebars.left = !$state.sidebars.left
 
-      if (this.$state.sidebars.left && innerWidth < 697)
-        this.$state.sidebars.right = false
+      if ($state.sidebars.left && innerWidth < 697)
+        $state.sidebars.right = false
     },
     
     toggleRightSidebar() {
-      this.$state.sidebars.right = !this.$state.sidebars.right
+      $state.sidebars.right = !$state.sidebars.right
 
-      if (this.$state.sidebars.right && innerWidth < 697)
-        this.$state.sidebars.left = false
+      if ($state.sidebars.right && innerWidth < 697)
+        $state.sidebars.left = false
     },
 
   },

@@ -34,13 +34,13 @@ export default {
 
 
     onPointerDown(event) {
-      let displayPos = this.$getters.getDisplayPos(event)
+      let displayPos = $getters.getDisplayPos(event)
 
-      this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
+      $set($state.pinching.pointers, event.pointerId, displayPos)
 
-      if (Object.keys(this.$state.pinching.pointers).length >= 2) {
-        this.$state.panning.selectTimeout = null
-        this.$state.selecting.active = false
+      if (Object.keys($state.pinching.pointers).length >= 2) {
+        $state.panning.selectTimeout = null
+        $state.selecting.active = false
 
         event.stopPropagation()
       }
@@ -51,24 +51,24 @@ export default {
       // Panning
 
       if (event.button === 1) {
-        this.$state.panning.active = true
+        $state.panning.active = true
 
-        this.$state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = { ...displayPos }
       }
     },
 
 
 
     onPointerUp(event) {
-      if (this.$state.nodeCreation.active && this.$state.nodeCreation.visible) {
-        let displayPos = this.$getters.getDisplayPos(event)
-        let worldPos = this.$getters.screenToWorld(this.module, displayPos)
+      if ($state.nodeCreation.active && $state.nodeCreation.visible) {
+        let displayPos = $getters.getDisplayPos(event)
+        let worldPos = $getters.screenToWorld(this.module, displayPos)
         
-        this.$store.commit('createNode', {
+        $commit('createNode', {
           moduleId: this.tab.moduleId,
 
           node: {
-            type: this.$state.nodeCreation.nodeType,
+            type: $state.nodeCreation.nodeType,
 
             pos: {
               x: worldPos.x,
@@ -85,8 +85,8 @@ export default {
     onMouseWheel(event) {
       // Calculate world position
 
-      let displayPos = this.$getters.getDisplayPos(event)
-      let worldPos = this.$getters.screenToWorld(this.module, displayPos)
+      let displayPos = $getters.getDisplayPos(event)
+      let worldPos = $getters.screenToWorld(this.module, displayPos)
 
 
 

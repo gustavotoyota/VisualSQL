@@ -9,14 +9,8 @@ if (!Vue.__global_mixin__) {
 
     computed: {
 
-      $state: {
-        get() { return this.$store.state },
-        set(value) { this.$store.state = value },
-      },
-
-      $getters() {
-        return this.$store.getters
-      },
+      $state() { return $state },
+      $getters() { return $getters },
 
     },
 

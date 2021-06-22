@@ -31,7 +31,7 @@
         <v-spacer></v-spacer>
 
         <v-btn color="primary" text ref="yes"
-        @click="$store.commit('resetProject'); active = false">
+        @click="$commit('resetProject'); active = false">
           Yes
         </v-btn>
 

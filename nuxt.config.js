@@ -39,7 +39,6 @@ export default {
 
     { src: '~/plugins/app/expand-transition/expand-transition.js' },
     { src: '~/plugins/app/utils/global-mixin.js' },
-    { src: '~/plugins/app/utils/store-utils.js' },
     { src: '~/plugins/app/utils/utils.js' },
 
     { src: '~/plugins/app/app.js' },

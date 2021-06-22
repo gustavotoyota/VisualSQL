@@ -30,7 +30,7 @@ export default {
       fileReader.onload = (event) => {
         $app.saveLoad.loadProject(event.target.result)
 
-        this.$state.saving.fileHandle = null
+        $state.saving.fileHandle = null
       }
 
       fileReader.readAsText(file)
@@ -52,7 +52,7 @@ export default {
       try {
         // Get file handle
 
-        this.$state.saving.fileHandle = (await showOpenFilePicker({
+        $state.saving.fileHandle = (await showOpenFilePicker({
           types: [{
             accept: { 'application/json': [] },
           }],
@@ -62,7 +62,7 @@ export default {
 
         // Get file
 
-        const file = await this.$state.saving.fileHandle.getFile()
+        const file = await $state.saving.fileHandle.getFile()
 
 
 

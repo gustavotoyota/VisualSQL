@@ -32,7 +32,7 @@ export default {
     tableNames() {
       let tableNames = []
 
-      for (let table of this.$state.project.tables.list)
+      for (let table of $state.project.tables.list)
         tableNames.push(table.name)
 
       return tableNames

@@ -4,17 +4,17 @@
 
 
     <ToolbarButton tooltip="Cut" :disabled="emptyNodeSelection"
-    @click="$store.commit('cutSelection')">
+    @click="$commit('cutSelection')">
       <v-icon dense>mdi-content-cut</v-icon>
     </ToolbarButton>
 
     <ToolbarButton tooltip="Copy" :disabled="emptyNodeSelection"
-    @click="$store.commit('copySelection')">
+    @click="$commit('copySelection')">
       <v-icon dense>mdi-content-copy</v-icon>
     </ToolbarButton>
 
     <ToolbarButton tooltip="Paste"
-    @click="$store.commit('paste')">
+    @click="$commit('paste')">
       <v-icon dense>mdi-content-paste</v-icon>
     </ToolbarButton>
 
@@ -25,7 +25,7 @@
     
 
     <ToolbarButton tooltip="Delete" :disabled="emptySelection"
-    @click="$store.commit('deleteSelection')">
+    @click="$commit('deleteSelection')">
       <v-icon dense>mdi-delete</v-icon>
     </ToolbarButton>
 
@@ -36,12 +36,12 @@
 
 
     <ToolbarButton tooltip="Undo" :disabled="tab.states.currentIdx === 0"
-    @click="$store.commit('undo')">
+    @click="$commit('undo')">
       <v-icon dense>mdi-undo</v-icon>
     </ToolbarButton>
 
     <ToolbarButton tooltip="Redo" :disabled="tab.states.currentIdx === tab.states.list.length - 1"
-    @click="$store.commit('redo')">
+    @click="$commit('redo')">
       <v-icon dense>mdi-redo</v-icon>
     </ToolbarButton>
     

@@ -35,10 +35,30 @@ export default {
 
 
 
+  beforeCreate() {
+    // Vue
+
+    global.$set = this.$set
+    global.$delete = this.$delete
+
+    global.$vuetify = this.$vuetify
+
+
+
+    // Store
+
+    global.$state = this.$store.state
+    global.$getters = this.$store.getters
+    global.$commit = this.$store.commit
+  },
+
+
+
+
   mounted() {
     // First time
 
-    this.$state.firstTime = localStorage.getItem('firstTime') === null
+    $state.firstTime = localStorage.getItem('firstTime') === null
 
     localStorage.setItem('firstTime', false)
 
@@ -49,13 +69,13 @@ export default {
 
     window.addEventListener('load', () => {
       setTimeout(() => {
-        this.$state.loaded = true
+        $state.loaded = true
       }, 1500) 
     })
     
     if (document.readyState === 'complete') {
       setTimeout(() => {
-        this.$state.loaded = true
+        $state.loaded = true
       }, 1500)
     }
 
@@ -65,11 +85,11 @@ export default {
 
     // Help
 
-    if (this.$state.firstTime) {
+    if ($state.firstTime) {
       setTimeout(() => {
-        this.$state.help.title = 'Welcome to Visual SQL!'
+        $state.help.title = 'Welcome to Visual SQL!'
 
-        this.$state.help.active = true
+        $state.help.active = true
       })
     }
 
@@ -79,8 +99,8 @@ export default {
 
     // Sidebars
 
-    this.$state.sidebars.left = innerWidth >= 900
-    this.$state.sidebars.right = innerWidth >= 600
+    $state.sidebars.left = innerWidth >= 900
+    $state.sidebars.right = innerWidth >= 600
 
 
 
@@ -116,29 +136,29 @@ export default {
     onDocumentPointerMove(event) {
       // Get current tab and module
 
-      let currentTab = this.$getters.currentTab
+      let currentTab = $getters.currentTab
 
       if (currentTab == null)
         return
 
-      let currentModule = this.$getters.currentModule
+      let currentModule = $getters.currentModule
       
 
 
       
       // Compute pointer position
 
-      let displayPos = this.$getters.getDisplayPos(event)
+      let displayPos = $getters.getDisplayPos(event)
       
-      if (event.pointerId in this.$state.pinching.pointers)
-        this.$set(this.$state.pinching.pointers, event.pointerId, displayPos)
+      if (event.pointerId in $state.pinching.pointers)
+        $set($state.pinching.pointers, event.pointerId, displayPos)
 
 
 
         
       // Pinch zoom
 
-      let pointers = Object.values(this.$state.pinching.pointers)
+      let pointers = Object.values($state.pinching.pointers)
 
       if (pointers.length >= 2) {
         // Compute center and distance
@@ -155,21 +175,21 @@ export default {
 
 
 
-        if (this.$state.pinching.centerPos != null) {
+        if ($state.pinching.centerPos != null) {
           // Compute ratio
 
-          let ratio = distance / this.$state.pinching.distance
+          let ratio = distance / $state.pinching.distance
 
 
 
 
           // Camera position update
 
-          let worldPos = this.$getters.screenToWorld(currentModule, centerPos)
+          let worldPos = $getters.screenToWorld(currentModule, centerPos)
 
           let centerOffset = {
-            x: centerPos.x - this.$state.pinching.centerPos.x,
-            y: centerPos.y - this.$state.pinching.centerPos.y,
+            x: centerPos.x - $state.pinching.centerPos.x,
+            y: centerPos.y - $state.pinching.centerPos.y,
           }
 
           currentModule.camera.pos.x = -centerOffset.x / currentModule.camera.zoom +
@@ -189,8 +209,8 @@ export default {
 
 
 
-        this.$state.pinching.centerPos = centerPos
-        this.$state.pinching.distance = distance
+        $state.pinching.centerPos = centerPos
+        $state.pinching.distance = distance
 
         return
       }
@@ -206,7 +226,7 @@ export default {
 
       // Pointer position
 
-      this.$state.pointer.pagePos = {
+      $state.pointer.pagePos = {
         x: event.pageX,
         y: event.pageY,
       }
@@ -216,19 +236,19 @@ export default {
 
       // Panning
 
-      if (this.$state.panning.active) {
-        currentModule.camera.pos.x -= (displayPos.x - this.$state.panning.currentPos.x) / currentModule.camera.zoom
-        currentModule.camera.pos.y -= (displayPos.y - this.$state.panning.currentPos.y) / currentModule.camera.zoom
+      if ($state.panning.active) {
+        currentModule.camera.pos.x -= (displayPos.x - $state.panning.currentPos.x) / currentModule.camera.zoom
+        currentModule.camera.pos.y -= (displayPos.y - $state.panning.currentPos.y) / currentModule.camera.zoom
         
-        this.$state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = { ...displayPos }
 
-        if (event.pointerType !== 'mouse' && this.$state.panning.selectTimeout != null) {
+        if (event.pointerType !== 'mouse' && $state.panning.selectTimeout != null) {
           let dist = Math.sqrt(
-            Math.pow(displayPos.x - this.$state.panning.startPos.x, 2) +
-            Math.pow(displayPos.y - this.$state.panning.startPos.y, 2))
+            Math.pow(displayPos.x - $state.panning.startPos.x, 2) +
+            Math.pow(displayPos.y - $state.panning.startPos.y, 2))
 
           if (dist > 5)
-            this.$state.panning.selectTimeout = null
+            $state.panning.selectTimeout = null
         }
 
         return
@@ -239,8 +259,8 @@ export default {
 
       // Selecting
 
-      if (this.$state.selecting.active) {
-        this.$state.selecting.endPos = { ...displayPos }
+      if ($state.selecting.active) {
+        $state.selecting.endPos = { ...displayPos }
 
         return
       }
@@ -250,17 +270,17 @@ export default {
 
       // Dragging
 
-      if (this.$state.dragging.active) {
+      if ($state.dragging.active) {
         for (let nodeId of Object.keys(currentTab.nodes.selected)) {
           let node = currentModule.data.nodes.map[nodeId]
 
-          node.pos.x += (displayPos.x - this.$state.dragging.currentPos.x) / currentModule.camera.zoom
-          node.pos.y += (displayPos.y - this.$state.dragging.currentPos.y) / currentModule.camera.zoom
+          node.pos.x += (displayPos.x - $state.dragging.currentPos.x) / currentModule.camera.zoom
+          node.pos.y += (displayPos.y - $state.dragging.currentPos.y) / currentModule.camera.zoom
         }
 
-        this.$state.dragging.currentPos = { ...displayPos }
+        $state.dragging.currentPos = { ...displayPos }
 
-        this.$state.dragging.saveState = true
+        $state.dragging.saveState = true
 
         return
       }
@@ -270,13 +290,13 @@ export default {
 
       // Linking
 
-      if (this.$state.linking.active) {
-        let worldPos = this.$getters.screenToWorld(currentModule, displayPos)
+      if ($state.linking.active) {
+        let worldPos = $getters.screenToWorld(currentModule, displayPos)
 
-        if (typeof(this.$state.linking.newLink.from) === 'number')
-          this.$state.linking.newLink.to = { ...worldPos }
+        if (typeof($state.linking.newLink.from) === 'number')
+          $state.linking.newLink.to = { ...worldPos }
         else
-          this.$state.linking.newLink.from = { ...worldPos }
+          $state.linking.newLink.from = { ...worldPos }
 
         return
       }
@@ -286,43 +306,43 @@ export default {
 
       // Node creation
       
-      if (this.$state.nodeCreation.active && !this.$state.nodeCreation.visible) {
+      if ($state.nodeCreation.active && !$state.nodeCreation.visible) {
         let dist = Math.sqrt(
-          Math.pow(this.$state.pointer.pagePos.x - this.$state.nodeCreation.dragStartPos.x, 2) +
-          Math.pow(this.$state.pointer.pagePos.y - this.$state.nodeCreation.dragStartPos.y, 2))
+          Math.pow($state.pointer.pagePos.x - $state.nodeCreation.dragStartPos.x, 2) +
+          Math.pow($state.pointer.pagePos.y - $state.nodeCreation.dragStartPos.y, 2))
 
-        this.$state.nodeCreation.visible = dist >= 8
+        $state.nodeCreation.visible = dist >= 8
       }
     },
     onDocumentPointerUp(event) {
       // Get current tab and module
 
-      let currentTab = this.$getters.currentTab
+      let currentTab = $getters.currentTab
 
       if (currentTab == null)
         return
 
-      let currentModule = this.$getters.currentModule
+      let currentModule = $getters.currentModule
 
 
 
 
       // Node creation
 
-      if (this.$state.nodeCreation.active)
-        this.$state.nodeCreation.active = false
+      if ($state.nodeCreation.active)
+        $state.nodeCreation.active = false
 
 
       
 
       // Remove pinch pointer
 
-      if (event.pointerId in this.$state.pinching.pointers) {
-        this.$delete(this.$state.pinching.pointers, event.pointerId)
+      if (event.pointerId in $state.pinching.pointers) {
+        $delete($state.pinching.pointers, event.pointerId)
 
-        if (Object.keys(this.$state.pinching.pointers).length === 1) {
-          this.$state.pinching.centerPos = null
-          this.$state.pinching.distance = null
+        if (Object.keys($state.pinching.pointers).length === 1) {
+          $state.pinching.centerPos = null
+          $state.pinching.distance = null
         }
       }
 
@@ -331,14 +351,14 @@ export default {
 
       // Panning
 
-      if (this.$state.panning.active &&
+      if ($state.panning.active &&
       (event.pointerType !== 'mouse' || event.button === 1)) {
-        this.$state.panning.active = false
+        $state.panning.active = false
 
-        this.$state.panning.currentPos = null
+        $state.panning.currentPos = null
 
-        this.$state.panning.startPos = null
-        this.$state.panning.selectTimeout = null
+        $state.panning.startPos = null
+        $state.panning.selectTimeout = null
       }
 
 
@@ -346,9 +366,9 @@ export default {
 
       // Selecting
 
-      if (event.button === 0 && this.$state.selecting.active) {
-        let worldStart = this.$getters.screenToWorld(currentModule, this.$state.selecting.startPos)
-        let worldEnd = this.$getters.screenToWorld(currentModule, this.$state.selecting.endPos)
+      if (event.button === 0 && $state.selecting.active) {
+        let worldStart = $getters.screenToWorld(currentModule, $state.selecting.startPos)
+        let worldEnd = $getters.screenToWorld(currentModule, $state.selecting.endPos)
 
         let topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),
@@ -366,9 +386,9 @@ export default {
             continue
 
           if (node.id in currentTab.nodes.selected)
-            this.$delete(currentTab.nodes.selected, node.id)
+            $delete(currentTab.nodes.selected, node.id)
           else
-            this.$set(currentTab.nodes.selected, node.id, true)
+            $set(currentTab.nodes.selected, node.id, true)
 
           if (node.id === currentTab.nodes.activeId)
             currentTab.nodes.activeId = null
@@ -386,16 +406,16 @@ export default {
             continue
 
           if (link.id in currentTab.links.selected)
-            this.$delete(currentTab.links.selected, link.id)
+            $delete(currentTab.links.selected, link.id)
           else
-            this.$set(currentTab.links.selected, link.id, true)
+            $set(currentTab.links.selected, link.id, true)
 
           if (link.id === currentTab.links.activeId)
             currentTab.links.activeId = null
         }
 
 
-        this.$state.selecting.active = false
+        $state.selecting.active = false
       }
 
 
@@ -403,11 +423,11 @@ export default {
 
       // Dragging
 
-      if (this.$state.dragging.active && event.button === 0) {
-        this.$state.dragging.active = false
+      if ($state.dragging.active && event.button === 0) {
+        $state.dragging.active = false
         
-        if (this.$state.dragging.saveState)
-          this.$store.commit('saveState')
+        if ($state.dragging.saveState)
+          $commit('saveState')
       }
 
         
@@ -415,8 +435,8 @@ export default {
 
       // Linking
       
-      if (this.$state.linking.active && event.button === 0)
-        this.$state.linking.active = false
+      if ($state.linking.active && event.button === 0)
+        $state.linking.active = false
     },
 
 
@@ -431,40 +451,40 @@ export default {
 
 
       if ((event.code === 'KeyA' || event.keyCode === 65) && event.ctrlKey) {
-        this.$store.commit('selectAll')
+        $commit('selectAll')
         return
       }
 
         
 
       if (event.code === 'Delete' || event.keyCode === 46) {
-        this.$store.commit('deleteSelection')
+        $commit('deleteSelection')
         return
       }
 
 
 
       if ((event.code === 'KeyX' || event.keyCode === 88) && event.ctrlKey) {
-        this.$store.commit('cutSelection')
+        $commit('cutSelection')
         return
       }
       if ((event.code === 'KeyC' || event.keyCode === 67) && event.ctrlKey) {
-        this.$store.commit('copySelection')
+        $commit('copySelection')
         return
       }
       if (window.clipboardData && (event.code === 'KeyV' || event.keyCode === 86) && event.ctrlKey) {
-        this.$store.commit('paste')
+        $commit('paste')
         return
       }
 
 
 
       if ((event.code === 'KeyZ' || event.keyCode === 90) && event.ctrlKey) {
-        this.$store.commit('undo')
+        $commit('undo')
         return
       }
       if ((event.code === 'KeyY' || event.keyCode === 89) && event.ctrlKey) {
-        this.$store.commit('redo')
+        $commit('redo')
         return
       }
     },
@@ -479,7 +499,7 @@ export default {
 
       const text = (event.clipboardData || window.clipboardData).getData('text')
 
-      this.$store.commit('paste', text)
+      $commit('paste', text)
     },
 
 
@@ -487,12 +507,12 @@ export default {
 
     onResize(event) {
       if (innerWidth < 697 &&
-      this.$state.sidebars.left && this.$state.sidebars.right)
-        this.$state.sidebars.left = false
+      $state.sidebars.left && $state.sidebars.right)
+        $state.sidebars.left = false
       
       if (innerWidth < 397) {
-        this.$state.sidebars.left = false
-        this.$state.sidebars.right = false
+        $state.sidebars.left = false
+        $state.sidebars.right = false
       }
     },
 
@@ -507,17 +527,17 @@ export default {
       deep: true,
 
       handler() {
-        if (this.$state.saving.ignoreChange) {
-          this.$state.saving.ignoreChange = false
+        if ($state.saving.ignoreChange) {
+          $state.saving.ignoreChange = false
           return
         }
 
-        this.$state.saving.modified = true
+        $state.saving.modified = true
 
-        if (this.$state.saving.timeout != null)
-          clearTimeout(this.$state.saving.timeout)
+        if ($state.saving.timeout != null)
+          clearTimeout($state.saving.timeout)
 
-        this.$state.saving.timeout = setTimeout(() => {
+        $state.saving.timeout = setTimeout(() => {
           $app.saveLoad.tryUpdateProjectFile()
         }, 1000)
       },

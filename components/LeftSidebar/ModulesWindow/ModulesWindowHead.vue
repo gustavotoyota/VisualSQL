@@ -19,7 +19,7 @@
 
 
     <ModuleDialog title="New module" v-slot="{ on: dialog }"
-    @submit="$store.commit('createModule', $event.name)">
+    @submit="$commit('createModule', $event.name)">
 
       <v-tooltip top>
 

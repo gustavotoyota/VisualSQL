@@ -19,7 +19,7 @@ export default {
 
 
     onPointerDown(event) {
-      let displayPos = this.$getters.getDisplayPos(event)
+      let displayPos = $getters.getDisplayPos(event)
 
 
 
@@ -27,29 +27,29 @@ export default {
       // Panning
 
       if (event.pointerType !== 'mouse') {
-        this.$state.panning.active = true
+        $state.panning.active = true
 
-        this.$state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = { ...displayPos }
         
 
         
-        this.$state.panning.startPos = { ...displayPos }
+        $state.panning.startPos = { ...displayPos }
 
-        this.$state.panning.selectTimeout = setTimeout(() => {
-          if (this.$state.panning.selectTimeout == null)
+        $state.panning.selectTimeout = setTimeout(() => {
+          if ($state.panning.selectTimeout == null)
             return
 
 
 
-          this.$state.panning.active = false
-          this.$state.panning.selectTimeout = null
+          $state.panning.active = false
+          $state.panning.selectTimeout = null
 
 
 
-          this.$state.selecting.active = true
+          $state.selecting.active = true
 
-          this.$state.selecting.startPos = { ...displayPos }
-          this.$state.selecting.endPos = { ...displayPos }
+          $state.selecting.startPos = { ...displayPos }
+          $state.selecting.endPos = { ...displayPos }
         }, 300)
       }
 
@@ -59,7 +59,7 @@ export default {
       // Node deselection
 
       if (event.button === 0 && !event.ctrlKey)
-        this.$store.commit('clearSelection')
+        $commit('clearSelection')
 
 
 
@@ -67,10 +67,10 @@ export default {
       // Selecting
 
       if (event.pointerType === 'mouse' && event.button === 0) {
-        this.$state.selecting.active = true
+        $state.selecting.active = true
 
-        this.$state.selecting.startPos = { ...displayPos }
-        this.$state.selecting.endPos = { ...displayPos }
+        $state.selecting.startPos = { ...displayPos }
+        $state.selecting.endPos = { ...displayPos }
       }
     },
 

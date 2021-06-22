@@ -19,10 +19,10 @@ export default {
 
     tabIdx: {
       get() {
-        return this.$getters.getTabIdx(this.$state.project.tabs.currentId)
+        return $getters.getTabIdx($state.project.tabs.currentId)
       },
       set(value) {
-        this.$state.project.tabs.currentId = this.$state.project.tabs.list[value || 0].id
+        $state.project.tabs.currentId = $state.project.tabs.list[value || 0].id
       },
     },
 

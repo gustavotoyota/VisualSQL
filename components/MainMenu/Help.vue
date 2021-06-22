@@ -116,7 +116,7 @@ export default {
   methods: {
 
     goTo(target) {
-      this.$vuetify.goTo(`#help-${target}`, { container: '#help-container' })
+      $vuetify.goTo(`#help-${target}`, { container: '#help-container' })
     },
 
     onIntersect(entries) {

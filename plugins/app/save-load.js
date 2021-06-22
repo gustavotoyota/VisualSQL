@@ -23,7 +23,7 @@ saveLoad.loadProject = function (projectStr) {
   // Initialize undo/redo states
 
   for (const tab of $state.project.tabs.list)
-    $store.commit('saveState', tab)
+    $commit('saveState', tab)
 
 
 

@@ -134,7 +134,7 @@ export default {
   computed: {
 
     activeObject() {
-      return this.$getters.activeNode ?? this.$getters.activeLink
+      return $getters.activeNode ?? $getters.activeLink
     },
     
   },
@@ -154,11 +154,11 @@ export default {
 
         if (firstChange) {
           firstChange = false
-          this.$store.commit('saveState')
+          $commit('saveState')
           return
         }
 
-        this.$store.commit('replaceState')
+        $commit('replaceState')
       },
 
       deep: true,

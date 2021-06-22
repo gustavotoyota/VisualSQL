@@ -50,7 +50,7 @@ export default {
   methods: {
 
     isNodeTypeDisabled(nodeType) {
-      return ($app.databases.data[this.$state.project.sql.database].
+      return ($app.databases.data[$state.project.sql.database].
         infos.disabledNodeTypes || []).includes(nodeType)
     },
 
