@@ -26,7 +26,7 @@ export default {
     
 
     closeTab() {
-      this.$store.commit('closeTab', this.tab.id)
+      $commit('closeTab', this.tab.id)
     },
 
 

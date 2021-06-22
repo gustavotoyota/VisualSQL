@@ -6,7 +6,7 @@
 
       <ToolbarButton v-on="dialog"
       btn-style="width: auto"
-      @click="$state.help.title = 'Help'">
+      @click="onButtonClick">
         Help
       </ToolbarButton>
 
@@ -24,7 +24,7 @@
       <v-card-text style="padding: 0">
 
         <div style="padding: 12px 24px">
-          Visual SQL is a free online SQL query building tool.
+          Visual SQL is a free online tool for SQL query building.
           Below are the available functionalities:
         </div>
 
@@ -115,8 +115,16 @@ export default {
 
   methods: {
 
+    onButtonClick(event) {
+      $state.help.title = 'Help'
+
+      this.activeCardId = 'creating-nodes'
+      
+      this.goTo('creating-nodes')
+    },
+
     goTo(target) {
-      this.$vuetify.goTo(`#help-${target}`, { container: '#help-container' })
+      $vuetify.goTo(`#help-${target}`, { container: '#help-container' })
     },
 
     onIntersect(entries) {

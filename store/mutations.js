@@ -14,14 +14,14 @@ export default mutations
 mutations.resetProject = function (state) {
   // Initialize saving state
 
-  state.saving.ignoreChange = state.project != null
-  state.saving.modified = false
+  $state.saving.ignoreChange = $state.project != null
+  $state.saving.modified = false
 
-  state.saving.fileHandle = null
+  $state.saving.fileHandle = null
 
 
 
-  state.project = {
+  $state.project = {
     // Modules
 
     modules: {
@@ -67,11 +67,11 @@ mutations.resetProject = function (state) {
 
 
   
-  state.tabs.rerender++
+  $state.tabs.rerender++
 
 
 
-  this.commit('createModule', 'module1')
+  $commit('createModule', 'module1')
 }
   
 
@@ -81,7 +81,7 @@ mutations.resetProject = function (state) {
 // Modules
 
 mutations.createModule = function (state, name) {
-  let module = state.project.modules.list.find(module => module.name === name)
+  let module = $state.project.modules.list.find(module => module.name === name)
 
   if (module != null || name === '')
     return
@@ -89,7 +89,7 @@ mutations.createModule = function (state, name) {
 
 
   module = {
-    id: state.project.modules.nextId++,
+    id: $state.project.modules.nextId++,
 
     name: name,
 
@@ -111,19 +111,19 @@ mutations.createModule = function (state, name) {
     },
   }
 
-  state.project.modules.list.push(module)
+  $state.project.modules.list.push(module)
 
 
 
-  this.commit('createTab', module.id)
+  $commit('createTab', module.id)
 }
 mutations.deleteModule = function (state, moduleId) {
-  let moduleTab = this.getters.getModuleTab(moduleId)
+  let moduleTab = $getters.getModuleTab(moduleId)
 
   if (moduleTab != null)
-    this.commit('closeTab', moduleTab.id)
+    $commit('closeTab', moduleTab.id)
 
-  state.project.modules.list.splice(this.getters.getModuleIdx(moduleId), 1)
+  $state.project.modules.list.splice($getters.getModuleIdx(moduleId), 1)
 }
 
 
@@ -133,15 +133,15 @@ mutations.deleteModule = function (state, moduleId) {
 // Tables
 
 mutations.createTable = function (state, payload) {
-  let table = state.project.tables.list.find(table => table.name === payload.name)
+  let table = $state.project.tables.list.find(table => table.name === payload.name)
 
   if (table != null || payload.name === '')
     return
 
     
 
-  state.project.tables.list.push({
-    id: state.project.tables.nextId++,
+  $state.project.tables.list.push({
+    id: $state.project.tables.nextId++,
 
     name: payload.name,
 
@@ -149,8 +149,8 @@ mutations.createTable = function (state, payload) {
   })
 }
 mutations.deleteTable = function (state, tableId) {
-  state.project.tables.list.splice(
-    this.getters.getTableIdx(tableId), 1)
+  $state.project.tables.list.splice(
+    $getters.getTableIdx(tableId), 1)
 }
 
 
@@ -160,11 +160,11 @@ mutations.deleteTable = function (state, tableId) {
 // Tabs
 
 mutations.createTab = function (state, moduleId) {
-  let moduleTab = this.getters.getModuleTab(moduleId)
+  let moduleTab = $getters.getModuleTab(moduleId)
 
   if (moduleTab == null) {
     moduleTab = {
-      id: state.project.tabs.nextId++,
+      id: $state.project.tabs.nextId++,
 
       moduleId: moduleId,
 
@@ -184,16 +184,16 @@ mutations.createTab = function (state, moduleId) {
       },
     }
 
-    state.project.tabs.list.push(moduleTab)
+    $state.project.tabs.list.push(moduleTab)
   }
 
-  state.project.tabs.currentId = moduleTab.id
+  $state.project.tabs.currentId = moduleTab.id
   
   if (moduleTab.states.currentIdx < 0)
-    this.commit('saveState')
+    $commit('saveState')
 }
 mutations.closeTab = function (state, tabId) {
-  state.project.tabs.list.splice(this.getters.getTabIdx(tabId), 1)
+  $state.project.tabs.list.splice($getters.getTabIdx(tabId), 1)
 }
 
 
@@ -203,7 +203,7 @@ mutations.closeTab = function (state, tabId) {
 // Nodes
 
 mutations.createNode = function (state, payload) {
-  let module = this.getters.getModule(payload.moduleId)
+  let module = $getters.getModule(payload.moduleId)
 
 
   
@@ -239,15 +239,15 @@ mutations.createNode = function (state, payload) {
 
 
   if (!payload.dontActivate)
-    this.commit('activateNode', node.id)
+    $commit('activateNode', node.id)
 
   
 
   if (!payload.dontSaveState)
-    this.commit('saveState')
+    $commit('saveState')
 }
 mutations.deleteNode = function (state, payload) {
-  let module = this.getters.getModule(payload.moduleId)
+  let module = $getters.getModule(payload.moduleId)
 
   let node = module.data.nodes.map[payload.nodeId]
 
@@ -255,7 +255,7 @@ mutations.deleteNode = function (state, payload) {
     if (linkId == null)
       continue
 
-    this.commit('deleteLink', {
+    $commit('deleteLink', {
       moduleId: module.id,
       linkId: linkId,
 
@@ -264,7 +264,7 @@ mutations.deleteNode = function (state, payload) {
   }
 
   for (let linkId of Object.keys(node.outgoingLinks)) {
-    this.commit('deleteLink', {
+    $commit('deleteLink', {
       moduleId: module.id,
       linkId: linkId,
 
@@ -275,7 +275,7 @@ mutations.deleteNode = function (state, payload) {
   Vue.delete(module.data.nodes.map, node.id)
 
   if (!payload.dontSaveState)
-    this.commit('saveState')
+    $commit('saveState')
 }
 
 
@@ -287,7 +287,7 @@ mutations.deleteNode = function (state, payload) {
 mutations.createLink = function (state, payload) {
   // Create link
 
-  let module = this.getters.getModule(payload.moduleId)
+  let module = $getters.getModule(payload.moduleId)
 
   let link = Object.assign({
     id: module.data.links.nextId++,
@@ -307,7 +307,7 @@ mutations.createLink = function (state, payload) {
   if (existingLinkId != null) {
     link.props = $utils.deepCopy(module.data.links.map[existingLinkId].props)
 
-    this.commit('deleteLink', {
+    $commit('deleteLink', {
       moduleId: module.id,
       linkId: existingLinkId,
 
@@ -328,14 +328,14 @@ mutations.createLink = function (state, payload) {
 
 
   if (!payload.dontActivate)
-    this.commit('activateLink', link.id)
+    $commit('activateLink', link.id)
 
 
   if (!payload.dontSaveState)
-    this.commit('saveState')
+    $commit('saveState')
 }
 mutations.deleteLink = function (state, payload) {
-  let module = this.getters.getModule(payload.moduleId)
+  let module = $getters.getModule(payload.moduleId)
 
   let link = module.data.links.map[payload.linkId]
 
@@ -347,7 +347,7 @@ mutations.deleteLink = function (state, payload) {
 
   
   if (!payload.dontSaveState)
-    this.commit('saveState')
+    $commit('saveState')
 }
 
 
@@ -357,7 +357,7 @@ mutations.deleteLink = function (state, payload) {
 // Selection
 
 mutations.clearSelection = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
@@ -371,12 +371,12 @@ mutations.clearSelection = function (state) {
   tab.links.activeId = null
 }
 mutations.selectAll = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
     
 
 
@@ -394,28 +394,28 @@ mutations.selectAll = function (state) {
 
 
 mutations.activateNode = function (state, nodeId) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
 
 
-  this.commit('clearSelection')
+  $commit('clearSelection')
 
   Vue.set(tab.nodes.selected, nodeId, true)
   
   tab.nodes.activeId = nodeId
 }
 mutations.activateLink = function (state, linkId) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
 
     
-  this.commit('clearSelection')
+  $commit('clearSelection')
 
   Vue.set(tab.links.selected, linkId, true)
   
@@ -427,7 +427,7 @@ mutations.activateLink = function (state, linkId) {
 
 
 mutations.deleteSelection = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
@@ -435,7 +435,7 @@ mutations.deleteSelection = function (state) {
     
     
   for (let linkId of Object.keys(tab.links.selected)) {
-    this.commit('deleteLink', {
+    $commit('deleteLink', {
       moduleId: tab.moduleId,
       linkId: linkId,
 
@@ -444,7 +444,7 @@ mutations.deleteSelection = function (state) {
   }
 
   for (let nodeId of Object.keys(tab.nodes.selected)) {
-    this.commit('deleteNode', {
+    $commit('deleteNode', {
       moduleId: tab.moduleId,
       nodeId: nodeId,
 
@@ -454,8 +454,8 @@ mutations.deleteSelection = function (state) {
 
 
 
-  this.commit('clearSelection')
-  this.commit('saveState')
+  $commit('clearSelection')
+  $commit('saveState')
 }
 
 
@@ -465,16 +465,16 @@ mutations.deleteSelection = function (state) {
 // Copy/paste
 
 mutations.cutSelection = function (state) {
-  this.commit('copySelection')
-  this.commit('deleteSelection')
+  $commit('copySelection')
+  $commit('deleteSelection')
 }
 mutations.copySelection = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
   
 
 
@@ -596,12 +596,12 @@ mutations.paste = async function (state, clipboardText) {
 
 
 
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
   
 
@@ -615,7 +615,7 @@ mutations.paste = async function (state, clipboardText) {
   // Paste nodes
 
   for (let node of clipboardObj.nodes) {
-    this.commit('createNode', {
+    $commit('createNode', {
       moduleId: module.id,
 
       node: {
@@ -642,7 +642,7 @@ mutations.paste = async function (state, clipboardText) {
   for (let link of clipboardObj.links) {
     let linkId = module.data.links.nextId
 
-    this.commit('createLink', {
+    $commit('createLink', {
       moduleId: module.id,
 
       link: {
@@ -680,7 +680,7 @@ mutations.paste = async function (state, clipboardText) {
 
 
   
-  this.commit('saveState')
+  $commit('saveState')
 }
 
 
@@ -689,12 +689,12 @@ mutations.paste = async function (state, clipboardText) {
 // Camera
 
 mutations.fitToScreen = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
 
 
@@ -766,7 +766,7 @@ mutations.fitToScreen = function (state) {
 
   // Camera zoom
 
-  let displayRect = this.getters.getDisplayRect()
+  let displayRect = $getters.getDisplayRect()
 
   module.camera.zoom = 1
 
@@ -790,12 +790,12 @@ mutations.fitToScreen = function (state) {
 // Undo/redo
 
 mutations.saveState = function (state, tab) {
-  tab = tab || this.getters.currentTab
+  tab = tab || $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
 
   
@@ -806,12 +806,12 @@ mutations.saveState = function (state, tab) {
   tab.states.list.push(JSON.stringify(moduleState))
 }
 mutations.replaceState = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
 
   
@@ -826,12 +826,12 @@ mutations.replaceState = function (state) {
 
 
 mutations.undo = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
 
 
@@ -839,17 +839,17 @@ mutations.undo = function (state) {
   if (tab.states.currentIdx === 0)
     return
 
-  this.commit('clearSelection')
+  $commit('clearSelection')
 
   module.data = JSON.parse(tab.states.list[--tab.states.currentIdx])
 }
 mutations.redo = function (state) {
-  let tab = this.getters.currentTab
+  let tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = this.getters.getModule(tab.moduleId)
+  let module = $getters.getModule(tab.moduleId)
 
 
 
@@ -857,7 +857,7 @@ mutations.redo = function (state) {
   if (tab.states.currentIdx === tab.states.list.length - 1)
     return
 
-  this.commit('clearSelection')
+  $commit('clearSelection')
   
   module.data = JSON.parse(tab.states.list[++tab.states.currentIdx])
 }
@@ -867,18 +867,16 @@ mutations.redo = function (state) {
 
 // Snackbar
 
-let snackbarTimeout
-
 mutations.showSnackbar = function (state, payload) {
-  state.snackbar.text = payload.text
-  state.snackbar.color = payload.color
-  state.snackbar.timeout = payload.timeout
+  $state.snackbar.text = payload.text
+  $state.snackbar.color = payload.color
+  $state.snackbar.timeout = payload.timeout
 
-  state.snackbar.active = true
+  $state.snackbar.active = true
 
-  clearTimeout(state.snackbar.timeoutId)
+  clearTimeout($state.snackbar.timeoutId)
   
-  state.snackbar.timeoutId = setTimeout(() => {
-    state.snackbar.active = false
+  $state.snackbar.timeoutId = setTimeout(() => {
+    $state.snackbar.active = false
   }, payload.timeout)
 }

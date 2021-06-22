@@ -38,7 +38,7 @@
         <v-spacer></v-spacer>
 
         <v-btn color="primary" text ref="yes"
-        @click="$store.commit('deleteModule', module.id); active = false">
+        @click="$commit('deleteModule', module.id); active = false">
           Yes
         </v-btn>
 

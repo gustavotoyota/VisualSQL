@@ -2,11 +2,6 @@ export default () => ({
 
 
   loaded: false,
-
-
-
-
-  firstTime: false,
   
 
 

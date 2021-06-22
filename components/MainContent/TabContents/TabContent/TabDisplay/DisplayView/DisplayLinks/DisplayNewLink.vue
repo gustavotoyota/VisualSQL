@@ -19,7 +19,7 @@ export default {
 
   computed: {
 
-    link() { return this.$state.linking.newLink },
+    link() { return $state.linking.newLink },
     
     
     linkCommand() {

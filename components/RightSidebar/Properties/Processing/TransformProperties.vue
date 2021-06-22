@@ -100,7 +100,7 @@ export default {
 
     getInputColumns() {
       return $app.columnTracking.getInputColumns(
-        this.$getters.currentModule, this.node)
+        $getters.currentModule, this.node)
     },
     getFilterColumns() {
       return $utils.trimItems(this.node.props.group.columns.split(','))

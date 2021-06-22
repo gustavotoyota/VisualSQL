@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="300" v-model="active">
+  <v-dialog width="unset" v-model="active">
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -20,11 +20,44 @@
       
       <v-divider/>
 
-      <v-card-text class="content mt-5 mb-1">
-        Developed by Kyota Langard<br/>
-        <a href="mailto:kyota.langard@gmail.com">kyota.langard@gmail.com</a><br/>
+      <v-card-text class="content"
+      style="display: flex; padding: 0">
+
+        <div style="padding: 20px 24px">
+
+          Developed with:
+          <ul>
+            <li>Vue 2.6.12</li>
+            <li>Nuxt 2.15.4</li>
+            <li>Vuetify 2.4.2</li>
+            <li>Monaco Editor 0.23.0</li>
+            <li>SortableJS 1.10.2</li>
+            <li>FileSaver.js 2.0.5</li>
+          </ul>
+
+        </div>
+
+        <v-divider vertical/>
+
+        <div style="padding: 20px 24px;
+        display: flex; flex-direction: column">
         
-        <div style="margin-top: 18px"><PrivacyPolicy/></div>
+          <p>
+            Developed by:
+            <ul>
+              <li>
+                <div>Kyota Langard</div>
+                <div><a href="mailto:kyota.langard@gmail.com">kyota.langard@gmail.com</a></div>
+              </li>
+            </ul>
+          </p>
+
+          <v-spacer class="flex-column"/>
+          
+          <PrivacyPolicy/>
+
+        </div>
+
       </v-card-text>
 
       <v-divider/>

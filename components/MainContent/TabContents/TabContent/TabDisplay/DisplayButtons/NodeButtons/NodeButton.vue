@@ -36,18 +36,18 @@ export default {
 
 
     onPointerDown() {
-      this.$state.nodeCreation.active = true
-      this.$state.nodeCreation.nodeType = this.type
-      this.$state.nodeCreation.dragStartPos = $utils.shallowCopy(this.$state.pointer.pagePos)
-      this.$state.nodeCreation.visible = false
+      $state.nodeCreation.active = true
+      $state.nodeCreation.nodeType = this.type
+      $state.nodeCreation.dragStartPos = $utils.shallowCopy($state.pointer.pagePos)
+      $state.nodeCreation.visible = false
     },
     
 
     onClick() {
-      if (this.$state.nodeCreation.visible)
+      if ($state.nodeCreation.visible)
         return
 
-      this.$store.commit('createNode', {
+      $commit('createNode', {
         moduleId: this.tab.moduleId,
 
         node: {

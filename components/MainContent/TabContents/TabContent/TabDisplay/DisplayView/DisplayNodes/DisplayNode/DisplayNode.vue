@@ -74,28 +74,28 @@ export default {
 
 
       if (!event.ctrlKey && !this.selected)
-        this.$store.commit('clearSelection')
+        $commit('clearSelection')
       else
         this.tab.links.activeId = null
 
 
       if (event.ctrlKey && this.selected) {
-        this.$delete(this.tab.nodes.selected, this.node.id)
+        $delete(this.tab.nodes.selected, this.node.id)
 
         this.tab.nodes.activeId = null
       } else {
-        this.$set(this.tab.nodes.selected, this.node.id, true)
+        $set(this.tab.nodes.selected, this.node.id, true)
         
         this.tab.nodes.activeId = this.node.id
       }
 
 
 
-      let displayPos = this.$getters.getDisplayPos(event)
+      let displayPos = $getters.getDisplayPos(event)
 
-      this.$state.dragging.active = true
-      this.$state.dragging.currentPos = { ...displayPos }
-      this.$state.dragging.saveState = false
+      $state.dragging.active = true
+      $state.dragging.currentPos = { ...displayPos }
+      $state.dragging.saveState = false
     },
 
   },

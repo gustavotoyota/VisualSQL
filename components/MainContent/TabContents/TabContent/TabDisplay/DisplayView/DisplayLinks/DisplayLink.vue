@@ -74,18 +74,18 @@ export default {
 
 
       if (!event.ctrlKey && !this.selected)
-        this.$store.commit('clearSelection')
+        $commit('clearSelection')
       else
         this.tab.nodes.activeId = null
 
 
         
       if (event.ctrlKey && this.selected) {
-        this.$delete(this.tab.links.selected, this.link.id)
+        $delete(this.tab.links.selected, this.link.id)
         
         this.tab.links.activeId = null
       } else {
-        this.$set(this.tab.links.selected, this.link.id, true)
+        $set(this.tab.links.selected, this.link.id, true)
         
         this.tab.links.activeId = this.link.id
       }

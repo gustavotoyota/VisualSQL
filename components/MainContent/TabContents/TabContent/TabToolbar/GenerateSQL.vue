@@ -142,17 +142,17 @@ export default {
     generateSQL() {
       // Tree generation
 
-      let treeObj = $app.databases.data[this.$state.project.sql.database].
-        generateTree(this.module, this.$getters.activeNode)
+      let treeObj = $app.databases.data[$state.project.sql.database].
+        generateTree(this.module, $getters.activeNode)
       
       if (treeObj.error.message != null) {
-        this.$store.commit('showSnackbar', {
+        $commit('showSnackbar', {
           text: treeObj.error.message,
           color: 'red',
           timeout: 4000,
         })
 
-        this.$store.commit('clearSelection')
+        $commit('clearSelection')
         this.tab.nodes.selected[treeObj.error.node.id] = true
         this.tab.nodes.activeId = treeObj.error.node.id
 
@@ -164,9 +164,9 @@ export default {
 
       // SQL generation
 
-      let sqlOptions = $utils.deepCopy(this.$state.project.sql)
+      let sqlOptions = $utils.deepCopy($state.project.sql)
 
-      let sqlObj = $app.databases.data[this.$state.project.sql.database].
+      let sqlObj = $app.databases.data[$state.project.sql.database].
         generateSQL(treeObj, sqlOptions)
 
       this.sql = sqlObj.sql
@@ -188,7 +188,7 @@ export default {
 
     updateEditor() {
       monacoEditor.getModel().updateOptions({
-        tabSize: this.$state.project.sql.indentSize
+        tabSize: $state.project.sql.indentSize
       })
     },
 
@@ -197,7 +197,7 @@ export default {
     copySQL() {
       $utils.writeToClipboard(this.sql)
 
-      this.$store.commit('showSnackbar', {
+      $commit('showSnackbar', {
         text: 'Copied generated SQL',
         color: 'green',
         timeout: 2000,

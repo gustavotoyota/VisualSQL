@@ -15,7 +15,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: title + ' | Free Online SQL Tool',
+    title: `${title} | Free Online SQL Tool`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
@@ -35,12 +35,11 @@ export default {
     { src: '~/plugins/polyfill.js' },
     { src: '~/plugins/draggable.js' },
     { src: '~/plugins/monaco.js' },
-    { src: '~/plugins/expand-transition/expand-transition.js' },
     { src: '~/plugins/intersection-observer.js' },
 
-    { src: '~/plugins/global-mixin.js' },
-    { src: '~/plugins/store-utils.js' },
-    { src: '~/plugins/utils.js' },
+    { src: '~/plugins/app/expand-transition/expand-transition.js' },
+    { src: '~/plugins/app/utils/global-mixin.js' },
+    { src: '~/plugins/app/utils/utils.js' },
 
     { src: '~/plugins/app/app.js' },
   ],
