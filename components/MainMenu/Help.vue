@@ -24,7 +24,7 @@
       <v-card-text style="padding: 0">
 
         <div style="padding: 12px 24px">
-          Visual SQL is a free online SQL query building tool.
+          Visual SQL is a free online tool for SQL query building.
           Below are the available functionalities:
         </div>
 
