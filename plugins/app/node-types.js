@@ -208,8 +208,12 @@ nodeTypes['limit'] = {
   title: 'Limit',
 
   props: {
-    offset: '',
+    offset: {
+      value: '',
+    },
 
-    limit: '',
+    limit: {
+      value: '',
+    },
   },
 }

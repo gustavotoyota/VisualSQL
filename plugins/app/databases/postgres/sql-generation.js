@@ -1,6 +1,8 @@
 export default function generateSQL(treeObj, options) {
   const sqlObj = new SQLObj(treeObj, options)
 
+
+  
   const writer = new Writer(sqlObj)
 
   writer.print(sqlObj.printCommons())
@@ -8,6 +10,8 @@ export default function generateSQL(treeObj, options) {
   writer.print(sqlObj.printObj(treeObj.rootObj))
 
   sqlObj.sql = writer.text
+
+
 
   return sqlObj
 }
@@ -256,10 +260,10 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
       
       writer.incrementIndent()
 
-      if (isFieldNumeric(obj.offset))
-        writer.printLine(`${obj.offset[0]} ROWS`)
+      if (isFieldNumeric(obj.offset.value))
+        writer.printLine(`${obj.offset.value[0]} ROWS`)
       else
-        writer.printField(obj.offset)
+        writer.printField(obj.offset.value)
 
       writer.decrementIndent()
     }
@@ -269,10 +273,10 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
   
       writer.incrementIndent()
 
-      if (isFieldNumeric(obj.limit))
-        writer.printLine(`FIRST ${obj.limit[0]} ROWS ONLY`)
+      if (isFieldNumeric(obj.limit.value))
+        writer.printLine(`FIRST ${obj.limit.value[0]} ROWS ONLY`)
       else
-        writer.printField(obj.limit)
+        writer.printField(obj.limit.value)
 
       writer.decrementIndent()
     }

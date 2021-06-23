@@ -264,43 +264,75 @@ TreeObj.prototype.nodeTypeProcessing['filter'] = function (node, inputs) {
   return nodeObj 
 }
 TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'where', 'transform')
+  let nodeObj = initNodeObj(inputs[0], 'transform', 'where')
 
-  nodeObj.group = node.props.group.active ? {
-    columns: this.processField(node.props.group.columns, node),
-
-    condition: this.processField(node.props.group.condition, node),
-  } : null
+  if (node.props.group.active) {
+    nodeObj.group = {
+      columns: this.processField(node.props.group.columns, node),
+      condition: this.processField(node.props.group.condition, node),
+    }
+  }
 
   nodeObj.select = this.processField(node.props.columns, node)
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'transform', 'distinct')
+  let nodeObj = initNodeObj(inputs[0], 'distinct', 'transform')
 
-  nodeObj.distinct = {
-    columns: node.props.columns
+  if (node.props.columns) {
+    nodeObj.distinct = {
+      columns: this.processField(node.props.columns, node),
+    }
   }
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'distinct', 'sort')
+  let nodeObj = initNodeObj(inputs[0], 'sort', 'distinct')
 
   nodeObj.sort = this.processField(node.props.columns, node)
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'sort', 'limit')
+  let nodeObj = initNodeObj(inputs[0], 'limit', 'sort')
 
-  nodeObj.offset = node.props.offset ?
-    this.processField(node.props.offset, node) : null
-  nodeObj.limit = node.props.limit ?
-    this.processField(node.props.limit, node) : null
+  if (node.props.offset.value) {
+    nodeObj.offset = {
+      value: this.processField(node.props.offset.value, node),
+    }
+  }
 
+  if (node.props.limit.value) {
+    nodeObj.limit = {
+      value: this.processField(node.props.limit.value, node),
+    }
+  }
+    
   return nodeObj
+}
+
+
+
+
+
+TreeObj.prototype.getRefNodeObj = function (fullName, node) {
+  let parts = fullName.split('.', 2)
+
+  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
+
+  let refNode
+  if (refModule != null)
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
+
+  if (refNode == null) {
+    this.error.message = 'Query incomplete: referenced node not found.'
+    this.error.node = node
+    return
+  }
+
+  return this.processNode(refModule, refNode)
 }
 
 
@@ -336,29 +368,8 @@ TreeObj.prototype.processField = function (input, node) {
 
 
 
-TreeObj.prototype.getRefNodeObj = function (fullName, node) {
-  let parts = fullName.split('.', 2)
 
-  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
-
-  let refNode
-  if (refModule != null)
-    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
-
-  if (refNode == null) {
-    this.error.message = 'Query incomplete: referenced node not found.'
-    this.error.node = node
-    return
-  }
-
-  return this.processNode(refModule, refNode)
-}
-
-
-
-
-
-function initNodeObj(input, maxClause, newClause) {
+function initNodeObj(input, newClause, maxClause) {
   let nodeObj
 
   if (input.obj.objectType === 'select'
