@@ -18,7 +18,7 @@ export default {
   items: [
     { text: 'Oracle (≥ 12c)', value: 'oracle' },
     { text: 'MySQL', value: 'mysql' },
-    { text: 'SQL Server (≥ 2012)', value: 'sql-server' },
+    { text: 'SQL Server', value: 'sql-server' },
     { text: 'PostgreSQL', value: 'postgres' },
   ],
   

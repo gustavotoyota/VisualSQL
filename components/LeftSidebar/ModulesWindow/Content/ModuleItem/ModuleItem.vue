@@ -35,7 +35,10 @@
 
         <ModuleDialog title="Rename module"
         v-slot="{ on }" :name="module.name"
-        @submit="Object.assign(module, $event)">
+        @submit="$commit('editModule', {
+          moduleId: module.id,
+          data: $event,
+        })">
 
           <v-list-item v-on="on">
 
