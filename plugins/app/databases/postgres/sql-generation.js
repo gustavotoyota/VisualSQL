@@ -461,5 +461,5 @@ function isFieldEmpty(field) {
     (field.length === 1 && field[0] === '')
 }
 function isFieldNumeric(field) {
-  return field.length === 1 && !isNaN(field[0])
+  return field.length === 1 && !isNaN(field[0]) && field[0]
 }
