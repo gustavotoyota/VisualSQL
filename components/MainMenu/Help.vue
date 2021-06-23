@@ -74,7 +74,7 @@
 
       <v-card-actions>
 
-        <v-spacer></v-spacer>
+        <v-spacer/>
 
         <v-btn color="primary" text
         @click="$state.help.active = false">

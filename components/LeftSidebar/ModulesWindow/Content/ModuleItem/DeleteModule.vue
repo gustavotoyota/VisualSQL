@@ -35,7 +35,7 @@
 
       <v-card-actions>
 
-        <v-spacer></v-spacer>
+        <v-spacer/>
 
         <v-btn color="primary" text ref="yes"
         @click="$commit('deleteModule', module.id); active = false">

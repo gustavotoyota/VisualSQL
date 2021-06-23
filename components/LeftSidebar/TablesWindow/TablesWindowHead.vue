@@ -10,7 +10,7 @@
 
 
 
-    <v-spacer></v-spacer>
+    <v-spacer/>
 
 
 
