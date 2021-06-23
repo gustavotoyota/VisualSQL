@@ -11,6 +11,7 @@ if (!Vue.__global_mixin__) {
 
       $state() { return $state },
       $getters() { return $getters },
+      $commit() { return $commit }
 
     },
 

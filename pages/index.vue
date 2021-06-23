@@ -64,8 +64,13 @@ export default {
         // Start fading animation
 
         $state.loaded = true
-        
 
+
+
+
+        if (localStorage.getItem('showWelcomeDialog') === 'false')
+          return
+        
         setTimeout(() => {
           // Start dialog animation
 

@@ -31,7 +31,7 @@
 
         <v-card-actions>
 
-          <v-spacer></v-spacer>
+          <v-spacer/>
 
           <v-btn color="primary" text type="submit">
             Ok

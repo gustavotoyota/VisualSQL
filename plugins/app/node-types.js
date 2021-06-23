@@ -172,7 +172,7 @@ nodeTypes['transform'] = {
       condition: '',
     },
     
-    columns: '',
+    columns: '*',
   },
 }
 nodeTypes['distinct'] = {
@@ -208,8 +208,12 @@ nodeTypes['limit'] = {
   title: 'Limit',
 
   props: {
-    offset: '',
+    offset: {
+      value: '',
+    },
 
-    limit: '',
+    limit: {
+      value: '',
+    },
   },
 }

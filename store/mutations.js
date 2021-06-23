@@ -56,7 +56,7 @@ mutations.resetProject = function (state) {
     // SQL
 
     sql: {
-      database: 'postgres',
+      database: 'oracle',
 
       uppercaseKeywords: true,
 

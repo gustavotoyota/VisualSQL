@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="node.type === 'limit'">
 
 
@@ -7,8 +8,8 @@
     class="mx-5 mt-5"
     :height="60"
 
-    label="Offset (OFFSET)"
-    v-model="node.props.offset"
+    label="Limit (LIMIT/FETCH/TOP...)"
+    v-model="node.props.limit.value"
 
     :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
@@ -19,13 +20,14 @@
     class="mx-5 mt-5"
     :height="60"
 
-    label="Limit (LIMIT/FETCH/TOP...)"
-    v-model="node.props.limit"
+    label="Offset (OFFSET)"
+    v-model="node.props.offset.value"
 
     :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
 
 
   </div>
+
 </template>
 
 <script>

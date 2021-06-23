@@ -132,25 +132,8 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
   const printSelectClause = (obj) => {
     writer.print('SELECT', true)
 
-    if (obj.distinct) {
-      if (isFieldEmpty(obj.distinct.columns)) {
-        writer.print(' DISTINCT', true)
-      } else {
-        writer.printLine()
-
-        writer.incrementIndent()
-
-        writer.printLine('DISTINCT ON (', true)
-
-        writer.incrementIndent()
-        writer.printField(obj.distinct.columns)
-        writer.decrementIndent()
-
-        writer.print(')')
-
-        writer.decrementIndent()
-      }
-    }
+    if (obj.distinct)
+      writer.print(' DISTINCT', true)
   
     writer.printLine()
   
@@ -448,7 +431,7 @@ Writer.prototype.printField = function (field) {
 
 Writer.prototype.printIdentifier = function (identifier) {
   if (identifier)
-    this.print('"' + identifier.replace('"', '""') + '"')
+    this.print('[' + identifier.replace(']', ']]') + ']')
   else
     this.print('<missing field>')
 }

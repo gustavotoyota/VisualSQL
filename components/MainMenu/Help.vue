@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="651" v-model="$state.help.active">
+  <v-dialog max-width="651" v-model="$state.help.active" eager>
 
     <template v-slot:activator="{ on: dialog }">
 
@@ -74,7 +74,7 @@
 
       <v-card-actions>
 
-        <v-spacer></v-spacer>
+        <v-spacer/>
 
         <v-btn color="primary" text
         @click="$state.help.active = false">

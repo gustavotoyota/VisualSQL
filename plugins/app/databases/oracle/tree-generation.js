@@ -280,11 +280,7 @@ TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
 TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'distinct', 'transform')
 
-  if (node.props.columns) {
-    nodeObj.distinct = {
-      columns: this.processField(node.props.columns, node),
-    }
-  }
+  nodeObj.distinct = true
 
   return nodeObj
 }

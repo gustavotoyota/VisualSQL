@@ -280,11 +280,7 @@ TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
 TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'distinct', 'transform')
 
-  if (node.props.columns) {
-    nodeObj.distinct = {
-      columns: this.processField(node.props.columns, node),
-    }
-  }
+  nodeObj.distinct = true
 
   return nodeObj
 }
@@ -298,10 +294,8 @@ TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
 TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
   let nodeObj = initNodeObj(inputs[0], 'limit', 'sort')
 
-  if (node.props.offset.value) {
-    nodeObj.offset = {
-      value: this.processField(node.props.offset.value, node),
-    }
+  nodeObj.offset = {
+    value: this.processField(node.props.offset.value, node),
   }
 
   if (node.props.limit.value) {

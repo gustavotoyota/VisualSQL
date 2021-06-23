@@ -132,25 +132,8 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
   const printSelectClause = (obj) => {
     writer.print('SELECT', true)
 
-    if (obj.distinct) {
-      if (isFieldEmpty(obj.distinct.columns)) {
-        writer.print(' DISTINCT', true)
-      } else {
-        writer.printLine()
-
-        writer.incrementIndent()
-
-        writer.printLine('DISTINCT ON (', true)
-
-        writer.incrementIndent()
-        writer.printField(obj.distinct.columns)
-        writer.decrementIndent()
-
-        writer.print(')')
-
-        writer.decrementIndent()
-      }
-    }
+    if (obj.distinct)
+      writer.print(' DISTINCT', true)
   
     writer.printLine()
   
@@ -255,29 +238,19 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
     writer.decrementIndent()
   }
   const printLimitClause = (obj) => {
+    if (obj.limit) {
+      writer.printLine('LIMIT', true)
+  
+      writer.incrementIndent()
+      writer.printField(obj.limit.value)
+      writer.decrementIndent()
+    }
+
     if (obj.offset) {
       writer.printLine('OFFSET', true)
       
       writer.incrementIndent()
-
-      if (isFieldNumeric(obj.offset.value))
-        writer.printLine(`${obj.offset.value[0]} ROWS`)
-      else
-        writer.printField(obj.offset.value)
-
-      writer.decrementIndent()
-    }
-  
-    if (obj.limit) {
-      writer.printLine('FETCH', true)
-  
-      writer.incrementIndent()
-
-      if (isFieldNumeric(obj.limit.value))
-        writer.printLine(`FIRST ${obj.limit.value[0]} ROWS ONLY`)
-      else
-        writer.printField(obj.limit.value)
-
+      writer.printField(obj.offset.value)
       writer.decrementIndent()
     }
   }
@@ -448,7 +421,7 @@ Writer.prototype.printField = function (field) {
 
 Writer.prototype.printIdentifier = function (identifier) {
   if (identifier)
-    this.print('"' + identifier.replace('"', '""') + '"')
+    this.print('`' + identifier.replace('`', '``') + '`')
   else
     this.print('<missing field>')
 }

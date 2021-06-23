@@ -41,6 +41,14 @@
 
 
 
+    <Settings/>
+
+
+
+    <v-divider vertical inset class="mx-2"/>
+
+
+
     <ToolbarButton tooltip="Help" btn-style="display: none">
       <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>
