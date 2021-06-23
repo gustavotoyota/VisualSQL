@@ -172,7 +172,7 @@ nodeTypes['transform'] = {
       condition: '',
     },
     
-    columns: '',
+    columns: '*',
   },
 }
 nodeTypes['distinct'] = {
