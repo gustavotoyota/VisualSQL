@@ -80,18 +80,16 @@ mutations.resetProject = function (state) {
 
 // Modules
 
-mutations.createModule = function (state, name) {
-  let module = $state.project.modules.list.find(module => module.name === name)
-
-  if (module != null || name === '')
+mutations.createModule = function (state, moduleName) {
+  if (!checkModuleName(moduleName))
     return
 
 
 
-  module = {
+  const module = {
     id: $state.project.modules.nextId++,
 
-    name: name,
+    name: moduleName,
 
     data: {
       nodes: {
@@ -117,6 +115,16 @@ mutations.createModule = function (state, name) {
 
   $commit('createTab', module.id)
 }
+mutations.editModule = function (state, payload) {
+  if (!checkModuleName(payload.data.name))
+    return
+
+
+  
+  const module = $getters.getModule(payload.moduleId)
+
+  Object.assign(module, payload.data)
+}
 mutations.deleteModule = function (state, moduleId) {
   let moduleTab = $getters.getModuleTab(moduleId)
 
@@ -126,6 +134,41 @@ mutations.deleteModule = function (state, moduleId) {
   $state.project.modules.list.splice($getters.getModuleIdx(moduleId), 1)
 }
 
+function checkModuleName(moduleName) {
+  // Check for invalid module name
+
+  if (moduleName === '') {
+    $commit('showSnackbar', {
+      text: 'Invalid module name',
+      color: 'red',
+      timeout: 3000,
+    })
+
+    return false
+  }
+
+
+
+  // Check for existing module name
+
+  let module = $state.project.modules.list.find(
+    (module) => module.name === moduleName)
+
+  if (module != null) {
+    $commit('showSnackbar', {
+      text: 'A module with this name already exists',
+      color: 'red',
+      timeout: 3000,
+    })
+
+    return false
+  }
+
+
+
+  return true
+}
+
 
 
 
@@ -133,9 +176,7 @@ mutations.deleteModule = function (state, moduleId) {
 // Tables
 
 mutations.createTable = function (state, payload) {
-  let table = $state.project.tables.list.find(table => table.name === payload.name)
-
-  if (table != null || payload.name === '')
+  if (!checkTableName(payload.name))
     return
 
     
@@ -148,9 +189,54 @@ mutations.createTable = function (state, payload) {
     columns: payload.columns,
   })
 }
+mutations.editTable = function (state, payload) {
+  if (!checkTableName(payload.data.name))
+    return
+
+  
+  
+  table = $getters.getTable(payload.tableId)
+
+  Object.assign(table, payload.data)
+}
 mutations.deleteTable = function (state, tableId) {
   $state.project.tables.list.splice(
     $getters.getTableIdx(tableId), 1)
+}
+
+function checkTableName(tableName) {
+  // Check for invalid module name
+
+  if (tableName === '') {
+    $commit('showSnackbar', {
+      text: 'Invalid table name',
+      color: 'red',
+      timeout: 3000,
+    })
+
+    return false
+  }
+
+
+
+  // Check for existing module name
+
+  const table = $state.project.tables.list.find(
+    (table) => table.name === tableName)
+
+  if (table != null) {
+    $commit('showSnackbar', {
+      text: 'A table with this name already exists',
+      color: 'red',
+      timeout: 3000,
+    })
+
+    return false
+  }
+
+
+
+  return true
 }
 
 

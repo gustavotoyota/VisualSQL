@@ -1,7 +1,10 @@
 <template>
   <TableDialog v-slot="{ on }" title="Edit table"
   :name="table.name" :columns="table.columns"
-  @submit="Object.assign(table, $event)">
+  @submit="$commit('editTable', {
+    tableId: table.id,
+    data: $event,
+  })">
 
     <v-list-item v-on="on">
 
