@@ -54,7 +54,10 @@
 
           <v-spacer class="flex-column"/>
           
-          <PrivacyPolicy/>
+          <div>
+            <div><PrivacyPolicy/></div>
+            <div><TermsAndConditions/></div>
+          </div>
 
         </div>
 
