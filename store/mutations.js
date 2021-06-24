@@ -195,7 +195,7 @@ mutations.editTable = function (state, payload) {
 
   
   
-  table = $getters.getTable(payload.tableId)
+  const table = $getters.getTable(payload.tableId)
 
   Object.assign(table, payload.data)
 }
