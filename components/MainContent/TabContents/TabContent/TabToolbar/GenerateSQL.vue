@@ -198,7 +198,7 @@ export default {
       $utils.writeToClipboard(this.sql)
 
       $commit('showSnackbar', {
-        text: 'Copied generated SQL',
+        text: 'Copied generated SQL to clipboard',
         color: 'green',
         timeout: 2000,
       })
