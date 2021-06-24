@@ -108,7 +108,7 @@ SQLObj.prototype.objectPrinting['set-operations'] = function (obj) {
         if (sourceObj.allowDuplicates)
           writer.print(' ALL', true)
         break
-      case 'difference': writer.print('EXCEPT', true); break
+      case 'difference': writer.print('MINUS', true); break
       case 'intersection': writer.print('INTERSECT', true); break
     }
     
@@ -166,11 +166,11 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
       let sourceObj = obj.from[i]
   
       switch (sourceObj.joinType) {
-        case 'inner-join': writer.print('INNER JOIN '); break
-        case 'left-join': writer.print('LEFT JOIN '); break
-        case 'right-join': writer.print('RIGHT JOIN '); break
-        case 'full-join': writer.print('FULL JOIN '); break
-        case 'cross-join': writer.print('CROSS JOIN '); break
+        case 'inner-join': writer.print('INNER JOIN ', true); break
+        case 'left-join': writer.print('LEFT JOIN ', true); break
+        case 'right-join': writer.print('RIGHT JOIN ', true); break
+        case 'full-join': writer.print('FULL JOIN ', true); break
+        case 'cross-join': writer.print('CROSS JOIN ', true); break
       }
   
       printSource(sourceObj)
@@ -182,8 +182,6 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
         writer.printField(sourceObj.joinCondition)
         writer.decrementIndent()
       }
-  
-      writer.printLine()
     }
   
     writer.decrementIndent()
