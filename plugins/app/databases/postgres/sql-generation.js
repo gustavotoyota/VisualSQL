@@ -199,8 +199,6 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
         writer.printField(sourceObj.joinCondition)
         writer.decrementIndent()
       }
-  
-      writer.printLine()
     }
   
     writer.decrementIndent()
