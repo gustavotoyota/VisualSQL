@@ -108,7 +108,7 @@ SQLObj.prototype.objectPrinting['set-operations'] = function (obj) {
         if (sourceObj.allowDuplicates)
           writer.print(' ALL', true)
         break
-      case 'difference': writer.print('EXCEPT', true); break
+      case 'difference': writer.print('MINUS', true); break
       case 'intersection': writer.print('INTERSECT', true); break
     }
     
