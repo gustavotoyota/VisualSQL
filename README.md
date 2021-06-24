@@ -1,4 +1,4 @@
-# visual-sql-tool
+# visual-sql
 
 ## Build Setup
 
