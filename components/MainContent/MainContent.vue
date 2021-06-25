@@ -1,5 +1,5 @@
 <template>
-  <v-main style="padding-top: 60px">
+  <v-main style="padding-top: 48px">
 
 
 

@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app clipped-left clipped-right dense
-  style="height: 60px">
+  style="height: 48px">
 
 
 
@@ -76,7 +76,7 @@
 
 
 
-    <div style="margin-left: 14px; width: 468px; height: 60px">
+    <div style="margin-left: 14px; width: 468px; height: 48px">
       <!-- Adcash -->
       <!--<script data-cfasync="false" type="text/javascript"
       src="https://www.dexpredict.com/a/display.php?r=4715023"></script>-->
