@@ -68,18 +68,18 @@
 
 
 
-    <TableProperties :node="$getters.activeNode"/>
-    <NodeProperties :node="$getters.activeNode"/>
-    <SQLProperties :node="$getters.activeNode"/>
+    <TableProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <NodeProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <SQLProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
     
-    <SetOperationProperties :node="$getters.activeNode"/>
-    <JoinProperties :node="$getters.activeNode"/>
+    <SetOperationProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <JoinProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
 
-    <FilterProperties :node="$getters.activeNode"/>
-    <TransformProperties :node="$getters.activeNode"/>
-    <DistinctProperties :node="$getters.activeNode"/>
-    <SortProperties :node="$getters.activeNode"/>
-    <LimitProperties :node="$getters.activeNode"/>
+    <FilterProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <TransformProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <DistinctProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <SortProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
+    <LimitProperties :module="$getters.currentModule" :node="$getters.activeNode"/>
     
     
   </div>

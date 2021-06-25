@@ -11,7 +11,7 @@
     label="Limit (LIMIT/FETCH/TOP...)"
     v-model="node.props.limit.value"
 
-    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
+    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
 
 
 
@@ -23,7 +23,7 @@
     label="Offset (OFFSET)"
     v-model="node.props.offset.value"
 
-    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
+    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
 
 
   </div>
@@ -34,6 +34,7 @@
 export default {
 
   props: {
+    module: Object,
     node: Object,
   },
 

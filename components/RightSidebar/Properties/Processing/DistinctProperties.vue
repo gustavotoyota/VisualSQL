@@ -11,7 +11,7 @@
     label="Columns (DISTINCT ON)"
     v-model="node.props.columns"
 
-    :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
+    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
 
   </div>
 
@@ -21,6 +21,7 @@
 export default {
 
   props: {
+    module: Object,
     node: Object,
   },
 

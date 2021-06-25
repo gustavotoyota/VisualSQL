@@ -35,6 +35,7 @@ export default {
 
 
   props: {
+    module: Object,
     node: Object,
   },
 

@@ -76,6 +76,7 @@ export default {
 
 
   props: {
+    module: Object,
     node: Object,
   },
 
@@ -99,8 +100,7 @@ export default {
 
 
     getInputColumns() {
-      return $app.columnTracking.getInputColumns(
-        $getters.currentModule, this.node)
+      return $getters.currentDatabase.generateTree(this.module, this.node).columns
     },
     getFilterColumns() {
       return $utils.trimItems(this.node.props.group.columns.split(','))

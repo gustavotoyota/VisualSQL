@@ -124,3 +124,10 @@ getters.screenToWorld = (state, getters) => (module, screenPos) => {
     y: module.camera.pos.y + (screenPos.y - displayRect.height / 2) / module.camera.zoom,
   }
 }
+
+
+
+
+getters.currentDatabase = () => {
+  return $app.databases.data[$state.project.sql.database]
+}
