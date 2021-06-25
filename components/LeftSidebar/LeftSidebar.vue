@@ -3,7 +3,7 @@
   v-if="$state.sidebars.left"
   app width="300"
   permanent clipped touchless
-  style="top: 60px">
+  style="top: 48px">
 
 
 
