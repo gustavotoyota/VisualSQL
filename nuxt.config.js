@@ -25,6 +25,9 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
     ],
+    script: [
+      { 'data-adel': 'atag', src: '//achcdn.com/script/atg.js', czid: 'jj36p74q' },
+    ],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
