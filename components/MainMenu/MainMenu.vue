@@ -76,8 +76,10 @@
 
 
 
-    <div style="margin-left: 8px; width: 468px; height: 60px; background-color: #363636">
-      <script data-cfasync="false" type="text/javascript" src="https://www.dexpredict.com/a/display.php?r=4715023"></script>
+    <div style="margin-left: 14px; width: 468px; height: 60px">
+      <!-- Adcash -->
+      <!--<script data-cfasync="false" type="text/javascript"
+      src="https://www.dexpredict.com/a/display.php?r=4715023"></script>-->
     </div>
 
 
