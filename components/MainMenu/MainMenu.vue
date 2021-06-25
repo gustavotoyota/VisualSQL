@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app clipped-left clipped-right dense
-  style="height: 50px; padding-top: 1px; padding-right: 0">
+  style="height: 60px">
 
 
 
@@ -76,25 +76,8 @@
 
 
 
-    <div style="margin-left: 8px; width: 300px; height: 50px">
-
-      <!--
-      <adsbygoogle
-
-      :ad-style="{
-        display: 'inline-block',
-
-        width: '300px',
-        height: '50px',
-      }"
-
-      ad-client="ca-pub-7390527632812452"
-      ad-slot="9297057205"
-      
-      ad-format="rectangular"
-      data-full-width-responsive="false"/>
-      -->
-
+    <div style="margin-left: 8px; width: 468px; height: 60px; background-color: #363636">
+      <script data-cfasync="false" type="text/javascript" src="https://www.dexpredict.com/a/display.php?r=4715023"></script>
     </div>
 
 
@@ -110,6 +93,8 @@ export default {
 
 <style scoped>
 .v-app-bar /deep/ .v-toolbar__content {
+  height: 100% !important;
+
   padding-right: 0;
 }
 

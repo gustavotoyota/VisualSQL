@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer app width="300" right
-  v-if="$state.sidebars.right" permanent clipped touchless>
+  v-if="$state.sidebars.right" permanent clipped touchless
+  style="top: 60px">
 
 
 
