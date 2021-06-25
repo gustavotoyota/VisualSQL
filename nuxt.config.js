@@ -15,7 +15,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: `${title} | Free Online SQL Tool`,
+    title: `${title} | Online SQL Building Tool`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
@@ -60,8 +60,6 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
-    '@nuxtjs/gtm',
-    ['@nuxtjs/google-adsense', { id: 'ca-pub-7390527632812452' }],
   ],
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
@@ -107,12 +105,6 @@ export default {
 
   server: {
     host: '0.0.0.0' // default: localhost
-  },
-
-
-  
-  gtm: {
-    id: 'GTM-KH4V429'
   },
 
   

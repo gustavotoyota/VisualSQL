@@ -64,7 +64,7 @@
                   
                   
     <form action="https://www.paypal.com/donate" method="post" target="_blank"
-    style="margin-left: 6px; position: relative; top: 3px">
+    style="margin-left: 6px; height: 22px">
       <input type="hidden" name="hosted_button_id" value="746BJR8L4R47U" />
       <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
       <img alt="" border="0" src="https://www.paypal.com/en_BR/i/scr/pixel.gif" width="1" height="1" />

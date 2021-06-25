@@ -11,8 +11,6 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/google-adsense": "^1.3.0",
-    "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
     "file-saver": "^2.0.5",
