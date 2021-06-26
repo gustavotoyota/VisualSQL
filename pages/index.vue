@@ -527,8 +527,7 @@ export default {
 
         $state.saving.modified = true
 
-        if ($state.saving.timeout != null)
-          clearTimeout($state.saving.timeout)
+        clearTimeout($state.saving.timeout)
 
         $state.saving.timeout = setTimeout(() => {
           $app.saveLoad.tryUpdateProjectFile()
