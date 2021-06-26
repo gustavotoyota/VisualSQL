@@ -98,8 +98,8 @@ TreeObj.prototype.processNode = function(module, node) {
   if (node.props.common && node.props.name !== '') {
     // Find common
 
-    let commonFullName = module.name + '.' + node.props.name
-    let commonIdx = this.commons.findIndex(
+    const commonFullName = module.name + '.' + node.props.name
+    const commonIdx = this.commons.findIndex(
       common => common.fullName === commonFullName)
 
 
@@ -120,18 +120,6 @@ TreeObj.prototype.processNode = function(module, node) {
         obj: nodeObj,
       })
     }
-
-
-
-
-    // Resolve conflicts
-
-    let conflicts = this.commons.filter(
-      common => common.node.props.name === node.props.name)
-
-    if (conflicts.length > 1)
-      for (let conflict of conflicts)
-        conflict.name = conflict.fullName.replace('.', '_')
 
 
 
