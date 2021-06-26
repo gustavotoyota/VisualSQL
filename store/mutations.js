@@ -854,8 +854,6 @@ mutations.fitToScreen = function () {
 
   let displayRect = $getters.getDisplayRect()
 
-  module.camera.zoom = 1
-
   if (topLeft.x !== module.camera.pos.x && isFinite(topLeft.x))
     module.camera.zoom = Math.min(module.camera.zoom,
       (Math.min(150, displayRect.width / 4) - displayRect.width / 2) /
