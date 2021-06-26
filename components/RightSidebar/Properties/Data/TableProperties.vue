@@ -8,7 +8,8 @@
       </div>
 
       <v-combobox class="mt-1" dense solo hide-details
-      :items="tableNames" v-model="node.props.tableName">
+      :items="tableNames" v-model="node.props.tableName"
+      @blur="onBlur">
       </v-combobox>
     </div>
 
@@ -28,7 +29,6 @@ export default {
 
 
   computed: {
-    
 
     tableNames() {
       let tableNames = []
@@ -39,6 +39,20 @@ export default {
       return tableNames
     },
 
+  },
+
+
+
+  methods: {
+
+    onBlur(event) {
+      if (this.node.props.tableName === event.target.value)
+        return
+
+      this.node.props.tableName = event.target.value
+
+      $commit('saveState')
+    },
 
   },
 
