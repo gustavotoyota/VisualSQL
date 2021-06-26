@@ -26,16 +26,6 @@ $app.nodeTypes = nodeTypes
 
 
 
-// Column tracking
-
-import columnTracking from './column-tracking/column-tracking.js'
-
-$app.columnTracking = columnTracking
-
-
-
-
-
 // SQL
 
 import databases from './databases/databases.js'

@@ -4,7 +4,7 @@
 
 
 
-    <v-app-bar-title>
+    <v-app-bar-title style="flex: none">
       Visual SQL
     </v-app-bar-title>
 
@@ -76,7 +76,7 @@
 
 
 
-    <div style="margin-left: 14px; width: 468px; height: 48px">
+    <div style="margin-left: 14px; min-width: 468px; height: 100%">
       <!-- Adcash -->
       <!--<script data-cfasync="false" type="text/javascript"
       src="https://www.dexpredict.com/a/display.php?r=4715023"></script>-->

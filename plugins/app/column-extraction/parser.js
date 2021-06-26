@@ -94,9 +94,6 @@ function parseColumn(lexer, first) {
       'BackTick', 'LeftBracket', 'LeftParen', 'Identifier')
   }
 
-  if (firstValue.toUpperCase() === 'SELECT')
-    return ''
-
   return firstValue
 }
 

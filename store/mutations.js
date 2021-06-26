@@ -11,7 +11,7 @@ export default mutations
 
 // Project
   
-mutations.resetProject = function (state) {
+mutations.resetProject = function () {
   // Initialize saving state
 
   $state.saving.ignoreChange = $state.project != null
@@ -442,7 +442,7 @@ mutations.deleteLink = function (state, payload) {
 
 // Selection
 
-mutations.clearSelection = function (state) {
+mutations.clearSelection = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -456,7 +456,7 @@ mutations.clearSelection = function (state) {
   tab.links.selected = {}
   tab.links.activeId = null
 }
-mutations.selectAll = function (state) {
+mutations.selectAll = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -512,7 +512,7 @@ mutations.activateLink = function (state, linkId) {
 
 
 
-mutations.deleteSelection = function (state) {
+mutations.deleteSelection = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -550,11 +550,11 @@ mutations.deleteSelection = function (state) {
 
 // Copy/paste
 
-mutations.cutSelection = function (state) {
+mutations.cutSelection = function () {
   $commit('copySelection')
   $commit('deleteSelection')
 }
-mutations.copySelection = function (state) {
+mutations.copySelection = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -774,7 +774,7 @@ mutations.paste = async function (state, clipboardText) {
 
 // Camera
 
-mutations.fitToScreen = function (state) {
+mutations.fitToScreen = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -854,8 +854,6 @@ mutations.fitToScreen = function (state) {
 
   let displayRect = $getters.getDisplayRect()
 
-  module.camera.zoom = 1
-
   if (topLeft.x !== module.camera.pos.x && isFinite(topLeft.x))
     module.camera.zoom = Math.min(module.camera.zoom,
       (Math.min(150, displayRect.width / 4) - displayRect.width / 2) /
@@ -891,7 +889,7 @@ mutations.saveState = function (state, tab) {
   tab.states.list.splice(++tab.states.currentIdx)
   tab.states.list.push(JSON.stringify(moduleState))
 }
-mutations.replaceState = function (state) {
+mutations.replaceState = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -911,7 +909,7 @@ mutations.replaceState = function (state) {
 
 
 
-mutations.undo = function (state) {
+mutations.undo = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
@@ -929,7 +927,7 @@ mutations.undo = function (state) {
 
   module.data = JSON.parse(tab.states.list[--tab.states.currentIdx])
 }
-mutations.redo = function (state) {
+mutations.redo = function () {
   let tab = $getters.currentTab
 
   if (tab == null)
