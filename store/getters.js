@@ -131,3 +131,37 @@ getters.screenToWorld = (state, getters) => (module, screenPos) => {
 getters.currentDatabase = () => {
   return $app.databases.data[$state.project.sql.database]
 }
+getters.getCurrentColumns = () => () => {
+  const columnObjs = $getters.currentDatabase.generateTree(
+    $getters.currentModule, $getters.activeNode).columnObjs
+
+
+
+  // Check number of tables
+
+  const tableSet = {}
+  for (const columnObj of columnObjs)
+    tableSet[columnObj.table ?? ''] = true
+
+
+
+  // Get columns
+
+  const columns = []
+
+  if (Object.keys(tableSet).length === 1) {
+    for (const columnObj of columnObjs)
+      columns.push(columnObj.column)
+  } else {
+    for (const columnObj of columnObjs) {
+      if (columnObj.table)
+        columns.push(`${columnObj.table}.${columnObj.column}`)
+      else
+        columns.push(columnObj.column)
+    }
+  }
+
+
+
+  return columns
+}

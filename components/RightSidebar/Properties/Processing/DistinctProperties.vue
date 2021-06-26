@@ -11,7 +11,7 @@
     label="Columns (DISTINCT ON)"
     v-model="node.props.columns"
 
-    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
+    :columns="$getters.getCurrentColumns()"/>
 
   </div>
 

@@ -10,7 +10,7 @@
   label="Filter condition (WHERE)"
   v-model="node.props.condition"
 
-  :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
+  :columns="$getters.getCurrentColumns()"/>
   
   
 </template>

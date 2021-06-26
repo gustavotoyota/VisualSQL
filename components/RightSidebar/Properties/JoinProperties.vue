@@ -28,7 +28,7 @@
       label="Join condition (ON)"
       v-model="node.props.condition"
 
-      :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
+      :columns="$getters.getCurrentColumns()"/>
 
 
     </div>

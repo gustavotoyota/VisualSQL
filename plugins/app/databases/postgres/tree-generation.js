@@ -13,7 +13,7 @@ function TreeObj(module, node) {
 
   this.commons = []
 
-  this.columns = []
+  this.columnObjs = []
 
   this.rootNode = node
   this.rootObj = this.processNode(module, node)
@@ -65,12 +65,22 @@ TreeObj.prototype.processNode = function(module, node) {
 
 
 
-  // Capture input columns
+  // Update column tables with aliases
+
+  for (const input of inputs)
+    if (input.link.props.alias)
+      this.updateTable(input.obj.columnObjs, input.link.props.alias)
+
+
+
+  
+  // Root node: Capture input columns
 
   if (node === this.rootNode) {
-    this.columns = []
+    this.columnObjs = []
+
     for (const input of inputs)
-      this.columns = this.columns.concat(input.obj.columns)
+      this.columnObjs = this.columnObjs.concat(input.obj.columnObjs)
   }
 
 
@@ -129,7 +139,7 @@ TreeObj.prototype.processNode = function(module, node) {
     nodeObj = this.createSelect({
       sourceType: 'common',
 
-      columns: nodeObj.columns,
+      columnObjs: nodeObj.columnObjs,
       
       commonIdx: commonIdx,
     })
@@ -163,16 +173,24 @@ TreeObj.prototype.nodeTypeProcessing = {}
 
 // Data sources
 
-import parseColumns from '../../column-extraction/parser.js'
-
 TreeObj.prototype.nodeTypeProcessing['table'] = function (node, inputs) {
   const table = $state.project.tables.list.find(
     table => table.name === node.props.tableName)
 
+
+
+  let columnObjs
+  if (table == null)
+    columnObjs = []
+  else
+    columnObjs = this.extractColumnObjs(table.columns, true, node.props.tableName)
+
+
+    
   return this.createSelect({
     sourceType: 'table',
 
-    columns: (table == null) ? [] : parseColumns(table.columns, true),
+    columnObjs: columnObjs,
 
     tableName: node.props.tableName,
   })
@@ -184,7 +202,7 @@ TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
   return {
     objectType: 'sql',
 
-    columns: parseColumns(node.props.columns, false),
+    columnObjs: this.extractColumnObjs(node.props.columns, false),
 
     sql: this.processField(node.props.sql, node),
   }
@@ -236,11 +254,12 @@ function joinProcessing(node, inputs) {
 
 
 
+
   // New source
 
-  nodeObj.columns = nodeObj.columns.concat(inputs[1].obj.columns)
-
   let joinObj
+  
+  nodeObj.columnObjs = nodeObj.columnObjs.concat(inputs[1].obj.columnObjs)
 
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
@@ -291,7 +310,7 @@ TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
     }
   }
 
-  nodeObj.columns = parseColumns(node.props.columns, false)
+  nodeObj.columnObjs = this.extractColumnObjs(node.props.columns, false)
 
   nodeObj.select = this.processField(node.props.columns, node)
 
@@ -392,7 +411,7 @@ TreeObj.prototype.prepareSetOperation = function (input) {
     nodeObj = {
       objectType: 'set-operations',
 
-      columns: input.obj.columns,
+      columnObjs: this.updateTable(input.obj.columnObjs),
 
       sources: [
         { obj: input.obj },
@@ -422,7 +441,7 @@ TreeObj.prototype.prepareSelect = function (input, newClause, maxClause) {
     nodeObj = this.createSelect({
       sourceType: 'object',
 
-      columns: input.obj.columns,
+      columnObjs: this.updateTable(input.obj.columnObjs, input.link.props.alias),
 
       alias: input.link.props.alias,
 
@@ -438,7 +457,7 @@ TreeObj.prototype.createSelect = function (source) {
   return {
     objectType: 'select',
 
-    columns: source.columns,
+    columnObjs: source.columnObjs,
 
     clauseLevel: sqlClauseLevels['from'],
 
@@ -448,4 +467,24 @@ TreeObj.prototype.createSelect = function (source) {
 
     select: ['*'],
   }
+}
+
+
+
+
+import parseColumns from '../../column-extraction/parser.js'
+
+TreeObj.prototype.extractColumnObjs = function (text, first, table) {
+  const columnObjs = []
+  
+  for (const column of parseColumns(text, first))
+    columnObjs.push({ table: table, column: column })
+
+  return columnObjs
+}
+TreeObj.prototype.updateTable = function (columnObjs, table) {
+  for (const columnObj of columnObjs)
+    columnObj.table = table
+
+  return columnObjs
 }

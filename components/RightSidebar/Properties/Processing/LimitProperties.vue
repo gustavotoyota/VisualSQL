@@ -11,7 +11,7 @@
     label="Limit (LIMIT/FETCH/TOP...)"
     v-model="node.props.limit.value"
 
-    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
+    :columns="$getters.getCurrentColumns()"/>
 
 
 
@@ -23,7 +23,7 @@
     label="Offset (OFFSET)"
     v-model="node.props.offset.value"
 
-    :columns="$getters.currentDatabase.generateTree(module, node).columns"/>
+    :columns="$getters.getCurrentColumns()"/>
 
 
   </div>
