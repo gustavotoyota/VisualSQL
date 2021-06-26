@@ -31,7 +31,7 @@
       </v-list-item>
 
       <v-list-item
-      v-for="column in columns" :key="column"
+      v-for="(column, index) in columns" :key="index"
       @click="insertColumn(column)">
         <v-list-item-title>{{ column }}</v-list-item-title>
       </v-list-item>
