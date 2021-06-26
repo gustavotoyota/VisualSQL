@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app clipped-left clipped-right dense
-  style="height: 48px">
+  style="height: 60px">
 
 
 
@@ -77,6 +77,16 @@
 
 
     <div style="margin-left: 14px; min-width: 468px; height: 100%">
+      <iframe style="width: 468px; height: 60px; border-width: 0"
+      srcdoc="
+        <html>
+          <head></head>
+          <body style='margin: 0; overflow: hidden'>
+            <script data-cfasync='false' type='text/javascript' src='https://www.dexpredict.com/a/display.php?r=4715023'></script>
+          </body>
+        </html>">
+      </iframe>
+
       <!-- Adcash -->
       <!--<script data-cfasync="false" type="text/javascript"
       src="https://www.dexpredict.com/a/display.php?r=4715023"></script>-->
