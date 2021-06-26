@@ -39,7 +39,7 @@
         label="Filter condition (HAVING)"
         v-model="node.props.group.condition"
 
-        :columns="getFilterColumns()"/>
+        :columns="getOutputColumns()"/>
 
 
 
@@ -76,6 +76,7 @@ export default {
 
 
   props: {
+    module: Object,
     node: Object,
   },
 
@@ -99,15 +100,14 @@ export default {
 
 
     getInputColumns() {
-      return $app.columnTracking.getInputColumns(
-        $getters.currentModule, this.node)
-    },
-    getFilterColumns() {
-      return $utils.trimItems(this.node.props.group.columns.split(','))
+      return $getters.getCurrentColumns()
     },
     getOutputColumns() {
-      if (this.node.props.group.active)
-        return $utils.arrayUnion(this.getFilterColumns(), this.getInputColumns())
+      if (this.node.props.group.active) {
+        const groupColumns = $utils.trimItems(this.node.props.group.columns.split(','))
+
+        return $utils.arrayUnion(groupColumns, this.getInputColumns())
+      }
       
       return this.getInputColumns()
     },

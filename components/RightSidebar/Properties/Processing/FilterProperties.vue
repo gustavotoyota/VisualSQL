@@ -10,7 +10,7 @@
   label="Filter condition (WHERE)"
   v-model="node.props.condition"
 
-  :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
+  :columns="$getters.getCurrentColumns()"/>
   
   
 </template>
@@ -19,6 +19,7 @@
 export default {
 
   props: {
+    module: Object,
     node: Object,
   },
 

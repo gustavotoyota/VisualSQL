@@ -28,7 +28,7 @@
       label="Join condition (ON)"
       v-model="node.props.condition"
 
-      :columns="$app.columnTracking.getInputColumns($getters.currentModule, node)"/>
+      :columns="$getters.getCurrentColumns()"/>
 
 
     </div>
@@ -42,6 +42,7 @@ export default {
 
 
   props: {
+    module: Object,
     node: Object,
   },
 

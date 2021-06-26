@@ -13,6 +13,9 @@ function TreeObj(module, node) {
 
   this.commons = []
 
+  this.columnObjs = []
+
+  this.rootNode = node
   this.rootObj = this.processNode(module, node)
 }
 
@@ -20,7 +23,7 @@ function TreeObj(module, node) {
 
 
 TreeObj.prototype.processNode = function(module, node) {
-  // Check node type
+  // Check enabled node type
 
   const database = $app.databases.data[$state.project.sql.database]
 
@@ -33,20 +36,21 @@ TreeObj.prototype.processNode = function(module, node) {
 
 
 
-  // Process inputs
+  // Gather inputs
 
-  let inputs = []
+  const inputs = []
 
-  for (let linkId of node.incomingLinks) {
-    let link = module.data.links.map[linkId]
+  for (const linkId of node.incomingLinks) {
+    const link = module.data.links.map[linkId]
+    
     if (link == null) {
       this.error.message = 'Query incomplete: node input missing.'
       this.error.node = node
       return
     }
 
-    let input = module.data.nodes.map[link.from]
-    let inputObj = this.processNode(module, input)
+    const input = module.data.nodes.map[link.from]
+    const inputObj = this.processNode(module, input)
 
     if (this.error.message)
       return
@@ -61,20 +65,41 @@ TreeObj.prototype.processNode = function(module, node) {
 
 
 
+  // Update column tables with aliases
+
+  for (const input of inputs)
+    if (input.link.props.alias)
+      this.updateTable(input.obj.columnObjs, input.link.props.alias)
+
+
+
+  
+  // Root node: Capture input columns
+
+  if (node === this.rootNode) {
+    this.columnObjs = []
+
+    for (const input of inputs)
+      this.columnObjs = this.columnObjs.concat(input.obj.columnObjs)
+  }
+
+
+
+
   // Node type processing
-
-  let nodeObj = this.nodeTypeProcessing[node.type].call(this, node, inputs)
-
-
+  
+  const nodeObj = this.nodeTypeProcessing[node.type].call(this, node, inputs)
 
 
-  // Proess common
+
+
+  // Process common
   
   if (node.props.common && node.props.name !== '') {
     // Find common
 
-    let commonFullName = module.name + '.' + node.props.name
-    let commonIdx = this.commons.findIndex(
+    const commonFullName = module.name + '.' + node.props.name
+    const commonIdx = this.commons.findIndex(
       common => common.fullName === commonFullName)
 
 
@@ -99,24 +124,15 @@ TreeObj.prototype.processNode = function(module, node) {
 
 
 
-    // Resolve conflicts
-
-    let conflicts = this.commons.filter(
-      common => common.node.props.name === node.props.name)
-
-    if (conflicts.length > 1)
-      for (let conflict of conflicts)
-        conflict.name = conflict.fullName.replace('.', '_')
-
-
-
-
-    nodeObj = createSelect({
+    nodeObj = this.createSelect({
       sourceType: 'common',
+
+      columnObjs: nodeObj.columnObjs,
       
       commonIdx: commonIdx,
     })
   }
+  
 
 
 
@@ -146,8 +162,23 @@ TreeObj.prototype.nodeTypeProcessing = {}
 // Data sources
 
 TreeObj.prototype.nodeTypeProcessing['table'] = function (node, inputs) {
-  return createSelect({
+  const table = $state.project.tables.list.find(
+    table => table.name === node.props.tableName)
+
+
+
+  let columnObjs
+  if (table == null)
+    columnObjs = []
+  else
+    columnObjs = this.extractColumnObjs(table.columns, true, node.props.tableName)
+
+
+    
+  return this.createSelect({
     sourceType: 'table',
+
+    columnObjs: columnObjs,
 
     tableName: node.props.tableName,
   })
@@ -159,6 +190,8 @@ TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
   return {
     objectType: 'sql',
 
+    columnObjs: this.extractColumnObjs(node.props.columns, false),
+
     sql: this.processField(node.props.sql, node),
   }
 }
@@ -169,26 +202,14 @@ TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
 // Set operations
 
 function setOperationProcessing(node, inputs) {
-  // First object
+  // Node object
 
-  let nodeObj
-
-  if (inputs[0].obj.objectType === 'set-operations') {
-    nodeObj = $utils.notSoShallowCopy(inputs[0].obj)
-  } else {
-    nodeObj = {
-      objectType: 'set-operations',
-
-      sources: [
-        { obj: inputs[0].obj },
-      ],
-    }
-  }
+  const nodeObj = this.prepareSetOperation(inputs[0])
 
 
 
 
-  // Second object
+  // New source
 
   nodeObj.sources.push({
     obj: inputs[1].obj,
@@ -211,18 +232,22 @@ TreeObj.prototype.nodeTypeProcessing['intersection'] = setOperationProcessing
 
 
 
+
 // Joins
 
 function joinProcessing(node, inputs) {
-  // First object
+  // Node object
 
-  let nodeObj = initNodeObj(inputs[0], 'from', 'from')
+  const nodeObj = this.prepareSelect(inputs[0], 'from', 'from')
 
 
 
-  // Second object
+
+  // New source
 
   let joinObj
+  
+  nodeObj.columnObjs = nodeObj.columnObjs.concat(inputs[1].obj.columnObjs)
 
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
@@ -254,7 +279,7 @@ TreeObj.prototype.nodeTypeProcessing['cross-join'] = joinProcessing
 
 
 TreeObj.prototype.nodeTypeProcessing['filter'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'where', 'where')
+  const nodeObj = this.prepareSelect(inputs[0], 'where', 'where')
   
   if (nodeObj.where == null)
     nodeObj.where = []
@@ -264,7 +289,7 @@ TreeObj.prototype.nodeTypeProcessing['filter'] = function (node, inputs) {
   return nodeObj 
 }
 TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'transform', 'where')
+  const nodeObj = this.prepareSelect(inputs[0], 'transform', 'where')
 
   if (node.props.group.active) {
     nodeObj.group = {
@@ -273,26 +298,28 @@ TreeObj.prototype.nodeTypeProcessing['transform'] = function (node, inputs) {
     }
   }
 
+  nodeObj.columnObjs = this.extractColumnObjs(node.props.columns, false)
+
   nodeObj.select = this.processField(node.props.columns, node)
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['distinct'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'distinct', 'transform')
+  const nodeObj = this.prepareSelect(inputs[0], 'distinct', 'transform')
 
   nodeObj.distinct = true
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'sort', 'distinct')
+  const nodeObj = this.prepareSelect(inputs[0], 'sort', 'distinct')
 
   nodeObj.sort = this.processField(node.props.columns, node)
 
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
-  let nodeObj = initNodeObj(inputs[0], 'limit', 'sort')
+  let nodeObj = this.prepareSelect(inputs[0], 'limit', 'sort')
 
   if (node.props.offset.value) {
     nodeObj.offset = {
@@ -308,29 +335,6 @@ TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
     
   return nodeObj
 }
-
-
-
-
-
-TreeObj.prototype.getRefNodeObj = function (fullName, node) {
-  let parts = fullName.split('.', 2)
-
-  let refModule = $state.project.modules.list.find(module => module.name === parts[0])
-
-  let refNode
-  if (refModule != null)
-    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
-
-  if (refNode == null) {
-    this.error.message = 'Query incomplete: referenced node not found.'
-    this.error.node = node
-    return
-  }
-
-  return this.processNode(refModule, refNode)
-}
-
 
 
 
@@ -360,25 +364,68 @@ TreeObj.prototype.processField = function (input, node) {
 
   return output
 }
+TreeObj.prototype.getRefNodeObj = function (fullName, node) {
+  const parts = fullName.split('.', 2)
+
+  const refModule = $state.project.modules.list.find(module => module.name === parts[0])
+
+  let refNode
+  if (refModule != null)
+    refNode = Object.values(refModule.data.nodes.map).find(node => node.props.name === parts[1])
+
+  if (refNode == null) {
+    this.error.message = 'Query incomplete: referenced node not found.'
+    this.error.node = node
+    return
+  }
+
+  return this.processNode(refModule, refNode)
+}
 
 
 
 
 
-function initNodeObj(input, newClause, maxClause) {
+TreeObj.prototype.prepareSetOperation = function (input) {
+  let nodeObj
+
+  if (input.obj.objectType === 'set-operations') {
+    nodeObj = input.obj
+  } else {
+    nodeObj = {
+      objectType: 'set-operations',
+
+      columnObjs: this.updateTable(input.obj.columnObjs),
+
+      sources: [
+        { obj: input.obj },
+      ],
+    }
+  }
+
+  return nodeObj
+}
+
+
+
+
+
+TreeObj.prototype.prepareSelect = function (input, newClause, maxClause) {
   let nodeObj
 
   if (input.obj.objectType === 'select'
   && input.obj.clauseLevel <= sqlClauseLevels[maxClause]
-  && (input.link.props.alias === '' ||
-  (input.link.props.alias !== '' && input.obj.from.length === 1))) {
-    nodeObj = $utils.notSoShallowCopy(input.obj)
+  && (!input.link.props.alias ||
+  (input.link.props.alias && input.obj.from.length === 1))) {
+    nodeObj = input.obj
 
-    if (input.link.props.alias !== '')
+    if (input.link.props.alias)
       nodeObj.from[0].alias = input.link.props.alias
   } else {
-    nodeObj = createSelect({
+    nodeObj = this.createSelect({
       sourceType: 'object',
+
+      columnObjs: this.updateTable(input.obj.columnObjs, input.link.props.alias),
 
       alias: input.link.props.alias,
 
@@ -390,13 +437,11 @@ function initNodeObj(input, newClause, maxClause) {
 
   return nodeObj
 }
-
-
-
-
-function createSelect(source) {
+TreeObj.prototype.createSelect = function (source) {
   return {
     objectType: 'select',
+
+    columnObjs: source.columnObjs,
 
     clauseLevel: sqlClauseLevels['from'],
 
@@ -406,4 +451,24 @@ function createSelect(source) {
 
     select: ['*'],
   }
+}
+
+
+
+
+import parseColumns from '../../column-extraction/parser.js'
+
+TreeObj.prototype.extractColumnObjs = function (text, first, table) {
+  const columnObjs = []
+  
+  for (const column of parseColumns(text, first))
+    columnObjs.push({ table: table, column: column })
+
+  return columnObjs
+}
+TreeObj.prototype.updateTable = function (columnObjs, table) {
+  for (const columnObj of columnObjs)
+    columnObj.table = table
+
+  return columnObjs
 }
