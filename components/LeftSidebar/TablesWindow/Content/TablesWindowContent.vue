@@ -3,7 +3,7 @@
     
 
     <draggable v-model="$state.project.tables.list" delay="250"
-    touch-start-threshold="4" animation="200">
+    touch-start-threshold="4" animation="200" handle=".handle">
 
 
       <TableItem

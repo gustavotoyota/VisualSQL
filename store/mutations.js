@@ -315,8 +315,8 @@ mutations.createNode = function (state, payload) {
 
 
 
-  Object.assign(node.props, $utils.deepCopy(nodeTypeInfo.props))
-  Object.assign(node, payload.node)
+  $utils.merge(node.props, nodeTypeInfo.props)
+  $utils.merge(node, payload.node)
 
 
 

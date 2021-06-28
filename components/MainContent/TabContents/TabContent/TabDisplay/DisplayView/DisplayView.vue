@@ -74,6 +74,8 @@ export default {
               x: worldPos.x,
               y: worldPos.y,
             },
+
+            props: $state.nodeCreation.props,
           },
         })
       }

@@ -3,7 +3,7 @@
 
 
 
-    <v-list-item-icon>
+    <v-list-item-icon @mousedown="onNodeCreation">
       <v-icon>mdi-table</v-icon>
     </v-list-item-icon>
         
@@ -16,7 +16,7 @@
       data: $event,
     })">
 
-      <v-list-item-content v-on="on">
+      <v-list-item-content v-on="on" class="handle">
         <v-list-item-title class="body-2"
         style="word-break: break-all; white-space: normal">
           {{ table.name }}
@@ -62,6 +62,21 @@ export default {
   
   props: {
     table: { type: Object },
+  },
+
+
+  methods: {
+
+    onNodeCreation() {
+      $state.nodeCreation.active = true
+
+      $state.nodeCreation.nodeType = 'table'
+      $state.nodeCreation.props = { tableName: this.table.name }
+
+      $state.nodeCreation.dragStartPos = $utils.shallowCopy($state.pointer.pagePos)
+      $state.nodeCreation.visible = false
+    },
+
   },
 
 
