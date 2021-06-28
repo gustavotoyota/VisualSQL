@@ -47,14 +47,6 @@ $utils.shallowCopy = (obj) => {
 
   return obj
 }
-$utils.notSoShallowCopy = (obj) => {
-  let result = Array.isArray(obj) ? [] : {}
-
-  for (const [key, value] of Object.entries(obj))
-    result[key] = $utils.shallowCopy(value)
-
-  return result
-}
 
 
 
