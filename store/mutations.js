@@ -134,7 +134,7 @@ mutations.deleteModule = function (state, moduleId) {
   $state.project.modules.list.splice($getters.getModuleIdx(moduleId), 1)
 }
 
-function checkModuleName(moduleName) {
+function checkModuleName(moduleName, moduleId) {
   // Check for invalid module name
 
   if (moduleName === '') {
@@ -154,7 +154,7 @@ function checkModuleName(moduleName) {
   let module = $state.project.modules.list.find(
     (module) => module.name === moduleName)
 
-  if (module != null) {
+  if (module != null && module.id !== moduleId) {
     $commit('showSnackbar', {
       text: 'A module with this name already exists',
       color: 'red',
@@ -204,7 +204,7 @@ mutations.deleteTable = function (state, tableId) {
     $getters.getTableIdx(tableId), 1)
 }
 
-function checkTableName(tableName) {
+function checkTableName(tableName, tableId) {
   // Check for invalid module name
 
   if (tableName === '') {
@@ -224,7 +224,7 @@ function checkTableName(tableName) {
   const table = $state.project.tables.list.find(
     (table) => table.name === tableName)
 
-  if (table != null) {
+  if (table != null && table.id !== tableId) {
     $commit('showSnackbar', {
       text: 'A table with this name already exists',
       color: 'red',
