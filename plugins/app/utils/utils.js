@@ -5,6 +5,36 @@ export default (context, inject) => inject('utils', $utils)
 
 
 
+$utils.merge = (target, ...objs) => {
+  for (const obj of objs) {
+    for (const [key, value] of Object.entries(obj)) {
+      if (value != null && value.constructor === Object)
+        target[key] = $utils.merge(target[key] ?? {}, value)
+      else
+        target[key] = value
+    }
+  }
+
+  return target
+}
+$utils.merged = (...objs) => {
+  const result = {}
+  
+  for (const obj of objs) {
+    for (const [key, value] of Object.entries(obj)) {
+      if (value != null && value.constructor === Object)
+        result[key] = $utils.merged(result[key] ?? {}, value)
+      else
+        result[key] = value
+    }
+  }
+  
+  return result
+}
+
+
+
+
 $utils.deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
@@ -16,14 +46,6 @@ $utils.shallowCopy = (obj) => {
     return Object.assign({}, obj)
 
   return obj
-}
-$utils.notSoShallowCopy = (obj) => {
-  let result = Array.isArray(obj) ? [] : {}
-
-  for (const [key, value] of Object.entries(obj))
-    result[key] = $utils.shallowCopy(value)
-
-  return result
 }
 
 

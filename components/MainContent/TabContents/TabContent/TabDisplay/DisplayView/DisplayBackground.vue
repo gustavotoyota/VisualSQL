@@ -29,11 +29,11 @@ export default {
       if (event.pointerType !== 'mouse') {
         $state.panning.active = true
 
-        $state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = $utils.shallowCopy(displayPos)
         
 
         
-        $state.panning.startPos = { ...displayPos }
+        $state.panning.startPos = $utils.shallowCopy(displayPos)
 
         $state.panning.selectTimeout = setTimeout(() => {
           if ($state.panning.selectTimeout == null)
@@ -48,8 +48,8 @@ export default {
 
           $state.selecting.active = true
 
-          $state.selecting.startPos = { ...displayPos }
-          $state.selecting.endPos = { ...displayPos }
+          $state.selecting.startPos = $utils.shallowCopy(displayPos)
+          $state.selecting.endPos = $utils.shallowCopy(displayPos)
         }, 300)
       }
 
@@ -69,8 +69,8 @@ export default {
       if (event.pointerType === 'mouse' && event.button === 0) {
         $state.selecting.active = true
 
-        $state.selecting.startPos = { ...displayPos }
-        $state.selecting.endPos = { ...displayPos }
+        $state.selecting.startPos = $utils.shallowCopy(displayPos)
+        $state.selecting.endPos = $utils.shallowCopy(displayPos)
       }
     },
 

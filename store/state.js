@@ -139,6 +139,8 @@ export default () => ({
 
     dragStart: null,
     visible: false,
+
+    props: null,
   },
 
   

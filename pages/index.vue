@@ -233,7 +233,7 @@ export default {
         currentModule.camera.pos.x -= (displayPos.x - $state.panning.currentPos.x) / currentModule.camera.zoom
         currentModule.camera.pos.y -= (displayPos.y - $state.panning.currentPos.y) / currentModule.camera.zoom
         
-        $state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = $utils.shallowCopy(displayPos)
 
         if (event.pointerType !== 'mouse' && $state.panning.selectTimeout != null) {
           let dist = Math.sqrt(
@@ -253,7 +253,7 @@ export default {
       // Selecting
 
       if ($state.selecting.active) {
-        $state.selecting.endPos = { ...displayPos }
+        $state.selecting.endPos = $utils.shallowCopy(displayPos)
 
         return
       }
@@ -271,7 +271,7 @@ export default {
           node.pos.y += (displayPos.y - $state.dragging.currentPos.y) / currentModule.camera.zoom
         }
 
-        $state.dragging.currentPos = { ...displayPos }
+        $state.dragging.currentPos = $utils.shallowCopy(displayPos)
 
         $state.dragging.saveState = true
 
@@ -287,9 +287,9 @@ export default {
         let worldPos = $getters.screenToWorld(currentModule, displayPos)
 
         if (typeof($state.linking.newLink.from) === 'number')
-          $state.linking.newLink.to = { ...worldPos }
+          $state.linking.newLink.to = $utils.shallowCopy(worldPos)
         else
-          $state.linking.newLink.from = { ...worldPos }
+          $state.linking.newLink.from = $utils.shallowCopy(worldPos)
 
         return
       }

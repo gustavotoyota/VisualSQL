@@ -88,7 +88,7 @@ TreeObj.prototype.processNode = function(module, node) {
 
   // Node type processing
   
-  const nodeObj = this.nodeTypeProcessing[node.type].call(this, node, inputs)
+  let nodeObj = this.nodeTypeProcessing[node.type].call(this, node, inputs)
 
 
 
@@ -99,7 +99,7 @@ TreeObj.prototype.processNode = function(module, node) {
     // Find common
 
     const commonFullName = module.name + '.' + node.props.name
-    const commonIdx = this.commons.findIndex(
+    let commonIdx = this.commons.findIndex(
       common => common.fullName === commonFullName)
 
 
@@ -252,7 +252,7 @@ function joinProcessing(node, inputs) {
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
   && inputs[1].obj.from.length === 1)
-    joinObj = { ...inputs[1].obj.from[0] }
+    joinObj = inputs[1].obj.from[0]
   else
     joinObj = { sourceType: 'object', obj: inputs[1].obj }
 

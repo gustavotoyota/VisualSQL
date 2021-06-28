@@ -37,7 +37,10 @@ export default {
 
     onPointerDown() {
       $state.nodeCreation.active = true
+
       $state.nodeCreation.nodeType = this.type
+      $state.nodeCreation.props = {}
+
       $state.nodeCreation.dragStartPos = $utils.shallowCopy($state.pointer.pagePos)
       $state.nodeCreation.visible = false
     },
