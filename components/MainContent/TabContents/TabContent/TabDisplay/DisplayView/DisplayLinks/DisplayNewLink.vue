@@ -25,19 +25,19 @@ export default {
     linkCommand() {
       let srcSocketPos
       if (typeof(this.link.from) === "object")
-        srcSocketPos = { ...this.link.from }
+        srcSocketPos = $utils.shallowCopy(this.link.from)
       else {
-        srcSocketPos = { ...this.module.data.nodes.map[this.link.from].pos }
+        srcSocketPos = $utils.shallowCopy(this.module.data.nodes.map[this.link.from].pos)
         srcSocketPos.x += $app.socketOffset.x
       }
 
       let destSocketPos
       if (typeof(this.link.to) === "object")
-        destSocketPos = { ...this.link.to }
+        destSocketPos = $utils.shallowCopy(this.link.to)
       else {
         let destNode = this.module.data.nodes.map[this.link.to]
 
-        destSocketPos = { ...destNode.pos }
+        destSocketPos = $utils.shallowCopy(destNode.pos)
         destSocketPos.x -= $app.socketOffset.x
       
         if (destNode.incomingLinks.length === 2)

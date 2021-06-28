@@ -53,7 +53,7 @@ export default {
       if (event.button === 1) {
         $state.panning.active = true
 
-        $state.panning.currentPos = { ...displayPos }
+        $state.panning.currentPos = $utils.shallowCopy(displayPos)
       }
     },
 

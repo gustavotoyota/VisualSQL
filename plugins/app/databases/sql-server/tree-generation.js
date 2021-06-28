@@ -252,7 +252,7 @@ function joinProcessing(node, inputs) {
   if (inputs[1].obj.objectType === 'select'
   && inputs[1].obj.clauseLevel <= sqlClauseLevels['from']
   && inputs[1].obj.from.length === 1)
-    joinObj = { ...inputs[1].obj.from[0] }
+    joinObj = inputs[1].obj.from[0]
   else
     joinObj = { sourceType: 'object', obj: inputs[1].obj }
 

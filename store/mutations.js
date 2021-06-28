@@ -123,7 +123,7 @@ mutations.editModule = function (state, payload) {
   
   const module = $getters.getModule(payload.moduleId)
 
-  Object.assign(module, payload.data)
+  $utils.merge(module, payload.data)
 }
 mutations.deleteModule = function (state, moduleId) {
   let moduleTab = $getters.getModuleTab(moduleId)
@@ -197,7 +197,7 @@ mutations.editTable = function (state, payload) {
   
   const table = $getters.getTable(payload.tableId)
 
-  Object.assign(table, payload.data)
+  $utils.merge(table, payload.data)
 }
 mutations.deleteTable = function (state, tableId) {
   $state.project.tables.list.splice(
@@ -375,7 +375,7 @@ mutations.createLink = function (state, payload) {
 
   let module = $getters.getModule(payload.moduleId)
 
-  let link = Object.assign({
+  let link = $utils.merge({
     id: module.data.links.nextId++,
 
     props: {
