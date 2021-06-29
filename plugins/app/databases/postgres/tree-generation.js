@@ -190,7 +190,7 @@ TreeObj.prototype.nodeTypeProcessing['sql'] = function (node, inputs) {
   return {
     objectType: 'sql',
 
-    columnObjs: this.extractColumnObjs(node.props.columns, false),
+    columnObjs: this.extractColumnObjs(node.props.sql, false),
 
     sql: this.processField(node.props.sql, node),
   }
