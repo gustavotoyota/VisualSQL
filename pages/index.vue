@@ -61,6 +61,20 @@ export default {
     function onLoad() {
       setTimeout(() => {
 
+        // Database
+
+        if (localStorage.getItem('database') !== null)
+          $state.project.sql.database = localStorage.getItem('database')
+
+
+
+        // Sidebars
+
+        $state.sidebars.left = innerWidth >= 900
+        $state.sidebars.right = innerWidth >= 600
+
+        
+        
         // Start fading animation
 
         $state.loaded = true
@@ -86,14 +100,6 @@ export default {
     
     if (document.readyState === 'complete')
       onLoad()
-
-
-
-
-    // Sidebars
-
-    $state.sidebars.left = innerWidth >= 900
-    $state.sidebars.right = innerWidth >= 600
 
 
 
@@ -533,6 +539,10 @@ export default {
           $app.saveLoad.tryUpdateProjectFile()
         }, 1000)
       },
+    },
+
+    '$state.project.sql.database'(value) {
+      localStorage.setItem('database', value)
     },
 
   },
