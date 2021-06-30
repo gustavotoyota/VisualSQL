@@ -1,8 +1,7 @@
 <template>
   <div>
     
-    <ToolbarButton btn-style="width: auto"
-    :disabled="disabled" @click="generateSQL">
+    <ToolbarButton text :disabled="disabled" @click="generateSQL">
       Generate SQL
     </ToolbarButton>
 

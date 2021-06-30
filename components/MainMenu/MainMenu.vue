@@ -49,7 +49,8 @@
 
 
 
-    <ToolbarButton tooltip="Help" btn-style="display: none">
+    <ToolbarButton tooltip="Help"
+    :btn-style="{ display: 'none' }">
       <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>
     

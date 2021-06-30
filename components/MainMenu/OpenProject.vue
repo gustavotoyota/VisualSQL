@@ -1,5 +1,8 @@
 <template>
-  <ToolbarButton tooltip="Open project" @click="onClick">
+
+  <ToolbarButton
+  @click="onClick"
+  tooltip="Open project">
 
     <v-icon dense>mdi-folder-open</v-icon>
 
@@ -8,6 +11,7 @@
     @change="onFileChange"/>
 
   </ToolbarButton>
+
 </template>
 
 <script>

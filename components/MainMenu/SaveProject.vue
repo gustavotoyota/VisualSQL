@@ -1,6 +1,5 @@
 <template>
-  <ToolbarButton tooltip="Save project"
-  @click="onClick"
+  <ToolbarButton tooltip="Save project" @click="onClick"
   :color="$state.saving.modified ? 'purple lighten-3' : ''">
     <v-icon dense>mdi-content-save</v-icon>
   </ToolbarButton>

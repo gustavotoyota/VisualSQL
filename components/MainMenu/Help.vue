@@ -5,8 +5,7 @@
     <template v-slot:activator="{ on: dialog }">
 
       <ToolbarButton v-on="dialog"
-      btn-style="width: auto"
-      @click="onButtonClick">
+      @click="onButtonClick" text>
         Help
       </ToolbarButton>
 
