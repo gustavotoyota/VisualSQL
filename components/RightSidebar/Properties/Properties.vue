@@ -131,6 +131,7 @@ let firstChange = false
 
 export default {
   
+
   computed: {
 
     activeObject() {
@@ -164,7 +165,20 @@ export default {
       deep: true,
     },
 
+
+    '$getters.activeNode'(newNode, oldNode) {
+      if (oldNode == null)
+        return
+
+      if (oldNode.type !== 'table')
+        return
+      
+      oldNode.props.tableName = $state.tableProps.searchInput
+      $state.tableProps.searchInput = ''
+    },
+    
   },
+  
 
 }
 </script>
