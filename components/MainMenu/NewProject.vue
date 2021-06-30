@@ -4,7 +4,9 @@
 
     <template v-slot:activator="{ on: dialog }">
 
-      <ToolbarButton tooltip="New project" v-on="{ ...dialog }">
+      <ToolbarButton
+      v-on="{ ...dialog }"
+      tooltip="New project">
         <v-icon dense>mdi-file</v-icon>
       </ToolbarButton>
 

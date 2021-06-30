@@ -4,9 +4,13 @@
 
     <template v-slot:activator="{ on: tooltip }">
 
-      <v-btn small text :style="btnStyle"
-      :disabled="disabled" :color="color"
-      style="min-width: 0; width: 28px; padding: 0 6px"
+      <v-btn small text :disabled="disabled"
+      style="min-width: 0" :color="color"
+      :style="{ 
+        ...btnStyle,
+        padding: text ? '0 6px': '0',
+        width: text ? 'auto': '28px',
+      }"
       v-on="tooltip" @click="$emit('click', $event)">
         <slot></slot>
       </v-btn>
@@ -19,9 +23,13 @@
 
 
 
-  <v-btn v-else small text :style="btnStyle"
-  :disabled="disabled" :color="color"
-  style="min-width: 0; width: 28px; padding: 0 6px"
+  <v-btn v-else small text :disabled="disabled"
+  style="min-width: 0" :color="color"
+  :style="{ 
+    ...btnStyle,
+    padding: text ? '0 6px': '0',
+    width: text ? 'auto': '28px',
+  }"
   @click="$emit('click', $event)">
     <slot></slot>
   </v-btn>
@@ -38,7 +46,9 @@ export default {
 
     color: { type: String },
 
-    btnStyle: { type: String },
+    btnStyle: { type: Object },
+
+    text: { type: Boolean },
   }
 
 }

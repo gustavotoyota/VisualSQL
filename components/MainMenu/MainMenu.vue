@@ -5,7 +5,9 @@
 
 
     <v-app-bar-title style="flex: none">
-      Visual SQL
+      <img src="/logo/36x36.png"
+      style="border: 1px solid #383838; border-radius: 8px"/>
+      <div style="margin-left: 8px">Visual SQL</div>
     </v-app-bar-title>
 
 
@@ -49,7 +51,8 @@
 
 
 
-    <ToolbarButton tooltip="Help" btn-style="display: none">
+    <ToolbarButton tooltip="Help"
+    :btn-style="{ display: 'none' }">
       <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>
     
@@ -91,6 +94,11 @@ export default {
 </script>
 
 <style scoped>
+.v-app-bar /deep/ .v-app-bar-title__placeholder {
+  display: flex;
+  align-items: center;
+}
+
 .v-app-bar /deep/ .v-toolbar__content {
   height: 100% !important;
 
