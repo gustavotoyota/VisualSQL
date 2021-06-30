@@ -160,4 +160,13 @@ export default () => ({
 
 
 
+
+  // Table properties
+
+  tableProps: {
+    searchInput: '',
+  },
+
+
+
 })

@@ -7,9 +7,9 @@
         Referenced table (FROM):
       </div>
 
-      <v-combobox class="mt-1" dense solo hide-details
+      <v-combobox ref="combobox" class="mt-1" dense solo hide-details
       :items="tableNames" v-model="node.props.tableName"
-      @blur="onBlur">
+      :search-input.sync="$state.tableProps.searchInput">
       </v-combobox>
     </div>
 
@@ -40,21 +40,7 @@ export default {
     },
 
   },
-
-
-
-  methods: {
-
-    onBlur(event) {
-      if (this.node.props.tableName === event.target.value)
-        return
-
-      this.node.props.tableName = event.target.value
-
-      $commit('saveState')
-    },
-
-  },
+  
 
 }
 </script>
