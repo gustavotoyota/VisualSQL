@@ -7,7 +7,7 @@
     <v-app-bar-title style="flex: none">
       <img src="/logo/36x36.png"
       style="border: 1px solid #383838; border-radius: 8px"/>
-      <div style="margin-left: 8px">Visual SQL</div>
+      <div style="margin-left: 10px">Visual SQL</div>
     </v-app-bar-title>
 
 
@@ -102,6 +102,7 @@ export default {
 .v-app-bar /deep/ .v-toolbar__content {
   height: 100% !important;
 
+  padding-left: 12px;
   padding-right: 0;
 }
 
