@@ -460,7 +460,7 @@ TreeObj.prototype.createSelect = function (source) {
 
 
 
-import parseColumns from '../../column-extraction/parser.js'
+import parseColumns from '../../column-extraction.js'
 
 TreeObj.prototype.extractColumnObjs = function (text, first, table) {
   const columnObjs = []
