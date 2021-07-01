@@ -29,7 +29,7 @@ export default () => ({
   // Save/load
 
   saving: {
-    ignoreChange: true,
+    ignoreNextChange: true,
     modified: false,
 
     fileHandle: null,

@@ -29,7 +29,7 @@ saveLoad.loadProject = function (projectStr) {
 
   // Initialize saving state
 
-  $state.saving.ignoreChange = true
+  $state.saving.ignoreNextChange = true
   $state.saving.modified = false
 }
 
