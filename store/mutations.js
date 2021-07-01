@@ -116,7 +116,7 @@ mutations.createModule = function (state, moduleName) {
   $commit('createTab', module.id)
 }
 mutations.editModule = function (state, payload) {
-  if (!checkModuleName(payload.data.name))
+  if (!checkModuleName(payload.data.name, payload.moduleId))
     return
 
 
@@ -190,7 +190,7 @@ mutations.createTable = function (state, payload) {
   })
 }
 mutations.editTable = function (state, payload) {
-  if (!checkTableName(payload.data.name))
+  if (!checkTableName(payload.data.name, payload.tableId))
     return
 
   
