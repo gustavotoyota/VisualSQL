@@ -17,4 +17,14 @@ export default {
     ],
 
   },
+
+
+
+
+  processIdentifier(identifier) {
+    if (/\s/.test(identifier))
+      return '`' + identifier.replaceAll('`', '``') + '`'
+    else
+      return identifier
+  },
 }
