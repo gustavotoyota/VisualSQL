@@ -132,7 +132,9 @@ getters.currentDatabase = () => {
   return $app.databases.data[$state.project.sql.database]
 }
 getters.getCurrentColumns = () => () => {
-  const columnObjs = $getters.currentDatabase.generateTree(
+  const database = $getters.currentDatabase
+
+  const columnObjs = database.generateTree(
     $getters.currentModule, $getters.activeNode).columnObjs
 
 
@@ -142,6 +144,17 @@ getters.getCurrentColumns = () => () => {
   const tableSet = {}
   for (const columnObj of columnObjs)
     tableSet[columnObj.table ?? ''] = true
+
+
+
+
+  // Process identifiers
+
+  for (const columnObj of columnObjs) {
+    columnObj.table = database.processIdentifier(columnObj.table)
+    columnObj.column = database.processIdentifier(columnObj.column)
+  }
+  
 
 
 
