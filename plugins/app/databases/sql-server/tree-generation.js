@@ -319,7 +319,7 @@ TreeObj.prototype.nodeTypeProcessing['sort'] = function (node, inputs) {
   return nodeObj
 }
 TreeObj.prototype.nodeTypeProcessing['limit'] = function (node, inputs) {
-  let nodeObj = this.prepareSelect(inputs[0], 'limit', 'sort')
+  const nodeObj = this.prepareSelect(inputs[0], 'limit', 'sort')
 
   nodeObj.offset = {
     value: this.processField(node.props.offset.value, node),
@@ -343,7 +343,7 @@ TreeObj.prototype.processField = function (input, node) {
 
   const regex = /#<([^\r\n]+?\.[^\r\n]+?)>#/g
 
-  let output = []
+  const output = []
   let lastIndex = 0
 
   while (true) {

@@ -41,7 +41,7 @@ SQLObj.prototype.printCommons = function () {
   writer.incrementIndent()
 
   for (let i = 0; i < this.treeObj.commons.length; ++i) {
-    let common = this.treeObj.commons[i]
+    const common = this.treeObj.commons[i]
 
     writer.printIdentifier(common.name)
     writer.printLine(' AS (', true)
@@ -99,7 +99,7 @@ SQLObj.prototype.objectPrinting['set-operations'] = function (obj) {
 
 
   for (let i = 1; i < obj.sources.length; ++i) {
-    let sourceObj = obj.sources[i]
+    const sourceObj = obj.sources[i]
 
     
     switch (sourceObj.operationType) {
@@ -163,7 +163,7 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
     
     
     for (let i = 1; i < obj.from.length; ++i) {
-      let sourceObj = obj.from[i]
+      const sourceObj = obj.from[i]
   
       switch (sourceObj.joinType) {
         case 'inner-join': writer.print('INNER JOIN ', true); break

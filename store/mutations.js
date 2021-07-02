@@ -126,7 +126,7 @@ mutations.editModule = function (state, payload) {
   $utils.merge(module, payload.data)
 }
 mutations.deleteModule = function (state, moduleId) {
-  let moduleTab = $getters.getModuleTab(moduleId)
+  const moduleTab = $getters.getModuleTab(moduleId)
 
   if (moduleTab != null)
     $commit('closeTab', moduleTab.id)
@@ -151,7 +151,7 @@ function checkModuleName(moduleName, moduleId) {
 
   // Check for existing module name
 
-  let module = $state.project.modules.list.find(
+  const module = $state.project.modules.list.find(
     (module) => module.name === moduleName)
 
   if (module != null && module.id !== moduleId) {
@@ -289,13 +289,15 @@ mutations.closeTab = function (state, tabId) {
 // Nodes
 
 mutations.createNode = function (state, payload) {
-  let module = $getters.getModule(payload.moduleId)
+  const module = $getters.getModule(payload.moduleId)
 
 
   
-  let nodeTypeInfo = $app.nodeTypes[payload.node.type]
+  const nodeTypeInfo = $app.nodeTypes[payload.node.type]
 
-  let node = {
+
+
+  const node = {
     id: module.data.nodes.nextId++,
 
     pos: { x: 0, y: 0 },
@@ -306,12 +308,10 @@ mutations.createNode = function (state, payload) {
 
       description: '',
     },
+
+    incomingLinks: new Array(nodeTypeInfo.numInputs),
+    outgoingLinks: {},
   }
-
-  
-
-  node.incomingLinks = new Array(nodeTypeInfo.numInputs)
-  node.outgoingLinks = {}
 
 
 
@@ -333,11 +333,11 @@ mutations.createNode = function (state, payload) {
     $commit('saveState')
 }
 mutations.deleteNode = function (state, payload) {
-  let module = $getters.getModule(payload.moduleId)
+  const module = $getters.getModule(payload.moduleId)
 
-  let node = module.data.nodes.map[payload.nodeId]
+  const node = module.data.nodes.map[payload.nodeId]
 
-  for (let linkId of node.incomingLinks) {
+  for (const linkId of node.incomingLinks) {
     if (linkId == null)
       continue
 
@@ -349,7 +349,7 @@ mutations.deleteNode = function (state, payload) {
     })
   }
 
-  for (let linkId of Object.keys(node.outgoingLinks)) {
+  for (const linkId of Object.keys(node.outgoingLinks)) {
     $commit('deleteLink', {
       moduleId: module.id,
       linkId: linkId,
@@ -373,25 +373,27 @@ mutations.deleteNode = function (state, payload) {
 mutations.createLink = function (state, payload) {
   // Create link
 
-  let module = $getters.getModule(payload.moduleId)
+  const module = $getters.getModule(payload.moduleId)
 
-  let link = $utils.merge({
+  const link = {
     id: module.data.links.nextId++,
 
     props: {
       alias: '',
     },
-  }, payload.link)
+  }
+  
+  $utils.merge(link, payload.link)
 
 
 
 
   // Delete existing link
 
-  let existingLinkId = module.data.nodes.map[link.to].incomingLinks[link.socket]
+  const existingLinkId = module.data.nodes.map[link.to].incomingLinks[link.socket]
 
   if (existingLinkId != null) {
-    link.props = $utils.deepCopy(module.data.links.map[existingLinkId].props)
+    $utils.merge(link.props, module.data.links.map[existingLinkId].props)
 
     $commit('deleteLink', {
       moduleId: module.id,
@@ -421,9 +423,9 @@ mutations.createLink = function (state, payload) {
     $commit('saveState')
 }
 mutations.deleteLink = function (state, payload) {
-  let module = $getters.getModule(payload.moduleId)
+  const module = $getters.getModule(payload.moduleId)
 
-  let link = module.data.links.map[payload.linkId]
+  const link = module.data.links.map[payload.linkId]
 
   Vue.delete(module.data.nodes.map[link.from].outgoingLinks, link.id)
   Vue.set(module.data.nodes.map[link.to].incomingLinks, link.socket, null)
@@ -443,7 +445,7 @@ mutations.deleteLink = function (state, payload) {
 // Selection
 
 mutations.clearSelection = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
@@ -457,21 +459,21 @@ mutations.clearSelection = function () {
   tab.links.activeId = null
 }
 mutations.selectAll = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
     
 
 
   tab.nodes.selected = {}
-  for (let node of Object.values(module.data.nodes.map))
+  for (const node of Object.values(module.data.nodes.map))
     Vue.set(tab.nodes.selected, node.id, true)
     
   tab.links.selected = {}
-  for (let link of Object.values(module.data.links.map))
+  for (const link of Object.values(module.data.links.map))
     Vue.set(tab.links.selected, link.id, true)
 }
 
@@ -480,7 +482,7 @@ mutations.selectAll = function () {
 
 
 mutations.activateNode = function (state, nodeId) {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
@@ -494,7 +496,7 @@ mutations.activateNode = function (state, nodeId) {
   tab.nodes.activeId = nodeId
 }
 mutations.activateLink = function (state, linkId) {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
@@ -513,14 +515,14 @@ mutations.activateLink = function (state, linkId) {
 
 
 mutations.deleteSelection = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
     
     
-  for (let linkId of Object.keys(tab.links.selected)) {
+  for (const linkId of Object.keys(tab.links.selected)) {
     $commit('deleteLink', {
       moduleId: tab.moduleId,
       linkId: linkId,
@@ -529,7 +531,7 @@ mutations.deleteSelection = function () {
     })
   }
 
-  for (let nodeId of Object.keys(tab.nodes.selected)) {
+  for (const nodeId of Object.keys(tab.nodes.selected)) {
     $commit('deleteNode', {
       moduleId: tab.moduleId,
       nodeId: nodeId,
@@ -555,20 +557,20 @@ mutations.cutSelection = function () {
   $commit('deleteSelection')
 }
 mutations.copySelection = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
   
 
 
   
   // Gather selected nodes
 
-  let selectedNodes = []
-  for (let nodeId of Object.keys(tab.nodes.selected))
+  const selectedNodes = []
+  for (const nodeId of Object.keys(tab.nodes.selected))
     selectedNodes.push(module.data.nodes.map[nodeId])
 
   if (selectedNodes.length === 0)
@@ -579,9 +581,9 @@ mutations.copySelection = function () {
 
   // Calculate center position
 
-  let centerPos = { x: 0, y: 0 }
+  const centerPos = { x: 0, y: 0 }
 
-  for (let node of selectedNodes) {
+  for (const node of selectedNodes) {
     centerPos.x += node.pos.x
     centerPos.y += node.pos.y
   }
@@ -594,10 +596,10 @@ mutations.copySelection = function () {
 
   // Extract nodes
 
-  let nodes = []
-  let nodeMap = {}
+  const nodes = []
+  const nodeMap = {}
 
-  for (let node of selectedNodes) {
+  for (const node of selectedNodes) {
     nodeMap[node.id] = nodes.length
 
     nodes.push({
@@ -608,7 +610,7 @@ mutations.copySelection = function () {
         y: node.pos.y - centerPos.y,
       },
 
-      props: $utils.deepCopy(node.props),
+      props: node.props,
     })
   }
 
@@ -617,11 +619,11 @@ mutations.copySelection = function () {
 
   // Extract links
 
-  let links = []
-  let linkMap = {}
+  const links = []
+  const linkMap = {}
 
-  for (let node of selectedNodes) {
-    for (let linkId of node.incomingLinks.concat(
+  for (const node of selectedNodes) {
+    for (const linkId of node.incomingLinks.concat(
     Object.keys(node.outgoingLinks))) {
       if (linkId == null)
         continue
@@ -629,7 +631,7 @@ mutations.copySelection = function () {
       if (linkId in linkMap)
         continue
 
-      let link = module.data.links.map[linkId]
+        const link = module.data.links.map[linkId]
 
       if (!(link.from in tab.nodes.selected))
         continue
@@ -644,7 +646,7 @@ mutations.copySelection = function () {
         to: nodeMap[link.to],
         socket: link.socket,
 
-        props: $utils.deepCopy(link.props),
+        props: link.props,
       })
     }
   }
@@ -682,25 +684,25 @@ mutations.paste = async function (state, clipboardText) {
 
 
 
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
   
 
 
-  let firstNodeId = module.data.nodes.nextId
-  let firstLinkId = module.data.links.nextId
+  const firstNodeId = module.data.nodes.nextId
+  const firstLinkId = module.data.links.nextId
 
 
 
 
   // Paste nodes
 
-  for (let node of clipboardObj.nodes) {
+  for (const node of clipboardObj.nodes) {
     $commit('createNode', {
       moduleId: module.id,
 
@@ -712,7 +714,7 @@ mutations.paste = async function (state, clipboardText) {
           y: module.camera.pos.y + node.pos.y,
         },
 
-        props: $utils.deepCopy(node.props),
+        props: node.props,
       },
 
       dontActivate: true,
@@ -725,8 +727,8 @@ mutations.paste = async function (state, clipboardText) {
 
   // Paste links
 
-  for (let link of clipboardObj.links) {
-    let linkId = module.data.links.nextId
+  for (const link of clipboardObj.links) {
+    const linkId = module.data.links.nextId
 
     $commit('createLink', {
       moduleId: module.id,
@@ -736,7 +738,7 @@ mutations.paste = async function (state, clipboardText) {
         to: firstNodeId + link.to,
         socket: link.socket,
 
-        props: $utils.deepCopy(link.props),
+        props: link.props,
       },
 
       dontActivate: true,
@@ -753,11 +755,11 @@ mutations.paste = async function (state, clipboardText) {
   // Select pasted objects
 
   tab.nodes.selected = {}
-  for (let nodeId = firstNodeId; nodeId < module.data.nodes.nextId; ++nodeId)
+  for (const nodeId = firstNodeId; nodeId < module.data.nodes.nextId; ++nodeId)
     Vue.set(tab.nodes.selected, nodeId, true)
 
   tab.links.selected = {}
-  for (let linkId = firstLinkId; linkId < module.data.links.nextId; ++linkId)
+  for (const linkId = firstLinkId; linkId < module.data.links.nextId; ++linkId)
     Vue.set(tab.links.selected, linkId, true)
 
   tab.nodes.activeId = firstNodeId
@@ -775,12 +777,12 @@ mutations.paste = async function (state, clipboardText) {
 // Camera
 
 mutations.fitToScreen = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
 
 
@@ -831,8 +833,8 @@ mutations.fitToScreen = function () {
   
   // Camera position
 
-  let topLeft = { x: Infinity, y: Infinity }
-  let bottomRight = { x: -Infinity, y: -Infinity }
+  const topLeft = { x: Infinity, y: Infinity }
+  const bottomRight = { x: -Infinity, y: -Infinity }
 
   for (const pos of positions) {
     topLeft.x = Math.min(topLeft.x, pos.x)
@@ -852,7 +854,7 @@ mutations.fitToScreen = function () {
 
   // Camera zoom
 
-  let displayRect = $getters.getDisplayRect()
+  const displayRect = $getters.getDisplayRect()
 
   if (topLeft.x !== module.camera.pos.x && isFinite(topLeft.x))
     module.camera.zoom = Math.min(module.camera.zoom,
@@ -879,43 +881,37 @@ mutations.saveState = function (state, tab) {
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
 
-  
-
-  let moduleState = $utils.deepCopy(module.data)
   
   tab.states.list.splice(++tab.states.currentIdx)
-  tab.states.list.push(JSON.stringify(moduleState))
+  tab.states.list.push(JSON.stringify(module.data))
 }
 mutations.replaceState = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
 
-  
-
-  let moduleState = $utils.deepCopy(module.data)
   
   tab.states.list.splice(tab.states.currentIdx)
-  Vue.set(tab.states.list, tab.states.currentIdx, JSON.stringify(moduleState))
+  Vue.set(tab.states.list, tab.states.currentIdx, JSON.stringify(module.data))
 }
 
 
 
 
 mutations.undo = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
 
 
@@ -928,12 +924,12 @@ mutations.undo = function () {
   module.data = JSON.parse(tab.states.list[--tab.states.currentIdx])
 }
 mutations.redo = function () {
-  let tab = $getters.currentTab
+  const tab = $getters.currentTab
 
   if (tab == null)
     return
 
-  let module = $getters.getModule(tab.moduleId)
+  const module = $getters.getModule(tab.moduleId)
 
 
 

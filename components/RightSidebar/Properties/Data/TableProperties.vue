@@ -31,9 +31,9 @@ export default {
   computed: {
 
     tableNames() {
-      let tableNames = []
+      const tableNames = []
 
-      for (let table of $state.project.tables.list)
+      for (const table of $state.project.tables.list)
         tableNames.push(table.name)
 
       return tableNames

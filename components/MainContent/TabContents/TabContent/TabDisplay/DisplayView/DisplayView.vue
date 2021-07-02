@@ -34,7 +34,7 @@ export default {
 
 
     onPointerDown(event) {
-      let displayPos = $getters.getDisplayPos(event)
+      const displayPos = $getters.getDisplayPos(event)
 
       $set($state.pinching.pointers, event.pointerId, displayPos)
 
@@ -61,8 +61,8 @@ export default {
 
     onPointerUp(event) {
       if ($state.nodeCreation.active && $state.nodeCreation.visible) {
-        let displayPos = $getters.getDisplayPos(event)
-        let worldPos = $getters.screenToWorld(this.module, displayPos)
+        const displayPos = $getters.getDisplayPos(event)
+        const worldPos = $getters.screenToWorld(this.module, displayPos)
         
         $commit('createNode', {
           moduleId: this.tab.moduleId,
@@ -87,17 +87,17 @@ export default {
     onMouseWheel(event) {
       // Calculate world position
 
-      let displayPos = $getters.getDisplayPos(event)
-      let worldPos = $getters.screenToWorld(this.module, displayPos)
+      const displayPos = $getters.getDisplayPos(event)
+      const worldPos = $getters.screenToWorld(this.module, displayPos)
 
 
 
 
       // Update camera zoom
 
-      let multiplier = event.deltaY > 0 ? (1 / 1.2) : 1.2
+      const multiplier = event.deltaY > 0 ? (1 / 1.2) : 1.2
 
-      let oldZoom = this.module.camera.zoom
+      const oldZoom = this.module.camera.zoom
 
       this.module.camera.zoom = Math.min(Math.max(
         this.module.camera.zoom * multiplier, $app.minZoom), $app.maxZoom)
@@ -107,7 +107,7 @@ export default {
 
       // Update camera position
 
-      let ratio = this.module.camera.zoom / oldZoom
+      const ratio = this.module.camera.zoom / oldZoom
 
       this.module.camera.pos = {
         x: worldPos.x + (this.module.camera.pos.x - worldPos.x) / ratio,

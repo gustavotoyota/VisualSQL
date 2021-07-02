@@ -48,7 +48,7 @@ getters.currentTab = () => {
   return $getters.getTab($state.project.tabs.currentId)
 }
 getters.currentModule = () => {
-  let currentTab = $getters.currentTab
+  const currentTab = $getters.currentTab
 
   if (currentTab == null)
     return null
@@ -60,22 +60,22 @@ getters.currentModule = () => {
 
 
 getters.activeNode = () => {
-  let currentTab = $getters.currentTab
+  const currentTab = $getters.currentTab
 
   if (currentTab == null)
     return null
 
-  let currentModule = $getters.getModule(currentTab.moduleId)
+    const currentModule = $getters.getModule(currentTab.moduleId)
 
   return currentModule.data.nodes.map[currentTab.nodes.activeId]
 }
 getters.activeLink = () => {
-  let currentTab = $getters.currentTab
+  const currentTab = $getters.currentTab
 
   if (currentTab == null)
     return null
 
-  let currentModule = $getters.getModule(currentTab.moduleId)
+    const currentModule = $getters.getModule(currentTab.moduleId)
 
   return currentModule.data.links.map[currentTab.links.activeId]
 }
@@ -97,7 +97,7 @@ getters.getDisplayRect = () => () => {
 
 
 getters.getDisplayPos = () => (event) => {
-  let displayRect = $getters.getDisplayRect()
+  const displayRect = $getters.getDisplayRect()
   
   return {
     x: event.pageX - displayRect.left,
@@ -109,7 +109,7 @@ getters.getDisplayPos = () => (event) => {
 
 
 getters.worldToScreen = () => (module, worldPos) => {
-  let displayRect = $getters.getDisplayRect()
+  const displayRect = $getters.getDisplayRect()
 
   return {
     x: displayRect.width / 2 + (worldPos.x - module.camera.pos.x) * module.camera.zoom,
@@ -117,7 +117,7 @@ getters.worldToScreen = () => (module, worldPos) => {
   }
 }
 getters.screenToWorld = () => (module, screenPos) => {
-  let displayRect = $getters.getDisplayRect()
+  const displayRect = $getters.getDisplayRect()
 
   return {
     x: module.camera.pos.x + (screenPos.x - displayRect.width / 2) / module.camera.zoom,

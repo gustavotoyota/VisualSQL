@@ -141,7 +141,7 @@ export default {
     generateSQL() {
       // Tree generation
 
-      let treeObj = $app.databases.data[$state.project.sql.database].
+      const treeObj = $app.databases.data[$state.project.sql.database].
         generateTree(this.module, $getters.activeNode)
       
       if (treeObj.error.message != null) {
@@ -152,6 +152,7 @@ export default {
         })
 
         $commit('clearSelection')
+        
         this.tab.nodes.selected[treeObj.error.node.id] = true
         this.tab.nodes.activeId = treeObj.error.node.id
 
@@ -163,10 +164,8 @@ export default {
 
       // SQL generation
 
-      let sqlOptions = $utils.deepCopy($state.project.sql)
-
-      let sqlObj = $app.databases.data[$state.project.sql.database].
-        generateSQL(treeObj, sqlOptions)
+      const sqlObj = $app.databases.data[$state.project.sql.database].
+        generateSQL(treeObj, $state.project.sql)
 
       this.sql = sqlObj.sql
 
