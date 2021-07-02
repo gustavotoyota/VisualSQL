@@ -61,17 +61,23 @@ export default {
     function onLoad() {
       setTimeout(() => {
 
-        // Database
+        // Load database from local storage
 
-        if (localStorage.getItem('database') !== null)
-          $state.project.sql.database = localStorage.getItem('database')
+        const database = localStorage.getItem('database')
+
+        if (database !== null) {
+          $state.saving.ignoreNextChange = $state.project.sql.database !== database
+          $state.project.sql.database = database
+        }
 
 
 
-        // Sidebars
+
+        // Initialize sidebars
 
         $state.sidebars.left = innerWidth >= 900
         $state.sidebars.right = innerWidth >= 600
+
 
         
         
@@ -526,8 +532,8 @@ export default {
       deep: true,
 
       handler() {
-        if ($state.saving.ignoreChange) {
-          $state.saving.ignoreChange = false
+        if ($state.saving.ignoreNextChange) {
+          $state.saving.ignoreNextChange = false
           return
         }
 

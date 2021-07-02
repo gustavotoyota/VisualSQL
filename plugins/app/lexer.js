@@ -3,20 +3,10 @@ export default Lexer
 
 
 function Lexer() {
-  this.tokens = {}
-
-
-  
   this.text = ''
 
   this.cursor = 0
   this.view = ''
-}
-
-
-
-Lexer.prototype.addToken = function (name, pattern) {
-  this.tokens[name] = new RegExp('^' + pattern.source)
 }
 
 
@@ -47,16 +37,16 @@ Lexer.prototype.isEOF = function () {
 
 
 
-Lexer.prototype.check = function (...tokenNames) {
-  for (const tokenName of tokenNames)
-    if (this.tokens[tokenName].test(this.view))
+Lexer.prototype.check = function (...tokens) {
+  for (const token of tokens)
+    if (new RegExp(`^${token.source}`).test(this.view))
       return true
     
   return false
 }
-Lexer.prototype.accept = function (...tokenNames) {
-  for (const tokenName of tokenNames) {
-    const match = this.view.match(this.tokens[tokenName])
+Lexer.prototype.accept = function (...tokens) {
+  for (const token of tokens) {
+    const match = this.view.match(new RegExp(`^${token.source}`))
 
     if (match == null)
       continue
@@ -68,12 +58,12 @@ Lexer.prototype.accept = function (...tokenNames) {
 
   return ''
 }
-Lexer.prototype.acceptNot = function (...tokenNames) {
+Lexer.prototype.acceptNot = function (...tokens) {
   const patterns = []
-  for (const tokenName of tokenNames)
-    patterns.push(this.tokens[tokenName].source.substring(1))
+  for (const token of tokens)
+    patterns.push(token.source)
 
-  let pattern = new RegExp('^[^]*?(?=' + patterns.join('|') + '|$)')
+  const pattern = new RegExp(`^[^]*?(?=${patterns.join('|')}|$)`)
 
   const match = this.view.match(pattern)
 
@@ -84,16 +74,16 @@ Lexer.prototype.acceptNot = function (...tokenNames) {
 
   return match[0]
 }
-Lexer.prototype.assert = function (...tokenNames) {
-  const result = this.check(...tokenNames)
+Lexer.prototype.assert = function (...tokens) {
+  const result = this.check(...tokens)
 
   if (!result)
     throw 'Expected token(s) not found.'
 
   return result
 }
-Lexer.prototype.eat = function (...tokenNames) {
-  const result = this.accept(...tokenNames)
+Lexer.prototype.eat = function (...tokens) {
+  const result = this.accept(...tokens)
 
   if (!result)
     throw 'Expected token(s) not found.'

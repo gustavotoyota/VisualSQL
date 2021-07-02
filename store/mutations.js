@@ -14,7 +14,7 @@ export default mutations
 mutations.resetProject = function () {
   // Initialize saving state
 
-  $state.saving.ignoreChange = $state.project != null
+  $state.saving.ignoreNextChange = $state.project != null
   $state.saving.modified = false
 
   $state.saving.fileHandle = null
