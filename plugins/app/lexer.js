@@ -4,6 +4,7 @@ export default Lexer
 
 function Lexer() {
   this.text = ''
+  this.ignoreWhitespace = false
 
   this.cursor = 0
   this.view = ''
@@ -11,8 +12,9 @@ function Lexer() {
 
 
 
-Lexer.prototype.reset = function (text) {
+Lexer.prototype.reset = function (text, ignoreWhitespace) {
   this.text = text
+  this.ignoreWhitespace = ignoreWhitespace
 
   this.updateView(0)
 }
@@ -37,56 +39,60 @@ Lexer.prototype.isEOF = function () {
 
 
 
-Lexer.prototype.check = function (...tokens) {
-  for (const token of tokens)
-    if (new RegExp(`^${token.source}`).test(this.view))
-      return true
-    
-  return false
-}
-Lexer.prototype.accept = function (...tokens) {
-  for (const token of tokens) {
-    const match = this.view.match(new RegExp(`^${token.source}`))
+Lexer.prototype.check = function (...patterns) {
+  for (const pattern of convertPatterns(patterns)) {
+    const regex = (() => {
+      if (this.ignoreWhitespace)
+        return new RegExp(`^\\s*?${pattern}`)
+      else
+        return new RegExp(`^${pattern}`)
+    })()
+
+    const match = this.view.match(regex)
 
     if (match == null)
       continue
-
-    this.advanceView(match[0].length)
     
     return match[0]
   }
-
+    
   return ''
 }
-Lexer.prototype.acceptNot = function (...tokens) {
-  const patterns = []
-  for (const token of tokens)
-    patterns.push(token.source)
+Lexer.prototype.accept = function (...patterns) {
+  const result = this.check(...patterns)
 
-  const pattern = new RegExp(`^[^]*?(?=${patterns.join('|')}|$)`)
-
-  const match = this.view.match(pattern)
-
-  if (match == null)
-    return ''
-
-  this.advanceView(match[0].length)
-
-  return match[0]
-}
-Lexer.prototype.assert = function (...tokens) {
-  const result = this.check(...tokens)
-
-  if (!result)
-    throw 'Expected token(s) not found.'
+  this.advanceView(result.length)
 
   return result
 }
-Lexer.prototype.eat = function (...tokens) {
-  const result = this.accept(...tokens)
+Lexer.prototype.acceptNot = function (...patterns) {
+  return this.accept(new RegExp(`[^]*?(?=${
+    convertPatterns(patterns).join('|')}|$)`))
+}
+Lexer.prototype.assert = function (...patterns) {
+  const result = this.check(...patterns)
 
   if (!result)
-    throw 'Expected token(s) not found.'
+    throw 'Expected pattern(s) not found.'
 
   return result
+}
+Lexer.prototype.eat = function (...patterns) {
+  const result = this.accept(...patterns)
+
+  if (!result)
+    throw 'Expected pattern(s) not found.'
+
+  return result
+}
+
+
+
+
+function convertPatterns(patterns) {
+  for (let i = 0; i < patterns.length; ++i)
+    if (patterns[i] instanceof RegExp)
+      patterns[i] = patterns[i].source
+
+  return patterns
 }
