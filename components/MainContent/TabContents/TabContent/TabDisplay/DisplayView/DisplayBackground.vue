@@ -19,7 +19,7 @@ export default {
 
 
     onPointerDown(event) {
-      let displayPos = $getters.getDisplayPos(event)
+      const displayPos = $getters.getDisplayPos(event)
 
 
 

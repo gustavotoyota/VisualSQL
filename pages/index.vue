@@ -141,19 +141,19 @@ export default {
     onDocumentPointerMove(event) {
       // Get current tab and module
 
-      let currentTab = $getters.currentTab
+      const currentTab = $getters.currentTab
 
       if (currentTab == null)
         return
 
-      let currentModule = $getters.currentModule
+      const currentModule = $getters.currentModule
       
 
 
       
       // Compute pointer position
 
-      let displayPos = $getters.getDisplayPos(event)
+      const displayPos = $getters.getDisplayPos(event)
       
       if (event.pointerId in $state.pinching.pointers)
         $set($state.pinching.pointers, event.pointerId, displayPos)
@@ -163,17 +163,17 @@ export default {
         
       // Pinch zoom
 
-      let pointers = Object.values($state.pinching.pointers)
+      const pointers = Object.values($state.pinching.pointers)
 
       if (pointers.length >= 2) {
         // Compute center and distance
 
-        let centerPos = {
+        const centerPos = {
           x: (pointers[0].x + pointers[1].x) / 2,
           y: (pointers[0].y + pointers[1].y) / 2,
         }
 
-        let distance = Math.sqrt(
+        const distance = Math.sqrt(
           Math.pow(pointers[0].x - pointers[1].x, 2) +
           Math.pow(pointers[0].y - pointers[1].y, 2))
 
@@ -183,16 +183,16 @@ export default {
         if ($state.pinching.centerPos != null) {
           // Compute ratio
 
-          let ratio = distance / $state.pinching.distance
+          const ratio = distance / $state.pinching.distance
 
 
 
 
           // Camera position update
 
-          let worldPos = $getters.screenToWorld(currentModule, centerPos)
+          const worldPos = $getters.screenToWorld(currentModule, centerPos)
 
-          let centerOffset = {
+          const centerOffset = {
             x: centerPos.x - $state.pinching.centerPos.x,
             y: centerPos.y - $state.pinching.centerPos.y,
           }
@@ -248,7 +248,7 @@ export default {
         $state.panning.currentPos = $utils.shallowCopy(displayPos)
 
         if (event.pointerType !== 'mouse' && $state.panning.selectTimeout != null) {
-          let dist = Math.sqrt(
+          const dist = Math.sqrt(
             Math.pow(displayPos.x - $state.panning.startPos.x, 2) +
             Math.pow(displayPos.y - $state.panning.startPos.y, 2))
 
@@ -276,8 +276,8 @@ export default {
       // Dragging
 
       if ($state.dragging.active) {
-        for (let nodeId of Object.keys(currentTab.nodes.selected)) {
-          let node = currentModule.data.nodes.map[nodeId]
+        for (const nodeId of Object.keys(currentTab.nodes.selected)) {
+          const node = currentModule.data.nodes.map[nodeId]
 
           node.pos.x += (displayPos.x - $state.dragging.currentPos.x) / currentModule.camera.zoom
           node.pos.y += (displayPos.y - $state.dragging.currentPos.y) / currentModule.camera.zoom
@@ -296,7 +296,7 @@ export default {
       // Linking
 
       if ($state.linking.active) {
-        let worldPos = $getters.screenToWorld(currentModule, displayPos)
+        const worldPos = $getters.screenToWorld(currentModule, displayPos)
 
         if (typeof($state.linking.newLink.from) === 'number')
           $state.linking.newLink.to = $utils.shallowCopy(worldPos)
@@ -312,7 +312,7 @@ export default {
       // Node creation
       
       if ($state.nodeCreation.active && !$state.nodeCreation.visible) {
-        let dist = Math.sqrt(
+        const dist = Math.sqrt(
           Math.pow($state.pointer.pagePos.x - $state.nodeCreation.dragStartPos.x, 2) +
           Math.pow($state.pointer.pagePos.y - $state.nodeCreation.dragStartPos.y, 2))
 
@@ -322,12 +322,12 @@ export default {
     onDocumentPointerUp(event) {
       // Get current tab and module
 
-      let currentTab = $getters.currentTab
+      const currentTab = $getters.currentTab
 
       if (currentTab == null)
         return
 
-      let currentModule = $getters.currentModule
+      const currentModule = $getters.currentModule
 
 
 
@@ -372,20 +372,20 @@ export default {
       // Selecting
 
       if (event.button === 0 && $state.selecting.active) {
-        let worldStart = $getters.screenToWorld(currentModule, $state.selecting.startPos)
-        let worldEnd = $getters.screenToWorld(currentModule, $state.selecting.endPos)
+        const worldStart = $getters.screenToWorld(currentModule, $state.selecting.startPos)
+        const worldEnd = $getters.screenToWorld(currentModule, $state.selecting.endPos)
 
-        let topLeft = {
+        const topLeft = {
           x: Math.min(worldStart.x, worldEnd.x),
           y: Math.min(worldStart.y, worldEnd.y),
         }
-        let bottomRight = {
+        const bottomRight = {
           x: Math.max(worldStart.x, worldEnd.x),
           y: Math.max(worldStart.y, worldEnd.y),
         }
 
 
-        for (let node of Object.values(currentModule.data.nodes.map)) {
+        for (const node of Object.values(currentModule.data.nodes.map)) {
           if (node.pos.x < topLeft.x || node.pos.x > bottomRight.x
           || node.pos.y < topLeft.y || node.pos.y > bottomRight.y)
             continue
@@ -400,8 +400,8 @@ export default {
         }
 
 
-        for (let link of Object.values(currentModule.data.links.map)) {
-          let linkPos = {
+        for (const link of Object.values(currentModule.data.links.map)) {
+          const linkPos = {
             x: (currentModule.data.nodes.map[link.from].pos.x + currentModule.data.nodes.map[link.to].pos.x) / 2,
             y: (currentModule.data.nodes.map[link.from].pos.y + currentModule.data.nodes.map[link.to].pos.y) / 2,
           }

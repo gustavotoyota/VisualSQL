@@ -91,7 +91,7 @@ export default {
 
 
 
-      let displayPos = $getters.getDisplayPos(event)
+      const displayPos = $getters.getDisplayPos(event)
 
       $state.dragging.active = true
       $state.dragging.currentPos = { ...displayPos }

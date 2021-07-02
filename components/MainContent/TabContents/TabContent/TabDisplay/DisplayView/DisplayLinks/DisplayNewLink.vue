@@ -35,7 +35,7 @@ export default {
       if (typeof(this.link.to) === "object")
         destSocketPos = $utils.shallowCopy(this.link.to)
       else {
-        let destNode = this.module.data.nodes.map[this.link.to]
+        const destNode = this.module.data.nodes.map[this.link.to]
 
         destSocketPos = $utils.shallowCopy(destNode.pos)
         destSocketPos.x -= $app.socketOffset.x
@@ -44,7 +44,7 @@ export default {
           destSocketPos.y += $app.socketOffset.y * (this.link.socket * 2 - 1)
       }
 
-      let controlOffset = Math.abs((destSocketPos.x - srcSocketPos.x) / 2) +
+      const controlOffset = Math.abs((destSocketPos.x - srcSocketPos.x) / 2) +
         Math.abs((destSocketPos.y - srcSocketPos.y) / 2)
 
       return `M ${srcSocketPos.x}, ${srcSocketPos.y}
