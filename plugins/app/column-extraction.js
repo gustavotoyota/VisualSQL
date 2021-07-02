@@ -10,11 +10,7 @@ const Char = /./
 const Backslash = /\\/
 
 const DoubleQuote = /"/
-const DoubleQuoteEscape = /["\\]/
-
 const SingleQuote = /'/
-const SingleQuoteEscape = /['\\]/
-
 const BackTick = /`/
 
 const LeftBracket = /\[/
@@ -101,7 +97,7 @@ export default function (text, first) {
     lexer.eat(DoubleQuote)
   
     while (true) {
-      value += lexer.acceptNot(DoubleQuoteEscape)
+      value += lexer.acceptNot(DoubleQuote, Backslash)
   
       if (lexer.isEOF())
         throw 'Unclosed literal.'
@@ -122,7 +118,7 @@ export default function (text, first) {
     lexer.eat(SingleQuote)
   
     while (true) {
-      lexer.acceptNot(SingleQuoteEscape)
+      lexer.acceptNot(SingleQuote, Backslash)
   
       if (lexer.isEOF())
         throw 'Unclosed literal.'
