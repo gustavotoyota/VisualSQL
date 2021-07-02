@@ -21,7 +21,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
       { hid: 'description', name: 'description', content: description },
       
-      //{ name: 'a.validate.01', content: 'b205dd19ce230a2249e787a8dd186cff0d09' }, // Adcash
+      { name: 'propeller', content: 'ade3ad8259e0e15e9c6786af109fe23b' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
