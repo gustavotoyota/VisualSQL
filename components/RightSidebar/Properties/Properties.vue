@@ -173,6 +173,9 @@ export default {
       if (oldNode.type !== 'table')
         return
       
+      if (oldNode.props.tableName === $state.tableProps.searchInput)
+        return
+
       oldNode.props.tableName = $state.tableProps.searchInput
       $state.tableProps.searchInput = ''
     },
