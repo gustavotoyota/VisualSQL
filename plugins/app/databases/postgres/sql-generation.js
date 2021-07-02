@@ -446,7 +446,7 @@ Writer.prototype.printField = function (field) {
 
 Writer.prototype.printIdentifier = function (identifier) {
   if (identifier)
-    this.print('"' + identifier.replace('"', '""') + '"')
+    this.print($getters.currentDatabase.processIdentifier(identifier))
   else
     this.print('<missing field>')
 }

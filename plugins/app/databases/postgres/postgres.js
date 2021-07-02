@@ -11,4 +11,14 @@ export default {
   infos: {
     distinctOn: true,
   },
+
+
+
+
+  processIdentifier(identifier) {
+    if (/\s/.test(identifier))
+      return '"' + identifier.replaceAll('"', '""') + '"'
+    else
+      return identifier
+  },
 }
