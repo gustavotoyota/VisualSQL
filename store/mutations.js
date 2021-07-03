@@ -1,8 +1,3 @@
-import Vue from 'vue'
-
-
-
-
 const mutations = {}
 export default mutations
 
@@ -320,7 +315,7 @@ mutations.createNode = function (state, payload) {
 
 
 
-  Vue.set(module.data.nodes.map, node.id, node)
+  $set(module.data.nodes.map, node.id, node)
 
 
 
@@ -358,7 +353,7 @@ mutations.deleteNode = function (state, payload) {
     })
   }
 
-  Vue.delete(module.data.nodes.map, node.id)
+  $delete(module.data.nodes.map, node.id)
 
   if (!payload.dontSaveState)
     $commit('saveState')
@@ -408,10 +403,10 @@ mutations.createLink = function (state, payload) {
 
   // Setup link references
 
-  Vue.set(module.data.nodes.map[link.from].outgoingLinks, link.id, true)
-  Vue.set(module.data.nodes.map[link.to].incomingLinks, link.socket, link.id)
+  $set(module.data.nodes.map[link.from].outgoingLinks, link.id, true)
+  $set(module.data.nodes.map[link.to].incomingLinks, link.socket, link.id)
 
-  Vue.set(module.data.links.map, link.id, link)
+  $set(module.data.links.map, link.id, link)
 
 
 
@@ -427,10 +422,10 @@ mutations.deleteLink = function (state, payload) {
 
   const link = module.data.links.map[payload.linkId]
 
-  Vue.delete(module.data.nodes.map[link.from].outgoingLinks, link.id)
-  Vue.set(module.data.nodes.map[link.to].incomingLinks, link.socket, null)
+  $delete(module.data.nodes.map[link.from].outgoingLinks, link.id)
+  $set(module.data.nodes.map[link.to].incomingLinks, link.socket, null)
 
-  Vue.delete(module.data.links.map, link.id)
+  $delete(module.data.links.map, link.id)
 
 
   
@@ -470,11 +465,11 @@ mutations.selectAll = function () {
 
   tab.nodes.selected = {}
   for (const node of Object.values(module.data.nodes.map))
-    Vue.set(tab.nodes.selected, node.id, true)
+    $set(tab.nodes.selected, node.id, true)
     
   tab.links.selected = {}
   for (const link of Object.values(module.data.links.map))
-    Vue.set(tab.links.selected, link.id, true)
+    $set(tab.links.selected, link.id, true)
 }
 
 
@@ -491,7 +486,7 @@ mutations.activateNode = function (state, nodeId) {
 
   $commit('clearSelection')
 
-  Vue.set(tab.nodes.selected, nodeId, true)
+  $set(tab.nodes.selected, nodeId, true)
   
   tab.nodes.activeId = nodeId
 }
@@ -505,7 +500,7 @@ mutations.activateLink = function (state, linkId) {
     
   $commit('clearSelection')
 
-  Vue.set(tab.links.selected, linkId, true)
+  $set(tab.links.selected, linkId, true)
   
   tab.links.activeId = linkId
 }
@@ -745,8 +740,8 @@ mutations.paste = async function (state, clipboardText) {
       dontSaveState: true,
     })
 
-    Vue.set(module.data.nodes.map[firstNodeId + link.from].outgoingLinks, linkId, true)
-    Vue.set(module.data.nodes.map[firstNodeId + link.to].incomingLinks, link.socket, linkId)
+    $set(module.data.nodes.map[firstNodeId + link.from].outgoingLinks, linkId, true)
+    $set(module.data.nodes.map[firstNodeId + link.to].incomingLinks, link.socket, linkId)
   }
 
 
@@ -756,11 +751,11 @@ mutations.paste = async function (state, clipboardText) {
 
   tab.nodes.selected = {}
   for (const nodeId = firstNodeId; nodeId < module.data.nodes.nextId; ++nodeId)
-    Vue.set(tab.nodes.selected, nodeId, true)
+    $set(tab.nodes.selected, nodeId, true)
 
   tab.links.selected = {}
   for (const linkId = firstLinkId; linkId < module.data.links.nextId; ++linkId)
-    Vue.set(tab.links.selected, linkId, true)
+    $set(tab.links.selected, linkId, true)
 
   tab.nodes.activeId = firstNodeId
   tab.links.activeId = null
@@ -899,7 +894,7 @@ mutations.replaceState = function () {
 
   
   tab.states.list.splice(tab.states.currentIdx)
-  Vue.set(tab.states.list, tab.states.currentIdx, JSON.stringify(module.data))
+  $set(tab.states.list, tab.states.currentIdx, JSON.stringify(module.data))
 }
 
 
