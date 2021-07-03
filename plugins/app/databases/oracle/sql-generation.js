@@ -175,7 +175,9 @@ SQLObj.prototype.objectPrinting['select'] = function (obj) {
   
       printSource(sourceObj)
   
-      if (sourceObj.joinType !== 'cross-join') {
+      if (sourceObj.joinType === 'cross-join') {
+        writer.printLine()
+      } else {
         writer.printLine(' ON', true)
   
         writer.incrementIndent()
