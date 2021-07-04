@@ -2,6 +2,7 @@ export default Lexer
 
 
 
+
 function Lexer() {
   this.skip = {
     active: false,
@@ -13,11 +14,13 @@ function Lexer() {
 
 
 
+
 Lexer.prototype.reset = function (text) {
   this.text = text
 
   this.updateView(0)
 }
+
 
 
 
@@ -33,30 +36,49 @@ Lexer.prototype.advanceView = function (offset) {
 
 
 
-Lexer.prototype.isEOF = function () {
-  if (this.skip.active)
-    return (new RegExp(`^(${this.skip.pattern})*$`)).test(this.view)
-  else
-    return this.cursor >= this.text.length
+
+Lexer.prototype.getSkipPattern = function () {
+  return this.skip.active ? this.skip.pattern : ''
+}
+Lexer.prototype.toggleSkip = function (func) {
+  this.skip.active = !this.skip.active
+
+  func()
+
+  this.skip.active = !this.skip.active
 }
 
 
 
+
+Lexer.prototype.createRegex = function (endPattern) {
+  return new RegExp(`^(?:${this.getSkipPattern()})*?(${endPattern})`, this.flags)
+}
+
+
+
+
+Lexer.prototype.isEOF = function () {
+  return this.createRegex('$').test(this.view)
+}
+
+
+
+
 Lexer.prototype.check = function (...patterns) {
+  this.fullMatch = ''
+  
   for (const pattern of convertPatterns(patterns)) {
-    const regex = (() => {
-      if (this.skip.active)
-        return new RegExp(`^(${this.skip.pattern})*?${pattern}`)
-      else
-        return new RegExp(`^${pattern}`)
-    })()
+    const regex = this.createRegex(pattern)
 
     const match = this.view.match(regex)
 
     if (match == null)
       continue
+
+    this.fullMatch = match[0]
     
-    return match[0]
+    return match[1]
   }
     
   return ''
@@ -64,7 +86,7 @@ Lexer.prototype.check = function (...patterns) {
 Lexer.prototype.accept = function (...patterns) {
   const result = this.check(...patterns)
 
-  this.advanceView(result.length)
+  this.advanceView(this.fullMatch.length)
 
   return result
 }
@@ -87,17 +109,6 @@ Lexer.prototype.eat = function (...patterns) {
     throw 'Expected pattern(s) not found.'
 
   return result
-}
-
-
-
-
-Lexer.prototype.toggleSkip = function (func) {
-  this.skip.active = !this.skip.active
-
-  func()
-
-  this.skip.active = !this.skip.active
 }
 
 

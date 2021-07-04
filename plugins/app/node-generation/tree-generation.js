@@ -5,6 +5,8 @@ import Lexer from '../lexer.js'
 
 // Tokens
 
+const Skip = '\\s|--.*?[\n$]'
+
 const Char = /./
 
 const Backslash = /\\/
@@ -19,9 +21,10 @@ const BackTick = /`/
 const LeftBracket = /\[/
 const RightBracket = /\]/
 
-const PlainIdentifier = /\w+/
+const Word = /\w+/
 
 const Comma = /,/
+const Dot = /\./
 
 const With = /\bWITH\b/
 const Select = /\bSELECT\b/
@@ -40,6 +43,14 @@ const Limit = /\bLIMIT\b/
 const Offset = /\bOFFSET\b/
 const Fetch = /\bFETCH\b/
 
+const Inner = /\bINNER\b/
+const Left = /\bLEFT\b/
+const Right = /\bRIGHT\b/
+const Full = /\bFULL\b/
+const Cross = /\bCROSS\b/
+const Outer = /\bOUTER\b/
+const Join = /\bJOIN\b/
+
 const Union = /\bUNION\b/
 const All = /\bALL\b/
 const Minus = /\bMINUS\b/
@@ -47,6 +58,8 @@ const Except = /\bEXCEPT\b/
 const Intersect = /\bINTERSECT\b/
 
 const NonWhitespace = /\S+/
+
+const QueryStart = `(\\((${Skip})*)*\\bSELECT\\b`
 
 
 
@@ -59,68 +72,84 @@ global.parseSQL = parseSQL
 
 function parseSQL(sql) {
   sql = `
-    (
-      SELECT DISTINCT TOP 10.32123
-        col1,
-        "c]o'l2",
-        \`co"l3\`,
-        [c\`o"l4]
+  WITH
+    test AS (
+      SELECT
+        *
       FROM
-        table1 AS t1
-        INNER JOIN table2 AS t2 ON
-          t1.col1 = t2.col2
-        INNER JOIN (
-          SELECT DISTINCT TOP 10
-            col1,
-            "c]o'l2",
-            \`co"l3\`,
-            [c\`o"l4]
-          FROM
-            table1 AS t1
-            INNER JOIN table2 AS t2 ON
-              t1.col1 = t2.col2
-          WHERE
-            t1.col1 = 'hello'
-          GROUP BY
-            Floor(t1.col5)
-          HAVING
-            SUM(t1.col5) > 5
-          ORDER BY
-            col4,
-            col5
-        ) AS t3 ON
-          t1.col1 = t3.col3
-      WHERE
-        t1.col1 = 'hello'
-      GROUP BY
-        Floor(t1.col5)
-      HAVING
-        SUM(t1.col5) > 5
-      ORDER BY
-        col4,
-        col5
-    )
-    UNION
-    (
-      SELECT DISTINCT TOP e2313.34816
-        col1,
-        "c]o'l2",
-        \`co"l3\`,
-        [c\`o"l4]
+        asd
+    ),
+    "common2" AS (
+      SELECT DISTINCT
+        asd,
+        sdf
       FROM
-        table1 AS t1
-        INNER JOIN table2 AS t2 ON
-          t1.col1 = t2.col2
-      WHERE
-        t1.col1 = 'hello'
-      GROUP BY
-        Floor(t1.col5)
-      HAVING
-        SUM(t1.col5) > 5
-      ORDER BY
-        col4,
-        col5
+        hello
     )
+  (
+    SELECT -- hello!
+    DISTINCT -- asdasd!!
+    TOP 10.32123
+      col1,
+      "c]o'l2",
+      \`co"l3\`,
+      [c\`o"l4]
+    FROM
+      table1 AS t1
+      INNER JOIN table2 AS t2 ON
+        t1.col1 = t2.col2
+      INNER JOIN (
+        SELECT DISTINCT TOP 10
+          col1,
+          "c]o'l2",
+          \`co"l3\`,
+          [c\`o"l4]
+        FROM
+          table1 AS t1
+          INNER JOIN table2 AS t2 ON
+            t1.col1 = t2.col2
+        WHERE
+          t1.col1 = 'hello'
+        GROUP BY
+          Floor(t1.col5)
+        HAVING
+          SUM(t1.col5) > 5
+        ORDER BY
+          col4,
+          col5
+      ) AS t3 ON
+        t1.col1 = t3.col3
+    WHERE
+      t1.col1 = 'hello'
+    GROUP BY
+      Floor(t1.col5)
+    HAVING
+      SUM(t1.col5) > 5
+    ORDER BY
+      col4,
+      col5
+  )
+  UNION ALL
+  (
+    SELECT DISTINCT TOP e2313.34816
+      col1,
+      "c]o'l2",
+      \`co"l3\`,
+      [c\`o"l4]
+    FROM
+      table1 AS t1
+      INNER JOIN table2 AS t2 ON
+        t1.col1 = t2.col2
+    WHERE
+      t1.col1 = 'hello'
+    GROUP BY
+      Floor(t1.col5)
+    HAVING
+      SUM(t1.col5) > 5
+    ORDER BY
+      col4,
+      col5
+  )
   `
 
 
@@ -128,23 +157,62 @@ function parseSQL(sql) {
   const lexer = new Lexer()
 
   lexer.skip.active = true
-  lexer.skip.pattern = '\\s|--.*?[\n$]'
+  lexer.skip.pattern = Skip
+
+  lexer.flags = 'i'
   
   lexer.reset(sql)
   
 
 
 
-  const result = {}
-
-  result.commons = parseCommons()
-
-  result.query = parseQuery()
-
-  return result
+  return parseQuery()
 
 
 
+
+  function parseQuery() {
+    const result = {}
+
+    result.commons = parseCommons()
+
+    result.parts = []
+
+    let part = {}
+
+    while (true) {
+      if (lexer.check(Select))
+        part.select = parseSelect()
+      else {
+        lexer.eat(LeftParenthesis)
+        part.query = parseQuery()
+        lexer.eat(RightParenthesis)
+      }
+
+      result.parts.push(part)
+      
+
+      
+      part = {}
+
+      part.operation = lexer.accept(Union, Minus, Except, Intersect).toLowerCase()
+
+      if (part.operation === 'union') {
+        if (lexer.accept(All))
+          part.operation = 'union-all'
+      } else if (part.operation === 'minus' && part.operation === 'except') {
+        part.operation = 'difference'
+      } else if (part.operation === 'intersect') {
+        part.operation = 'intersection'
+      } else
+        break
+    }
+
+    return result
+  }
+
+
+  
 
   function parseCommons() {
     const result = []
@@ -173,35 +241,7 @@ function parseSQL(sql) {
   }
 
 
-  function parseQuery() {
-    const result = []
 
-    let part = {}
-
-    while (true) {
-      if (lexer.check(Select))
-        part.select = parseSelect()
-      else {
-        lexer.eat(LeftParenthesis)
-        part.query = parseQuery()
-        lexer.eat(RightParenthesis)
-      }
-
-      result.push(part)
-      
-      part = {}
-
-      part.operation = lexer.accept(Union, Minus, Except, Intersect).toLowerCase().trim()
-
-      if (part.operation === 'union') {
-        if (lexer.accept(All))
-          part.operation = 'union-all'
-      } else if (!part.operation)
-        break
-    }
-
-    return result
-  }
   function parseSelect() {
     const endTokens = [RightParenthesis, Union, Minus, Except, Intersect]
 
@@ -225,17 +265,19 @@ function parseSQL(sql) {
         result.distinct.columns = parseUntil(RightParenthesis)
         lexer.eat(RightParenthesis)
       }
-    }
+    } else
+      lexer.accept(All)
 
     if (lexer.accept(Top)) {
-      if (lexer.accept(LeftParenthesis)) {
+      if (lexer.check(LeftParenthesis)) {
+        lexer.eat(LeftParenthesis)
         result.limit = parseUntil(RightParenthesis)
         lexer.eat(RightParenthesis)
       } else
-        result.limit = lexer.eat(NonWhitespace)
+        result.limit = [lexer.eat(NonWhitespace)]
       
-      result.limit += lexer.accept(Percent)
-      result.limit += lexer.accept(WithTies)
+      result.limit.push(lexer.accept(Percent))
+      result.limit.push(lexer.accept(WithTies))
     }
     
     result.select = parseUntil(From)
@@ -247,7 +289,7 @@ function parseSQL(sql) {
 
     lexer.eat(From)
 
-    result.from = parseUntil(Where, GroupBy,
+    result.from = parseSources(Where, GroupBy,
       OrderBy, Limit, Offset, Fetch, ...endTokens)
 
 
@@ -314,27 +356,100 @@ function parseSQL(sql) {
   }
 
 
-  
+
+
+
+  function parseSources(...endTokens) {
+    const result = []
+
+    let source = {}
+
+    while (true) {
+      if (lexer.check(LeftParenthesis)) {
+        lexer.eat(LeftParenthesis)
+
+        if (lexer.check(QueryStart))
+          source.query = parseQuery()
+        else
+          source.sources = parseSources()
+
+        lexer.eat(RightParenthesis)
+
+        lexer.accept(As)
+
+        source.alias = parseIdentifier()
+      } else {
+        source.table = parseIdentifier()
+
+        if (lexer.accept(Dot)) {
+          source.schema = source.table
+          source.table = parseIdentifier()
+        }
+
+        lexer.accept(As)
+
+        if (!lexer.check(On, Inner, Left, Right, Full, Cross, ...endTokens))
+          source.alias = parseIdentifier()
+      }
+
+      if (source.operation && source.operation !== 'cross-join') {
+        lexer.eat(On)
+
+        source.condition = lexer.acceptNot(Inner, Left, Right, Full, Cross, ...endTokens)
+      }
+
+      result.push(source)
+
+
+
+      source = {}
+
+      source.operation = lexer.accept(Inner, Left, Right, Full, Cross, Comma).toLowerCase()
+
+      if (!source.operation)
+        break
+
+      if (['left', 'right', 'full'].includes(source.operation))
+        lexer.accept(Outer)
+
+      lexer.eat(Join)
+
+      if (source.operation === ',')
+        source.operation = 'cross'
+      
+      source.operation += '-join'
+    }
+
+    return result
+  }
+
 
 
 
   function parseUntil(...endTokens) {
-    let result = ''
+    const result = []
 
     while (true) {
-      result += lexer.acceptNot(LeftParenthesis, SingleQuote,
-        DoubleQuote, BackTick, LeftBracket, ...endTokens)
+      result.push(lexer.acceptNot(LeftParenthesis, SingleQuote,
+        DoubleQuote, BackTick, LeftBracket, ...endTokens))
 
-      if (lexer.check(LeftParenthesis))
-        result += parseParentheses()
-      else if (lexer.check(SingleQuote))
-        result += parseSingleQuotes()
+      if (lexer.check(LeftParenthesis)) {
+        result.push(lexer.eat(LeftParenthesis))
+
+        if (lexer.check(QueryStart))
+          result.push(parseQuery())
+        else
+          result.push(...parseUntil(RightParenthesis))
+
+        result.push(lexer.eat(RightParenthesis))
+      } else if (lexer.check(SingleQuote))
+        result.push(parseSingleQuotes())
       else if (lexer.check(DoubleQuote))
-        result += parseDoubleQuotes(true)
+        result.push(parseDoubleQuotes(true))
       else if (lexer.check(BackTick))
-        result += parseBackTicks(true)
+        result.push(parseBackTicks(true))
       else if (lexer.check(LeftBracket))
-        result += parseBrackets(true)
+        result.push(parseBrackets(true))
       else
         break
     }
@@ -345,15 +460,6 @@ function parseSQL(sql) {
 
 
 
-  function parseParentheses() {
-    let result = ''
-
-    result += lexer.eat(LeftParenthesis)
-    result += parseUntil(RightParenthesis)
-    result += lexer.eat(RightParenthesis)
-
-    return result
-  }
   
   function parseSingleQuotes() {
     let result = ''
@@ -395,7 +501,7 @@ function parseSQL(sql) {
     if (lexer.check(LeftBracket))
       return parseBrackets()
     
-    return lexer.eat(PlainIdentifier)
+    return lexer.eat(Word)
   }
 
   function parseDoubleQuotes(literal) {
