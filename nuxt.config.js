@@ -37,6 +37,7 @@ export default {
     { src: '~/plugins/monaco.js' },
     { src: '~/plugins/intersection-observer.js' },
 
+    { src: '~/plugins/app/node-generation/tree-generation.js' },
     { src: '~/plugins/app/expand-transition/expand-transition.js' },
     { src: '~/plugins/app/utils/global-mixin.js' },
     { src: '~/plugins/app/utils/utils.js' },

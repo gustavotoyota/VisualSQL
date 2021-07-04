@@ -3,18 +3,18 @@ export default Lexer
 
 
 function Lexer() {
-  this.text = ''
-  this.ignoreWhitespace = false
+  this.skip = {
+    active: false,
+    pattern: '',
+  }
 
-  this.cursor = 0
-  this.view = ''
+  this.text = ''
 }
 
 
 
-Lexer.prototype.reset = function (text, ignoreWhitespace) {
+Lexer.prototype.reset = function (text) {
   this.text = text
-  this.ignoreWhitespace = ignoreWhitespace
 
   this.updateView(0)
 }
@@ -34,7 +34,10 @@ Lexer.prototype.advanceView = function (offset) {
 
 
 Lexer.prototype.isEOF = function () {
-  return this.cursor >= this.text.length
+  if (this.skip.active)
+    return (new RegExp(`^(${this.skip.pattern})*$`)).test(this.view)
+  else
+    return this.cursor >= this.text.length
 }
 
 
@@ -42,8 +45,8 @@ Lexer.prototype.isEOF = function () {
 Lexer.prototype.check = function (...patterns) {
   for (const pattern of convertPatterns(patterns)) {
     const regex = (() => {
-      if (this.ignoreWhitespace)
-        return new RegExp(`^\\s*?${pattern}`)
+      if (this.skip.active)
+        return new RegExp(`^(${this.skip.pattern})*?${pattern}`)
       else
         return new RegExp(`^${pattern}`)
     })()
@@ -84,6 +87,17 @@ Lexer.prototype.eat = function (...patterns) {
     throw 'Expected pattern(s) not found.'
 
   return result
+}
+
+
+
+
+Lexer.prototype.toggleSkip = function (func) {
+  this.skip.active = !this.skip.active
+
+  func()
+
+  this.skip.active = !this.skip.active
 }
 
 
