@@ -62,6 +62,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/gtm',
   ],
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
@@ -115,5 +116,9 @@ export default {
     require: ['displayfeatures'],
   },
 
+
+  gtm: {
+    id: 'GTM-KH4V429'
+  },
 
 }
