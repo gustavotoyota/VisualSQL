@@ -15,7 +15,7 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: `${title} | Online Query Building Tool`,
+    title: `${title} | Free Online SQL Tool`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
