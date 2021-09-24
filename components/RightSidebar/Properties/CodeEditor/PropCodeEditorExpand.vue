@@ -39,7 +39,7 @@
       
       <v-divider/>
       
-      <v-card-text style="height: 480px; display: flex">
+      <v-card-text style="height: 450px; display: flex">
 
         <CodeEditor v-model="inputValue"
         @editorDidMount="editorDidMount"
