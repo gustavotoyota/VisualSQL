@@ -178,7 +178,13 @@ export default function (text, first) {
   function parseParens() {
     lexer.eat(LeftParen)
   
-    while (!lexer.accept(RightParen)) {
+    while (true) {
+      if (lexer.isEOF())
+        throw 'Unclosed parenthesis.'
+
+      if (lexer.accept(RightParen))
+        break
+
       if (lexer.check(DoubleQuote))
         parseDoubleQuotes()
   
