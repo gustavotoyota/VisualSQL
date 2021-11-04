@@ -24,7 +24,7 @@
 
     </template>
     
-    <v-list dense width="230">
+    <v-list dense width="400">
 
       <v-list-item v-if="columns.length === 0">
         <v-list-item-title>No columns available</v-list-item-title>
