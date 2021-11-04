@@ -46,8 +46,8 @@
             Developed by:
             <ul>
               <li>
-                <div>Kyota Langard</div>
-                <div><a href="mailto:kyota.langard@gmail.com">kyota.langard@gmail.com</a></div>
+                <div>Gustavo Toyota</div>
+                <div><a href="mailto:gustavotakachitoyota@gmail.com">gustavotakachitoyota@gmail.com</a></div>
               </li>
             </ul>
           </p>
