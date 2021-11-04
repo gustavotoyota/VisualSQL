@@ -22,7 +22,6 @@
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
-    "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/vuetify": "^1.11.2"
   }
 }

@@ -53,7 +53,6 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    '@nuxtjs/google-analytics',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -106,12 +105,6 @@ export default {
 
   server: {
     host: '0.0.0.0' // default: localhost
-  },
-
-  
-  googleAnalytics: {
-    id: 'UA-199828197-1',
-    require: ['displayfeatures'],
   },
 
 
