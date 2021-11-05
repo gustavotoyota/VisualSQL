@@ -47,7 +47,7 @@
             <ul>
               <li>
                 <div>Gustavo Toyota</div>
-                <div><a href="mailto:gustavotakachitoyota@gmail.com">gustavotakachitoyota@gmail.com</a></div>
+                <div><a href="mailto:gustavottoyota@gmail.com">gustavottoyota@gmail.com</a></div>
               </li>
             </ul>
           </p>
