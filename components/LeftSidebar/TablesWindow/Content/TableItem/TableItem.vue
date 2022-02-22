@@ -71,7 +71,11 @@ export default {
       $state.nodeCreation.active = true
 
       $state.nodeCreation.nodeType = 'table'
-      $state.nodeCreation.props = { tableName: this.table.name }
+      $state.nodeCreation.props = {
+        description: this.table.name,
+
+        tableName: this.table.name,
+      }
 
       $state.nodeCreation.dragStartPos = $utils.shallowCopy($state.pointer.pagePos)
       $state.nodeCreation.visible = false
