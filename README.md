@@ -1,6 +1,7 @@
 # Visual SQL
 
-MIT license
+This project was designed to be a static website.
+The license is MIT.
 
 ## Build Setup
 
@@ -13,9 +14,6 @@ $ yarn dev
 
 # generate static project
 $ yarn generate
-
-# launch static server
-$ yarn start
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
