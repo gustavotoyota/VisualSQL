@@ -1,6 +1,7 @@
 # Visual SQL
 
 This project was designed to be a static website.
+
 The license is MIT.
 
 ## Build Setup
