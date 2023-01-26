@@ -1,96 +1,88 @@
 <template>
-  <v-app-bar app clipped-left clipped-right dense
-  style="height: 60px">
-
-
-
+  <v-app-bar app clipped-left clipped-right dense style="height: 60px">
     <v-app-bar-title style="flex: none">
-      <img src="/logo/36x36.png"
-      style="border: 1px solid #383838; border-radius: 8px"/>
-      <div style="margin-left: 10px">Visual SQL</div>
+      <img
+        src="/logo/36x36.png"
+        style="border: 1px solid #383838; border-radius: 8px"
+      />
+      <div style="margin-left: 10px">VisualSQL</div>
     </v-app-bar-title>
 
+    <v-divider vertical inset class="ml-4 mr-2" />
 
+    <NewProject />
 
-    <v-divider vertical inset class="ml-4 mr-2"/>
+    <OpenProject />
 
+    <SaveProject />
 
+    <v-divider vertical inset class="mx-2" />
 
-    <NewProject/>
-    
-    <OpenProject/>
-    
-    <SaveProject/>
+    <v-select
+      dense
+      outlined
+      height="30"
+      class="mx-1"
+      style="font-size: 14px; flex: none; width: 160px"
+      hide-details
+      background-color="#101010"
+      :menu-props="{ top: false, offsetY: true }"
+      :items="$app.databases.items"
+      item-text="text"
+      item-value="value"
+      v-model="$state.project.sql.database"
+    />
 
+    <v-divider vertical inset class="mx-2" />
 
+    <Settings />
 
-    <v-divider vertical inset class="mx-2"/>
+    <v-divider vertical inset class="mx-2" />
 
-
-
-    <v-select dense outlined height="30" class="mx-1"
-    style="font-size: 14px; flex: none; width: 160px"
-    hide-details background-color="#101010"
-    :menu-props="{ top: false, offsetY: true }"
-
-    :items="$app.databases.items" item-text="text" item-value="value"
-
-    v-model="$state.project.sql.database"/>
-
-
-
-    <v-divider vertical inset class="mx-2"/>
-
-
-
-    <Settings/>
-
-
-
-    <v-divider vertical inset class="mx-2"/>
-
-
-
-    <ToolbarButton tooltip="Help"
-    :btn-style="{ display: 'none' }">
+    <ToolbarButton tooltip="Help" :btn-style="{ display: 'none' }">
       <v-icon dense>mdi-help-circle</v-icon>
     </ToolbarButton>
-    
-    <Help/>
 
-    <About/>
+    <Help />
 
+    <About />
 
+    <v-divider vertical inset class="mx-2" />
 
-    <v-divider vertical inset class="mx-2"/>
-
-                  
-                  
-    <form action="https://www.paypal.com/donate" method="post" target="_blank"
-    style="margin-left: 6px; height: 22px">
+    <form
+      action="https://www.paypal.com/donate"
+      method="post"
+      target="_blank"
+      style="margin-left: 6px; height: 22px"
+    >
       <input type="hidden" name="hosted_button_id" value="746BJR8L4R47U" />
-      <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-      <img alt="" border="0" src="https://www.paypal.com/en_BR/i/scr/pixel.gif" width="1" height="1" />
+      <input
+        type="image"
+        src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
+        border="0"
+        name="submit"
+        title="PayPal - The safer, easier way to pay online!"
+        alt="Donate with PayPal button"
+      />
+      <img
+        alt=""
+        border="0"
+        src="https://www.paypal.com/en_BR/i/scr/pixel.gif"
+        width="1"
+        height="1"
+      />
     </form>
 
+    <v-spacer />
 
-
-    <v-spacer/>
-
-
-
-    <div style="margin-left: 14px; min-width: 468px; height: 100%; overflow: hidden">
-    </div>
-
-
-
+    <div
+      style="margin-left: 14px; min-width: 468px; height: 100%; overflow: hidden"
+    ></div>
   </v-app-bar>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style scoped>

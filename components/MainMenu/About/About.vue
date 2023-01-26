@@ -16,7 +16,7 @@
 
     <v-card>
 
-      <v-card-title>About Visual SQL</v-card-title>
+      <v-card-title>About VisualSQL</v-card-title>
 
       <v-divider/>
 

@@ -1,4 +1,4 @@
-# Visual SQL
+# VisualSQL
 
 This project was designed to be a static website.
 
