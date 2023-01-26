@@ -13,11 +13,11 @@
 
 
 
-      
+
     <v-card>
 
       <v-card-title>About Visual SQL</v-card-title>
-      
+
       <v-divider/>
 
       <v-card-text class="content"
@@ -41,7 +41,7 @@
 
         <div style="padding: 20px 24px;
         display: flex; flex-direction: column">
-        
+
           <p>
             Developed by:
             <ul>
@@ -53,10 +53,9 @@
           </p>
 
           <v-spacer class="flex-column"/>
-          
+
           <div>
-            <div><PrivacyPolicy/></div>
-            <div><TermsAndConditions/></div>
+            <a href="https://github.com/gustavotoyota/VisualSQL">GitHub repository</a>
           </div>
 
         </div>
