@@ -1,5 +1,7 @@
 # VisualSQL
 
+Thie is the implementation of VisualSQL (https://visualsql.net).
+
 This project was designed to be a static website.
 
 The license is MIT.
@@ -16,5 +18,3 @@ $ yarn dev
 # generate static project
 $ yarn generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
