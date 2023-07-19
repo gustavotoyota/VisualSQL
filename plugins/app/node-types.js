@@ -1,219 +1,204 @@
-const nodeTypes = {}
-export default nodeTypes
+const nodeTypes = {};
+export default nodeTypes;
 
+nodeTypes["table"] = {
+  category: "data",
 
-
-
-nodeTypes['table'] = {
-  category: 'data',
-  
   numInputs: 0,
   hasOutput: true,
 
-  title: 'Table',
+  title: "Table",
 
   props: {
-    tableName: '',
-  },
-}
-nodeTypes['node'] = {
-  category: 'data',
-  
+    tableName: ""
+  }
+};
+nodeTypes["node"] = {
+  category: "data",
+
   numInputs: 0,
   hasOutput: true,
 
-  title: 'Node',
+  title: "Node",
 
   props: {
-    nodeName: '',
-  },
-}
-nodeTypes['sql'] = {
-  category: 'data',
-  
+    nodeName: ""
+  }
+};
+nodeTypes["sql"] = {
+  category: "data",
+
   numInputs: 0,
   hasOutput: true,
 
-  title: 'SQL',
+  title: "Custom SQL",
 
   props: {
-    sql: '',
-  },
-}
+    sql: ""
+  }
+};
 
-
-
-
-nodeTypes['union'] = {
-  category: 'set-operations',
+nodeTypes["union"] = {
+  category: "set-operations",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Union',
+  title: "Union",
 
   props: {
-    allowDuplicates: false,
-  },
-}
-nodeTypes['difference'] = {
-  category: 'set-operations',
+    allowDuplicates: false
+  }
+};
+nodeTypes["difference"] = {
+  category: "set-operations",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Difference',
+  title: "Difference",
 
-  props: {
-  },
-}
-nodeTypes['intersection'] = {
-  category: 'set-operations',
-
-  numInputs: 2,
-  hasOutput: true,
-
-  title: 'Intersection',
-
-  props: {
-  },
-}
-
-
-
-
-nodeTypes['inner-join'] = {
-  category: 'joins',
+  props: {}
+};
+nodeTypes["intersection"] = {
+  category: "set-operations",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Inner join',
+  title: "Intersection",
 
-  props: {
-    condition: '',
-  },
-}
-nodeTypes['left-join'] = {
-  category: 'joins',
+  props: {}
+};
 
-  numInputs: 2,
-  hasOutput: true,
-
-  title: 'Left join',
-
-  props: {
-    condition: '',
-  },
-}
-nodeTypes['right-join'] = {
-  category: 'joins',
+nodeTypes["inner-join"] = {
+  category: "joins",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Right join',
+  title: "Inner join",
 
   props: {
-    condition: '',
-  },
-}
-nodeTypes['full-join'] = {
-  category: 'joins',
+    condition: ""
+  }
+};
+nodeTypes["left-join"] = {
+  category: "joins",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Full join',
+  title: "Left join",
 
   props: {
-    condition: '',
-  },
-}
-nodeTypes['cross-join'] = {
-  category: 'joins',
+    condition: ""
+  }
+};
+nodeTypes["right-join"] = {
+  category: "joins",
 
   numInputs: 2,
   hasOutput: true,
 
-  title: 'Cross join',
+  title: "Right join",
 
   props: {
-  },
-}
+    condition: ""
+  }
+};
+nodeTypes["full-join"] = {
+  category: "joins",
 
+  numInputs: 2,
+  hasOutput: true,
 
+  title: "Full join",
 
+  props: {
+    condition: ""
+  }
+};
+nodeTypes["cross-join"] = {
+  category: "joins",
 
-nodeTypes['filter'] = {
-  category: 'processing',
-  
+  numInputs: 2,
+  hasOutput: true,
+
+  title: "Cross join",
+
+  props: {}
+};
+
+nodeTypes["filter"] = {
+  category: "processing",
+
   numInputs: 1,
   hasOutput: true,
 
-  title: 'Filter',
+  title: "Filter",
 
   props: {
-    condition: '',
-  },
-}
-nodeTypes['transform'] = {
-  category: 'processing',
-  
+    condition: ""
+  }
+};
+nodeTypes["transform"] = {
+  category: "processing",
+
   numInputs: 1,
   hasOutput: true,
 
-  title: 'Transform',
+  title: "Transform",
 
   props: {
     group: {
       active: false,
-      columns: '',
-      condition: '',
+      columns: "",
+      condition: ""
     },
-    
-    columns: '',
-  },
-}
-nodeTypes['distinct'] = {
-  category: 'processing',
-  
+
+    columns: ""
+  }
+};
+nodeTypes["distinct"] = {
+  category: "processing",
+
   numInputs: 1,
   hasOutput: true,
 
-  title: 'Distinct',
+  title: "Distinct",
 
   props: {
-    columns: '',
-  },
-}
-nodeTypes['sort'] = {
-  category: 'processing',
-  
+    columns: ""
+  }
+};
+nodeTypes["sort"] = {
+  category: "processing",
+
   numInputs: 1,
   hasOutput: true,
 
-  title: 'Sort',
+  title: "Sort",
 
   props: {
-    columns: '',
-  },
-}
-nodeTypes['limit'] = {
-  category: 'processing',
+    columns: ""
+  }
+};
+nodeTypes["limit"] = {
+  category: "processing",
 
   numInputs: 1,
   hasOutput: true,
 
-  title: 'Limit',
+  title: "Limit",
 
   props: {
     offset: {
-      value: '',
+      value: ""
     },
 
     limit: {
-      value: '',
-    },
-  },
-}
+      value: ""
+    }
+  }
+};
